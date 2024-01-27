@@ -1,0 +1,260 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>{{pageTitle}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- create / edit section -->
+  <div *ngIf="isEdit || isCreate" class="fi-edit-container">
+
+
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+
+      <!-- School Name -->
+
+      <div class="input-container">
+        <ion-label class="input-label"> <ion-note color="danger">*</ion-note> School Name</ion-label>
+        <ion-item lines="none">
+          <ion-input autocapitalize="on" class="input" minlength="2" maxlength="35" placeholder="School Name" type="text" #SchoolName="ngModel"
+            name="SchoolName" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.SchoolName" maxlength="30" required></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="SchoolName.invalid && (SchoolName.dirty || SchoolName.touched)" class="error-message">
+        <div *ngIf="SchoolName.errors?.['required']">
+          School name is required
+        </div>
+        <div *ngIf="SchoolName.errors?.['minlength']">
+          SchoolName must be at least 2 characters long.
+        </div>
+      </div>
+
+      <!-- Degree -->
+
+      <div class="input-container">
+        <ion-label class="input-label"><ion-note color="danger">*</ion-note> Degree</ion-label>
+        <ion-item lines="none">
+          <ion-input autocapitalize="on" class="input" placeholder="Degree" type="text" #Degree="ngModel" name="Degree"
+            [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.Degree" minlength="2" maxlength="30"></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="Degree.invalid && (Degree.dirty || Degree.touched)" class="error-message">
+        <div *ngIf="Degree.errors?.['required']">
+          Degree is required
+        </div>
+        <div *ngIf="Degree.errors?.['minlength']">
+          Degree must be at least 2 characters long.
+        </div>
+      </div>
+
+      <!-- Field of Study -->
+
+      <div class="input-container">
+        <ion-label class="input-label"><ion-note color="danger">*</ion-note> Field Of Study</ion-label>
+        <ion-item lines="none">
+          <ion-input class="input" autocapitalize="on" placeholder="Field Of Study" type="text" #FieldOfStudy="ngModel"
+            name="FieldOfStudy" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.FieldOfStudy" minlength="2" maxlength="30"></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="FieldOfStudy.invalid && (FieldOfStudy.dirty || FieldOfStudy.touched)" class="error-message">
+        <div *ngIf="FieldOfStudy.errors?.['required']">
+          Field Of Study is required
+        </div>
+        <div *ngIf="FieldOfStudy.errors?.['minlength']">
+          FieldOfStudy must be at least 2 characters long.
+        </div>
+      </div>
+
+
+      <!-- start date  -->
+      <ion-label class="input-label">Start date</ion-label>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+
+          <ion-col size="4">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input inputmode="numeric" style="text-align: center;" placeholder="MM" #EducationMonthFrom="ngModel"
+                name="EducationMonthFrom" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.EducationMonthFrom"
+                (ionChange)="inputDateChange()" pattern="^(?:0?[1-9]|1[0-2])$">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input inputmode="numeric" style="text-align: center;" placeholder="YYYY" #EducationYearFrom="ngModel"
+                pattern="^\d{4}$" (ionChange)="inputDateChange()" name="EducationYearFrom"
+                [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.EducationYearFrom"></ion-input>
+
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <!-- start date error -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+
+          <ion-col size="4">
+            <div *ngIf="EducationMonthFrom?.invalid && (EducationMonthFrom.dirty || EducationMonthFrom.touched)"
+              class="error-message">
+              Invalid month
+            </div>
+
+          </ion-col>
+          <ion-col size="6">
+            <div *ngIf="EducationYearFrom?.invalid && (EducationYearFrom.dirty || EducationYearFrom.touched)"
+              class="error-message">
+              Invalid year
+            </div>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div *ngIf="dateError.is_date_from_error" class="error-message">
+        {{dateError.message}}
+      </div>
+
+      <!-- end date  -->
+      <ion-label class="input-label">End date (or expected)</ion-label>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+
+          <ion-col size="4">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input inputmode="numeric" style="text-align: center;" placeholder="MM"
+                #EducationMonthToDate="ngModel" name="EducationMonthToDate"
+                [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.EducationMonthToDate" (ionChange)="inputDateChange()"
+                pattern="^(?:0?[1-9]|1[0-2])$">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input inputmode="numeric" style="text-align: center;" placeholder="YYYY"
+                #EducationYearToDate="ngModel" pattern="^\d{4}$" (ionChange)="inputDateChange()"
+                name="EducationYearToDate" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.EducationYearToDate"></ion-input>
+
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <!-- date to error -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+
+          <ion-col size="4">
+            <div *ngIf="EducationMonthToDate?.invalid && (EducationMonthToDate.dirty || EducationMonthToDate.touched)"
+              class="error-message">
+              Invalid month
+            </div>
+
+          </ion-col>
+          <ion-col size="6">
+            <div *ngIf="EducationYearToDate?.invalid && (EducationYearToDate.dirty || EducationYearToDate.touched)"
+              class="error-message">
+              Invalid year
+            </div>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div *ngIf="dateError.is_date_to_error" class="error-message">
+        {{dateError.message}}
+      </div>
+      <ion-label class="input-label"> Visibility</ion-label>
+      <ion-item lines="none" class="fi-popover-item" (click)="presentPopover($event)">
+        <ion-label class="input-label">
+          <!-- <p>{{getUserProfileAsPerPrivacy.userProfile.Education.Privacy}} </p> -->
+          <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Education.Privacy === 1" > All </p>
+          <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Education.Privacy === 2" > Connections </p>        </ion-label>
+        <ion-buttons slot="end" >
+          <ion-button>
+            <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false" mode="ios" alignment="end">
+        <ng-template>
+          <ion-list>
+            <ion-radio-group name="Privacy" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Education.Privacy" mode="md">
+              <ion-item lines="none" (click)="isOpen = false">
+                <ion-label>All</ion-label>
+                <ion-radio slot="start" [value]=1></ion-radio>
+              </ion-item>
+              <ion-item lines="none" (click)="isOpen = false">
+                <ion-label>Connections Only</ion-label>
+                <ion-radio slot="start" [value]=2></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ng-template>
+      </ion-popover>
+
+      <br>
+      <ion-button type="submit" [disabled]="form.invalid" expand="block" class="fi-footer-btn" shape="round"
+        color="primary">
+        Save
+      </ion-button>
+    </form>
+  </div>
+  <!-- list  -->
+  <div *ngIf="isList">
+    <div *ngIf="getUserProfileAsPerPrivacy.userProfile.Educations?.length == 0 || !getUserProfileAsPerPrivacy.userProfile.Educations" class="ion-text-center" style="margin-top: 150px;">
+      <img style="margin-top: 20px;" src="assets/imgs/icons/noresults.png">
+      <p> You have not entered any education.</p>
+    </div> 
+
+    <ion-card *ngFor="let i of getUserProfileAsPerPrivacy.userProfile.Educations" class="ion-no-padding">
+      <ion-card-content>
+        <ion-item lines="none"
+          class="ion-no-margin fi-list-item">
+          <ul>
+            <li>
+              <h3 class="fi-list-h3">{{ i.SchoolName }}</h3>
+              <p class="fi-list-p">
+                {{ i.Degree}}<ng-container *ngIf="i.Degree && i.FieldOfStudy">,
+                </ng-container>{{ i.FieldOfStudy }}
+              </p>
+              <p class="fi-list-p" *ngIf="i.EducationMonthFrom">
+                {{ getFormattedDate(i.EducationMonthFrom , i.EducationYearFrom ) }}
+                <ng-container *ngIf="i.EducationMonthToDate">
+                  - {{getFormattedDate( i.EducationMonthToDate, i.EducationYearToDate )}}
+                </ng-container>
+              </p>
+            </li>
+          </ul>
+
+          <div slot="end" *ngIf="!commonService.isEducationListOnly">
+            <div class="edit-button fi-edit">
+              <button (click)="editEducation(i)"> <ion-icon name='edit'></ion-icon></button>
+            </div>
+            &nbsp;
+            <div class="edit-button fi-delete">
+              <button (click)="deleteEducation(i)"> <ion-icon name='trash'></ion-icon></button>
+            </div>
+          </div>
+
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
+
+
+<ion-footer *ngIf="!commonService.isEducationListOnly">
+
+  <ion-button *ngIf="!isEdit && !isCreate" (click)="viewChangeButton()" expand="block" class="fi-footer-btn"
+    shape="round" color="primary">
+    {{buttonText}}
+  </ion-button>
+
+
+
+</ion-footer>

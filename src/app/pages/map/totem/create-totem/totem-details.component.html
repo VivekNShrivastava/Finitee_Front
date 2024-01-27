@@ -1,0 +1,93 @@
+<ion-header class="headth">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-fab-button (click)="gotoback()" size="small" style="--box-shadow:none;--background:transparent">
+        <img style="height:20px" src="assets/icon/fin/back.png">
+      </ion-fab-button>
+    </ion-buttons>
+    <ion-title>Create Totem</ion-title>
+    <ion-buttons slot="end" style="visibility: hidden;">
+      <ion-fab-button (click)="gotoback()" size="small" style="--box-shadow:none;--background:transparent">
+        <img style="height:20px" src="assets/icon/fin/back.png">
+      </ion-fab-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content overflow-scroll="true">
+  <ion-toolbar style="--background: transparent;">
+    <ion-grid style="padding:0px 0px 20px">
+      <ion-row style="padding: 0px 10px;margin-bottom: 10px;">
+        <textarea [disabled]="status=='E'" [(ngModel)]="ttmTitle" class="writepost" rows="2"
+          placeholder="Totem Title"></textarea>
+      </ion-row>
+      <ion-row style="padding: 0px 10px;">
+        <textarea [(ngModel)]="ttmDesc" class="writepost" rows="9"
+          placeholder="Type your totem description here.."></textarea>
+      </ion-row>
+      <ion-row>
+        <ion-buttons class="postbtns" style="padding:20px 5px;">
+          <ion-button (click)="addMedia('C')">
+            <ion-icon slot="icon-only" name="cameraicon"></ion-icon>
+          </ion-button>
+          <ion-button (click)="addMedia('G')">
+            <ion-icon slot="icon-only" name="galleryicon"></ion-icon>
+          </ion-button>
+          <ion-button (click)="addMedia('V')">
+            <ion-icon slot="icon-only" name="videoicon"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-row>
+
+      <ion-row style="margin-bottom: 20px;padding:10px" *ngIf="photoInfo">
+        <div class="cll" *ngIf="photoInfo.status=='P'">
+          <ion-img class="comImage" *ngIf="!!imageData" [src]="imageData"></ion-img>
+          <span *ngIf="!!imageData" class="edit" (click)="presentAlertConfirm()">
+            <ion-icon name="create"></ion-icon>
+          </span>
+        </div>
+        <div class="cll" *ngIf="photoInfo.status == 'V'">
+          <video onerror="this.onerror=null;this.poster='assets/imgs/defaultvideo.png';" controls="controls"
+            preload="auto" webkit-playsinline="webkit-playsinline" class="videoPlayer" [src]="photoInfo.data"
+            style="width: 100%;height: 150px;" type="video/mp4">
+          </video>
+        </div>
+      </ion-row>
+      <ion-row style="margin-bottom: 20px;padding:10px" *ngIf="status=='E'">
+        <div class="cll" *ngIf="media.img">
+          <ion-img class="comImage" *ngIf="!!imageData" [src]="imageData"></ion-img>
+          <span *ngIf="!!imageData" class="edit" (click)="presentAlertConfirm()">
+            <ion-icon name="create"></ion-icon>
+          </span>
+        </div>
+        <div class="cll" *ngIf="media.vd">
+          <video onerror="this.onerror=null;this.poster='assets/imgs/defaultvideo.png';" controls="controls"
+            preload="auto" webkit-playsinline="webkit-playsinline" class="videoPlayer"
+            [src]="attachmentService.sanitizeLocalUrl(media.vd)" style="width: 100%;height: 150px;" type="video/mp4">
+          </video>
+        </div>
+      </ion-row>
+      <div *ngIf="photoInfo?.thumbnail?.length">
+        <ion-title style="padding:10px">Select Thumbnail</ion-title>
+        <div class="selected-image" *ngIf="selectedThumbnail?.url">
+          <img [src]="selectedThumbnail.url" class="" alt="">
+        </div>
+        <div style="padding:10px" class="thumbnail-list">
+          <img [src]="item.url" (click)="selectImage(item,index)" [ngClass]="{'active': selectedIndex == index}"
+            *ngFor="let item of photoInfo?.thumbnail;let index = index;" width="40px" height="40px" alt="">
+        </div>
+      </div>
+    </ion-grid>
+  </ion-toolbar>
+</ion-content>
+
+<ion-footer style="padding: 9px;">
+  <ion-button *ngIf="status!=='E'" expand="full" fill="solid" class="save-button" shape="round" (click)="saveTotem()"
+    routerDirection="forward">
+    Create Totem
+  </ion-button>
+  <ion-button *ngIf="status=='E'" [disabled]="!imageData" expand="full" fill="solid" class="save-button" shape="round"
+    (click)="updateTotem()" routerDirection="forward">
+    Edit Totem
+  </ion-button>
+</ion-footer>

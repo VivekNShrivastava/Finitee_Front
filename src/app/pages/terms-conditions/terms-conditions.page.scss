@@ -1,0 +1,54 @@
+.login-main {
+  padding: 10px;
+}
+h1 {
+  font-size: 21px;
+  margin: 0px 2px 28px 2px;
+  color: #191919;
+  font-weight: bold;
+}
+.remember {
+  display: inline-flex;
+  align-items: center;
+  text-align: right;
+  margin-left: 5px;
+  ion-checkbox {
+    margin-right: 10px;
+  }
+}
+.nobgshad ion-toolbar {
+  --background: transparent;
+}
+
+
+ion-fab-button {
+  margin: auto;
+  --background: white;
+  --color: black;
+  --box-shadow: none;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  z-index: 9;
+}
+h4 {
+    color: #285078;
+    font-weight: bold;
+    font-size: 19px;
+}
+
+.backicon {
+  width: 24px !important;
+  height: 24px !important;
+  margin-left: 3%;
+  margin-top: 3% !important;
+  position: absolute !important;
+}
+
+.logo-img {
+  width: 83px;
+  height: 68px;
+  margin: auto;
+  display: block;
+  margin-top: 30px;
+}

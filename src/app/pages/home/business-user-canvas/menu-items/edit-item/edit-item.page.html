@@ -1,0 +1,21 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Item list/Menu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- multiple file uplaod -->
+  <app-multiple-media-upload [mediaFiles]="menuItemList"
+    (filePathEvent)="addMedia($event)"></app-multiple-media-upload>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" shape="round"  [color]="(menuItemList.length==0) ? 'medium' : 'primary'" (click)="saveMenuItems()">Create</ion-button>
+</ion-footer>

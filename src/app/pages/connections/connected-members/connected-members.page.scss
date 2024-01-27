@@ -1,0 +1,82 @@
+ion-header {
+  background-color: #ffffff !important;
+  color: #1a3253;
+}
+// .business-logo {
+//   display: inline-block;
+//   vertical-align: middle;
+//   height: 39px;
+//   width: 39px;
+// }
+.header-md::after {
+  background-image: none !important;
+}
+// .top-icons {
+//   color: #1a3253 !important;
+// }
+.title {
+  font: normal normal 600 20px/28px SF Pro Display;
+  letter-spacing: 0.32px;
+  color: #285078;
+  opacity: 1;
+}
+// .item-one {
+//   display: flex;
+//   flex: 0.1;
+//   align-items: flex-start;
+//   padding-left: 5px;
+//   justify-content: center;
+//   height: 100%;
+//   width: 100%;
+// }
+// .item-two {
+//   display: flex;
+//   flex: 0.7;
+//   align-items: center;
+//   justify-content: center;
+//   height: 100%;
+//   width: 100%;
+// }
+ion-content {
+  // --padding-top: 15px;
+  // --padding-bottom: 15px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  height: 100%;
+  & > ion-list {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    & > ion-item {
+      margin-bottom: 0;
+      border-bottom: 2px solid #e4e5e9;
+      padding: 10px 18px;
+      & > ion-avatar {
+        height: 40px;
+        width: 40px;
+        margin-right: 9px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+      & > ion-label {
+        h3 {
+          text-align: left;
+          font: normal normal 600 15px/21px SF Pro Display;
+          letter-spacing: 0.24px;
+          color: #1A3253;
+          opacity: 1;
+        }
+        p {
+          color: #505050;
+          font: normal normal normal 13px/17px SF Pro Display;
+          letter-spacing: 0.21px;
+          text-align: left;
+          opacity: 1;
+          margin-top: -3px;
+        }
+      }
+    }
+  }
+}
+.fi-skeleton-text{
+  height: 60px;
+}

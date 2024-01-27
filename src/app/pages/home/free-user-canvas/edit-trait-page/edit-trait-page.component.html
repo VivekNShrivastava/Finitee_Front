@@ -1,0 +1,75 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <!-- <span *ngIf="paramsData.isDonationPost">Donation Request</span> -->
+      <span>Edit Trait</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="input-form">
+    <!--Title-->
+    <!-- <ion-item lines="none" *ngIf="paramsData.isDonationPost">
+      <ion-input [(ngModel)]="post.Title" autocapitalize="on" class="custom-textarea"
+        placeholder="Title"></ion-input>
+    </ion-item> -->
+
+    <!--Description-->
+    <ion-item lines="none">
+      <ion-textarea [(ngModel)]="post.PostDescription" autocapitalize="on" class="custom-textarea"
+        placeholder="Type description here"></ion-textarea>
+    </ion-item>
+
+    <!--traits-->
+    <ion-chip *ngFor="let trait of post.PostTraits;  let i = index" color="primary">
+      <ion-label>{{trait }}</ion-label>
+      <ion-icon name="close-circle" color="white" (click)="deleteTrait(i)"></ion-icon>
+    </ion-chip>
+    <!-- <ion-button expand="block" color="light" (click)="addTraits()">Add Traits</ion-button> -->
+    <!-- <ion-button expand="block" color="light" (click)="addTraits()">Add Tags</ion-button> -->
+
+
+    <!--privacy-->
+    <!-- <ion-item lines="none" id="viewable-by" class="item-selection" *ngIf="paramsData.isDonationPost">
+      <ion-input placeholder="Privacy" value="{{_commonService.getPrivacyFullValue(post.Privacy)}}"
+        [(ngModel)]="post.Privacy"></ion-input>
+      <ion-buttons>
+        <ion-button shape="round">
+          <ion-icon name="down-arrow"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item> -->
+    <ion-popover trigger="viewable-by" side="bottom" alignment="end" [dismissOnSelect]="true" triggerAction="click">
+      <ng-template>
+        <ion-list>
+          <ion-radio-group value="{{post.Privacy}}" (ionChange)="selectedPrivacy($event)">
+            <ion-item lines="none" *ngFor="let privacy of appConstants.GeneralPivacy">
+              <ion-label [ngClass]="{'selected': (post.Privacy==privacy.value)}">{{privacy.value}}</ion-label>
+              <ion-radio slot="start" value="{{privacy.value}}"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ng-template>
+    </ion-popover>
+
+
+    <!-- multiple file uplaod -->
+    <app-multiple-media-upload  [isDisabled]="post.PostImages.length > 0" [mediaFiles]="post.PostImages"
+      (filePathEvent)="addMedia($event)">
+    </app-multiple-media-upload>
+
+    <div class="error-message" *ngIf="saveClicked && post.PostDescription=='' ">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span>Please enter Description or atleast one image</span>
+    </div>
+  </ion-list>
+</ion-content>
+<ion-footer class="create-btn">
+  <ion-button shape="round" expand="block"
+    [color]="(post.PostDescription=='' && post.PostImages.length==0) ? 'medium' : 'primary'" (click)="savePost()">Edit
+  </ion-button>
+</ion-footer>

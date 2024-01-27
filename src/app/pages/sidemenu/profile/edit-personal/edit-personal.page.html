@@ -1,0 +1,245 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Personal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <!-- bio -->
+  <form #form="ngForm">
+    <ion-label class="input-label">Bio</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="Bio" name="Bio" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Bio" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'bio' )"></ion-icon>
+    </ion-item>
+
+    <!-- gender -->
+    <ion-label class="input-label">Gender</ion-label>
+
+
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="10">
+          <ion-item color="none" lines="none" class="input">
+            <ion-select placeholder="Gender" id="selectGender" name="Gender" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Gender">
+              <ion-select-option [value]="1">Male</ion-select-option>
+              <ion-select-option [value]="2">Female</ion-select-option>
+              <ion-select-option [value]="3">Other</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-item color="none" class="input" lines="none">
+            <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'gender' )"></ion-icon>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+    <!-- bday -->
+    <ion-label class="input-label">B'day</ion-label>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="3">
+          <ion-item color="none" class="input" lines="none">
+            <ion-input style="text-align: center;" placeholder="DD" #day="ngModel" name="day"
+              (ionChange)="inputOnCahnge()" [(ngModel)]="birthDate.day" inputmode="numeric"
+              pattern="^(?:[0-9]|[1-2][0-9]|31)(\.\d{1,2})?$" maxlength="2"></ion-input>
+          </ion-item>
+
+        </ion-col>
+        <ion-col size="3">
+          <ion-item color="none" class="input" lines="none">
+            <ion-input style="text-align: center;" placeholder="MM" #month="ngModel" name="month"
+              (ionChange)="inputOnCahnge()" inputmode="numeric" [(ngModel)]="birthDate.month" pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4">
+          <ion-item color="none" class="input" lines="none">
+            <ion-input style="text-align: center;" placeholder="YYYY" #year="ngModel" pattern="^\d{4}$" name="year"
+              (ionChange)="inputOnCahnge()" inputmode="numeric" [(ngModel)]="birthDate.year" maxlength="4"></ion-input>
+
+          </ion-item>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-item color="none" class="input" lines="none">
+            <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'dob' )"></ion-icon>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="3.5">
+          <div *ngIf="day?.invalid && (day.dirty || day.touched)" class="error-message">
+            Invalid day
+          </div>
+
+        </ion-col>
+        <ion-col size="3.5">
+          <div *ngIf="month?.invalid && (month.dirty || month.touched)" class="error-message">
+            Invalid month
+          </div>
+
+        </ion-col>
+        <ion-col size="4.5">
+          <div *ngIf="year?.invalid && (year.dirty || year.touched)" class="error-message">
+            Invalid year
+          </div>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div *ngIf="errorDate.is_show" class="error-message">
+      {{errorDate.message}}
+    </div>
+
+
+    <!-- languages -->
+    <ion-label class="input-label">Languages</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="Languages" type="text" name="Languages"
+        [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Languages" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'lang' )"></ion-icon>
+    </ion-item>
+
+    <!-- professional skills -->
+    <ion-label class="input-label">Professional Skills</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="professional Skills" type="text" name="Professionalskills"
+        [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Professionalskills" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'skill' )"></ion-icon>
+    </ion-item>
+
+    <!-- per cities -->
+    <ion-label class="input-label">Previous City</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="Previous City" type="text" name="Previous_cities"
+        [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Previous_cities" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'city' )"></ion-icon>
+    </ion-item>
+
+    <!-- religion -->
+    <ion-label class="input-label">Religion</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="Religion" type="text" name="Religion"
+        [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Religion" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'religion' )"></ion-icon>
+    </ion-item>
+
+    <!-- [disabled]="!form.valid" -->
+    <ion-button class="fi-submit-btn" expand="block" shape="round"  (click)="saveUserProfile()" >
+      Save
+    </ion-button>
+
+  </form>
+</ion-content>
+
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #BioPop [isOpen]="BioPrivacyIsOpen" (didDismiss)="BioPrivacyIsOpen = false" >
+  <ng-template>
+    <ion-list>
+      <ion-radio-group [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.BioPrivacy" mode="md" [value]="getUserProfileAsPerPrivacy.userProfile.BioPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #GenderPop [isOpen]="GenderPrivacyIsOpen" (didDismiss)="GenderPrivacyIsOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.GenderPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #DobPop [isOpen]="DobPrivacyIsOpen" (didDismiss)="DobPrivacyIsOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.DobPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #LangPop [isOpen]="LangPrivacyIsOpen" (didDismiss)="LangPrivacyIsOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.LanguagesPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #SkillPop [isOpen]="SkillPrivacyIsOpen" (didDismiss)="SkillPrivacyIsOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.ProfessionalskillsPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #CityPop [isOpen]="CityPrivacyIsOpen" (didDismiss)="CityPrivacyIsOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.Previous_citiesPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #ReligionPop [isOpen]="ReligionPrivacyIsOpen" (didDismiss)="ReligionPrivacyIsOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.ReligionPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ion-popover class="fi-edit-personal-popover" #popover [isOpen]="isOpen" (didDismiss)="isOpen = false" mode="ios" alignment="end">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>

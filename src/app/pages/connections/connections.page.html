@@ -1,0 +1,162 @@
+<ion-header class="ion-no-border">
+  <!-- heading bar -->
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <app-notification-icon></app-notification-icon>
+    </ion-buttons>
+    <ion-title>
+      <ng-container *ngIf="logInfo && logInfo.UserTypeId!=appConstants.USER_TYPE.FR_USER">Connected Members</ng-container>
+      <ng-container *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.FR_USER">Connections</ng-container>
+
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="activated">
+        <ion-icon name="searchi"></ion-icon>
+      </ion-button>
+      <ion-button class="activated fi-btn-width">
+        <ion-icon name="chat-3dots"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-segment [(ngModel)]="selectedTab" (ionChange)="segmentChange($event)">
+    <ion-segment-button class="segment-btn" value="connections">
+      <ion-label class="my-label"
+        *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.FR_USER">Connections</ion-label>
+      <ion-label class="my-label" *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.BN_USER">Connected
+        Members</ion-label>
+    </ion-segment-button>
+    <ion-segment-button class="segment-btn" value="requests">
+      <ion-label class="my-label">Requests</ion-label>
+    </ion-segment-button>
+    <ion-segment-button class="segment-btn" value="blocked">
+      <ion-label class="my-label">Blocked</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+
+
+  <div class="prarthan" *ngIf="selectedTab == 'connections' && loaded">
+    <ion-card value="connections" *ngFor="let data of userConnections; let i=index" >
+      <ion-card-header >
+          <div class="connection-card fi-border">
+            <div class="first-section" (click)="openUser(data)">
+              <ion-avatar class="avatar">
+                <img src='{{appConstants.mediaPrefix + data.ProfilePhoto}}' onError="this.src='assets/imgs/male.png'" />
+              </ion-avatar>
+            </div>
+            <div class="second-section" (click)="openUser(data)">
+              <ion-card-title>{{data?.DisplayName}}</ion-card-title>
+              <ion-card-subtitle>{{data?.UserName}}</ion-card-subtitle>
+            </div>
+            <div class="third-section">
+              <div class="icons" (click)="startChat(data)">
+                <ion-icon class="chatandmenu" name="connected-members-chat"></ion-icon>
+              </div>
+              <div class="icons-menu">
+                <ion-icon class="chatandmenu" expand="full" (click)="presentConnectionMenu(data.UserId,i)"
+                  name="ellipsis-vertical-outline"></ion-icon>
+              </div>
+            </div>
+          </div>
+      </ion-card-header>
+    </ion-card>
+    <ng-container *ngIf="userConnections.length==0">
+      <div class="ion-text-center nodata">
+        <img src="assets/imgs/icons/noresults.png">
+        <p> No Connections Found</p>
+      </div>
+    </ng-container>
+  </div>
+
+  <div *ngIf="selectedTab == 'requests' && loaded">
+    <ion-card value="requests" *ngFor="let data of userConnectionsRequests; let i=index;">
+      <ion-card-header>
+        <div class="connection-card fi-border">
+          <div class="first-section" (click)="openUser(data)">
+            <ion-avatar class="avatar">
+              <img src='{{appConstants.mediaPrefix + data.ProfilePhoto}}' onError="this.src='assets/imgs/male.png'" />
+            </ion-avatar>
+          </div>
+          <div class="fi-section">
+            <div class="connection-card" (click)="openUser(data)">
+              <div class="second-section">
+                <ion-card-title>{{data?.DisplayName}}</ion-card-title>
+                <ion-card-subtitle>{{data?.UserName}}</ion-card-subtitle>
+              </div>
+              <div class="fi-date-section">
+                <span>Jan-25-2021 6:13PM</span>
+              </div>
+            </div>
+            <div class="third-section1">
+              <div class="accept" (click)="requestAction(true,data.UserId,i)">
+                <p>Accept</p>
+              </div>
+              <div class="declain" (click)="requestAction(false,data.UserId,i)">
+                <p>Decline</p>
+              </div>
+              <div class="fi-note-text">
+                <span>View note</span>
+              </div>
+              <div class="icons fi-white" (click)="openNote(data)">
+                <ion-icon name="document-text-outline"></ion-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-card-header>
+    </ion-card>
+    <ng-container *ngIf="userConnectionsRequests.length==0">
+      <div class="ion-text-center nodata">
+        <img src="assets/imgs/icons/noresults.png">
+        <p> No Connection Request Found</p>
+      </div>
+    </ng-container>
+  </div>
+
+  <div *ngIf="selectedTab == 'blocked' && loaded">
+    <ion-card value="blocked" *ngFor="let data of userBlockList; let j=index">
+      <ion-card-header>
+        <div class="connection-card fi-border">
+          <div class="first-section">
+            <ion-avatar class="avatar">
+              <img src='{{appConstants.mediaPrefix + data.ProfilePhoto}}' onError="this.src='assets/imgs/male.png'" />
+            </ion-avatar>
+          </div>
+          <div class="second-section">
+            <ion-card-title>{{data?.DisplayName}}</ion-card-title>
+            <ion-card-subtitle>{{data?.UserName}}</ion-card-subtitle>
+          </div>
+          <div class="third-section">
+            <div class="accept" (click)="blockUnblockUser('UNBLOCK',data.UserId,j)">
+              <p>Unblock</p>
+            </div>
+          </div>
+        </div>
+      </ion-card-header>
+    </ion-card>
+    <ng-container *ngIf="userBlockList.length==0">
+      <div class="ion-text-center nodata">
+        <img src="assets/imgs/icons/noresults.png">
+        <p> No Connections Blocked</p>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- skeleton view -->
+  <div class="prarthan" *ngIf="!loaded">
+    <ion-card>
+      <ion-card-content>
+        <ion-skeleton-text style="height:60px" animated></ion-skeleton-text>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <ion-skeleton-text style="height:60px" animated></ion-skeleton-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

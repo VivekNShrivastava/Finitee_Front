@@ -1,0 +1,210 @@
+ion-header {
+  padding: 15px 10px;
+  background: #ffffff;
+
+  & ion-toolbar {
+    height: 51px;
+    --background: #EAF1F4;
+    border-radius: 26px;
+
+    & ion-buttons {
+      & ion-button {
+        margin-inline-start: 8px;
+
+      }
+
+      & ion-icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      & ion-badge {
+        position: absolute;
+        left: -2px;
+        top: 4px;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 0.6;
+        border-radius: 12px;
+      }
+    }
+
+    & ion-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font: normal normal 600 20px/28px SF Pro Display;
+      letter-spacing: 0.32px;
+      color: #285078;
+
+    }
+  }
+}
+
+ion-content {
+
+ 
+
+    & ion-slides {
+      & ion-slide {
+        & ion-card {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 192px;
+          & ion-img {
+            object-fit: cover;
+            width: 100%;
+          }
+          ion-img::part(image){
+            object-fit: cover;
+            width: 100%;
+          }
+        }
+      }
+    }
+    
+  & ion-list {
+    padding: 10px;
+
+    & ion-item {
+      margin-bottom: 0;
+      --min-height: 0;
+
+      & div {
+        padding: 10px 0;
+      }
+
+      & ion-avatar {
+        width: 50px;
+        height: 50px;
+        background: #ECECEC;;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-inline-end: 7px;
+        margin: 0;
+        padding: 1px;
+
+      }
+
+      & ion-label {
+        margin-left: 7px;
+
+        h3 {
+          font: normal normal 600 15px/24px SF Pro Display;
+          letter-spacing: 0.24px;
+          color: #1A3253;
+        }
+
+        p {
+          font: normal normal normal 11px/21px SF Pro Display;
+          letter-spacing: 0.18px;
+          color: #1A3253;
+          margin-top: -6px;
+        }
+      }
+
+      & ion-text {
+        min-height: 26px;
+
+        & h2 {
+          font: normal normal 600 22px/24px SF Pro Display;
+          letter-spacing: 0.35px;
+          color: #285078;
+          margin: 0;
+        }
+
+        h4 {
+          font: normal normal bold 15px/21px SF Pro Display;
+          letter-spacing: 0.24px;
+          color: #285078;
+          margin: 0 0 2px;
+        }
+
+        p {
+          font: normal normal normal 15px/21px SF Pro Display;
+          letter-spacing: 0.24px;
+          color: #285078;
+        }
+
+      }
+
+      & ion-card {
+        border-radius: 22px;
+        box-shadow: none !important;
+        overflow: hidden;
+
+        & ion-img {
+          min-width: 394px;
+          height: 287px;
+          object-fit: cover;
+        }
+      }
+
+      & ion-slides {
+        margin-top: 7px;
+      }
+
+    }
+  }
+  .fd-views-label{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: end;
+    width: 120px;
+    background: #F0F5F7 0% 0% no-repeat padding-box;
+    border-radius: 17px;
+    padding: 7px 0px;
+    opacity: 1;
+    p{
+      font: normal normal 600 13px/15px SF Pro Display !important;
+      letter-spacing: -0.08px !important;
+      color: #285078 !important;
+      opacity: 1 !important;
+    }
+    ion-icon{
+      width: 28px;
+      height: 19px;
+    }
+  }
+}
+
+ion-footer {
+  --padding-start: 0;
+  background-color: #FFFFFF;
+  padding: 0 10px;
+
+  &::before {
+    display: none;
+  }
+
+  & ion-button {
+    --box-shadow: none;
+    margin-top: 0;
+    text-transform: none;
+    --background: #0AA5F5;
+    font: normal normal bold 16px/24px SF Pro Display;
+    letter-spacing: 0.25px;
+    color: #FFFFFF;
+  }
+  .fi-twoBtns{
+    display: flex;
+    justify-content: space-between;
+    ion-button{
+      width: 47%;
+    }
+  }
+}
+  .fi-cancel-btn::part(native){
+    background: #788692 0% 0% no-repeat padding-box;
+    border-radius: 27px;
+    opacity: 1;
+  }
+.fi-w100{
+  width: 100% !important;
+}

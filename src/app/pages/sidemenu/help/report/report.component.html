@@ -1,0 +1,38 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Report
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="input-form">
+    <!--Title-->
+    <ion-item lines="none">
+      <ion-input [(ngModel)]="post.Title" autocapitalize="on" class="custom-textarea"
+        placeholder="Title/Name"></ion-input>
+    </ion-item>
+
+    <!--Description-->
+    <ion-item lines="none">
+      <ion-textarea [(ngModel)]="post.PostDescription" autocapitalize="on" class="custom-textarea"
+        placeholder="Type your report details here"></ion-textarea>
+    </ion-item>
+
+    <!-- multiple file uplaod -->
+    <app-multiple-media-upload [mediaFiles]="post.PostImages"
+      (filePathEvent)="addMedia($event)"></app-multiple-media-upload>
+    <div class="error-message" *ngIf="saveClicked && post.PostImages.length==0 && post.PostDescription==''">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span>Please enter Description or atleast one image/video</span>
+    </div>
+  </ion-list>
+</ion-content>
+<ion-footer class="create-btn">
+  <ion-button shape="round" expand="block"
+    [color]="(post.PostDescription=='' && post.PostImages.length==0) ? 'medium' : 'primary'" (click)="sendReport()">Send Report</ion-button>
+</ion-footer>

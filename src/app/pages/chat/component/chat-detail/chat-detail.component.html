@@ -1,0 +1,127 @@
+<ion-header class="fi-chat-header">
+  <!--heading bar-->
+  <ion-toolbar *ngIf="chatsService.selectedChats.length == 0">
+    <ion-buttons slot="start">
+      <ion-button (click)="doBack()">
+        <ion-icon name="chat-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-avatar slot="start" (click)="navigateUserToCanvas()" *ngIf="otherPartyUser != null">
+      <img src="{{appConstants.mediaPrefix + otherPartyUser.otherPartyProfilePhoto}}"
+        onError="this.src='assets/imgs/male.png'" />
+    </ion-avatar>
+    <ion-title *ngIf="otherPartyUser != null" (click)="navigateUserToCanvas()">
+      {{ otherPartyUser.DisplayName | titlecase }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="activated" *ngIf="
+          chatGroup &&
+          chats.length > 0 &&
+          !chatEndedByLoggedinUser &&
+          !chatGroup[0].endchat
+        " (click)="showBreakLinkPopup()">
+        <ion-icon name="chat-brokenlink"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!--chat message selected option-->
+  <ion-toolbar *ngIf="chatsService.selectedChats.length > 0">
+    <ion-buttons slot="start">
+      <ion-button (click)="clearSelectedChats()">
+        <!-- <img style="height:20px" src="assets/icon/fin/back.png"> -->
+        <ion-icon name="chat-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-text class="hetitle" style="text-align: left">
+      {{ chatsService.selectedChats.length }}
+    </ion-text>
+    <ion-buttons slot="end">
+      <ion-button class="activated" *ngIf="chatsService.selectedChats.length == 1"
+        (click)="replyChatMessages(chatsService.selectedChats[0])">
+        <ion-icon name="chat-reply"></ion-icon>
+      </ion-button>
+      <!-- <ion-button class="activated" (click)="navigateUserToCanvas()">
+        <img style="width: 16px" src="assets/icon/fin/ci.png" />
+      </ion-button> -->
+      <!-- <ion-button class="activated" (click)="navigateUserToHome()">
+        <img style="width: 16px" src="assets/icon/fin/buscanva.png" />
+      </ion-button> -->
+      <ion-button class="activated" (click)="deleteMessagesPopup()">
+        <!--  <img style="height:20px" src="assets/icon/fin/di.png" /> -->
+        <ion-icon name="chat-delete"></ion-icon>
+      </ion-button>
+      <ion-button class="activated" *ngIf="chatsService.selectedChats.length == 1" (click)="copyChatMessage()">
+        <ion-icon name="chat-copy"></ion-icon>
+      </ion-button>
+      <ion-button class="activated" (click)="forwardChatMessages()">
+        <ion-icon name="chat-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="fi-chat-container"
+  [ngStyle]="{'height': replyMsg != null?'calc(100vh - 180px)':'calc(100vh - 135px)'}" #myContent>
+  <app-chat-item [chats]="chats" [otherPartyUser]="otherPartyUser" [logInfo]="logInfo"
+    (slide)="replyChatMessages($event)">
+  </app-chat-item>
+  <ng-container *ngIf="chats.length > 0 && chatEndedByLoggedinUser">
+    <div class="fi-end-chat">
+      <span>You have ended this chat.</span>
+      <span>Please send a message to start the chat again.</span>
+    </div>
+  </ng-container>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <div *ngIf="replyMsg != null" class="reply-container">
+    <ion-label style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+      <b *ngIf="logInfo && replyMsg.fromid != logInfo.UserId">{{
+        otherPartyUser.DisplayName
+        }}</b>
+      <b *ngIf="logInfo && replyMsg.fromid == logInfo.UserId">You</b>
+      <p *ngIf="replyMsg.mediatype == 1">{{ replyMsg.txt }}</p>
+      <p *ngIf="replyMsg.mediatype == 2">
+        <img *ngIf="replyMsg.mediatype == 2" [src]="replyMsg.path" width="80px" />
+      </p>
+    </ion-label>
+    <ion-buttons slot="end">
+      <ion-button class="activated" style="margin-top: 10px" (click)="removeReplyMsg()">
+        <ion-icon style="font-size: 26px" color="primary" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </div>
+  <ion-item (click)="checkInputAllowed()" lines="none" class="ion-no-padding textarea-toolbar">
+    <ion-textarea class="custom-textarea" rows="1" autocapitalize="on" maxLength="10240"
+      [disabled]="chatGroup && chatGroup[0].endchat" [(ngModel)]="message" placeholder="Type a message"
+      [ngClass]="{ br1: message == '', br2: message != '' }" (paste)="onPaste()" (ionChange)="onTextChange($event)"
+      (ionInput)="onTextInput($event)">
+      <ion-icon (click)="
+          captuerMedia(
+            $event,
+            appConstants.MEDIA_PICTURE,
+            appConstants.SOURCE_CAMERA
+          )
+        " class="fi-camera-icon" slot="icon-only" name="chat-camera" color="primary"
+        [disabled]="chatGroup && chatGroup[0].endchat"></ion-icon>
+      <ion-icon (click)="
+          captuerMedia(
+            $event,
+            appConstants.MEDIA_PICTURE,
+            appConstants.SOURCE_PHOTOLIBRARY
+          )
+        " [disabled]="chatGroup && chatGroup[0].endchat" class="fi-gallery-icon" slot="icon-only" name="chat-gallery"
+        color="primary">
+      </ion-icon>
+    </ion-textarea>
+    <ion-buttons slot="end" class="marginLeftRight">
+      <ion-button [disabled]="chatGroup && chatGroup[0].endchat" style="margin-right: -10px"
+        (click)="sendMessage($event)">
+        <img [src]="
+            message == '' ? 'assets/icon/fin/fa.png' : 'assets/icon/fin/fa1.png'
+          " />
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+</ion-footer>

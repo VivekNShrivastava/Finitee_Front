@@ -1,0 +1,144 @@
+<ion-header class="fi-chat-header">
+  <!-- heading bar -->
+  <ion-toolbar *ngIf="!searchshow && chatsService.selectedChatGroups.length==0">
+    <app-notification-icon></app-notification-icon>
+    <ion-title> Chat </ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="activated" (click)="searchshow = true">
+        <ion-icon name="searchi"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- searchbar -->
+  <ion-toolbar *ngIf="searchshow && chatsService.selectedChatGroups.length==0">
+    <ion-buttons slot="start">
+      <ion-fab-button size="small" style="--box-shadow: none; --background: transparent">
+        <ion-icon name="searchi"></ion-icon>
+      </ion-fab-button>
+    </ion-buttons>
+    <div class="searchcl">
+      <ion-input placeholder="Search" (ionChange)="handleChange($event)">
+      </ion-input>
+    </div>
+    <ion-buttons slot="end">
+      <ion-button class="activated" (click)="closeSearch()">
+        <img src="assets/icon/fin/close.png" />
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- delete chat thread -->
+  <ion-toolbar *ngIf="chatsService.selectedChatGroups.length>0">
+    <ion-buttons slot="start">
+      <ion-button (click)="clearSelectedItem()">
+        <ion-icon name="chat-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-text class="hetitle" style="text-align: left">
+      {{chatsService.selectedChatGroups.length}}
+    </ion-text>
+    <ion-buttons slot="end" style="margin-right: 20px">
+      <!--   <ion-button class="activated" *ngIf="logInfo.code!='BS'" (click)="navigateUserToCanvas()">
+        <img style="width: 16px" src="assets/icon/fin/ci.png" />
+      </ion-button>
+      <ion-button class="activated" *ngIf="logInfo.code=='BS'" (click)="navigateUserToHome()">
+        <img style="width: 16px" src="assets/icon/fin/buscanva.png" />
+      </ion-button> -->
+      <ion-button class="activated" (click)="muteChatGroup()">
+        <!-- <img style="height:20px" src="assets/icon/fin/mi.png" /> -->
+        <ion-icon name="chat-mute"></ion-icon>
+      </ion-button>
+      <ion-button class="activated" (click)="deleteChatGroup()">
+        <!-- <img style="height:20px" src="assets/icon/fin/di.png" /> -->
+        <ion-icon name="chat-delete"></ion-icon>
+      </ion-button>
+      <ion-button class="activated" id="popover-button" *ngIf="chatsService.selectedChatGroups.length==1">
+        <!-- <img style="height:20px" src="assets/icon/fin/doti.png" /> -->
+        <ion-icon name="chat-3dots"></ion-icon>
+      </ion-button>
+      <ion-popover cssClass="my-popover" trigger="popover-button" popoverArrow [dismissOnSelect]="true" mode="ios"
+        *ngIf="chatsService.selectedChatGroups.length==1">
+        <ng-template>
+          <ion-content>
+            <ion-list class="no-padding">
+              <ion-item class="popoveritem" [button]="true" [detail]="false" (click)="markAsRead()">Mark as read
+              </ion-item>
+              <ion-item class="popoveritem" [button]="true" [detail]="false" (click)="exportChat()">Export chat
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="fi-chat-container" overflow-scroll="true">
+  <ion-list *ngFor="let chatGroup of chatsList" [hidden]="chatGroup.deleted"
+    [ngClass]="{'message-item-background': chatsService.selctedChatGroupsJSONString.indexOf(chatGroup.groupId) > -1}">
+    <ion-item button long-press class="no-padding item-background-color" detail="false" lines="none"
+      (click)="openChatDetailPage(chatGroup)" [data]="chatGroup" (press)="longPressAction($event)">
+      <ion-avatar slot="start">
+        <img src="{{appConstants.mediaPrefix + chatGroup.ProfilePhoto}}" onError="this.src='assets/imgs/male.png'" />
+      </ion-avatar>
+      <ion-label class="chatHeaderTitle" style="font-size: 20px">
+        <div class="fi-userName-container">
+          <span class="fi-user-name">
+            {{chatGroup.otherPartyUserName | titlecase}}
+          </span>
+          <small class="ion-float-right">
+            <ion-text class="time">{{chatGroup.timestamp | date:'shortTime'}}</ion-text>
+            <!--  <div>
+              <ion-badge slot="end" *ngIf="chatGroup.noOfUnreadMsg!=0" class="badge">
+                {{chatGroup.noOfUnreadMsg}}</ion-badge>
+            </div> -->
+          </small>
+        </div>
+        <div class="fi-chat-container">
+          <p class="chatHeaderTitle" style="font-size: 16px; margin-top: 4px; display: flex"
+            *ngIf="logInfo.UserId && chatGroup.lastmessagesdeleted!=true && chatGroup.lastmessagesdeleted!=logInfo.UserId">
+            <ion-icon color="medium-shade" *ngIf="chatGroup.lastmessagestatus=='s'" name="checkmark-outline"></ion-icon>
+            <ion-icon color="medium-shade" *ngIf="chatGroup.lastmessagestatus=='d'" name="checkmark-done-outline">
+            </ion-icon>
+            <ion-icon color="primary" *ngIf="chatGroup.lastmessagestatus=='r'" name="chat-blue">
+            </ion-icon>
+            <ion-text class="fi-truncate">&nbsp; {{chatGroup.lastmessage}} </ion-text>
+          </p>
+          <!--Deleted msg or image-->
+          <p class="chatHeaderTitle" style="font-size: 16px; margin-top: 4px"
+            *ngIf="logInfo.UserId && chatGroup.lastmessagesdeleted==true || chatGroup.lastmessagesdeleted==logInfo.UserId">
+            <ion-text style="font-style: italic">This message was deleted</ion-text>
+          </p>
+          <!-- Mute icon -->
+          <ion-icon slot="end" class="muteicon" [style.margin-right]="chatGroup?.noOfUnreadMsg > 0 ? '3px':'0px'"
+            *ngIf="chatGroup.mute" name="chat-mute"></ion-icon>
+
+          <!-- New message count logInfo.UserId && chatGroup.lastmessagesdeleted!=true && chatGroup.lastmessagesdeleted!=logInfo.UserId &&  -->
+          <span class="fi-newMessage-count" *ngIf="chatGroup?.noOfUnreadMsg > 0 ">{{chatGroup?.noOfUnreadMsg}}
+          </span>
+          <p>&nbsp;</p>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <!-- <ion-spinner *ngIf="inProgress" style="margin: 47%;"></ion-spinner> -->
+  <div *ngIf="chatsList.length==0" class="nothread">
+    <p style="font-weight: 600; font-size: 18px">You have no messages</p>
+    <img style="margin-top: 20px" src="assets/imgs/chatnothread.svg" />
+    <p style="font-weight: 600; font-size: 18px; margin-top: -70px">
+      It's fun to chat with someone!
+    </p>
+    <p style="font-weight: 300; font-size: 14px; margin-top: -10px">
+      Tap on the "+" icon to select a connection to chat with.
+    </p>
+  </div>
+  <div class="fi-acrhived">
+    <span>You have (2) archived threads</span>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="plusbutton" size="small" color="primary" (click)="presentNewChatModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

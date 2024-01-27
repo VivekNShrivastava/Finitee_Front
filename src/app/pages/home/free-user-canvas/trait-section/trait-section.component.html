@@ -1,0 +1,59 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>{{userTraitWithPost.UserTrait.Trait}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="loaded && userTraitWithPost.TraitPosts && userTraitWithPost.TraitPosts.length>0">
+    <ion-row>
+      <ion-col size="6" *ngFor="let post of userTraitWithPost.TraitPosts" (click)="openPostScreen(post)">
+        <div *ngIf="post.PostImages && post.PostImages.length>0" class="whiteBg">
+          <ion-buttons *ngIf="post.PostImages.length>1">
+            <ion-button shape="round">
+              <ion-icon name="posting-multiple-picture"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]"></ion-img>
+        </div>
+
+        <div class="ion-text-center postBg"
+          *ngIf="post.PostImages && (post.PostImages.length==0 || post.PostImages.length>0 && post.PostImages[0]=='')">
+          <h3> {{post.PostDescription}}</h3>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ng-container *ngIf="loaded && userTraitWithPost.TraitPosts && userTraitWithPost.TraitPosts.length==0">
+    <div class="ion-text-center">
+      <img style="margin-top: 20px;" src="assets/imgs/icons/noresults.png">
+      <p> No Trait Post Available</p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!loaded">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <div class="ion-text-center">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div class="ion-text-center">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="CreatePostAction()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

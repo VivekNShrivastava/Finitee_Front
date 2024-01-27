@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Recommend business</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <!-- <img class="business-logo" [src]="userProfile.user.ProfileImage"  -->
+      <img src="{{appConstants.mediaPrefix + (canvasProfile.canvasProfile.ProfileImage)}}"
+      onError="this.src='assets/imgs/male.png'" />
+      <ion-card-title>{{canvasProfile.canvasProfile.DisplayName}}-
+        <ion-card-subtitle>{{canvasProfile.canvasProfile.UserName}}</ion-card-subtitle>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+
+
+
+
+  <ion-list *ngIf="loaded">
+    <ion-item lines="none">
+      <ion-textarea auto-grow="true" placeholder="Type your message here.." [(ngModel)]="userMessage" (input)="handleTextareaChange($event)">
+
+      </ion-textarea>
+    </ion-item>
+    <ion-item lines="none" *ngFor="let data of userConnections">
+        <!-- <div class="user-lis" *ngIf="canvasProfile.canvasProfile.Id != data.UserId"> -->
+          <ion-checkbox slot="start" *ngIf="canvasProfile.canvasProfile.Id != data.UserId" (click)="handleCheckboxChange(data.UserId)"></ion-checkbox>
+          <ion-avatar *ngIf="canvasProfile.canvasProfile.Id != data.UserId" slot="start">
+            <img src='https://finitee.sgp1.digitaloceanspaces.com/{{data.ProfilePhoto}}'
+              onError="this.src='assets/imgs/male.png'" />
+          </ion-avatar>
+          <ion-label *ngIf="canvasProfile.canvasProfile.Id != data.UserId" class="checked">{{data?.DisplayName}}</ion-label>
+          <ion-label *ngIf="canvasProfile.canvasProfile.Id != data.UserId" class="checked">{{data?.UserName}}</ion-label>
+        <!-- </div> -->
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button [disabled]="selectedUserIds.length === 0" expand="block" shape="round" class="footer-button" (click)="referConnections()">Send</ion-button>
+</ion-footer>

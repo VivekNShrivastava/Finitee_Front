@@ -1,0 +1,28 @@
+ion-icon.icon-notification {
+  padding-left: 8px;
+  font-size: 25px;
+  // width: 21px;
+  // height: 25px;
+}
+
+.top-icons {
+  color: #285078 !important;
+}
+
+.item-one {
+  flex: 0.1;
+
+  ion-badge {
+    position: absolute;
+    left: 15px;
+    top: 4px;
+    font-size: 11px;
+    line-height: 0.6;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 17px;
+    height: 17px;
+  }
+}

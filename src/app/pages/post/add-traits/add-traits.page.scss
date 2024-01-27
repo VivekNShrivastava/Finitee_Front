@@ -1,0 +1,92 @@
+
+ion-header {
+  background-color: #ffffff !important;
+  padding: 10px;
+
+  & ion-toolbar {
+    --background: #EAF1F4;
+    border-radius: 26px;
+    height: 51px;
+    display: flex;
+    align-items: center;
+
+    & ion-title {
+      font: normal normal 600 20px/28px SF Pro Display;
+      letter-spacing: 0.32px;
+      color: #285078;
+    }
+
+  }
+}
+
+ion-content {
+  & ion-text {
+    font: normal normal normal 18px/24px SF Pro Display;
+    letter-spacing: 0.29px;
+    color: #285078;
+    padding: 5px 25px;
+  }
+
+  & div {
+    &.traits {
+      & .trait {
+        padding: 0 25px;
+
+        h2 {
+          font: normal normal bold 18px/28px SF Pro Display;
+          letter-spacing: 0.29px;
+          color: #285078;
+          margin-top: 11px;
+        }
+
+        &-options {
+
+          & ion-button {
+            height: 34px;
+            --border-radius: 10px;
+            --background-activated: #03A9F5;
+            --background: #F0F5F7;
+            --color: #285078;
+            --box-shadow: none;
+            font: normal normal normal 15px/24px SF Pro Display;
+            letter-spacing: 0.24px;
+            text-transform: none;
+            margin: 5px;
+          }
+        }
+
+        & ion-buttons {
+          width: 100%;
+
+          & ion-button {
+            font: normal normal normal 15px/28px SF Pro Display;
+            letter-spacing: 0.24px;
+            color: #03A9F5;
+            text-align: center;
+            text-transform: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+ion-footer {
+  --padding-start: 0;
+  background-color: #FFFFFF;
+  padding: 10px;
+
+  &::before {
+    display: none;
+  }
+
+  & ion-button {
+    text-transform: none;
+    font: normal normal bold 16px/24px SF Pro Display;
+    letter-spacing: 0.25px;
+    color: #FFFFFF;
+    --box-shadow: none;
+    margin-top: 0;
+    --background: #A8A8A8;
+  }
+}

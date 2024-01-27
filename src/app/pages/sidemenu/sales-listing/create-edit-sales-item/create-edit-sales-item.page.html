@@ -1,0 +1,229 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="!isEdit">Create sales listing</ion-title>
+    <ion-title *ngIf="isEdit">Edit sales listing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+
+    <!--Title-->
+    <ng-container *ngIf="!isEdit">
+      <div class="input-container">
+        <ion-label class="input-label"><ion-note color="danger">*</ion-note> Title</ion-label>
+        <ion-item lines="none">
+          <ion-input autocapitalize="on" class="input" placeholder="Enter item title" type="text" #Title="ngModel"
+            name="Title" [(ngModel)]="salesItem.Title" minlength="3" maxlength="30" [disabled]="isEdit"
+            required></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="Title.invalid && (Title.dirty || Title.touched)" class="error-message">
+        <div *ngIf="Title.errors?.['required']">
+          Title is required.
+        </div>
+        <div *ngIf="Title.errors?.['minlength']">
+          Enter atleast 3 character.
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Description -->
+    <ng-container *ngIf="!isEdit">
+      <div class="input-container">
+        <ion-label class="input-label">Description</ion-label>
+        <ion-item lines="none">
+          <ion-input autocapitalize="on" class="input" placeholder="Enter item description" type="text"
+            name="Description" [(ngModel)]="salesItem.Description" maxlength="30" [disabled]="isEdit"></ion-input>
+        </ion-item>
+      </div>
+    </ng-container>
+
+    <!--  Condition -->
+    <ng-container *ngIf="!isEdit">
+      <ion-label class="input-label">Condition </ion-label>
+      <ion-item color="none" class="input" lines="none" id="pop-condition">
+        <ion-label>
+          <h3 *ngIf="salesItem.Condition">{{salesItem.Condition}}</h3>
+          <h3 *ngIf="!salesItem.Condition">select</h3>
+        </ion-label>
+        <ion-buttons>
+          <ion-button shape="round">
+            <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ng-container>
+
+    <ng-container *ngIf="isEdit">
+
+      <div style="margin-bottom: 8px;">
+        <ion-label class="input-label">Title</ion-label>
+        <br>
+        <ion-label class="desc">
+          {{salesItem.Title}}
+        </ion-label>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <ion-label class="input-label">Description</ion-label>
+        <br>
+        <ion-label class="desc">
+          {{salesItem.Description}}
+        </ion-label>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <ion-label class="input-label">Condition</ion-label>
+        <br>
+        <ion-label class="desc">
+          {{salesItem.Condition}}
+        </ion-label>
+      </div>
+    </ng-container>
+    <!-- Price -->
+    <div class="input-container">
+      <ion-label class="input-label"><ion-note color="danger">*</ion-note> Price</ion-label>
+      <ion-item lines="none" color="none" class="input">
+        <ion-buttons  ><ion-button
+            style="font-size: 16px;">{{currencySymbol}}</ion-button></ion-buttons>
+        <ion-input placeholder="Enter item price" inputmode="numeric" #Price="ngModel" name="Price"
+          [(ngModel)]="salesItem.Price" maxlength="30" required></ion-input>
+      </ion-item>
+    </div>
+    <div *ngIf="Price.invalid && (Price.dirty || Price.touched)" class="error-message">
+      <div *ngIf="Price.errors?.['required']">
+        Item price is required.
+      </div>
+    </div>
+
+    <ng-container *ngIf="isEdit">
+      <ion-label *ngIf="salesItem.SalesItemImages.length > 0" class="input-label">Photos</ion-label>
+
+      <ion-row>
+        <ion-col size="4" *ngFor="let i of salesItem.SalesItemImages">
+
+          <img style="width: 100%; height: 70px; border-radius: 10px;" src="{{appConstants.mediaPrefix+i}}" />
+
+        </ion-col>
+      </ion-row>
+
+      <div style="margin-bottom: 8px;">
+        <ion-label class="input-label">Viewable by</ion-label>
+        <br>
+        <ion-label class="desc">
+          {{salesItem.VisibleTo}}
+        </ion-label>
+      </div>
+<br>
+      <div style="margin-bottom: 8px;">
+        <ion-label class="input-label">Location</ion-label>
+        <br>
+        <ion-label class="desc">
+          {{salesItem.Location}} location
+        </ion-label>
+      </div>
+
+
+    </ng-container>
+    <!-- Multiple file uplaod -->
+    <ng-container *ngIf="!isEdit">
+      <app-multiple-media-upload [disabled]="isEdit" [mediaFiles]="salesItem.SalesItemImages"
+        (filePathEvent)="addMedia($event)" [disabled]="disableFrom"></app-multiple-media-upload>
+    </ng-container>
+
+    <!-- Viewable by -->
+    <ng-container *ngIf="!isEdit">
+
+      <ion-label class="input-label">Viewable by </ion-label>
+      <ion-item color="none" class="input" lines="none" id="viewable-by">
+        <ion-label>
+          <h3 *ngIf="salesItem.VisibleTo">{{salesItem.VisibleTo}}</h3>
+          <h3 *ngIf="!salesItem.VisibleTo">select</h3>
+        </ion-label>
+        <ion-buttons>
+          <ion-button shape="round">
+            <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ng-container>
+
+    <!-- location -->
+    <ng-container *ngIf="!isEdit">
+
+      <ion-radio-group name="Location" [(ngModel)]="salesItem.Location" (ionChange)="getLatlng()">
+        <ion-item lines="none" class="ion-no-margin">
+          <ion-label class="locationInput">Location:</ion-label>
+          <ion-radio value="current" [disabled]="isEdit"></ion-radio>
+          <ion-label style="font-size: 14px;">&nbsp;Current location</ion-label>
+
+          <ion-radio value="home" [disabled]="isEdit"></ion-radio>
+          <ion-label style="font-size: 14px;">&nbsp;Home location</ion-label>
+
+        </ion-item>
+      </ion-radio-group>
+    </ng-container>
+
+    <!-- offset -->
+      <div *ngIf="!isEdit" style="margin-left: 12px;">
+        <ion-item color="none" lines="none" class="ion-no-margin">
+          <ion-checkbox name="IsOffsetLocation" [(ngModel)]="salesItem.IsOffsetLocation">
+          </ion-checkbox>
+          <ion-label>&nbsp; Offset location</ion-label>
+        </ion-item>
+      </div>
+
+    <div *ngIf="isEdit" style="margin-bottom: 10px;">
+      <ion-label class="input-label">Offset location</ion-label>
+      <br>
+      <ion-label class="desc">
+        <ng-container *ngIf="!salesItem.IsOffsetLocation">Disabled</ng-container>
+        <ng-container *ngIf="salesItem.IsOffsetLocation">Enabled</ng-container>
+      </ion-label>
+    </div>
+
+
+    <ion-button style="text-transform: none;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
+      type="submit">
+      <span *ngIf="!isEdit">Create</span>
+      <span *ngIf="isEdit">Save</span>
+    </ion-button>
+  </form>
+
+
+</ion-content>
+
+
+<ion-popover *ngIf="!isEdit" trigger="pop-condition" [dismissOnSelect]="true" triggerAction="click" mode="ios"
+  alignment="end">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group [value]="salesItem.Condition" [(ngModel)]="salesItem.Condition" mode="md">
+        <ion-item lines="none" *ngFor="let condition of conditionList">
+          <ion-label [ngClass]="{'selected': (salesItem.Condition==condition)}">{{condition}}</ion-label>
+          <ion-radio slot="start" value="{{condition}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ion-popover *ngIf="!isEdit" trigger="viewable-by" [dismissOnSelect]="true" triggerAction="click" mode="ios"
+  alignment="end">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group [value]="salesItem.VisibleTo" [(ngModel)]="salesItem.VisibleTo" mode="md">
+        <ion-item lines="none" *ngFor="let i of privacyTypes">
+          <ion-label [ngClass]="{'selected': (salesItem.VisibleTo==i.title)}">{{i.title}}</ion-label>
+          <ion-radio slot="start" value="{{i.title}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+ 

@@ -1,0 +1,143 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Privacy Setting</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="loaded">
+
+
+    <ion-toolbar>
+      <ion-text>Canvas</ion-text>
+    </ion-toolbar>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow Beam By</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.AllowBeamBy)}}</p>
+        </ion-text>
+        <ion-buttons *ngIf="!(privacySetting.FreeUserType === 'S' || privacySetting.FreeUserType === 'G')" slot="end" (click)="presentPopover($event,'AllowBeamBy', 'AllowBeamBy')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <!-- <ion-item lines="none">
+        <ion-text>
+          <h3>Be found and shown as a summary screen to users not allowed to view your home screen?</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowToViewHomeScreen"></ion-toggle>
+      </ion-item> -->
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow Inflows</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.StartInflows)}}</p>
+        </ion-text>
+        <!-- <ion-buttons *ngIf="!(privacySetting.FreeUserType === 'S' || privacySetting.FreeUserType === 'G')"  slot="end" (click)="presentPopover($event,'StartInflows', 'StartInflows')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons> -->
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-text>
+          <h3>CanvasViewableBy</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.CanvasViewableBy)}}</p>
+        </ion-text>
+      </ion-item>
+
+    </ion-list>
+
+    <!-- <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+      <ng-template>
+        <ion-list>
+          <ion-radio-group [value]="selectedPopoverValue" (ionChange)="radioGroupChange($event)">
+            <ion-item lines="none">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'A'}">All Finitee users</ion-label>
+              <ion-radio slot="start" value="A"></ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'C'}">Connected members</ion-label>
+              <ion-radio slot="start" value="C"></ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'O'}">Only me</ion-label>
+              <ion-radio slot="start" value="O"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ng-template>
+    </ion-popover> -->
+
+    <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+      <ng-template>
+        <ion-list>
+          <ion-radio-group [value]="selectedPopoverValue" (ionChange)="radioGroupChange($event)">
+            <ion-item lines="none" *ngIf="para1">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'A'}">All Finitee users</ion-label>
+              <ion-radio slot="start" value="A"></ion-radio>
+            </ion-item>
+            <ion-item lines="none" *ngIf="para2">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'C'}">Connected members</ion-label>
+              <ion-radio slot="start" value="C"></ion-radio>
+            </ion-item>
+            <ion-item lines="none" *ngIf="para3">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'O'}">Only me</ion-label>
+              <ion-radio slot="start" value="O"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ng-template>
+    </ion-popover>
+
+  </ng-container>
+
+  <ng-container *ngIf="!loaded">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+</ion-content>
+
+<!-- <ion-footer class="create-btn" *ngIf="loaded">
+  <ion-button shape="round" expand="block" color="primary" (click)="saveUserPrivacy()">
+    Save
+  </ion-button>
+</ion-footer> -->

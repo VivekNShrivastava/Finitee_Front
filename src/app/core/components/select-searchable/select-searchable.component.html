@@ -1,0 +1,63 @@
+<div>
+ <!--  <ion-toolbar *ngIf="showToolbar()">
+    <ion-buttons slot="start">
+      <ion-button *ngIf="inputData.cancelButton.show" (click)="onCancel()">{{inputData.cancelButton.label}}</ion-button>
+      <ion-button *ngIf="inputData.submitButton.show && inputData.multiSelect" (click)="onSubmit()">{{inputData.submitButton.label}}</ion-button>
+    </ion-buttons>
+    <ion-title>{{inputData.title}}</ion-title>
+  </ion-toolbar> -->
+  <ion-searchbar class="fi-ion-searchbar" *ngIf="inputData.searchable" search-icon="searchi" show-clear-button="always" placeholder="{{inputData.searchPlaceholder}}" [debounce]="500" (ionChange)="searchInList($event)"></ion-searchbar>
+  <!-- <ion-list class="modal-list-container">
+    <ion-item lines="none"  *ngFor="let listEntry of filteredData" (click)="onSelectEntry($event, listEntry)">
+      <ion-row class="list-item-1">
+        <ion-col size="2">
+          <ion-img class="icon-small" src="{{placesService.getFlagIconPath(listEntry)}}" (ionError)="onImgNotFound(listEntry)"></ion-img>
+        </ion-col>
+        <ion-col size="3">
+          <p>{{listEntry.PhoneCode}}</p>
+        </ion-col>
+        <ion-col>
+          <p>{{listEntry.CountryName}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list> -->
+  <ion-grid class="modal-list-container">
+    <ion-item lines="none"  *ngFor="let listEntry of filteredData" (click)="onSelectEntry($event, listEntry)">
+      <ion-row *ngIf="inputData.dataKeyMap" [ngClass]="{'list-item-1-selected': isItemSelected(listEntry)}" class="list-item-1" style="width: 400px;">
+        <ion-checkbox *ngIf="inputData.multiSelect" slot="start" checked="isItemSelected(listEntry)"></ion-checkbox><!--Manoj TODO-->
+        <ion-col size="4" class="fi-flags" *ngIf="inputData.dataKeyMap.icon.length > 0">
+          <ion-img style="align-items: center;" class="icon-small" src="{{placesService.getFlagIconPath(listEntry)}}" (ionError)="onImgNotFound(listEntry)"></ion-img>
+
+          <p class="fi-p-name" *ngIf="inputData.dataKeyMap.srno.length > 0">&nbsp;+ {{listEntry[inputData.dataKeyMap.srno]}}</p>
+        </ion-col>
+        <ion-col size="8" class="fi-name-col" *ngIf="inputData.dataKeyMap.title.length > 0 || inputData.dataKeyMap.detail.length > 0">
+          <p class="fi-p-name" *ngIf="inputData.dataKeyMap.title.length > 0">{{listEntry[inputData.dataKeyMap.title]}}</p>
+          <p *ngIf="inputData.dataKeyMap.detail.length > 0" class="tc fi-p-name">{{listEntry[inputData.dataKeyMap.detail]}}</p>
+        </ion-col>
+        <ion-col size="12" *ngIf="!inputData.dataKeyMap">
+          <p>{{listEntry}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!inputData.dataKeyMap" [ngClass]="{'list-item-1-selected': isItemSelected(listEntry)}" class="list-item-1" style="width: 400px;">
+        <ion-checkbox *ngIf="inputData.multiSelect" slot="start" checked="isItemSelected(listEntry)"></ion-checkbox><!--Manoj TODO-->
+        <ion-col size="12">
+          <p>{{listEntry}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-grid>
+  <!-- <ion-grid *ngIf="inputData.cancelButton.show || inputData.submitButton.show" style="margin-bottom: 20px;">
+    <ion-row>
+      <ion-col col-6 *ngIf="inputData.cancelButton.show">
+        <ion-button expand="block" shape="round" (click)="onCancel()">{{inputData.cancelButton.label}}
+        </ion-button>
+      </ion-col>
+      <ion-col col-6 *ngIf="inputData.submitButton.show && inputData.multiSelect">
+        <ion-button expand="block" shape="round"  (click)="onSubmit()">{{inputData.submitButton.label}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+</div>
+

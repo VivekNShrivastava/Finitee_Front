@@ -1,0 +1,10 @@
+<div class="item-one">
+  <ion-buttons slot="start" (click)="openNotofications()">
+    <ion-button shape="round">
+      <ion-icon class="top-icons icon-notification" name="notifications"></ion-icon>
+    </ion-button>
+    <div *ngIf="notifiactionsCount > 0">
+      <ion-badge   color="danger" class="icon-badge">{{notifiactionsCount}}</ion-badge>
+    </div>
+  </ion-buttons>
+</div>

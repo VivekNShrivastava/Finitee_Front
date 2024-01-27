@@ -1,0 +1,361 @@
+ion-content {
+
+  & ion-grid {
+    background: rgba(234, 241, 244, 0.7);
+
+    & ion-row {
+      margin: 20px 0;
+
+      &:first-child {
+        margin-top: 10px;
+      }
+
+      & ion-col {
+        //margin: 0 10px;
+        overflow: hidden;
+
+        & ion-buttons {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+        }
+
+        & div {
+          object-fit: cover;
+          width: 100%;
+          height: 224px;
+          border-radius: 11px;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+
+          &::part(image) {
+            border-radius: 11px;
+          }
+        }
+      }
+    }
+  }
+    
+  ion-card.header-card {
+    background: #f0f5f7;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px !important;
+    min-height: 280px;
+
+    ion-card-header {
+      text-align: center;
+      padding-bottom: 0;
+     
+
+      .fi-user-img {
+        width: 116px;
+        height: 116px;
+        border: 4px solid #fff;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      &>ion-img {
+        padding: 5px;
+        border-radius: 50%;
+        background: #ffffff;
+        height: 116px;
+        width: 116px;
+        margin: 0px auto;
+      }
+
+      &>ion-card-title {
+        font: normal normal 600 28px/35px SF Pro Display;
+        letter-spacing: 0.45px;
+        color: #285078;
+        text-transform: capitalize;
+      }
+
+      &>ion-card-subtitle {
+        font: normal normal normal 18px/22px SF Pro Display !important;
+        letter-spacing: -0.1px;
+        color: #285078;
+        margin: 3px 0px 10px 0px;
+      }
+
+      &>ion-buttons {
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        &>ion-button {
+          background: #03a9f5;
+          margin: 0 auto;
+          text-transform: none;
+          padding: 5px;
+
+          &>ion-label {
+            letter-spacing: -0.08px;
+            font: normal normal normal 13px/16px;
+            color: #ffffff;
+
+            &>ion-text {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
+    ion-card-content {
+      &>ul {
+        padding: 0 15px;
+
+        &>li {
+          color: #285078;
+          font-size: 16px;
+
+          &>h3 {
+            font: normal normal 600 18px/24px SF Pro Display;
+            letter-spacing: 0.22px;
+            color: #285078;
+          }
+
+          &>p {
+            font: normal normal normal 17px/17px SF Pro Display;
+            letter-spacing: 0.21px;
+            color: #505050;
+          }
+        }
+      }
+    }
+  }
+
+  ion-segment {
+    & ion-segment-button {
+      font: normal normal normal 14px/28px SF Pro Display;
+      letter-spacing: 0.22px;
+      --color: #285078;
+      --indicator-height: 2px;
+    }
+  }
+
+  ion-fab-button {
+    margin: 5px;
+    --border-radius: 6px;
+    width: 50px;
+    height: 50px;
+    transform: rotate(45deg);
+    margin-right: 19px;
+
+    ion-icon {
+      transform: rotate(45deg);
+    }
+  }
+
+  .header-card-details {
+    display: flex;
+    justify-content: center;
+
+    .connected-members,
+    .connected-members-chat {
+      width: 43px;
+      height: 35px;
+    }
+
+    ion-button {
+      --box-shadow: none;
+      text-transform: capitalize;
+      height: 35px;
+      margin: 0px 10px;
+      width: 137px;
+    }
+
+    ion-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .fi-bold-text {
+      font-weight: 600;
+    }
+  }
+
+  .fi-img {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+  }
+
+  ion-img::part(image) {
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .fi-border {
+    border-radius: 22px !important;
+
+    ion-img::part(image) {
+      object-fit: cover;
+      border-radius: 22px;
+    }
+  }
+
+  h3.fi-traitName {
+    position: absolute;
+    top: 165px;
+    background: rgba(0, 0, 0, 0.4);
+    height: 50px;
+    color: white;
+    display: flex;
+    width: 95%;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+    font: normal normal medium 16px/38px SF Pro Display;
+    letter-spacing: 0.25px;
+  }
+
+  .fi-no-result {
+    img {
+      margin-top: 40px;
+      width: 60px;
+    }
+  }
+}
+
+ion-card {
+  //background-color: #EAF1F4;
+  box-shadow: none;
+  border-radius: 20px !important;
+}
+
+ion-modal {
+  ion-card {
+    margin: 10px 0px;
+
+    ion-card-header {
+      padding: 10px 0px;
+
+      ion-card-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        ion-text {
+          font: normal normal normal 18px/26px SF Pro Display;
+          letter-spacing: 0.25px;
+          color: #285078;
+          opacity: 1;
+        }
+
+        ion-buttons {
+          position: absolute;
+          top: 50%;
+          right: 0px;
+          transform: translateY(-50%);
+        }
+      }
+    }
+
+    ion-card-content {
+      ion-item {
+        --border-width: 0 0 0 0;
+      }
+
+      p {
+        display: flex;
+        justify-content: start;
+        padding-left: 5px;
+        font: normal normal 600 16px/24px SF Pro Display;
+        letter-spacing: 0.22px;
+        color: #788692;
+        opacity: 1;
+      }
+
+      ion-textarea {
+        width: 90%;
+        background: #F0F5F7 0% 0% no-repeat padding-box;
+        border: 1px solid #70707036;
+        border-radius: 11px;
+        opacity: 1;
+        padding-left: 6px;
+        text-align: left;
+      }
+
+      ion-radio-group {
+        ion-item {
+          --border-style: none;
+          margin-bottom: 0px;
+
+          ion-label {
+            margin: 0px;
+            font: normal normal 600 16px/16px SF Pro Display;
+            letter-spacing: 0.22px;
+            color: #285078;
+          }
+        }
+      }
+
+      .line-with-text {
+        position: relative;
+        text-align: center;
+        padding: 15px 0px;
+      }
+
+      .line-with-text::before,
+      .line-with-text::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 1px;
+        // background-color: black;
+        background-color: #788692;
+      }
+
+      .line-with-text::before {
+        margin-right: 10px;
+      }
+
+      .line-with-text::after {
+        margin-left: 10px;
+      }
+
+      .centered-text {
+        position: relative;
+        z-index: 1;
+        background-color: white;
+        padding: 0 10px;
+      }
+    }
+
+    ion-footer {
+      display: flex;
+      justify-content: center;
+
+      ion-button {
+        width: 50%;
+      }
+
+      ion-button::part(native) {
+        background: #03A9F5 0% 0% no-repeat padding-box;
+        border-radius: 22px;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.postBg {
+  background-color: #1976D2 !important;
+  color: #ffffff;
+}
+
+.whiteBg{
+  background-color: #ffffff !important;
+}
+
+.message {
+  font: normal normal 600 18px/24px SF Pro Display;
+  letter-spacing: 0.22px;
+  color: #285078;
+}

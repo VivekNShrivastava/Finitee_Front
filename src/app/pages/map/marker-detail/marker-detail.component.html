@@ -1,0 +1,84 @@
+<ion-row>
+  <ion-thumbnail slot="start">
+    <img class="user-logo-main" src="{{appConstants.mediaPrefix + currentItem.ProfilePhoto}}"
+    onError="this.src='assets/icons/business/anonymous.svg'"/>
+  </ion-thumbnail>
+  <ion-icon name="close-icon" class="common-icon-style" (click)="closeDetails()"></ion-icon>
+</ion-row>
+<ion-row>
+  <ion-icon *ngIf="showPrevious" name="back-button" class="common-icon-style" (click)="loadNextItem(true)"></ion-icon>
+
+
+<!--Card for Regular user-->
+<ion-card class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1">
+  <ion-text>{{currentItem.DisplayName}}</ion-text>
+  <ion-card-header>
+    <ion-card-subtitle class="fi-multiline-truncate">@{{currentItem.UserName}} | 100 Followers</ion-card-subtitle>
+  </ion-card-header>
+  <!-- <ion-text>inflows</ion-text> -->
+  <ion-card-content>
+    <!-- row for business home own -->
+    <ion-row class="header-card-details">
+      <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
+         5.2k Connections
+      </ion-button>
+    </ion-row>
+
+    <ion-row class="header-card-details">
+      <div class="action-list">
+        <ion-icon name="greeting" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
+        <ion-icon name="bluechat" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
+        <ion-icon name="user-block" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
+        <!-- <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
+      </div>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
+
+
+<!-- Card for Business / non-profit User-->
+<ion-card class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
+  <ion-text>{{currentItem.DisplayName}}</ion-text>
+  <p><ion-text>{{currentItem.SonorDescription}}</ion-text></p>
+  <ion-card-header>
+    <ion-card-subtitle class="fi-multiline-truncate">@{{currentItem.UserName}} | 100 Followers</ion-card-subtitle>
+  </ion-card-header>
+  <!-- <ion-text>inflows</ion-text> -->
+  <ion-card-content>
+    <!-- row for business home own -->
+    <ion-row class="header-card-details">
+      <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
+        5.2k Connections
+      </ion-button>
+      <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
+        1k Endorsements
+      </ion-button>
+    </ion-row>
+    <ion-row class="header-card-details">
+
+      <ion-text><ion-icon name="user-block"></ion-icon>Black Friday</ion-text>
+    </ion-row>
+    <!-- row for business home other -->
+    <ion-row class="header-card-details" >
+
+      <ion-button shape="round" size="small" class="connected-members-chat" (click)="tempClick()">
+        <ion-icon name="connected-members-chat"></ion-icon>
+        <span> Chat Now</span>
+      </ion-button>
+      <ion-button shape="round" size="small" class="connected-members-chat" (click)="tempClick()">
+        <ion-icon name="see-more"></ion-icon>
+        <span> Sonar</span>
+      </ion-button>
+    </ion-row>
+  </ion-card-content>
+</ion-card>
+<ion-icon *ngIf="showNext" name="down-arrow" class="common-icon-style" (click)="loadNextItem(false)"></ion-icon>
+</ion-row>
+
+<div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1">
+  <ion-text>My traits</ion-text>
+</div>
+
+<div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
+  <ion-text>Products & Services</ion-text>
+</div>

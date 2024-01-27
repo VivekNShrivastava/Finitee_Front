@@ -1,0 +1,282 @@
+<ion-header class="headth">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <img style="height:20px" src="assets/icon/fin/back.png">
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="viewTemplate == 'ShowByType'">
+      Results ({{results.length}})
+    </ion-title>
+    <ion-title *ngIf="viewTemplate == 'ShowByDistance'">
+      Results ({{results.length}})
+    </ion-title>
+
+    <ion-buttons slot="end" style="visibility: hidden;">
+      <ion-button (click)="goBack()">
+        <img style="height:20px" src="assets/icon/fin/back.png">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <div class="maptab" *ngIf="viewTemplate == 'ShowByType'">
+    <ion-button shape="round" [ngClass]="{'active':viewType == 1}" (click)="onViewTypeChange(1)">
+      Show by type
+    </ion-button>
+    <ion-button shape="round" [ngClass]="{'active':viewType == 2}" (click)="onViewTypeChange(2)">
+      Arrange by distance
+    </ion-button>
+  </div>
+</ion-header>
+<ion-content>
+  <ion-accordion-group multiple="true" [value]="['user', 'business', 'nonprofit', 'donation', 'totems', 'salesListings']">
+    <ion-accordion value="user" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="blueuser"></ion-icon>
+        <ion-label>Users ({{users.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of users;let i=index">
+          <div class="lines-bottom ion-padding">
+            <div class="display-flex--row flex-align-center">
+              <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
+                <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
+                  onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
+                  alt="User Profile"> -->
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + user['ProfilePhoto']}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              </ion-avatar>
+              <div class="font-primary-text" (click)="viewConnection(user)">
+                <span class="font-sz-14">{{user['DisplayName']}}</span>
+              </div>
+            </div>
+
+            <div class="display-flex--row flex-align-center">
+              <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
+                : '1.2-2' }} Miles away </div>
+              <div class="action-list">
+                <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
+                <greeting-view [fromUserId]="user['UserId']" [fromUserName]="user['DisplayName']"
+                [fromUserProfile]="'/' + user['ProfilePhoto']"></greeting-view>
+                <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
+                <!-- <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="business" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="bluebusiness"></ion-icon>
+        <ion-label>Businesses ({{business.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of business;let i=index">
+          <div class="lines-bottom ion-padding">
+            <div class="display-flex--row flex-align-center">
+              <ion-avatar (click)="viewBusiness(user)" class="ion-margin-end">
+                <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
+                  onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
+                  alt="User Profile"> -->
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + user['ProfilePhoto']}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              </ion-avatar>
+              <div class="font-primary-text" (click)="viewBusiness(user)">
+                <span class="font-sz-14">{{user['DisplayName']}}</span>
+              </div>
+            </div>
+
+            <div class="display-flex--row flex-align-center">
+              <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
+                : '1.2-2' }} Miles away </div>
+              <div class="action-list">
+                <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
+                <ion-button (click)="startChat(user)" shape="round" size="small" class="primary-button">
+                  <ion-icon name="chat" class="icon-40" (click)="startChat(user)"></ion-icon>
+                  Chat now
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="nonprofit" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="nonprofit"></ion-icon>
+        <ion-label>Nonprofits ({{nonProfits.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of nonProfits;let i=index">
+          <div class="lines-bottom ion-padding">
+            <div class="display-flex--row flex-align-center">
+              <ion-avatar (click)="viewBusiness(user)" class="ion-margin-end">
+                <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
+                  onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
+                  alt="User Profile"> -->
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + user['ProfilePhoto']}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              </ion-avatar>
+              <div class="font-primary-text" (click)="viewBusiness(user)">
+                <span class="font-sz-14">{{user['DisplayName']}}</span>
+              </div>
+            </div>
+
+            <div class="display-flex--row flex-align-center">
+              <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
+                : '1.2-2' }} Miles away </div>
+              <div class="action-list">
+                <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
+                <ion-button (click)="startChat(user)" shape="round" size="small" class="primary-button">
+                  <ion-icon name="chat" class="icon-40" (click)="startChat(user)"></ion-icon>
+                  Chat now
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="donation" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="donation"></ion-icon>
+        <ion-label>Donations ({{donations.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of donations;let i=index">
+          <div class="lines-bottom ion-padding">
+            <div class="display-flex--row flex-align-center">
+              <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
+                <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
+                  onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
+                  alt="User Profile"> -->
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + user['ProfilePhoto']}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              </ion-avatar>
+              <div class="font-primary-text" (click)="viewConnection(user)">
+                <span class="font-sz-14">{{user['DisplayName']}}</span>
+              </div>
+            </div>
+
+            <div class="display-flex--row flex-align-center">
+              <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
+                : '1.2-2' }} Miles away </div>
+              <div class="action-list">
+                <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
+                <greeting-view [fromUserId]="user['UserId']" [fromUserName]="user['DisplayName']"
+                [fromUserProfile]="'/' + user['ProfilePhoto']"></greeting-view>
+                <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
+                <!-- <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="totems" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="bluetotem"></ion-icon>
+        <ion-label>Totems ({{totems.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of totems;let i=index">
+          <div class="lines-bottom ion-padding">
+            <div class="display-flex--row flex-align-center">
+              <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
+                <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
+                  onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
+                  alt="User Profile"> -->
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + user['ProfilePhoto']}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              </ion-avatar>
+              <div class="font-primary-text" (click)="viewConnection(user)">
+                <span class="font-sz-14">{{user['DisplayName']}}</span>
+              </div>
+            </div>
+
+            <div class="display-flex--row flex-align-center">
+              <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
+                : '1.2-2' }} Miles away </div>
+              <div class="action-list">
+                <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
+                <greeting-view [fromUserId]="user['UserId']" [fromUserName]="user['DisplayName']"
+                [fromUserProfile]="'/' + user['ProfilePhoto']"></greeting-view>
+                <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
+                <!-- <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="salesListings" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="sales_listing"></ion-icon>
+        <ion-label>Sales listings ({{salesListings.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of salesListings;let i=index">
+          <div class="lines-bottom ion-padding">
+            <div class="display-flex--row flex-align-center">
+              <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
+                <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
+                  onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
+                  alt="User Profile"> -->
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + user['ProfilePhoto']}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              </ion-avatar>
+              <div class="font-primary-text" (click)="viewConnection(user)">
+                <span class="font-sz-14">{{user['DisplayName']}}</span>
+              </div>
+            </div>
+
+            <div class="display-flex--row flex-align-center">
+              <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
+                : '1.2-2' }} Miles away </div>
+              <div class="action-list">
+                <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
+                <greeting-view [fromUserId]="user['UserId']" [fromUserName]="user['DisplayName']"
+                [fromUserProfile]="'/' + user['ProfilePhoto']"></greeting-view>
+                <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
+                <!-- <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    </ion-accordion-group>
+  <!-- <div class="mapreslist">
+    <ion-list style="padding:0px">
+      <div
+        *ngFor="let user of results ;let i=index">
+        <div class="lines-bottom ion-padding">
+          <div class="display-flex--row flex-align-center">
+            <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
+              <img animation="gradient" [src]="attachmentURL + user['UserId'] + '/' + user['ProfilePhoto']"
+                onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
+                alt="User Profile">
+            </ion-avatar>
+            <div class="font-primary-text" (click)="viewConnection(user)">
+              <span class="font-sz-14">{{user['DisplayName']}}</span>
+            </div>
+          </div>
+
+          <div class="display-flex--row flex-align-center">
+            <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
+              : '1.2-2' }} Miles away </div>
+            <div class="action-list">
+              <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
+              <greeting-view [fromUserId]="user['UserId']" [fromUserName]="user['DisplayName']"
+              [fromUserProfile]="user['UserId'] + '/' + user['ProfilePhoto']"></greeting-view>
+              <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
+              <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+  </div> -->
+</ion-content>

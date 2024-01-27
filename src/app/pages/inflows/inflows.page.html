@@ -1,0 +1,72 @@
+<ion-header class="ion-no-border">
+  <!-- heading bar -->
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <app-notification-icon></app-notification-icon>
+    </ion-buttons>
+    <ion-title>
+      Inflows
+    </ion-title>
+  </ion-toolbar>
+
+  <ion-segment scrollable="true">
+    <div>
+      <ion-button [ngClass]="{'selected': (filter=='ALL')}" (click)="filterChanged('ALL',0)">
+        All
+      </ion-button>
+    </div>
+    <ion-button [ngClass]="{'selected': (filter=='FREE_USER')}" (click)="filterChanged('FREE_USER',1)"
+      *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.FR_USER">
+      User
+    </ion-button>
+    <ion-button [ngClass]="{'selected': (filter=='BUSINESS_USER')}" value="BUSINESS_USER"
+      (click)="filterChanged('BUSINESS_USER',2)">
+      Business
+    </ion-button>
+    <ion-button [ngClass]="{'selected': (filter=='NONPROFIT_USER')}" value="NONPROFIT_USER"
+      (click)="filterChanged('NONPROFIT_USER',3)">
+      Non Profit
+    </ion-button>
+    <ion-button [ngClass]="{'selected': (filter=='DONATION')}" value=" DONATION" (click)="filterChanged('DONATION',3)">
+      Donation
+    </ion-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+
+
+  <!-- This is the card Component  -->
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ng-container *ngIf="loaded && paramsData.postlist.length>0">
+    <app-post-items [paramsData]="paramsData"></app-post-items>
+  </ng-container>
+
+  <ng-container *ngIf="loaded && paramsData.postlist.length==0">
+    <div class="ion-text-center">
+      <img style="margin-top: 20px;" src="assets/imgs/icons/noresults.png">
+      <p style="margin: 0px;
+      font-weight: 500;
+      color: #758EA8;
+      font-size: 16px;
+      margin-top: 15px;"> No results found</p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!loaded">
+    <ion-card class="header-card">
+      <ion-card-header>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-card-header>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-card-content>
+        <ion-skeleton-text style="height:100px" animated></ion-skeleton-text>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

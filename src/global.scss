@@ -1,0 +1,896 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+* {
+  font-family: "SF Pro Display", serif;
+}
+
+ion-icon {
+  font-size: 21px;
+}
+
+ion-header {
+  padding: 15px 10px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  color: #1a3253;
+
+  & ion-toolbar {
+    height: 51px;
+    --min-height: 51px !important;
+    --background: #f0f5f7 0% 0% no-repeat padding-box;
+    border-radius: 26px;
+    & ion-buttons {
+      & ion-badge {
+        position: absolute;
+        left: -2px;
+        top: 4px;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 0.6;
+        border-radius: 12px;
+      }
+    }
+
+    & ion-title {
+      position: absolute;
+      top: 0;
+      // left: 0;
+      // width: 100%;
+      left: calc(100vw - 90%);
+      width: 70%;
+      height: 100%;
+      text-align: center;
+      font: normal normal 600 18px/24px SF Pro Display;
+      letter-spacing: 0.29px;
+      color: #1a3253;
+    }
+  }
+}
+ion-header.fi-chat-header {
+  background: #f6f6f6 0% 0% no-repeat padding-box;
+  & ion-toolbar {
+    --background: #d3e8ef 0% 0% no-repeat padding-box;
+    & ion-title {
+      font: normal normal 600 20px/28px SF Pro Display;
+      letter-spacing: 0.32px;
+      color: #285078;
+      opacity: 1;
+    }
+  }
+}
+ion-footer {
+  --padding-start: 0;
+  background-color: #ffffff;
+  padding: 0 10px;
+
+  &::before {
+    display: none;
+  }
+}
+
+/* ion-fab-button {
+  --border-radius: 10px;
+  --transform: rotate(45deg);
+  --box-shadow: none;
+} */
+
+ion-item {
+  margin-bottom: 15px;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+.display-flex {
+  display: flex;
+
+  &.flex-wrap-wrap {
+    flex-wrap: wrap;
+  }
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.input,
+.select {
+  height: 53px;
+  background: #f0f5f7;
+  color: #285078;
+  border-radius: 11px;
+  --padding-start: 10px !important;
+  --padding-end: 10px !important;
+  width: 95%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* ion-button {
+  height: 45px;
+  border-radius: 27px;
+  margin-top: 22px;
+} */
+
+.dob-input {
+  margin: 15px 0;
+  background: #f0f5f7;
+  color: #285078;
+  border-radius: 11px !important;
+  width: auto;
+  height: 50px !important;
+  border: none !important;
+  text-align: center;
+}
+
+.otp-input {
+  width: 100%;
+  margin: 15px 0;
+
+  .ng-otp-input-wrapper {
+    text-align: center;
+
+    .otp-input {
+      background: #f0f5f7;
+      color: #285078;
+      border-radius: 11px !important;
+      width: 50px !important;
+      height: 50px !important;
+      border: none !important;
+    }
+  }
+}
+
+.underline-text {
+  text-decoration: underline;
+  letter-spacing: 0.21px;
+  color: #788692;
+  display: block;
+  text-align: center;
+}
+
+ion-modal {
+  --border-radius: 10px;
+
+  &.announcement-modal--own {
+    --height: auto;
+    padding: 0 10px;
+  }
+
+  &.search-modal {
+    --height: 400px;
+    padding: 0 20px;
+  }
+
+  &.announcement-modal--other {
+    --height: max-content;
+    padding: 0 10px;
+  }
+}
+.search-modal::part(content) {
+  border-radius: 11px;
+}
+ion-modal::part(backdrop) {
+  background: rgba(40, 80, 120, 1);
+  opacity: 1;
+}
+
+/* ion-modal ion-toolbar {
+  --background: rgb(14 116 144);
+  --color: white;
+} */
+
+// Slider
+
+.swiper-pagination {
+  position: relative;
+  padding-top: 25px;
+}
+
+.swiper-pagination-bullet {
+  margin: 0 8px !important;
+  height: 14px;
+  width: 14px;
+  background: none;
+  outline-offset: 3px;
+  outline: 1px solid #285078;
+
+  &-active {
+    background-color: #03a9f5;
+    outline-color: #03a9f5;
+  }
+}
+
+ion-icon.ion-accordion-toggle-icon {
+  margin: 0 16px 0 0;
+  color: #285078;
+  width: 15px;
+  height: 10px;
+}
+
+// Slider - Post Screen
+.post-screen-slide {
+  & .swiper-pagination {
+    position: relative;
+    padding-top: 18px;
+  }
+
+  & .swiper-pagination-bullet {
+    margin: 0 4px !important;
+    height: 11px;
+    width: 11px;
+    background: #aabac1;
+    outline: none;
+
+    &-active {
+      background-color: #1a213e;
+    }
+  }
+
+  & ion-icon.ion-accordion-toggle-icon {
+    margin: 0 12px 0 0;
+    height: 14px;
+    color: #285078;
+  }
+}
+
+// Block-user-alert
+.block-user-alert {
+  & > div.alert-wrapper {
+    box-shadow: 0px 3px 6px #00000021;
+    border-radius: 11px;
+    text-align: center;
+    min-width: 321px;
+
+    & .alert-head {
+      text-align: center;
+
+      h2 {
+        &#alert-2-hdr {
+          font: normal normal normal 16px/26px SF Pro Display;
+          letter-spacing: 0.25px;
+          color: #285078;
+        }
+      }
+    }
+
+    & #alert-2-msg {
+      font: normal normal normal 14px/16px SF Pro Display;
+      letter-spacing: 0.22px;
+      color: #788692;
+
+      span {
+        font-weight: 600;
+        color: #285078;
+      }
+    }
+
+    & .alert-button-group {
+      justify-content: space-between;
+      flex-direction: row;
+
+      & > button {
+        padding: 15px 50px;
+        border-radius: 22px;
+        font: normal normal normal 13px/16px SF Pro Display;
+        letter-spacing: 0.21px;
+        color: #ffffff;
+
+        &.block-user-alert-close-button {
+          position: absolute;
+          top: 20px;
+          right: 10px;
+          padding: 4px 6px;
+          color: #285078;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  &-yes-button {
+    background-color: #03a9f5 !important;
+  }
+
+  &-no-button {
+    background-color: #e57676 !important;
+  }
+}
+
+// Add-user-alert
+
+.add-user-alert {
+  & > div.alert-wrapper {
+    box-shadow: 0px 3px 6px #00000021;
+    border-radius: 11px;
+    text-align: center;
+    min-width: 321px;
+
+    & .alert-head {
+      text-align: center;
+
+      h2 {
+        &#alert-1-hdr {
+          font: normal normal normal 16px/17px SF Pro Display;
+          letter-spacing: 0.25px;
+          color: #285078;
+        }
+      }
+    }
+
+    & .alert-input-group {
+      & .alert-input-wrapper {
+        & > textarea#alert-input-1-0 {
+          background: #f0f5f7;
+          color: #285078;
+          padding: 10px;
+          height: 162px;
+          border-radius: 11px;
+          border-bottom: none;
+        }
+      }
+    }
+
+    & .alert-button-group {
+      justify-content: space-around;
+      flex-direction: row;
+
+      & > button {
+        padding: 15px 22px;
+        border-radius: 22px;
+        font: normal normal normal 13px/16px SF Pro Display;
+        letter-spacing: 0.21px;
+        color: #ffffff;
+        text-transform: none;
+
+        &.add-user-alert-close-button {
+          position: absolute;
+          top: 20px;
+          right: 5px;
+          padding: 4px 8px;
+          color: #285078;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  &-send-button {
+    background-color: #03a9f5 !important;
+  }
+
+  &-send-without-button {
+    background-color: #e57676 !important;
+  }
+}
+
+// Report-user-alert
+
+.report-user-alert {
+  & > div.alert-wrapper {
+    box-shadow: 0px 3px 6px #00000021;
+    border-radius: 11px;
+    text-align: center;
+    min-width: 321px;
+
+    & .alert-head {
+      text-align: center;
+      padding-bottom: 0;
+
+      h2 {
+        &#alert-2-hdr {
+          font: normal normal normal 16px/26px SF Pro Display;
+          letter-spacing: 0.25px;
+          color: #285078;
+        }
+      }
+    }
+
+    & #alert-2-msg {
+      font: normal normal bold 18px/29px SF Pro Display;
+      letter-spacing: 0.29px;
+      color: #285078;
+      padding-bottom: 0;
+    }
+
+    & .alert-input-group {
+      padding-top: 0;
+      padding-bottom: 0;
+
+      & .alert-input-wrapper {
+        & > textarea#alert-input-2-0 {
+          background: #f0f5f7;
+          color: #285078;
+          padding: 10px;
+          height: 162px;
+          border-radius: 11px;
+          border-bottom: none;
+        }
+      }
+    }
+
+    & .alert-button-group {
+      justify-content: space-around;
+      flex-direction: row;
+
+      & > button {
+        padding: 15px 30px;
+        border-radius: 22px;
+        font: normal normal normal 13px/16px SF Pro Display;
+        letter-spacing: 0.21px;
+        color: #ffffff;
+        text-transform: none;
+
+        &.report-user-alert-close-button {
+          position: absolute;
+          top: 20px;
+          right: 5px;
+          padding: 4px 8px;
+          color: #285078;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  &-send-button {
+    background-color: #03a9f5 !important;
+  }
+}
+
+.font-primary-text {
+  color: #285078;
+}
+
+.font-secoundry-text {
+  color: #09abf5;
+}
+
+.font-sz-12 {
+  font-size: 12px;
+}
+
+.font-sz-14 {
+  font-size: 14px;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.flex-gap-10 {
+  gap: 10px;
+}
+
+.display-flex {
+  &--column {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px;
+  }
+
+  &--row {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 10px;
+  }
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.primary-button {
+  color: white;
+  text-transform: inherit;
+  margin: inherit;
+  height: 30px;
+}
+
+.action-sheet-group {
+  border-radius: 10px 10px 0 0;
+  padding: 0 10px;
+
+  &.sc-ion-action-sheet-md {
+    padding-top: 5px !important;
+  }
+}
+
+#action-sheet-1-header {
+  font: normal normal bold 16px/26px SF Pro Display;
+  letter-spacing: 0.25px;
+  --color: #285078;
+  padding-left: 23px !important;
+}
+
+#action-sheet-1-header {
+  font: normal normal bold 16px/26px SF Pro Display;
+  letter-spacing: 0.25px;
+  --color: #285078;
+  padding-left: 23px !important;
+}
+
+button.action-sheet-button.product-option-action-sheet-button {
+  border-bottom: 0.5px solid #285078;
+  color: #285078;
+
+  &.red-text {
+    span {
+      color: #782828;
+    }
+  }
+
+  span {
+    font: normal normal bold 16px/24px SF Pro Display;
+    letter-spacing: 0.25px;
+    color: #285078;
+
+    ion-icon.action-sheet-icon {
+      margin-right: 13px;
+    }
+  }
+}
+.fi-extra-margin {
+  ion-icon.action-sheet-icon {
+    margin-left: 4px;
+    margin-right: 9px !important;
+  }
+}
+
+// Events
+
+//list item background
+.modal-list-container {
+  height: 85vh;
+  overflow-y: scroll;
+}
+
+.list-item-1 {
+  background: #fafafa 0% 0% no-repeat padding-box;
+  border-radius: 20px;
+  opacity: 1;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  height: 41px;
+  padding: 0px 12px;
+}
+.list-item-1-selected {
+  background: #b2e2f9 0% 0% no-repeat padding-box;
+  border-radius: 20px;
+  opacity: 1;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+.icon-small {
+  height: 32px;
+  width: 32px;
+}
+
+.icon-mid {
+  height: 72px;
+  width: 72px;
+}
+
+.parent-body {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+// delete mesage popup UI changes start
+.fi-alert-header {
+  & > div.alert-wrapper {
+    top: 307px;
+    left: 85px;
+    width: 245px;
+    height: 242px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000021;
+    border-radius: 11px;
+    opacity: 1;
+    & .alert-head {
+      text-align: center;
+
+      h2 {
+        text-align: center;
+        font: normal normal bold 18px/29px SF Pro Display;
+        letter-spacing: 0.29px;
+        color: #285078;
+        opacity: 1;
+      }
+    }
+    & .alert-button-group {
+      display: flex;
+      & .alert-button-confirm1 {
+        width: 170px;
+        height: 44px;
+        background: #e57676 0% 0% no-repeat padding-box;
+        border-radius: 22px;
+        opacity: 1;
+        margin: auto;
+        margin-bottom: 8px;
+      }
+      & .alert-button-confirm1-1 {
+        display: none;
+      }
+      & .alert-button-confirm2 {
+        width: 170px;
+        height: 44px;
+        background: #e57676 0% 0% no-repeat padding-box;
+        color: #ffffff;
+        border-radius: 22px;
+        opacity: 1;
+        margin: auto;
+        margin-bottom: 8px;
+      }
+      & .alert-button-cancel1 {
+        width: 170px;
+        height: 44px;
+        background: #03a9f5 0% 0% no-repeat padding-box;
+        border-radius: 22px;
+        opacity: 1;
+        margin: auto;
+      }
+      .alert-button-confirm1,
+      .alert-button-confirm2,
+      .alert-button-cancel1 {
+        & > span {
+          justify-content: center;
+          text-align: center;
+          font: normal normal normal 13px/16px SF Pro Display;
+          letter-spacing: 0.21px;
+          color: #ffffff;
+          opacity: 1;
+          text-transform: initial;
+        }
+      }
+    }
+  }
+}
+
+.fi-delete-alert {
+  & > div.alert-wrapper {
+    top: 357px;
+    left: 47px;
+    width: 321px;
+    height: 181px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000021;
+    border-radius: 11px;
+    opacity: 1;
+    .alert-head {
+      text-align: center;
+      h2 {
+        font: normal normal bold 18px/26px SF Pro Display;
+        letter-spacing: 0.25px;
+        color: #285078;
+        opacity: 1;
+      }
+    }
+    .alert-message {
+      text-align: center;
+      letter-spacing: 0.22px;
+      color: #788692;
+      opacity: 1;
+      ion-icon{
+        font-size: 25px;
+      }
+    }
+    .alert-close{
+      position: absolute;
+      top: 20px;
+      right: 10px;
+      font: normal normal bold 18px/26px SF Pro Display;
+      color: #285078;
+      cursor: pointer;
+    }
+    .alert-button-group {
+      display: flex;
+      .alert-no-button {
+        width: 127px;
+        height: 44px;
+        background: #e57676 0% 0% no-repeat padding-box;
+        color: #ffffff;
+        border-radius: 22px;
+        opacity: 1;
+        margin: auto;
+      }
+      .alert-yes-button {
+        width: 127px;
+        height: 44px;
+        background: #03a9f5 0% 0% no-repeat padding-box;
+        border-radius: 22px;
+        opacity: 1;
+        margin: auto;
+      }
+      .alert-yes-button,
+      .alert-no-button {
+        span {
+          justify-content: center;
+          text-align: center;
+          font: normal normal normal 13px/16px SF Pro Display;
+          letter-spacing: 0.21px;
+          color: #ffffff;
+          opacity: 1;
+          text-transform: initial;
+        }
+      }
+    }
+  }
+}
+// delete mesage popup UI changes end
+
+.my-popover .popover-arrow {
+  background-color: red;
+  border-color: transparent;
+  box-shadow: none;
+}
+ion-content.fi-chat-container::part(background) {
+  background: #f6f6f6 0% 0% no-repeat padding-box;
+}
+// IONIC TOASTER CUSTOM CSS
+ion-toast::part(container) {
+  background: #0b1131 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 16px;
+  opacity: 0.7;
+  bottom: calc(60px + var(--ion-safe-area-bottom, 0px));
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 236px;
+  height: 48px;
+}
+ion-toast::part(message) {
+  text-align: center;
+  color: #ffffff;
+}
+
+// CSS FOR SELECTED MESSAGES COUNT
+ion-text.hetitle {
+  font: normal normal 600 20px/28px SF Pro Display;
+  letter-spacing: 0.32px;
+  color: #285078;
+  opacity: 1;
+}
+
+// CSS FOR TEXT... START
+.fi-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fi-multiline-truncate {
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+// CSS FOR TEXT... END
+// CSS FOR VIEW POST MODAL STARTS
+.fi-custom-ion-modal-75 {
+  > .ion-page {
+    height: 75% !important;
+  }
+}
+.fi-custom-ion-modal-100 {
+  > .ion-page {
+    height: 100% !important;
+  }
+}
+// CSS FOR VIEW POST MODAL ENDS
+//country code popup searchbar star
+.fi-ion-searchbar {
+  --box-shadow: none !important;
+  .searchbar-input-container {
+    input {
+      background: #f0f5f7 0% 0% no-repeat padding-box;
+      border-radius: 8px;
+      opacity: 1;
+      font-size: 15px;
+      letter-spacing: 0.24px;
+      color: #a8a8a8;
+    }
+  }
+}
+//country code popup searchbar end
+// css for country code btn start
+.fi-countryCode-btn {
+  background: #f0f5f7 0% 0% no-repeat padding-box;
+  border-radius: 11px;
+  opacity: 1;
+  height: 53px;
+  width: 104px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-right: 10px;
+  ion-img {
+    width: 26px;
+    height: 26px;
+  }
+}
+ion-button.fi-countryCode-btn::part(native) {
+  border: none;
+}
+// css for country code btn end
+//css for tag on image for free user canvas start
+.fi-freeUser-nameTag {
+  font: normal normal normal 16px/21px SF Pro Display;
+  letter-spacing: 0.14px;
+  color: #1a3253;
+  position: absolute;
+  border-radius: 20px;
+  padding: 4px 10px;
+  top: 15px;
+  right: 15px;
+  background: #e2f1f7 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #00000029;
+  border-radius: 25px;
+  opacity: 1;
+  min-width: 57px;
+  max-width: 85%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+//css for tag on image for free user canvas end
+// no data content css start
+.nodata {
+  text-align: center;
+  font: normal normal 600 16px/18px SF Pro Display;
+  letter-spacing: 0.25px;
+  color: #758ea8;
+  opacity: 1;
+  margin-top: calc(50% - 50px);
+  img {
+    width: 93px;
+    height: 93px;
+  }
+}
+// no data content css end
+// edit-personal and edit-contact page popover arrow css start
+.fi-edit-personal-popover::part(arrow){
+  left: auto !important;
+  transform: translateX(0%) !important;
+  right: 8%;
+}
+.fi-edit-personal-popover,.fi-edit-contact-popover{
+  ion-list{
+    padding: 10px;
+  }
+}
+// edit-personal page popover arrow css end

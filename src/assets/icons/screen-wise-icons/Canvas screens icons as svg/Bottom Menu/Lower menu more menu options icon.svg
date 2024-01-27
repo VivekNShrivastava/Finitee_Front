@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="25.878" height="25.878" viewBox="0 0 25.878 25.878">
+  <g id="Layer_2" data-name="Layer 2" transform="translate(0 25.878) rotate(-90)">
+    <g id="图层_1" data-name="图层 1" transform="translate(0 0)">
+      <path id="Path_8892" data-name="Path 8892"
+            d="M12.939,25.878A12.939,12.939,0,1,1,25.878,12.939,12.939,12.939,0,0,1,12.939,25.878Zm0-24.508A11.569,11.569,0,1,0,24.508,12.939,11.569,11.569,0,0,0,12.939,1.37Z"
+            transform="translate(0 0)"/>
+      <path id="Path_8893" data-name="Path 8893"
+            d="M51.87,100.571l1.589,2.527,1.343,2.024h.13l1.349-2.024,1.562-2.529h3.68l-5.142,6.884H53.333L48.19,100.57Z"
+            transform="translate(-41.919 -87.482)"/>
+      <path id="Path_8894" data-name="Path 8894"
+            d="M61.523,58.42l1.266,2.014,1.059,1.612h.1l1.085-1.612L66.28,58.42h2.935l-4.1,5.486H62.689l-4.1-5.486Z"
+            transform="translate(-50.965 -50.818)"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="chat-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Video Cover</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container >
+    <div class="video-container">
+      <video #mainVideo [height]="pageheight/2">
+        <source type="video/mp4">
+      </video>
+    </div>
+    <div class="canvas-container" [ngStyle]="{'width': canvasContianerWidth}">
+      <input type="range" #myRange min="0" [max]="this.videduration" value="0" class="slider"
+        (change)="changeRange(myRange.value)" [ngStyle]="{'width': canvasContianerWidth}">
+      <canvas #canvas [width]="canvasWidth" height="38">
+      </canvas>
+    </div>
+    <canvas style="display: none" #canvasThumbSlider width="47" height="44">
+    </canvas>
+    <canvas  style="display: none" #canvasThumbMain>
+    </canvas>
+  </ng-container>
+  <ng-container *ngIf="!loaded">
+    <div class="video-container">
+      <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+    </div>
+    <div class="canvas-container" [ngStyle]="{'width': canvasContianerWidth}">
+      <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+    </div>
+  </ng-container>
+</ion-content>
+
+<ion-footer *ngIf="loaded">
+  <ion-button expand="block" shape="round" color="primary" (click)="saveCover()">Save</ion-button>
+</ion-footer>

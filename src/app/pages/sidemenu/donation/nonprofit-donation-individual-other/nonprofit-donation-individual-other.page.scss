@@ -1,0 +1,465 @@
+ion-header {
+  padding: 15px 10px;
+  background: #ffffff;
+
+  & ion-toolbar {
+    height: 51px;
+    --background: #EAF1F4;
+    border-radius: 26px;
+
+    & ion-buttons {
+      & ion-button {
+        margin-inline-start: 8px;
+        background-color: #03A9F5;
+      }
+
+
+    }
+
+    & ion-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font: normal normal 600 20px/28px SF Pro Display;
+      letter-spacing: 0.32px;
+      color: #285078;
+
+    }
+  }
+}
+
+ion-content {
+  & ion-segment {
+    justify-content: start;
+    padding: 0 10px;
+    background-color: #EAF1F4;
+
+    & ion-list {
+      padding: 0;
+      width: 100%;
+
+      & ion-item {
+        margin-bottom: 0;
+        width: 100%;
+        --background: #EAF1F4;
+
+        & ion-avatar {
+          width: 50px;
+          height: 50px;
+          background-color: #ffffff;
+          padding: 6px;
+          margin-right: 6px;
+
+          & ion-img {
+            width: 38px;
+            height: 38px;
+          }
+        }
+
+        & ion-label {
+          h3 {
+            font: normal normal 600 15px/24px SF Pro Display;
+            letter-spacing: 0.24px;
+            color: #1A3253;
+            height: 18px;
+            line-height: 18px;
+            margin: 0;
+          }
+
+          p {
+            font: normal normal normal 11px/21px SF Pro Display;
+            letter-spacing: 0.18px;
+            color: #1A3253;
+            height: 13px;
+            line-height: 13px;
+          }
+        }
+      }
+
+      & ion-buttons {
+        align-items: start;
+        background-color: #EAF1F4;
+
+        & ion-button {
+          margin-top: 10px;
+          font-size: 10px;
+        }
+      }
+    }
+  }
+
+  & div.chips {
+    padding: 0 18px;
+
+    & ion-chip {
+      font: normal normal normal 11px/20px SF Pro Display;
+      letter-spacing: 0.18px;
+      color: #FFFFFF;
+      padding: 5px 12px;
+      background-color: #0AA5F5;
+      height: 24px;
+      margin-right: 25px;
+
+      & ion-icon {
+        margin-inline: 0;
+        transform: scale(0.8);
+      }
+    }
+  }
+
+  & div.main {
+    padding: 5px 18px;
+
+    & ion-list {
+      padding: 0;
+
+      h3 {
+        font: normal normal bold 18px/24px SF Pro Display;
+        letter-spacing: 0.29px;
+        color: #1A3253;
+        margin: 0;
+      }
+
+      p {
+        font: normal normal normal 14px/16px SF Pro Display;
+        letter-spacing: 0.22px;
+        color: #1A3253;
+        margin: 6px 0;
+      }
+
+      & ion-item {
+        margin: 0;
+
+        & ion-slides {
+          & ion-slide {
+            & ion-card {
+              box-shadow: none !important;
+            }
+          }
+        }
+
+
+        &.bottom-menu {
+          border-bottom: 1px solid rgba(26, 50, 83, 0.5);
+        }
+
+        & div.favour-n-beam {
+          flex: 1;
+
+          & ion-icon {
+            margin: 0 7px;
+
+            &:first-child {
+              width: 17px;
+              height: 24px;
+            }
+
+            &:last-child {
+              width: 27px;
+              height: 20px;
+            }
+          }
+        }
+
+        & div.stats {
+          h4 {
+            font: normal normal bold 11px/21px SF Pro Display;
+            letter-spacing: 0.04px;
+            color: #1A3253;
+            padding: 0 6px;
+            margin: 0;
+          }
+
+          span {
+            width: 4px;
+            height: 4px;
+            background-color: #1A3253;
+            border-radius: 50%;
+          }
+        }
+
+      }
+
+      &.comments {
+        & ion-item {
+          align-items: start;
+
+          & ion-avatar {
+            height: 40px;
+            width: 40px;
+            background-color: #ffffff;
+
+          }
+
+          & ion-list {
+            width: 100%;
+
+
+            & ion-item {
+
+              &.comments-bottom-menu {
+                border-bottom: 1px solid rgba(26, 50, 83, 0.17);
+                align-items: center;
+                height: 24px;
+
+                & div.favour-n-beam {
+                  flex: 0 !important;
+
+                  & ion-icon {
+                    margin: 0;
+
+                    &:first-child {
+                      width: 12px;
+                      height: 17px;
+                    }
+
+                  }
+                }
+
+                & div.stats {
+                  h4 {
+                    font: normal normal bold 11px/21px SF Pro Display;
+                    letter-spacing: 0.04px;
+                    color: #1A3253;
+                    padding: 0 6px;
+                    margin: 0;
+                  }
+
+                  span {
+                    width: 4px;
+                    height: 4px;
+                    background-color: #1A3253;
+                    border-radius: 50%;
+                  }
+                }
+              }
+
+
+              & ion-card {
+                width: 100%;
+                margin: 0;
+                box-shadow: none !important;
+                --background: #F0F5F7;
+                border-radius: 12px 12px 0 0;
+                padding-top: 8px;
+
+                & ion-text {
+                  font: normal normal normal 14px/17px SF Pro Display;
+                  letter-spacing: 0.22px;
+                  color: #1A3253;
+                  padding: 0 12px;
+                }
+
+                & ion-img {
+                  margin-top: 8px;
+                  height: 176px;
+                  object-fit: cover;
+                }
+
+              }
+            }
+
+
+          }
+
+          & ion-label {
+            h3 {
+              font: normal normal 600 13px/21px SF Pro Display;
+              letter-spacing: 0.21px;
+              color: #1A3253;
+              height: 15px;
+              line-height: 15px;
+            }
+
+            p {
+              font: normal normal normal 11px/17px SF Pro Display;
+              letter-spacing: 0.18px;
+              color: #1A3253;
+              height: 13px;
+              line-height: 13px;
+              margin: 0;
+            }
+          }
+
+          & ion-buttons {
+            & ion-button {
+              font-size: 12px;
+
+              & ion-icon {
+
+              }
+            }
+          }
+
+
+        }
+      }
+
+      &.replies {
+        & > ion-item {
+          align-items: start;
+          margin-left: 55px;
+          border-bottom: 1px solid rgba(26, 50, 83, 0.17);
+
+          & ion-avatar {
+            height: 31px;
+            width: 31px;
+            background-color: #ffffff;
+            margin-right: 8px;
+          }
+
+          & ion-list {
+            width: 100%;
+
+            & ion-item {
+
+
+              & ion-buttons {
+                & ion-button {
+                  font-size: 12px;
+                }
+              }
+
+              &.comments-bottom-menu {
+                align-items: center;
+                height: 24px;
+
+                & div.favour-n-beam {
+                  flex: 0 !important;
+
+                  & ion-icon {
+                    margin: 0;
+
+                    &:first-child {
+                      width: 12px;
+                      height: 17px;
+                    }
+
+                  }
+                }
+
+                & div.stats {
+                  h4 {
+                    font: normal normal bold 11px/21px SF Pro Display;
+                    letter-spacing: 0.04px;
+                    color: #1A3253;
+                    padding: 0 6px;
+                    margin: 0;
+                  }
+
+                  span {
+                    width: 4px;
+                    height: 4px;
+                    background-color: #1A3253;
+                    border-radius: 50%;
+                  }
+                }
+              }
+
+
+              & ion-card {
+                width: max-content;
+                margin: 0;
+                box-shadow: none !important;
+                --background: #F0F5F7;
+                border-radius: 12px;
+                padding: 2px 6px;
+
+                & ion-text {
+                  font: normal normal normal 14px/17px SF Pro Display;
+                  letter-spacing: 0.22px;
+                  color: #1A3253;
+
+                  & span {
+                    color: #03A9F5;
+                  }
+                }
+
+
+              }
+            }
+
+
+          }
+
+          & ion-label {
+            h3 {
+              font: normal normal 600 13px/21px SF Pro Display;
+              letter-spacing: 0.21px;
+              color: #1A3253;
+              height: 15px;
+              line-height: 15px;
+            }
+
+            p {
+              font: normal normal normal 11px/17px SF Pro Display;
+              letter-spacing: 0.18px;
+              color: #1A3253;
+              height: 13px;
+              line-height: 13px;
+              margin: 0;
+            }
+          }
+
+          & ion-buttons {
+            & ion-button {
+              font-size: 12px;
+
+              & ion-icon {
+
+              }
+            }
+          }
+
+
+        }
+      }
+    }
+
+
+  }
+}
+
+ion-footer {
+  border-top: 1px solid rgba(26, 50, 83, 0.5);
+
+  height: 56px;
+
+  & ion-toolbar {
+    padding: 0 13px;
+
+    & ion-input {
+      --background: #F0F5F7;
+      font: normal normal normal 13px/17px SF Pro Display;
+      letter-spacing: 0.21px;
+      color: #1A3253;
+      height: 38px;
+      --padding-start: 20px;
+      --padding-end: 20px;
+      border-radius: 19px;
+      --placeholder-font-weight: 500;
+      --placeholder-color: #1A3253;
+      --placeholder-opacity: 1;
+    }
+
+    & ion-buttons {
+      &:last-of-type {
+        margin-left: 9px;
+      }
+
+
+      & ion-button {
+        font-size: 16px;
+        padding: 0;
+
+        &.blue-background {
+          font-size: 12px;
+          background: #03A9F5;
+        }
+      }
+    }
+  }
+}

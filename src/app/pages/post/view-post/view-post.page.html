@@ -1,0 +1,16 @@
+<ion-header class="ion-no-border"><!--  [style.position]="selectedPost!.PostImages && selectedPost!.PostImages.length>0 ? 'absolute':''"> -->
+  <ion-toolbar> <!--class="display-flex ion-align-items-center" -->
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Posts</ion-title>
+  </ion-toolbar>
+</ion-header>
+<hr style="background-color:  lightgray; margin: 1px 0;">
+
+<ion-content>
+  <ng-container *ngIf="paramsData">
+    <app-post-items [paramsData]="paramsData" ></app-post-items>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Recommend business</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="header-title display-flex ion-justify-content-center ion-align-items-center">
+ <!--    <ion-avatar slot="start">
+      <img class="business-logo" [src]="userProfile.user.ProfileImage"
+        onError="this.src='assets/icons/business/anonymous.svg'" />
+    </ion-avatar>
+    <ion-text>
+      <h3>{{userProfile.user.DisplayName}}<span> - {{product.Title}}</span></h3>
+    </ion-text> -->
+  </div>
+
+  <ion-card>
+    <ion-img [src]="product.ProductImages[0]">
+    </ion-img>
+  </ion-card>
+
+  <ion-textarea auto-grow="true" placeholder="Type your message here..">
+
+  </ion-textarea>
+
+
+  <ion-list *ngIf="loaded">
+    <ion-item lines="none" *ngFor="let data of userConnections">
+      <ion-checkbox slot="start"></ion-checkbox>
+      <ion-avatar slot="start">
+        <img src='https://finitee.sgp1.digitaloceanspaces.com/dev/{{data.ProfilePhoto}}'
+          onError="this.src='assets/imgs/male.png'" />
+      </ion-avatar>
+      <ion-label class="checked">{{data?.DisplayName}}</ion-label>
+      <ion-label class="checked">{{data?.UserName}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" shape="round" class="footer-button">Send</ion-button>
+</ion-footer>

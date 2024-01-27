@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.25" height="21" viewBox="0 0 23.25 21">
+  <g id="Group_247" data-name="Group 247" transform="translate(-1605 -2112)">
+    <g id="Rectangle_59" data-name="Rectangle 59" transform="translate(1605 2124)" fill="none" stroke="#03a9f5" stroke-width="1.6">
+      <rect width="9" height="9" rx="2" stroke="none"/>
+      <rect x="0.8" y="0.8" width="7.4" height="7.4" rx="1.2" fill="none"/>
+    </g>
+    <g id="Group_246" data-name="Group 246">
+      <g id="Group_235" data-name="Group 235" transform="translate(0 4)">
+        <g id="Rectangle_58" data-name="Rectangle 58" transform="translate(1605 2108)" fill="none" stroke="#03a9f5" stroke-width="1.6">
+          <rect width="9" height="9" rx="2" stroke="none"/>
+          <rect x="0.8" y="0.8" width="7.4" height="7.4" rx="1.2" fill="none"/>
+        </g>
+        <g id="Group_233" data-name="Group 233" transform="translate(0 0.5)">
+          <line id="Line_17" data-name="Line 17" x2="5" transform="translate(1616.5 2112.5)" fill="none" stroke="#03a9f5" stroke-linecap="round" stroke-width="1.5"/>
+          <line id="Line_18" data-name="Line 18" x2="11" transform="translate(1616.5 2115.5)" fill="none" stroke="#03a9f5" stroke-linecap="round" stroke-width="1.5"/>
+        </g>
+      </g>
+      <g id="Group_234" data-name="Group 234" transform="translate(0 16.5)">
+        <line id="Line_17-2" data-name="Line 17" x2="5" transform="translate(1616.5 2112.5)" fill="none" stroke="#03a9f5" stroke-linecap="round" stroke-width="1.5"/>
+        <line id="Line_18-2" data-name="Line 18" x2="11" transform="translate(1616.5 2115.5)" fill="none" stroke="#03a9f5" stroke-linecap="round" stroke-width="1.5"/>
+      </g>
+    </g>
+  </g>
+</svg>

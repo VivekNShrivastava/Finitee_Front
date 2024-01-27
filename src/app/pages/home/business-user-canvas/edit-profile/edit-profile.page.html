@@ -1,0 +1,151 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!--logo-->
+  <div class="logo-edit">
+    <img src="{{userProfile.user.ProfileImage}}"
+      onError="this.src='assets/icons/business/anonymous.svg'" (click)="openImage(userProfile.user.ProfileImage)" />
+    <ion-spinner color="primary"
+      *ngIf="userProfile.user.ProfileImage && userProfile.user.ProfileImage.indexOf('localhost')!=-1"
+      style="position: absolute; margin-top: 26px;width: 80px !important; height: 80px !important;"></ion-spinner>
+    <ion-buttons>
+      <button class="camera-icon" (click)="captuerMedia($event, 'logo')">
+        <ion-icon src="assets/icons/screen-wise-icons/Chat icons as svg/Upload picture icon.svg"></ion-icon>
+      </button>
+    </ion-buttons>
+  </div>
+
+  <!--about-->
+  <ion-card class="header-about">
+    <ion-card-content>
+      <ion-textarea auto-grow="true" class="custom-textarea" placeholder="About"
+        [(ngModel)]="userProfile.user.About"></ion-textarea>
+    </ion-card-content>
+  </ion-card>
+
+  <!--banner-->
+  <ion-card class="header-thumbnail">
+    <img alt="thumbnail-img" src="{{userProfile.user.Banner}}"
+      onError="this.src='assets/icons/business/profilebanner.jpg'" />
+    <ion-spinner color="primary" *ngIf="userProfile.user.Banner && userProfile.user.Banner.indexOf('localhost')!=-1"
+      style="position: absolute; margin-top: 26px;width: 80px !important; height: 80px !important;"></ion-spinner>
+    <ion-buttons>
+      <button class="camera-icon" (click)="captuerMedia($event,'banner')">
+        <ion-icon src="assets/icons/screen-wise-icons/Chat icons as svg/Upload picture icon.svg"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-card>
+
+  <ion-list class="input-form">
+    <!--sonar description-->
+    <ion-item lines="none">
+      <ion-input placeholder="Sonar description text" [(ngModel)]="userProfile.user.SonarDescription"></ion-input>
+    </ion-item>
+
+    <!--phone number-->
+    <ion-item lines="none">
+      <ion-input placeholder="Phone number" [(ngModel)]="userProfile.user.DisplayPhoneNo"></ion-input>
+    </ion-item>
+
+    <!--email-->
+    <ion-item lines="none">
+      <ion-input type="email" placeholder="Email" [(ngModel)]="userProfile.user.DisplayEmail"></ion-input>
+    </ion-item>
+
+    <!--website-->
+    <ion-item lines="none">
+      <ion-input type="text" placeholder="Website" [(ngModel)]="userProfile.user.Website"></ion-input>
+    </ion-item>
+
+    <!--address line 1-->
+    <ion-item lines="none">
+      <ion-input type="text" placeholder="Address Line 1 (alphanumeric)"
+        [(ngModel)]="userProfile.user.Address.AddressLine1"></ion-input>
+    </ion-item>
+
+    <!--address line 2-->
+    <ion-item lines="none">
+      <ion-input type="text" placeholder="Address Line 2 (alphanumeric)"
+        [(ngModel)]="userProfile.user.Address.AddressLine2"></ion-input>
+    </ion-item>
+
+    <!--country-->
+    <ion-item lines="none">
+      <ion-input type="text" *ngIf="selectedCountry" [readonly]="true" [value]="selectedCountry.CountryName"
+        placeholder="Country">
+      </ion-input>
+    </ion-item>
+
+
+    <!--state-->
+    <ion-item lines="none" *ngIf="loaded">
+      <ion-input type="text" [value]="selectedState ? selectedState.StateName : ''" placeholder="State"
+        (click)="OpenStateModal()"></ion-input>
+    </ion-item>
+    <ion-modal #selectStateModal trigger="selectState" class="search-modal" [backdropDismiss]="true">
+      <ng-template>
+        <app-select-searchable *ngIf="this.stateSearchableInput" [inputData]="stateSearchableInput"
+          (onSelectSearchableCancel)="onSelectStateModalDismiss($event)"
+          (onSelectSearchableSubmit)="onStateSelected($event)"></app-select-searchable>
+      </ng-template>
+    </ion-modal>
+
+
+
+    <!--city-->
+    <ion-item lines="none" *ngIf="loaded">
+      <ion-input type="text" [value]="selectedCity ? selectedCity.CityName:''" placeholder="City"
+        (click)="OpenCityModal()"></ion-input>
+    </ion-item>
+    <ion-modal #selectCityModal trigger="selectCity" class="search-modal" [backdropDismiss]="true">
+      <ng-template>
+        <app-select-searchable *ngIf="this.citySearchableInput" [inputData]="citySearchableInput"
+          (onSelectSearchableCancel)="onSelectCityModalDismiss($event)"
+          (onSelectSearchableSubmit)="onCitySelected($event)"></app-select-searchable>
+      </ng-template>
+    </ion-modal>
+
+
+    <ion-buttons>
+      <ion-button>
+        <ion-icon src="assets/icons/screen-wise-icons/Home screen icons/Adjust location on sonar icon.svg"></ion-icon>
+        Adjust location on sonar
+      </ion-button>
+    </ion-buttons>
+
+    <!--CustomField1-->
+    <ion-item lines="none">
+      <ion-input placeholder="Custom 1 (alphanumeric)" [(ngModel)]="userProfile.user.CustomField1"></ion-input>
+    </ion-item>
+
+    <!--CustomField2-->
+    <ion-item lines="none">
+      <ion-input placeholder="Custom 2 (alphanumeric)" [(ngModel)]="userProfile.user.CustomField2"></ion-input>
+    </ion-item>
+
+    <!--CustomField3-->
+    <ion-item lines="none">
+      <ion-input placeholder="Custom 3 (alphanumeric)" [(ngModel)]="userProfile.user.CustomField3"></ion-input>
+    </ion-item>
+
+    <!--traits-->
+    <app-traits [traits]="userProfile.user.Traits" (traitEvent)="allTraits($event)"></app-traits>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" shape="round" [color]="
+    (
+      (userProfile.user.ProfileImage && userProfile.user.ProfileImage.indexOf('localhost')!=-1)
+      ||
+      (userProfile.user.Banner && userProfile.user.Banner.indexOf('localhost')!=-1)
+    ) ? 'medium' : 'primary'" (click)="saveUserProfile()">Save</ion-button>
+</ion-footer>

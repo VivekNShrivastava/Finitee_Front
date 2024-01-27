@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Add traits</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text>
+    Select up to three traits for your post.
+  </ion-text>
+  <div class="traits">
+    <div class="trait" *ngFor="let trait of traitsData">
+      <h2>{{trait.category}}</h2>
+      <div class="trait-options">
+        <ng-container *ngFor="let traitSC of trait.subCategory;  let i = index">
+          <ion-button *ngIf="i<=trait.default" [color]="getColor(traitSC)"
+            (click)="selectTrait(traitSC)">{{traitSC}}</ion-button>
+        </ng-container>
+      </div>
+      <ion-buttons class="display-flex ion-justify-content-center" *ngIf="trait.default!=trait.subCategory.length">
+        <ion-button shape="round" (click)="seeMore(trait)">See more</ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" shape="round"
+    [color]="(selectedTraits && this.selectedTraits.length==0) ? 'medium' : 'primary'"
+    (click)="saveTraits()">Save</ion-button>
+</ion-footer>

@@ -1,0 +1,13 @@
+<ion-chip *ngFor="let trait of traits;  let i = index" color="primary">
+  <ion-label>{{trait }}</ion-label>
+  <ion-icon name="close-circle" color="white" (click)="deleteTrait(i)"></ion-icon>
+</ion-chip>
+
+<ion-item lines="none">
+  <ion-input placeholder="Trait words (1-10)" maxlength="10" [(ngModel)]="traitInput" (ionChange)="onChange()" name="trait"></ion-input>
+  <ion-buttons>
+    <ion-button shape="round" color="primary" (click)="addNewTrait()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-item>

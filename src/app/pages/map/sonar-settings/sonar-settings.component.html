@@ -1,0 +1,52 @@
+<ng-template #selectionView let-setting="setting">
+  <div class="display-flex--row">
+    <div class="flex-grow-1">
+      <div>
+        {{setting.SettingName}}
+      </div>
+      <div>
+        {{getSettingField(setting)}}
+      </div>
+    </div>
+    <div (click)="presentPopover($event,setting)">
+      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #checkboxView let-setting="setting">
+  <div class="display-flex--row">
+    <div class="flex-grow-1">
+      <div>
+        {{setting.SettingName}}
+      </div>
+      <div>
+        {{sonarSetting[setting.SettingField]}}
+      </div>
+    </div>
+    <div>
+      <ion-toggle [(ngModel)]="sonarSetting[setting.SettingField]" slot="end"></ion-toggle>
+    </div>
+  </div>
+</ng-template>
+
+<ion-list class="custom-class-list">
+  <!-- <ion-icon name="close-icon" (click)="closeSetting()"
+    style="position: absolute;right: 12px;top: 5px;font-size: 12px;"></ion-icon> -->
+  <ion-item *ngFor="let setting of privacySettings" style="margin-bottom: 0;">
+    <ion-label *ngIf="setting.Type =='Select'">
+      <ng-container *ngTemplateOutlet="selectionView; context: {setting : setting}"></ng-container>
+    </ion-label>
+    <ion-label *ngIf="setting.Type =='Checkbox'">
+      <ng-container *ngTemplateOutlet="checkboxView; context: {setting : setting}"></ng-container>
+    </ion-label>
+  </ion-item>
+</ion-list>
+
+
+<ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+  <ng-template>
+    <ion-content *ngFor="let each of editedSetting?.Options??[]" (click)="onOptionSelect(each)"
+      class="ion-padding">{{each.Text}}</ion-content>
+  </ng-template>
+</ion-popover>

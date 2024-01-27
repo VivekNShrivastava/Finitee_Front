@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Shopping list matches</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <ion-card class="ion-no-padding" *ngFor="let i of salesService.shoppingWordsMatchesList">
+    <ion-grid>
+
+      <ion-row class="ion-align-items-center">
+
+        <ion-col size="8">
+          <ion-card-content>
+            <ion-item lines="none">
+              <ion-avatar slot="start">
+                <ion-img alt="Logo" src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
+              </ion-avatar>
+              <ion-label>
+                <h3>unser</h3>
+                <p>3 mins ago</p>
+              </ion-label>
+            </ion-item>
+            <ion-label>
+              {{i.Title}}
+            </ion-label>
+            <br>
+            <ion-label>
+              {{i.Condition }}
+            </ion-label>
+            <ion-label>
+              {{commonService.currentCurrency.CurrencySymbol}}{{i.Price}}</ion-label>
+            <ion-buttons>
+              <ion-button class="fi-delete-btn" shape="round">
+                <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-card-content>
+        </ion-col>
+        <ion-col size="4">
+          <ion-img [src]="appConstants.mediaPrefix+i.SalesItemImages[0]">
+          </ion-img>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </ion-card>
+
+  <ng-container *ngIf="salesService.shoppingWordsMatchesList.length == 0">
+    <div class="nodata">
+      <img style="margin-top: 20px;" src="assets/imgs/new/NoData.png">
+      <h3> You have no shopping words matches listings at this time.</h3>
+      <!-- <h3> Create a shopping words listing to attract the correct talent for your requirements.</h3> -->
+    </div>
+  </ng-container>
+
+</ion-content>

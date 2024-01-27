@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "350794454544",
+    "project_id": "finitee-f8b7c",
+    "storage_bucket": "finitee-f8b7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350794454544:android:c6f9a625cd8f6bfa359c95",
+        "android_client_info": {
+          "package_name": "com.comwick.finitee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXi6V8VVcGeGv7mSlWOHmVhV_xs-NPxVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

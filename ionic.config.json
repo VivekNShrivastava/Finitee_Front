@@ -1,0 +1,8 @@
+{
+  "name": "finitee-ionic",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

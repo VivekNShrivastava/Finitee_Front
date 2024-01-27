@@ -1,0 +1,77 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="!isEdit">Create product section</ion-title>
+    <ion-title *ngIf="isEdit">Edit product section</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="input-form">
+    <!--Title-->
+    <ion-item lines="none">
+      <ion-input placeholder="Product title" autocapitalize="on" [(ngModel)]="product.Title" #ctrl1="ngModel"
+        required></ion-input>
+    </ion-item>
+    <div class="error-message" *ngIf="saveClicked && !ctrl1.valid">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span>Title is mandatory</span>
+    </div>
+
+    <!--Title Description-->
+    <ion-item lines="none">
+      <ion-input placeholder="Type your tile description here" [(ngModel)]="product.TitleDescription"></ion-input>
+    </ion-item>
+
+    <!--privacy-->
+    <ion-item lines="none" id="viewable-by" class="item-selection">
+      <ion-input placeholder="Privacy" [(ngModel)]="product.Privacy"></ion-input>
+      <ion-buttons>
+        <ion-button shape="round">
+          <ion-icon name="down-arrow"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <ion-popover trigger="viewable-by" side="bottom" alignment="end" [dismissOnSelect]="true" triggerAction="click">
+      <ng-template>
+        <ion-list>
+          <ion-radio-group value="{{product.Privacy}}" (ionChange)="selectedPrivacy($event)">
+            <ion-item lines="none" *ngFor="let privacy of appConstants.GeneralPivacy">
+              <ion-label [ngClass]="{'selected': (product.Privacy==privacy.value)}">{{privacy.value}}</ion-label>
+              <ion-radio slot="start" value="{{privacy.value}}"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ng-template>
+    </ion-popover>
+
+    <!--product description-->
+    <ion-item lines="none">
+      <ion-textarea class="custom-textarea" placeholder="Type your product description here"
+        [(ngModel)]="product.Description"></ion-textarea>
+    </ion-item>
+
+
+    <!--traits-->
+    <app-traits [traits]="product.Traits" (traitEvent)="allTraits($event)"></app-traits>
+  </ion-list>
+
+  <!-- multiple file uplaod -->
+  <app-multiple-media-upload [mediaFiles]="product.ProductImages"
+    (filePathEvent)="addMedia($event)"></app-multiple-media-upload>
+  <div class="error-message" *ngIf="saveClicked && product.ProductImages.length==0">
+    <ion-icon name="information-circle-outline"></ion-icon>
+    <span>Please enter atleast one product image or video</span>
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-button expand="block" shape="round" (click)="saveProduct()"
+    [color]="(product.Title=='' || product.ProductImages.length==0) ? 'medium' : 'primary'">
+    <span *ngIf="!isEdit">Create</span>
+    <span *ngIf="isEdit">Save</span>
+  </ion-button>
+</ion-footer>

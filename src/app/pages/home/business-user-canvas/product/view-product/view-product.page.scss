@@ -1,0 +1,206 @@
+// ion-header {
+//   background-color: #ffffff !important;
+//   padding: 10px;
+
+//   &>ion-toolbar {
+//     --background: #EAF1F4;
+//     border-radius: 26px;
+//     --height: 51px;
+
+//     &>ion-buttons {
+//       height: 100%;
+
+//       &>ion-button {
+//         --padding-start: 0;
+//         --padding-end: 0;
+//         --padding-top: 0;
+//         --padding-bottom: 0;
+//         height: 48px;
+//         width: 48px;
+
+//         &>ion-icon {
+//           width: 8px;
+//           height: 16px;
+//         }
+
+//       }
+//     }
+//   }
+
+// }
+
+
+ion-card {
+  background-color: #EAF1F4;
+  box-shadow: none;
+  margin: 0 10px;
+  border-radius: 22px !important;
+}
+
+ion-content {
+
+  & ion-slides {
+    & ion-slide {
+      & ion-card {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 192px;
+        & ion-img {
+          object-fit: cover;
+          width: 100%;
+        }
+        ion-img::part(image){
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &>div.product-description {
+
+
+    h3 {
+      font: normal normal bold 16px/21px SF Pro Display;
+      letter-spacing: 0.22px;
+      color: #285078;
+      margin-bottom: 0;
+    }
+
+    p {
+      font: normal normal normal 16px/21px SF Pro Display;
+      letter-spacing: 0.22px;
+      color: #285078;
+      margin: 0;
+      padding-bottom: 20px;
+    }
+  }
+
+  & ion-grid {
+    background: rgba(234, 241, 244, 0.7);
+
+
+    & ion-row {
+
+      margin: 20px 0;
+
+      &:first-child {
+        margin-top: 10px;
+      }
+
+      & ion-col {
+        //margin: 0 10px;
+        overflow: hidden;
+
+        & ion-buttons {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+        }
+
+        & div {
+          object-fit: cover;
+          width: 100%;
+          height: 224px;
+          background-color: #285078;
+          border-radius: 11px;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+
+          &::part(image) {
+            border-radius: 11px;
+          }
+        }
+
+      }
+    }
+  }
+}
+
+ion-buttons.filter-icon {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+
+  & ion-button {
+    font-size: 20px;
+  }
+}
+
+ion-popover {
+  --max-width: 183px;
+
+
+  ion-text {
+    padding: 10px 10px 0;
+    font: normal normal normal 16px/26px SF Pro Display;
+    letter-spacing: 0.25px;
+    color: #285078;
+    text-align: center;
+  }
+
+  ion-list {
+    ion-radio-group {
+      ion-item {
+        --background: none;
+        --background-hover: none;
+        --ripple-color: transparent;
+        margin-bottom: 0;
+        --min-height: 25px;
+
+        ion-label {
+          font: normal normal normal 14px/24px SF Pro Display;
+          letter-spacing: 0.22px;
+
+          color: #A8A8A8;
+
+          &.selected {
+            color: #03A9F5;
+          }
+
+          margin: 0;
+        }
+
+        ion-radio {
+          width: 18px;
+          height: 18px;
+          margin: 0 5px 0 15px;
+          --color: #ddd;
+          --color-checked: #03A9F5;
+        }
+      }
+    }
+
+  }
+
+}
+
+ion-fab-button {
+  margin: 5px;
+  --border-radius: 6px;
+  width: 50px;
+  height: 50px;
+  transform: rotate(45deg);
+  margin-right: 19px;
+
+  ion-icon {
+    transform: rotate(45deg);
+  }
+}
+ion-row{
+  ion-col{
+    ion-img.fi-img{
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+    }
+    ion-img::part(image){
+      border-radius: 11px;
+    }
+  }
+}

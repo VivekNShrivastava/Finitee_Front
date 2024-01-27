@@ -1,0 +1,49 @@
+
+ion-header {
+  background-color: #ffffff !important;
+  padding: 10px;
+
+  & ion-toolbar {
+    --background: #EAF1F4;
+    border-radius: 26px;
+    height: 51px;
+    display: flex;
+    align-items: center;
+
+    & ion-title {
+      font: normal normal 600 20px/28px SF Pro Display;
+      letter-spacing: 0.32px;
+      color: #285078;
+    }
+
+  }
+}
+
+ion-content {
+  & > ion-list {
+    padding: 0 20px 0;
+
+    & > ion-item {
+      margin-bottom: 0;
+      --border-color: rgba(26, 50, 83, 0.23);
+
+      & > ion-text {
+        font: normal normal 600 15px/24px SF Pro Display;
+        letter-spacing: 0.24px;
+        color: #505050;
+        height: 18px;
+        line-height: 18px;
+      }
+
+      & > h3 {
+        font: normal normal 600 15px/24px SF Pro Display;
+        letter-spacing: 0.24px;
+        color: #285078;
+        margin: 0 0 0 auto;
+        height: 18px;
+        line-height: 18px;
+      }
+      
+    }
+  }
+}

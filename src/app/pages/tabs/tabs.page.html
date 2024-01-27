@@ -1,0 +1,90 @@
+<ion-menu contentId="main-content" #menu side="end">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title size="small">
+        {{logInfo.DisplayName}}
+      </ion-title>
+      <ion-buttons slot="end" (click)="menu.close()">
+        <ion-button shape="round">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content *ngIf="appConstants.SIDE_MENU_LIST">
+    <ng-container *ngFor="let menuItem of appConstants.SIDE_MENU_LIST">
+      <ion-item lines="full" button="true"
+        *ngIf="!menuItem.subs && (menuItem.access==0 || menuItem.access==logInfo.UserTypeId)"
+        (click)="menuAction(menuItem.pagelink)">
+        <ion-icon [name]="menuItem.icon" slot="start"></ion-icon>
+        <ion-label>{{menuItem.category}}</ion-label>
+      </ion-item>
+      <ion-accordion-group *ngIf="menuItem.subs && (menuItem.access==0 || menuItem.access==logInfo.UserTypeId)">
+        <ion-accordion>
+          <ion-item slot="header">
+            <ion-icon [name]="menuItem.icon" slot="start"></ion-icon>
+            <ion-label>{{menuItem.category}}</ion-label>
+          </ion-item>
+          <div slot="content" class="sub-menu">
+            <ion-item lines="full" button="true" *ngFor="let subItem of menuItem.subs"
+              (click)="menuAction(subItem.pagelink)">
+              <ion-icon [name]="subItem.icon" slot="start"></ion-icon>
+              <ion-label>{{subItem.subcategory}}</ion-label>
+            </ion-item>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ng-container>
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-item lines="none" button="true" (click)="logoutConfirmation()">
+        <ion-icon name="right-menu-logout" slot="start"></ion-icon>
+        <ion-label>Logout</ion-label>
+      </ion-item>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
+
+<ion-tabs #tabs (ionTabsDidChange)="setCurrentTab()">
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="map">
+      <ion-icon [name]="selectedTab == 'map' ? 'tab-map-blue' : 'tab-map-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="business-user-canvas" *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.BN_USER">
+      <ion-icon [name]="selectedTab == 'business-user-canvas' ? 'tab-bhome-blue' : 'tab-bhome-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="business-user-canvas" *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.NF_USER">
+      <ion-icon [name]="selectedTab == 'business-user-canvas' ? 'tab-bhome-blue' : 'tab-bhome-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="free-user-canvas" *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.FR_USER">
+      <ion-icon [name]="selectedTab == 'free-user-canvas' ? 'tab-canvas-blue' : 'tab-canvas-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="connections">
+      <ion-icon [name]="selectedTab == 'connections' ? 'tab-connection-blue' : 'tab-connection-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inflows">
+      <ion-icon [name]="selectedTab == 'inflows' ? 'tab-inflows-blue' : 'tab-inflows-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="search">
+      <ion-icon [name]="selectedTab == 'search' ? 'tab-search-blue' : 'tab-search-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button tab="chat">
+      <ion-icon [name]="selectedTab == 'chat' ? 'tab-chat-blue' : 'tab-chat-black'"></ion-icon>
+    </ion-tab-button>
+
+    <ion-tab-button id="main-content" (click)="openMenu()">
+      <ion-icon name="tab-more-black"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>

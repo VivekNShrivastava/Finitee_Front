@@ -1,0 +1,213 @@
+<ion-item-sliding class="message-item-sliding" *ngFor="let message of chats; let index = index; let last = last"
+  long-press [data]="message" (press)="longPressAction($event)" [hidden]="message.pdeleted">
+  <!--  #slidingItem (ionDrag)="messageDraged($event, slidingItem,message)" -->
+
+  <!-- User message -->
+  <ng-container *ngIf="message.fromid == otherPartyUser.UserId">
+    <ion-item lines="none" class="message-user" [ngClass]="{
+        'message-item-background':
+          chatsService.selctedChatsJSONString.indexOf(
+            '&quot;chatId&quot;:&quot;' + message.chatId + '&quot;'
+          ) > 0
+      }">
+      <!--reply with msg-->
+      <div class="message-container" *ngIf="
+          message.replyOfChatId != '' &&
+          message.mediatype == 1 &&
+          message.deleted != true &&
+          message.deleted != logInfo.UserId
+        ">
+        <div style="height: 100%">
+          <div class="reply-container">
+            <div class="replytext chatColor" [innerHTML]="getRepliedMsgFromUsername(message.replyOfChatId)"></div>
+            <div class="replytext1 chatColor">{{ message.replyOfChatMsg }}</div>
+          </div>
+        </div>
+        <div style="margin-top: 5px">
+          <span class="text chatColor">{{
+            message.txt.length > message.showNoOfChar
+            ? (message.txt | slice : 0 : message.showNoOfChar) + "..."
+            : message.txt
+            }}
+            <span *ngIf="message.txt.length > message.showNoOfChar" style="color: #53bdeb; font-size: 15px"
+              (click)="readmore(message)">Read More</span>
+          </span>
+          <small class="time chatColor">{{
+            message.timestamp | date : "shortTime"
+            }}</small>
+        </div>
+      </div>
+
+      <!--message-->
+      <div class="message-container" *ngIf="
+          message.mediatype == 1 &&
+          message.replyOfChatId == '' &&
+          message.deleted != true &&
+          message.deleted != logInfo.UserId
+        ">
+        <span class="text chatColor userMessageText">{{
+          message.txt.length > message.showNoOfChar
+          ? (message.txt | slice : 0 : message.showNoOfChar) + "..."
+          : message.txt
+          }}
+          <span *ngIf="message.txt.length > message.showNoOfChar" style="color: #53bdeb; font-size: 15px"
+            (click)="readmore(message)">Read More</span>
+        </span>
+        <small class="time chatColor">{{
+          message.timestamp | date : "shortTime"
+          }}</small>
+      </div>
+
+      <!--image-->
+      <div class="message-container" *ngIf="
+          message.mediatype == 2 &&
+          message.path != '' &&
+          message.path.indexOf('localhost') == -1 &&
+          message.deleted != true &&
+          message.deleted != logInfo.UserId
+        ">
+        <div style="padding: 5px 0px 15px 0px">
+          <img *ngIf="message.path != '' && message.path.indexOf('mp4') == -1" style="border-radius: 6px" height="350"
+            [src]="message.path" alt="{{ message.path }}" />
+          <video *ngIf="message.path != '' && message.path.indexOf('mp4') != -1" height="350" controls>
+            <source [src]="message.path" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="time">
+          <small class="chatColor">{{
+            message.timestamp | date : "shortTime"
+            }}</small>
+        </div>
+      </div>
+
+      <!--Deleted msg or image-->
+      <div class="message-container" *ngIf="message.deleted == true || message.deleted == logInfo.UserId">
+        <span class="deletedtext">This message was deleted</span>
+        <div class="time">
+          <small class="chatColor">{{
+            message.timestamp | date : "shortTime"
+            }}</small>
+        </div>
+      </div>
+    </ion-item>
+  </ng-container>
+
+  <!-- My message -->
+  <ng-container *ngIf="message.fromid != otherPartyUser.UserId">
+    <ion-item lines="none" class="message-me" [ngClass]="{
+        'message-item-background':
+          chatsService.selctedChatsJSONString.indexOf(
+            '&quot;chatId&quot;:&quot;' + message.chatId + '&quot;'
+          ) > 0
+      }">
+      <!--reply with msg-->
+      <div class="message-container" slot="end" *ngIf="
+          message.replyOfChatId != '' &&
+          message.mediatype == 1 &&
+          message.deleted != true &&
+          message.deleted != logInfo.UserId
+        ">
+        <div style="height: 100%">
+          <div class="reply-container-other">
+            <div class="replytext chatColor" [innerHTML]="getRepliedMsgFromUsername(message.replyOfChatId)"></div>
+            <div class="replytext1 chatColor">{{ message.replyOfChatMsg }}</div>
+          </div>
+        </div>
+        <div style="margin-top: 5px">
+          <span class="text chatColor" style="padding-left: 14px">{{
+            message.txt.length > message.showNoOfChar
+            ? (message.txt | slice : 0 : message.showNoOfChar) + "..."
+            : message.txt
+            }}
+            <span *ngIf="message.txt.length > message.showNoOfChar" style="color: #53bdeb; font-size: 15px"
+              (click)="readmore(message)">Read More</span>
+          </span>
+        </div>
+        <div class="time">
+          <small class="chatColor">{{
+            message.timestamp | date : "shortTime"
+            }}</small>
+          <ion-icon color="medium-shade" *ngIf="message.status == 's'" name="checkmark-outline"></ion-icon>
+          <ion-icon color="medium-shade" *ngIf="message.status == 'd'" name="checkmark-done-outline"></ion-icon>
+          <ion-icon color="primary" *ngIf="message.status == 'r'" name="chat-blue"></ion-icon>
+        </div>
+      </div>
+
+      <!--message-->
+      <div class="message-container" slot="end" *ngIf="
+          message.replyOfChatId == '' &&
+          message.mediatype == 1 &&
+          message.deleted != true &&
+          message.deleted != logInfo.UserId
+        ">
+        <span class="text">{{
+          message.txt.length > message.showNoOfChar
+          ? (message.txt | slice : 0 : message.showNoOfChar) + "..."
+          : message.txt
+          }}
+          <span *ngIf="message.txt.length > message.showNoOfChar" style="color: #53bdeb; font-size: 15px"
+            (click)="readmore(message)">Read More</span>
+        </span>
+        <div class="time">
+          <small class="chatColor">{{
+            message.timestamp | date : "shortTime"
+            }}</small>
+          <ion-icon color="medium-shade" *ngIf="message.status == 'p'" name="chat-exclamation"></ion-icon>
+          <ion-icon color="medium-shade" *ngIf="message.status == 's'" name="checkmark-outline"></ion-icon>
+          <ion-icon color="medium-shade" *ngIf="message.status == 'd'" name="checkmark-done-outline"></ion-icon>
+          <ion-icon color="primary" *ngIf="message.status == 'r'" name="chat-blue"></ion-icon>
+        </div>
+      </div>
+
+      <!--image-->
+      <div class="message-container" slot="end" *ngIf="
+          message.mediatype == 2 &&
+          message.deleted != true &&
+          message.deleted != logInfo.UserId
+        ">
+        <div style="height: 100%">
+          <ion-spinner *ngIf="message.path.indexOf('localhost') != -1"
+            style="position: absolute; color: aliceblue; top: 30%; left: 35%">
+          </ion-spinner>
+          <!--  <div *ngIf="message.pathStatus=='fl'" style="position: absolute; width: 300px; height:300px; opacity: 0.8; background:#383a3e">
+            <div style="color: white; margin: 46% 22%; width: 130px; font-size: 20px; text-align: center; opacity: 0.8;">Upload Failed</div>
+          </div> -->
+          <div style="padding: 5px 0px 15px 0px">
+            <img *ngIf="message.path != '' && message.path.indexOf('mp4') == -1" style="border-radius: 6px" height="350"
+              [src]="message.path" alt="{{ message.path }}" />
+            <video *ngIf="message.path != '' && message.path.indexOf('mp4') != -1" height="350" controls>
+              <source [src]="message.path" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="time">
+            <small class="chatColor">{{
+              message.timestamp | date : "shortTime"
+              }}</small>
+            <ion-icon color="medium-shade" *ngIf="message.status == 's'" name="checkmark-outline"></ion-icon>
+            <ion-icon color="medium-shade" *ngIf="message.status == 'd'" name="checkmark-done-outline"></ion-icon>
+            <ion-icon color="primary" *ngIf="message.status == 'r'" name="chat-blue"></ion-icon>
+          </div>
+        </div>
+      </div>
+
+      <!--Deleted msg or image-->
+      <div class="message-container" slot="end" *ngIf="message.deleted == true || message.deleted == logInfo.UserId">
+        <span class="deletedtext">This message was deleted</span>
+        <div class="time">
+          <small class="chatColor">{{
+            message.timestamp | date : "shortTime"
+            }}</small>
+        </div>
+      </div>
+    </ion-item>
+  </ng-container>
+
+  <!-- Reply slide -->
+  <ion-item-options side="start" class="no-border">
+    <!-- <ion-item-option disabled style="--background: var(--ion-item-background);">
+      <ion-icon slot="icon-only" name="arrow-undo-outline" color="primary"></ion-icon>
+    </ion-item-option> -->
+  </ion-item-options>
+</ion-item-sliding>

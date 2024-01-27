@@ -1,0 +1,102 @@
+<ion-progress-bar *ngIf="progressBar" type="indeterminate"></ion-progress-bar>
+<ion-header class="headth">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <img style="height:20px" src="assets/icon/fin/back.png">
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Search
+    </ion-title>
+    <ion-buttons slot="end" style="visibility: hidden;">
+      <ion-button (click)="closeModal()">
+        <img style="height:20px" src="assets/icon/fin/back.png">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="toolb">
+    <ion-segment [(ngModel)]="searchMode">
+      <ion-segment-button value="N" checked>
+        Search
+      </ion-segment-button>
+      <ion-segment-button value="L">
+        Set map location
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content overflow-scroll="true">
+  <ion-list lines="none" style="  margin-top: 20px;">
+    <div class="ele">
+      <div style="padding: 0px 15px;">
+        <ion-item class="search-bar greyblue" lines="none" style="margin-bottom: 0px;">
+
+          <img style="height: 23px;position: absolute;left: 10px;" src="assets/icon/fin/search.png">
+
+          <form class="search-box input-field" style="height: auto;" action="" *ngIf="searchMode=='N'"
+            (submit)="searchMode=='N'?oneTimeSearch():setUsPing()">
+            <ion-input class="medbf" placeholder="Keywords" ngDefaultControl [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="keyinfo"></ion-input>
+          </form>
+
+          <ion-buttons slot="end" style="position: absolute;right: 5px;">
+            <ion-button class="activated" (click)="keyinfo=''">
+              <img src="assets/icon/fin/close.png">
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+        <ion-list *ngIf="searchMode=='L' && autocompleteItems.length > 0 && keyinfo" class="location-item">
+          <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
+            {{ item.description }}
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+
+    <div class="ele" style="padding: 10px 25px 0px;" *ngIf="searchMode=='N'">
+      <table class="medbf" style="width: 100%;font-weight: 500;">
+        <Tr>
+          <Td style="width: 100px;">
+            Scope
+          </Td>
+          <Td>
+            <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input> &nbsp; &nbsp;
+            Miles
+          </Td>
+        </Tr>
+        <Tr *ngIf="logInfo && logInfo.UserTypeId ==1">
+          <Td>
+            Age
+          </Td>
+          <Td>
+            <ion-input class="search-box input-field" [(ngModel)]="ageMinMax.lower" type="number"></ion-input>
+            <span class="to-label"> To </span>
+            <ion-input class="search-box input-field" [(ngModel)]="ageMinMax.upper" type="number"></ion-input>
+          </Td>
+        </Tr>
+      </table>
+    </div>
+    <div style="padding: 0px 10px;" *ngIf="searchMode=='N'">
+      <div class="ele">
+        <ion-list style="padding-right: 10px;" class="display-flex flex-wrap-wrap">
+          <ion-item style="margin-bottom: 0px;" *ngFor="let type of searchType"
+            [ngClass]="{ 'width-100':type.label == 'All' ,  'width-50':type.label != 'All'  }"
+            [hidden]="((type.value=='F'||type.label=='Connections') && logInfo.UserTypeId!=1) || (logInfo.UserTypeId == 1 && type.label=='Connected Members') ">
+            <ion-label class="medbf" style="font-size: 14px;">{{type.label}}</ion-label>
+            <ion-checkbox slot="start" [(ngModel)]="type.isChecked" (ionChange)="searchTypeChanged(type.value)">
+            </ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </div>
+
+    </div>
+    <div style="padding:20px">
+      <ion-button *ngIf="searchMode=='N'" class="search-button" expand="full" shape="round" (click)="oneTimeSearch()">
+        Search
+      </ion-button>
+    </div>
+  </ion-list>
+</ion-content>

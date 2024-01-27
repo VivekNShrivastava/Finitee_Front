@@ -1,0 +1,84 @@
+<ion-header>
+  <!-- heading bar -->
+  <ion-toolbar *ngIf="!searchshow">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="chat-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="hetitle"> {{pageevent}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="activated" (click)="searchshow = true">
+        <ion-icon name="searchi"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- searchbar -->
+  <ion-toolbar *ngIf="searchshow">
+    <ion-buttons slot="start">
+      <ion-fab-button size="small" style="--box-shadow:none;--background:transparent">
+        <ion-icon name="searchi"></ion-icon>
+      </ion-fab-button>
+    </ion-buttons>
+    <div class="searchcl">
+      <ion-input placeholder="Search" (ionChange)="handleChange($event)">
+      </ion-input>
+    </div>
+    <ion-buttons slot="end">
+      <ion-button class="activated" (click)="closeSearch()">
+        <img src="assets/icon/fin/close.png">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content overflow-scroll='true' class="bg1">
+  <ion-spinner *ngIf="inProgress" style="margin: 47%;"></ion-spinner>
+  <ng-container *ngIf="!inProgress && chatsList.length>0 && pageevent!='New Chat'">
+    <ion-list *ngFor="let chatGroup of chatsList">
+      <ion-item button class="no-padding item-background-color" *ngIf="!chatGroup.deleted" detail="false" lines="none"
+        (click)="forwardMsg(chatGroup)">
+        <ion-avatar slot="start">
+          <img src="{{appConstants.mediaPrefix + chatGroup.otherPartyProfilePhoto}}"
+            onError="this.src='assets/imgs/male.png'">
+        </ion-avatar>
+        <ion-label class="chatHeaderTitle" style="height:40px;">
+          {{chatGroup.otherPartyUserName}}
+          <small class="ion-float-right">
+            <ion-text class="time">{{chatGroup.timestamp | date:'shortTime'}}</ion-text>
+          </small>
+          <p class="chatHeaderTitle">
+            <ion-text>
+              {{chatGroup.lastmessage}}
+            </ion-text>
+          </p>
+          <p>&nbsp;</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <div class="noresult whiteblue medbf" *ngIf="connectUserLst.length==0 && pageevent=='New Chat' && !inProgress">
+    <img src="assets/imgs/icons/noresults.png">
+    <p style="margin: 0px;
+    font-weight: 500;
+    color: #758EA8;
+    font-size: 16px;
+    margin-top: 15px;"> No Connections found</p>
+  </div>
+
+  <ng-container *ngIf="!inProgress && connectUserLst.length>0">
+    <ion-list *ngFor="let user of connectUserLst">
+      <ion-item button class="no-padding item-background-color" detail="false" lines="none"
+        *ngIf="user.UserId!=this.logInfo.UserId" (click)="openNewChatWindow(user)">
+        <ion-avatar slot="start">
+          <img src="{{appConstants.mediaPrefix + user.ProfilePhoto}}" onError="this.src='assets/imgs/male.png'">
+        </ion-avatar>
+        <ion-label class="chatHeaderTitle" style=" height: 25px !important;">
+          {{user.DisplayName}}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+</ion-content>

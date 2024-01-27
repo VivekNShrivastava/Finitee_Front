@@ -1,0 +1,93 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Account Management</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container>
+    <ion-list>
+      <ion-item lines="none">
+        
+        <ion-text>
+          <h3>Name </h3> 
+        </ion-text>
+        <div class="edit-button">
+          <button (click)="edit('edit-name')"> 
+            <ion-icon name='edit' style="font-size: 17px;"></ion-icon>
+          </button>
+        </div>
+        <!-- <ion-button (click)="edit('edit-name')">
+          <ion-icon slot="icon-only" name="star"></ion-icon>
+        </ion-button> -->
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Username</h3>
+        </ion-text>
+        <div class="edit-button">
+          <button (click)="edit('edit-username')"> 
+            <ion-icon name='edit' style="font-size: 17px;"></ion-icon>
+          </button>
+        </div>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Password</h3>
+        </ion-text>
+        <div class="edit-button">
+          <button (click)="edit('edit-password')"> 
+            <ion-icon name='edit' style="font-size: 17px;"></ion-icon>
+          </button>
+        </div>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Address</h3>
+        </ion-text>
+        <div class="edit-button">
+          <button (click)="edit('edit-address')"> 
+            <ion-icon name='edit' style="font-size: 17px;"></ion-icon>
+          </button>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <!-- <ion-button (click)="navigateToAnotherRoute('sonar')"> <img src="../../../../assets/icon/fin/forward_arrow.svg"> </ion-button> -->
+      </ion-buttons>
+      <ion-text>Contact Info</ion-text>
+    </ion-toolbar>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Email </h3> 
+        </ion-text>
+        <div class="edit-button">
+          <button (click)="edit('edit-name')"> 
+            <ion-icon name='edit' style="font-size: 17px;"></ion-icon>
+          </button>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-text>
+          <h3>Phone</h3>
+        </ion-text>
+        <div class="edit-button">
+          <button (click)="edit('edit-name')"> 
+            <ion-icon name='edit' style="font-size: 17px;"></ion-icon>
+          </button>
+        </div>
+      </ion-item>
+     
+    </ion-list>
+
+  </ng-container>
+</ion-content>
+

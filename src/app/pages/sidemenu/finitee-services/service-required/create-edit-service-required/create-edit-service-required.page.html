@@ -1,0 +1,268 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="!isEdit">Create Service required listing</ion-title>
+    <ion-title *ngIf="isEdit">Edit Service required listing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+
+    <!-- Title -->
+    <ng-container *ngIf="!isEdit">
+      <ion-label class="input-label"><ion-note color="danger">*</ion-note> Title</ion-label>
+      <ion-item lines="none">
+        <ion-input autocapitalize="on" class="input" placeholder="Enter title" type="text" #Title="ngModel" name="Title"
+          [(ngModel)]="serviceObj.Title" minlength="3" maxlength="30" required></ion-input>
+      </ion-item>
+      <div *ngIf="Title.invalid && (Title.dirty || Title.touched)" class="error-message">
+        <div *ngIf="Title.errors?.['required']">
+          Title is required.
+        </div>
+        <div *ngIf="Title.errors?.['minlength']">
+          Enter atleast 3 character.
+        </div>
+      </div>
+
+
+
+
+      <!-- Description -->
+      <ion-label  class="input-label"> Description</ion-label>
+      <ion-item lines="none">
+        <ion-input autocapitalize="on" class="input" placeholder="Enter description" type="text" name="Description"
+          [(ngModel)]="serviceObj.Description" maxlength="30"></ion-input>
+      </ion-item>
+
+      <!-- start date -->
+      <ion-label class="input-label">Start date</ion-label>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="3.5">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input style="text-align: center;" placeholder="DD" inputmode="numeric" #sday="ngModel" name="day"
+                [(ngModel)]="startDate.day" pattern="^(0?[1-9]|1\d|2\d|3[01])$" maxlength="2"></ion-input>
+            </ion-item>
+
+          </ion-col>
+          <ion-col size="3.5">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input style="text-align: center;" placeholder="MM" inputmode="numeric" #smonth="ngModel" name="month"
+                [(ngModel)]="startDate.month" pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="4.5">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input style="text-align: center;" placeholder="YYYY" inputmode="numeric" #syear="ngModel" name="year"
+                [(ngModel)]="startDate.year" pattern="^\d{4}$" maxlength="4"></ion-input>
+
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <div
+        *ngIf="startDateError.is_show && !(sday?.invalid && (sday.dirty || sday.touched)) && !(smonth?.invalid && (smonth.dirty || smonth.touched)) && !(syear?.invalid && (syear.dirty || syear.touched))"
+        class="error-message">
+        {{startDateError.message}}
+      </div>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+          <ion-col size="3.5">
+            <div *ngIf="sday?.invalid && (sday.dirty || sday.touched)" class="error-message">
+              Invalid day
+            </div>
+          </ion-col>
+          <ion-col size="3.5">
+            <div *ngIf="smonth?.invalid && (smonth.dirty || smonth.touched)" class="error-message">
+              Invalid month
+            </div>
+          </ion-col>
+          <ion-col size="4.5">
+            <div *ngIf="syear?.invalid && (syear.dirty || syear.touched)" class="error-message">
+              Invalid year
+            </div>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ng-container>
+
+    <ng-container *ngIf="isEdit">
+
+      <div style="margin-bottom: 8px;">
+        <ion-label class="input-label">Title</ion-label>
+        <br>
+        <ion-label class="desc">
+          {{serviceObj.Title}}
+        </ion-label>
+      </div>
+
+      <div *ngIf="serviceObj.Description" style="margin-bottom: 8px;">
+        <ion-label class="input-label">Description</ion-label>
+        <br>
+        <ion-label *ngIf="serviceObj.Description" class="desc">
+          {{serviceObj.Description}}
+        </ion-label>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <ion-label class="input-label">Start date</ion-label>
+        <br>
+        <ion-label class="desc">
+          {{serviceObj.StartDate | date :"dd/MM/YYYY" }}
+        </ion-label>
+      </div>
+    </ng-container>
+    <!-- Price -->
+    <ion-label class="input-label"><ion-note color="danger">*</ion-note> Pay</ion-label>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="7">
+          <ion-item lines="none" color="none" class="input">
+
+            <ion-buttons id="pop-currency"><ion-button style="font-size: 16px;">{{currencySymbol}}</ion-button></ion-buttons>
+            <ion-input placeholder="Amount" #Price="ngModel" name="Price" inputmode="numeric"
+              [(ngModel)]="serviceObj.Price" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4.5">
+          <ion-item lines="none" color="none" class="input" id="pop-priceType">
+            <ion-input style="text-align: center;" placeholder="Type" #PriceType="ngModel" name="PriceType"
+              [(ngModel)]="serviceObj.PriceType" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="7">
+          <div *ngIf="Price.invalid && (Price.dirty || Price.touched)" class="error-message">
+            <div *ngIf="Price.errors?.['required']">
+              Price is required.
+            </div>
+
+          </div>
+        </ion-col>
+        <ion-col size="4.5">
+          <div *ngIf="PriceType.invalid && (PriceType.dirty || PriceType.touched)" class="error-message">
+            <div *ngIf="PriceType.errors?.['required']">
+              Price type is required.
+            </div>
+
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ng-container *ngIf="isEdit">
+
+      <ion-label *ngIf="isEdit" class="input-label">Photos</ion-label>
+
+      <ion-row>
+        <ion-col size="4" *ngFor="let i of serviceObj.ImageList">
+
+          <img style="width: 100%; height: 70px; border-radius: 10px;" src="{{appConstants.mediaPrefix+i}}" />
+
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <br>
+
+    <!-- multiple file uplaod -->
+    <app-multiple-media-upload *ngIf="!isEdit" [mediaFiles]="serviceObj.ImageList"
+      (filePathEvent)="addMedia($event)"></app-multiple-media-upload>
+
+    <!--  Viewable by -->
+    <ion-label class="input-label">Viewable by </ion-label>
+    <ion-item color="none" class="input" lines="none" id="viewable-by">
+      <ion-label>
+        <h3 *ngIf="serviceObj.VisibleTo">{{serviceObj.VisibleTo}}</h3>
+      </ion-label>
+      <ion-buttons>
+        <ion-button shape="round">
+          <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+
+    <div *ngIf="isEdit" style="margin-bottom: 8px;">
+      <ion-label class="input-label">Location</ion-label>
+      <br>
+      <ion-label class="desc">
+        {{serviceObj.Location}} location
+      </ion-label>
+    </div>
+
+    <!-- location -->
+    <ion-radio-group *ngIf="!isEdit" name="Location" [(ngModel)]="serviceObj.Location" (ionChange)="getLatlng()">
+      <ion-item lines="none" class="ion-no-margin">
+        <ion-label class="locationInput">Location:</ion-label>
+        <ion-radio value="current"></ion-radio>
+        <ion-label style="font-size: 14px;">&nbsp;Current location</ion-label>
+        <ion-radio value="home"></ion-radio>
+        <ion-label style="font-size: 14px;">&nbsp;Home location</ion-label>
+      </ion-item>
+    </ion-radio-group>
+
+    <!-- ofset location -->
+    <div *ngIf="!isEdit" style="margin-left: 12px;">
+      <ion-item color="none" lines="none" class="ion-no-margin">
+        <ion-checkbox [disabled]="isEdit" name="locationOffset" [(ngModel)]="serviceObj.LocationOffset"> </ion-checkbox>
+        <ion-label>&nbsp; Offset location</ion-label>
+      </ion-item>
+    </div>
+
+    <div *ngIf="isEdit" style="margin-bottom: 10px;">
+      <ion-label class="input-label">Offset location</ion-label>
+      <br>
+      <ion-label class="desc">
+        <ng-container *ngIf="!serviceObj.LocationOffset">Disabled</ng-container>
+        <ng-container *ngIf="serviceObj.LocationOffset">Enabled</ng-container>
+      </ion-label>
+    </div>
+
+
+    <ion-button style="text-transform: none;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
+      type="submit">
+      <span *ngIf="!isEdit">Create</span>
+      <span *ngIf="isEdit">Save</span>
+    </ion-button>
+  </form>
+
+</ion-content>
+
+<ion-popover trigger="pop-priceType" [dismissOnSelect]="true" triggerAction="click" mode="ios" alignment="end">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group [value]="serviceObj.PriceType" [(ngModel)]="serviceObj.PriceType" mode="md">
+        <ion-item lines="none" *ngFor="let i of appConstants.price_type">
+          <ion-label [ngClass]="{'selected': (serviceObj.PriceType==i.key)}">{{i.value}}</ion-label>
+          <ion-radio slot="start" value="{{i.value}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ion-popover trigger="viewable-by" [dismissOnSelect]="true" triggerAction="click" mode="ios" alignment="end">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group [value]="serviceObj.VisibleTo" [(ngModel)]="serviceObj.VisibleTo" mode="md">
+
+        <ion-item lines="none" *ngFor="let i of GeneralPrivacy">
+          <ion-label [ngClass]="{'selected': (serviceObj.VisibleTo==i.value)}">{{i.value}}</ion-label>
+          <ion-radio slot="start" value="{{i.value}}"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>

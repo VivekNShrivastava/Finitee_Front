@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="254" height="66" viewBox="0 0 254 66">
+  <defs>
+    <filter id="Rectangle_500" x="0" y="0" width="254" height="66" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_7434" data-name="Group 7434" transform="translate(-80 -752)">
+    <g transform="matrix(1, 0, 0, 1, 80, 752)" filter="url(#Rectangle_500)">
+      <rect id="Rectangle_500-2" data-name="Rectangle 500" width="236" height="48" rx="16" transform="translate(9 6)" fill="#0b1131" opacity="0.7"/>
+    </g>
+    <text id="Luther_Wilson" data-name="Luther Wilson" transform="translate(207 779)" fill="#fff" font-size="15" font-family="SFProDisplay-Regular, SF Pro Display" letter-spacing="0.016em"><tspan x="-78.796" y="0">This user is not available</tspan><tspan x="-55.951" y="16">for greetings now</tspan></text>
+  </g>
+</svg>

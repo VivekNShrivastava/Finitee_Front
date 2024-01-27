@@ -1,0 +1,42 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button" slot="start">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Rolodex</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="qrcode-container" *ngIf="isContentHide">
+
+  </div>
+  <ion-list *ngIf="!isContentHide">
+    <ion-card>
+      <!-- <ion-card-header>
+        <ion-avatar>
+          <img [src]="businessUserProfile.ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" />
+        </ion-avatar>
+        <ion-thumbnail *ngIf="scanString">
+          <qrcode [qrdata]="scanString" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
+        </ion-thumbnail>
+      </ion-card-header>
+      <ion-card-content>
+        <h3>{{businessUserProfile.DisplayName}}</h3>
+        <h5>{{businessUserProfile.About}}</h5>
+      </ion-card-content> -->
+    </ion-card>
+    <ng-container>
+      <div class="ion-text-center">
+        <img style="margin-top: 20px;" src="assets/imgs/new/no-rolodex.png">
+      </div>
+    </ng-container>
+  </ion-list>
+
+
+</ion-content>
+
+<ion-footer *ngIf="!isContentHide">
+  <ion-button expand="block" shape="round" color="primary" (click)="startScan()">Scan</ion-button>
+</ion-footer>

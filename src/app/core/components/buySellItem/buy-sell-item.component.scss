@@ -1,0 +1,67 @@
+.cont {
+  padding: 10px 20px;
+}
+
+.cont p {
+  margin: 0px;
+}
+
+.cont h6 {
+  font-weight: 600;
+  margin: 0px;
+}
+
+ion-thumbnail {
+  height: 83px;
+  width: 114px;
+  border-radius: 23px;
+  overflow: hidden;
+  margin-right: 7px;
+}
+ion-label {
+ 
+  border-radius: 22px;
+
+  h6 {
+  
+    font-size: 14px;
+    font-weight: 500;
+  }
+  p {
+    
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .lastc {
+    color: #03a9f5;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+ion-thumbnail * {
+  height: 100%;
+  width: 100%;
+}
+
+.butts {
+  display: flex;
+  position: absolute;
+  right: 5px;
+  bottom: 13px;
+}
+
+.butts ion-fab-button {
+  width: 26px;
+  height: 26px;
+  --background: #ffffff;
+  margin: 4px;
+}
+
+ion-item {
+  --padding-start: 10px;
+  --padding-end: 5px;
+}
+.expired {
+  color: red;
+}

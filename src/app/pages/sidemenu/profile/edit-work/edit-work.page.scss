@@ -1,0 +1,223 @@
+ion-header {
+  background-color: #ffffff !important;
+  padding: 10px 10px;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-left: 22px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+ion-toolbar {
+  --background: #eaf1f4;
+  border-radius: 26px;
+  --height: 51px;
+}
+
+ion-select.visibility .select-text {
+  background-color: #f5f5f5; /* Replace this with your desired light background color */
+}
+
+ion-label {
+  padding-inline: 12px;
+}
+ion-title {
+  font: normal normal 600 20px/28px SF Pro Display;
+  letter-spacing: 0.32px;
+  color: #285078;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+ion-content {
+  // --padding-top: 15px;
+  // --padding-bottom: 15px;
+  // --padding-start: 10px;
+  // --padding-end: 10px;
+  .fi-edit-container {
+    padding: 10px 5px;
+  }
+  ion-item.fi-popover-item {
+    height: 53px;
+    background-color: #f0f5f7;
+    color: #285078;
+    border-radius: 11px;
+    --padding-start: 10px !important;
+    --padding-end: 10px !important;
+    margin-left: 9px;
+    margin-right: 9px;
+  }
+  .fi-popover-item::part(native){
+    --background: transparent;
+  }
+  ion-card {
+    background-color: #f0f5f7;
+    box-shadow: none;
+    border-radius: 22px !important;
+
+    &.header-about {
+      margin-top: 50px;
+      color: #1a3253;
+
+      ion-card-content {
+        font: normal normal normal 14px/16px SF Pro Display;
+        letter-spacing: 0.22px;
+        color: #1a3253;
+
+        ion-textarea {
+          --padding-top: 0;
+          margin-top: 0;
+        }
+      }
+    }
+
+    &.header-thumbnail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-height: 185px;
+      min-height: 185px;
+
+      & > ion-buttons {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+    }
+
+    ion-item.fi-list-item {
+      --ion-item-background: transparent;
+      margin: -22px;
+      margin-right: -11px;
+      padding: 5px 0px 10px 0px;
+      .fi-list-h3 {
+        font: normal normal 600 16px/24px SF Pro Display;
+        letter-spacing: 0.22px;
+        color: #285078;
+        opacity: 1;
+      }
+      .fi-list-p {
+        font: normal normal normal 15px/24px SF Pro Display;
+        letter-spacing: 0.21px;
+        color: #505050;
+        opacity: 1;
+        line-height: 1;
+      }
+      .edit-button {
+        display: inline-block;
+        border-radius: 50%;
+        background-color: #fdfdfd;
+        box-shadow: 0 2px 4px rgb(208 208 208 / 20%);
+        button {
+          background-color: transparent;
+          border: none;
+          color: #333;
+          width: 25px;
+          height: 25px;
+          ion-icon {
+            font-size: 14px;
+          }
+        }
+      }
+      .fi-edit {
+        position: absolute;
+        top: 20px;
+        right: 33px;
+      }
+      .fi-delete {
+        position: absolute;
+        top: 20px;
+        right: 5px;
+      }
+    }
+  }
+  & ion-toggle {
+    width: 50px;
+    height: 24px;
+
+    --background: #f0f5f7;
+
+    --background-checked: #aed6e9;
+
+    --handle-background: #505050;
+    --handle-background-checked: #03a9f5;
+
+    --handle-width: 24px;
+    --handle-height: 24px;
+    --handle-max-height: auto;
+
+    --handle-border-radius: 50%;
+    --handle-box-shadow: none;
+  }
+}
+
+/* Adjust the width of the inputs to fit the content */
+
+.input-label {
+  padding-inline: 20px;
+  font: normal normal 600 15px/24px SF Pro Display;
+  letter-spacing: 0.21px;
+  color: #0b1131;
+  opacity: 1;
+}
+
+ion-popover {
+  --max-width: 183px;
+  --border-radius: 20px;
+
+  ion-text {
+    padding: 10px 10px 0;
+    font: normal normal normal 16px/26px SF Pro Display;
+    letter-spacing: 0.25px;
+    color: #285078;
+    text-align: center;
+  }
+
+  ion-list {
+    padding: 15px 2px 10px;
+
+    ion-radio-group {
+      ion-item {
+        --min-height: 25px;
+        --background: none;
+        --background-hover: none;
+        --ripple-color: transparent;
+        margin: 5px 0;
+
+        ion-label {
+          font: normal normal normal 14px/24px SF Pro Display;
+          letter-spacing: 0.22px;
+          color: #a8a8a8;
+          margin: 0;
+
+          &.selected {
+            color: #03a9f5;
+          }
+        }
+
+        ion-radio {
+          width: 18px;
+          height: 18px;
+          margin: 0 5px 0 15px;
+          --color: #ddd;
+          --color-checked: #03a9f5;
+        }
+      }
+    }
+  }
+}
+
+ion-button.fi-footer-btn {
+  text-transform: none;
+  height: 53px;
+  background: #0aa5f5 0% 0% no-repeat padding-box;
+  border-radius: 27px;
+  opacity: 1;
+  margin-bottom: 10px;
+}

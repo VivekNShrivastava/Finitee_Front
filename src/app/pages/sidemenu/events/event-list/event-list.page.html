@@ -1,0 +1,142 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <!-- <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button> -->
+      <app-notification-icon></app-notification-icon>
+    </ion-buttons>
+    <ion-title>Events</ion-title>
+    <ion-buttons slot="end" id="main-content">
+      <ion-menu-button ></ion-menu-button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="!laoding">
+    <!--  Upcoming Events-->
+    <!-- Upcoming Events - Banner-->
+    <ion-segment>
+      <ion-text>
+        Upcoming
+      </ion-text>
+    </ion-segment>
+    <!-- Upcoming Events - List-->
+    <ion-grid>
+      <ion-row class="ion-align-items-center" *ngFor="let event of upcomingEventList; let i=index"
+        (click)="openEventViewPage(event.Id)">
+        <ion-col size="4">
+          <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
+        </ion-col>
+        <ion-col size="8">
+          <ion-card button="true">
+
+            <ion-card-content>
+              <ion-text>
+                <h4>{{event.Title}}</h4>
+              </ion-text>
+              <ion-text *ngIf="event.StartDate">
+                <h4>{{event.StartDate | date}}</h4>
+              </ion-text>
+             
+              <ion-text>
+                <h4>{{event.StartDate | date:'shortTime'}} <ng-container
+                    *ngIf="event.StartDate | date  ">to</ng-container> {{event.EndDate | date:'shortTime'}}</h4>
+              </ion-text>
+              <ion-text *ngIf="event.daysLeft >= 0">
+                <h5>({{event.daysLeft}} days left)</h5>
+              </ion-text>
+              <ion-buttons>
+                <ion-button class="fi-delete-btn" shape="round"
+                  (click)="deleteEvent($event,event,i,'upcoming') ; $event.stopPropagation();">
+                  <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+                </ion-button>
+                &nbsp;
+                <ion-button class="fi-edit-btn" shape="round"
+                  (click)="editEvent($event,event,i) ; $event.stopPropagation();">
+                  <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!--  Completed Events-->
+    <!-- Completed Events - Banner-->
+    <ion-segment>
+      <ion-text>
+        Completed
+      </ion-text>
+    </ion-segment>
+    <!-- Completed Events - List-->
+    <ion-grid>
+      <ion-row class="ion-align-items-center" *ngFor="let event of completedEventList; let i=index">
+        <ion-col size="4">
+          <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
+        </ion-col>
+        <ion-col size="8">
+          <ion-card>
+
+            <ion-card-content>
+              <ion-text>
+                <h4 class="completed-event">{{event.Title}}</h4>
+              </ion-text>
+              <ion-text>
+                <h4 class="completed-event">{{event.StartDate | date}}</h4>
+              </ion-text>
+              <ion-text>
+                <h4 class="completed-event">{{event.StartDate | date:'shortTime'}} <ng-container
+                    *ngIf="event.StartDate != null && event.EndDate != null ">to</ng-container> {{event.EndDate |
+                  date:'shortTime'}}</h4>
+              </ion-text>
+              <ion-buttons>
+                <ion-button class="fi-delete-btn" shape="round" (click)="deleteEvent($event,event,i,'complete')">
+                  <ion-icon name="delete"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
+<!--  
+  <ng-container *ngIf="!laoding">
+    <app-skeleton-view></app-skeleton-view>
+  </ng-container>   -->
+
+
+    <!-- skeleton -->
+    <ion-list *ngIf="laoding" class="ion-padding" style="margin-top: -20px;">
+      <ion-item *ngFor="let i of [1,2,3,4,5,6,7]" lines="none">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text style="border-radius: 10px;" [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text [animated]="true" style="width: 90%;"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 70%;"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="primary" (click)="openCreateEventPage()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

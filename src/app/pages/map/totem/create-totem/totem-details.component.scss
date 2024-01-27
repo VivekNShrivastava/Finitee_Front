@@ -1,0 +1,169 @@
+.welcome-card ion-img {
+    max-height: 35vh;
+    overflow: hidden;
+}
+
+.image-container {
+    background-size: cover;
+    height: 150px;
+    background-position: center;
+    border-radius: 10px;
+}
+
+ion-item {
+    --inner-padding-end: 0px;
+}
+
+.latcomm {
+    font-size: 12px;
+    padding: 3px 17px;
+    line-height: 18px;
+}
+
+.viewcomm {
+    text-transform: inherit;
+    --border-radius: 30px;
+    height: 24px;
+    margin-left: -14px;
+    font-size: 13px;
+    line-height: 22px;
+}
+
+.likes {
+    position: absolute;
+    right: 8px;
+    font-weight: 100;
+    top: 4px;
+}
+
+.profcircle {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.welcome {
+    font-size: 16px;
+    margin: 2px 5px 6px;
+    color: #262626;
+    font-weight: 500;
+}
+
+.writepost {
+    background: #f0f5f7;
+    padding-left: 15px;
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 16px;
+    border: none;
+    border-radius: 11px;
+}
+
+.postbtns ion-button {
+    background: #f0f5f7;
+    width: 42px;
+    border-radius: 30px;
+    height: 42px;
+    text-align: center;
+    --padding-end: 0px;
+    --padding-start: 0px;
+    padding: 6px;
+    margin: 0px 4px;
+    // box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.0509803922);
+}
+
+ion-card.sc-ion-card-md-h {
+    --background: #fff;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.08);
+    margin: 20px 11px;
+    border-radius: 20px;
+}
+
+ion-content {
+    border-top: 1px solid #fefefe;
+}
+
+ul.posts {
+    list-style: none;
+    -webkit-padding-start: 0px;
+}
+
+ul.posts li {
+    width: 31%;
+    display: inline-block;
+    margin: 1%;
+}
+
+.progress-outer {
+    width: 96%;
+    margin: 10px 2%;
+    padding: 3px;
+    text-align: center;
+    background-color: #f4f4f4;
+    border: 1px solid #dcdcdc;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.progress-inner {
+    min-width: 15%;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+    border-radius: 20px;
+    background-color: #03a9f5;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.absolbtn {
+    position: ABSOLUTE;
+    right: 5px;
+    top: 7px;
+    --box-shadow: NONE;
+}
+
+.optional {
+    text-align: center;
+    color: #c0c1c3;
+    font-size: 12px;
+    position: relative;
+}
+
+.cll {
+    width: 50%;
+    display: inline-block;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.save-button {
+    height: 50px;
+    text-transform: capitalize;
+    --box-shadow: none;
+}
+
+.thumbnail-list {
+    img {
+        opacity: 0.5;
+    }
+
+    .active {
+        opacity: 1;
+        border: 3px solid #77bfe3;
+        height: 45px;
+        width: 45px;
+    }
+}
+
+.selected-image {
+    img {
+        width: 100%;
+        height: 300px;
+    }
+}

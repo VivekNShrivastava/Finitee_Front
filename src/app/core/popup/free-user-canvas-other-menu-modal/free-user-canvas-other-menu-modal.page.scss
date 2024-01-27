@@ -1,0 +1,141 @@
+
+ion-card {
+  --background: #fff;
+  --color: #000;
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0 20px;
+}
+
+ion-card-header {
+  padding: 0;
+
+}
+
+ion-item {
+  margin: 0;
+  padding: 8px 0;
+  --border-color: #93a7bb;
+}
+
+ion-card-title {
+  --color: #285078;
+  text-align: left;
+  opacity: 1;
+  font: normal normal bold 16px/24px SF Pro Display;
+  letter-spacing: 0.25px;
+
+  &.red-text {
+    color: #782828;
+  }
+}
+
+ion-card-subtitle {
+  --color: #000;
+  text-align: left;
+  letter-spacing: 0.24px;
+  color: #505050;
+  opacity: 1;
+  font-size: 13px;
+}
+
+ion-segment {
+  --color: #000;
+}
+
+ion-icon {
+  font-size: 27px;
+  color: rgb(0, 0, 0);
+}
+
+.segment-btn {
+  color: #000;
+}
+
+.connection-card {
+  display: flex;
+  flex-direction: row;
+}
+
+.first-section {
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 5px;
+
+  & > ion-icon {
+    height: 31px;
+    width: 31px;
+  }
+
+}
+
+.second-section {
+  align-items: left;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  margin-left: 7px;
+}
+
+.third-section {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.icons {
+  padding: 8px;
+  width: 35px;
+  height: 28px;
+  border-radius: 14px;
+  background-color: #03A9F5;
+  align-items: center;
+  display: flex;
+}
+
+.icons-menu {
+  padding: 8px;
+  width: 35px;
+  height: 28px;
+  border-radius: 14px;
+  background-color: #8c98a9;
+  align-items: center;
+  display: flex;
+}
+
+.accept {
+  width: 72px;
+  height: 28px;
+  border-radius: 14px;
+  background-color: #03A9F5;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+  p {
+    color: white;
+  }
+}
+
+.declain {
+  width: 72px;
+  height: 28px;
+  border-radius: 14px;
+  background-color: #E57676;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+  p {
+    color: white;
+  }
+}
+
+.my-label {
+  font-size: 12px;
+  letter-spacing: 0.22px;
+  color: #285078;
+}

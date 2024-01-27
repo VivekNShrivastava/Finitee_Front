@@ -1,0 +1,198 @@
+// .login-main {
+  .fi-padding{
+   padding: 0px 9px !important;
+  }
+  .fi-margin{
+   width: 95% !important;
+   margin-left: 10px;
+   margin-right: 10px;
+  //  margin: auto !important;
+  }
+
+  .img2 {
+    width: 154px;
+    height: 113px;
+    margin: auto;
+    display: block;
+    margin-top: 30px;
+    padding-left: 10%;
+  }
+
+  h3 {
+    text-align: center;
+    letter-spacing: 0.32px;
+    color: #758ea8;
+    opacity: 1;
+    margin-top: 20px;
+  }
+
+  p {
+    text-align: center;
+    letter-spacing: 0.27px;
+    color: #788692;
+    opacity: 1;
+  }
+  .input1 {
+    margin-top: 30px;
+    height: 53px;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    overflow: hidden;
+    line-height: 27px;
+    background: #f0f5f7;
+    border-radius: 11px;
+    --padding-start: 20px !important;
+    --padding-bottom: 0px;
+  }
+  .input2 {
+    margin: 10px 0px;
+    height: 53px;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    overflow: hidden;
+    line-height: 27px;
+    background: #f0f5f7;
+    border-radius: 11px;
+    --padding-start: 20px !important;
+    --padding-bottom: 0px;
+  }
+  .lgn-button {
+    width: 93%;
+    margin: auto;
+   
+    display: block;
+    --border-radius: 26px;
+    height: 53px;
+    margin-top: 16px;
+    font-size: 18px;
+    letter-spacing: 0.25px;
+    color: #ffffff;
+  }
+  // .create-acc{
+  //   width: 85%;
+  //   margin: auto;
+
+  //   display: block;
+  //   border: 2px solid rgb(0, 170, 255); 
+  //   border-radius: 26px;
+  //   height: 53px;
+  //   margin-top: 20px;
+  //   font-size: 18px;
+  //   letter-spacing: 0.25px;
+  //   color: #000000;
+ 
+  // }
+  .button-native{
+    border-radius: 26px;
+  }
+
+  .ion-label1 {
+    letter-spacing: 0.27px;
+    color: #285078;
+    opacity: 1;
+  }
+  .ion-label2 {
+    text-align: right;
+    letter-spacing: 0.27px;
+    color: #285078;
+    opacity: 1;
+  }
+  .logo-img3 {
+    width: 45px;
+    height: 26px;
+    margin: auto;
+    display: block;
+    margin-top: 23px;
+  }
+  ion-checkbox {
+    margin-inline-end: 8px;
+  }
+
+
+  .emailsvg{
+    margin-top: 20%;
+    align-items: center;
+    width: auto;
+    height: 94px;
+    display: flex;
+  }
+  .logo-img {
+    width: 83px;
+    height: 68px;
+    margin: auto;
+    display: block;
+    margin-top: 25px;
+  }
+  .subheading2{
+    text-align: center;
+    font: normal normal normal 17px/18px SF Pro Display;
+    letter-spacing: 0.27px;
+    color: #788692;
+    opacity: 1;
+  }
+
+  .heading {
+    font-size: 24px;
+    text-align: center;
+    color: #285078;
+    letter-spacing: 0.38px;
+    opacity: 1;
+    margin-top: 12%;
+
+  }
+
+  .subheading {
+    font-size: 18px;
+    letter-spacing: 0.32px;
+    color: #788692;
+    opacity: 1;
+    white-space: pre-line;
+  }
+
+  .bsname {
+    margin-top: 35%;
+  }
+
+  .modal-view {
+    width: 400px;
+    min-height: 400px;
+  }
+// }
+
+.subheading {
+  font-size: 18px;
+  letter-spacing: 0.32px;
+  color: #788692;
+  opacity: 1;
+  white-space: pre-line;
+}
+
+.backicon {
+  width: 24px !important;
+  height: 24px !important;
+  margin-left: 3%;
+  margin-top: 3% !important;
+  position: absolute !important;
+}
+.custom-height {
+  height: 35px; 
+}
+
+.height{
+  height: 28px;
+  padding-bottom: 9px;
+  font-size: 16px;
+}
+.wle-p{
+  font-size: 17px;
+}
+
+.lgn-class{
+  font-size: 18px;
+  width: 95%;
+height: 53px;
+  margin-left: 10px;
+  margin-right: 10px;
+}

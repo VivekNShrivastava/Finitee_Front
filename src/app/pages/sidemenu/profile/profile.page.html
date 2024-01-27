@@ -1,0 +1,342 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button" slot="start">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- profile -->
+  <ion-card class="header-card">
+    <ion-card-header>
+      <div class="edit-button">
+        <!-- <button [hidden]="!isPersonalSectionExpanded" (click)="eCard()" (click)="editPersonal()">  -->
+        <!-- <button [hidden]="!isPersonalSectionExpanded" (click)="editPersonal()">  -->
+        <button (click)="editPersonal()"> 
+          <ion-icon name='edit' style="font-size: 14px;"></ion-icon>
+        </button>
+      </div>
+      <!-- add ngClass="fi-profile-other" in below empty class to see profile other css and for profile own class should be empty -->
+      <div class="">
+        <span>
+          <img class="fi-user-img" src="{{appConstants.mediaPrefix + getUserProfileAsPerPrivacy.userProfile.ProfileImage}}"
+            onError="this.src='assets/icons/business/anonymous.svg'" />
+        </span>
+        <span>
+          <ion-card-title> {{getUserProfileAsPerPrivacy.userProfile.DisplayName}} </ion-card-title>
+          <ion-card-subtitle> @{{getUserProfileAsPerPrivacy.userProfile.UserName}} | {{getUserProfileAsPerPrivacy.InflowsCount}} Inflows</ion-card-subtitle>
+          <div class="fi-profile-btns">
+            <ion-button class="fi-btn-1" shape="round" size="small">
+              <span class="fi-bold-text">{{getUserProfileAsPerPrivacy.ConnectedUserCount}}</span>&nbsp; Connections
+            </ion-button>
+            <ion-button class="fi-btn-2" shape="round" size="small">
+              <span class="fi-bold-text">{{getUserProfileAsPerPrivacy.PostCount}}</span>&nbsp; Posts
+            </ion-button>
+          </div>
+        </span>
+      </div>
+      <ion-item class="fi-bio-item" lines="none" [hidden]="!isPersonalSectionExpanded">
+        <ul>
+          <li>
+            <h3>Bio</h3>
+            <p>
+              {{getUserProfileAsPerPrivacy.userProfile.Bio}}
+            </p>
+          </li>
+          <li>
+            <h3>Gender</h3>
+            <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Gender =='1'">Male</p>
+            <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Gender =='2'">Female</p>
+            <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Gender =='3'">Other</p>
+          </li>
+          <li>
+            <h3>DateOfBirth</h3>
+            <p>
+              {{getUserProfileAsPerPrivacy.userProfile.DoB | date:'dd MMM yyyy' }}
+            </p>
+          </li>
+          <!-- <div class="fi-li-div">
+            <li>
+              <h3>Genders</h3>
+              <p *ngIf="userProfile.user.Gender ==='1'">Male</p>
+              <p *ngIf="userProfile.user.Gender ==='2'">Female</p>
+              <p *ngIf= "userProfile.user.Gender === '3'">Other</p>
+            </li>
+            <li>
+              <h3>B'day</h3>
+              <p>
+                {{getUserProfileAsPerPrivacy.userProfile.DateOfBirth | date:'dd MMM yyyy' }}
+              </p>
+            </li>
+          </div> -->
+          <li>
+            <h3>Languages</h3>
+            <p>
+              {{getUserProfileAsPerPrivacy.userProfile.Languages}}
+
+            </p>
+          </li>
+          <li>
+            <h3>Professional skills</h3>
+            <p>
+              {{getUserProfileAsPerPrivacy.userProfile.Professionalskills}}
+
+              <!-- Photography, Handmade accessories, Business management & soccer coaching -->
+            </p>
+          </li>
+          <li>
+            <h3>Previous cities</h3>
+            <p>
+              {{getUserProfileAsPerPrivacy.userProfile.Previous_cities}}
+
+              <!-- Los Angeles, Mumbai & Cairo. -->
+            </p>
+          </li>
+          <li>
+            <h3>Religion</h3>
+            <p>
+              {{getUserProfileAsPerPrivacy.userProfile.Religion}}
+
+              <!-- Christian -->
+            </p>
+          </li>
+        </ul>
+      </ion-item>
+      <ion-buttons class="collapse-button">
+        <ion-button shape="round" (click)="toggleSection('personal')">
+          <ion-icon [name]="isPersonalSectionExpanded ? 'bluearrowup' : 'bluearrowdown'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+
+    </ion-card-header>
+    <ion-card-content>
+
+    </ion-card-content>
+
+  </ion-card>
+
+
+  <!-- Work -->
+  <ion-card>
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-icon name="work" slot="start"></ion-icon>
+        <ion-label>
+          <h3>Work</h3>
+        </ion-label>
+        <div class="edit-button" *ngIf="userId === logInfo.UserId">
+          <button (click)="workSection(false)"> <ion-icon name='edit' style="font-size: 14px;"></ion-icon></button>
+        </div>
+
+      </ion-item>
+
+      <!-- ony first work shown  -->
+      <ion-item *ngIf="firstWork" lines="none">
+        <ul>
+          <li>
+            <h3>{{firstWork.JobTitle}} at {{firstWork.Company}}</h3>
+            <p>{{getFormattedDate (firstWork.WorkingMonthFrom , firstWork.WorkingYearFrom ) }}
+              <ng-container *ngIf="!firstWork.IsCurrentWorking && firstWork.WorkingMonthFrom">- {{getFormattedDate(
+                firstWork.WorkingMonthToDate , firstWork.WorkingYearToDate ) }}
+              </ng-container>
+              <ng-container *ngIf="firstWork.IsCurrentWorking"> - Present</ng-container>
+            </p>
+            <p>{{firstWork.WorkLocation}}</p>
+          </li>
+        </ul>
+      </ion-item>
+
+      <!-- only second & third work shown -->
+      <ion-item lines="none" [hidden]="!isWorkSectionExpanded"
+        *ngFor="let i of getUserProfileAsPerPrivacy.userProfile.WorkExperiences?.slice(1,3)">
+        <ul>
+          <li>
+            <h3>{{i.JobTitle}} at {{i.Company}}</h3>
+            <p>{{getFormattedDate (i.WorkingMonthFrom , i.WorkingYearFrom ) }}
+              <ng-container *ngIf="!i.IsCurrentWorking && i.WorkingMonthFrom">- {{getFormattedDate(
+                i.WorkingMonthToDate , i.WorkingYearToDate ) }}
+              </ng-container>
+              <ng-container *ngIf="i.IsCurrentWorking"> - Present</ng-container>
+            </p>
+            <p>{{i.WorkLocation}}</p>
+          </li>
+        </ul>
+      </ion-item>
+
+      <!-- displayed when you list have more than three works -->
+
+      <div *ngIf="getUserProfileAsPerPrivacy && getUserProfileAsPerPrivacy.userProfile && getUserProfileAsPerPrivacy.userProfile.WorkExperiences && getUserProfileAsPerPrivacy.userProfile.WorkExperiences.length > 3" class="fi-more-btn" [hidden]="!isWorkSectionExpanded"
+        (click)="workSection(true)">
+        <ion-label>more..</ion-label>
+      </div>
+      <ion-buttons class="collapse-button" [hidden]="!getUserProfileAsPerPrivacy.userProfile.WorkExperiences || getUserProfileAsPerPrivacy.userProfile.WorkExperiences.length < 2">
+        <ion-button shape="round" (click)="toggleSection('work')">
+          <ion-icon [name]="isWorkSectionExpanded ? 'bluearrowup' : 'bluearrowdown'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- education -->
+  <ion-card>
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-icon name="edu" slot="start">
+        </ion-icon>
+        <ion-label>
+          <h3>Education
+          </h3>
+        </ion-label>
+        <div class="edit-button" *ngIf="userId === logInfo.UserId">
+          <button (click)="educationSection(false)"> <ion-icon name='edit' style="font-size: 14px;"></ion-icon></button>
+        </div>
+      </ion-item>
+
+      <!-- first education shown -->
+      <ion-item *ngIf="firstEducation" lines="none" style="margin-bottom: -2px;">
+        <ul>
+          <li>
+            <h3>{{ firstEducation.SchoolName }}</h3>
+            <p>
+              {{ firstEducation.Degree}}<ng-container *ngIf="firstEducation.Degree && firstEducation.FieldOfStudy">,
+              </ng-container>{{ firstEducation.FieldOfStudy }}
+            </p>
+            <p *ngIf="firstEducation.EducationMonthFrom">
+              {{ getFormattedDate(firstEducation.EducationMonthFrom , firstEducation.EducationYearFrom ) }}
+              <ng-container *ngIf="firstEducation.EducationMonthToDate">
+                - {{getFormattedDate( firstEducation.EducationMonthToDate, firstEducation.EducationYearToDate )}}
+              </ng-container>
+            </p>
+          </li>
+        </ul>
+      </ion-item>
+
+      <!-- second & third education shown -->
+      <ion-item lines="none" *ngFor="let i of getUserProfileAsPerPrivacy.userProfile.Educations?.slice(1,3)"
+        [hidden]="!isEducationSectionExpanded">
+        <ul>
+          <li>
+            <h3>{{ i.SchoolName }}</h3>
+            <p>
+              {{ i.Degree}}<ng-container *ngIf="i.Degree && i.FieldOfStudy">,
+              </ng-container>{{ i.FieldOfStudy }}
+            </p>
+            <p *ngIf="i.EducationMonthFrom">
+              {{ getFormattedDate(i.EducationMonthFrom , i.EducationYearFrom ) }}
+              <ng-container *ngIf="i.EducationMonthToDate">
+                - {{getFormattedDate( i.EducationMonthToDate, i.EducationYearToDate )}}
+              </ng-container>
+            </p>
+          </li>
+        </ul>
+      </ion-item>
+
+      <!-- displayed when you list have more than three education -->
+      <div *ngIf="getUserProfileAsPerPrivacy && getUserProfileAsPerPrivacy.userProfile && getUserProfileAsPerPrivacy.userProfile.Educations && getUserProfileAsPerPrivacy.userProfile.Educations.length > 3 && isEducationSectionExpanded" (click)="educationSection(true)"
+        class="fi-more-btn">
+        <ion-label>more..</ion-label>
+      </div>
+
+      <ion-buttons class="collapse-button" [hidden]="!getUserProfileAsPerPrivacy.userProfile.Educations || getUserProfileAsPerPrivacy.userProfile.Educations.length < 2">
+        <ion-button shape="round" (click)="toggleSection('education')">
+          <ion-icon [name]="isEducationSectionExpanded ? 'bluearrowup' : 'bluearrowdown'"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Traits -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-icon name="traits" slot="start">
+        </ion-icon>
+        <ion-label>
+          <h3>Traits
+          </h3>
+        </ion-label>
+        
+
+      </ion-item>
+      
+      <ion-item lines="none" class="ion-no-margin" *ngIf="firstTrait?.length > 0 && userId === logInfo.UserId" >
+        <ul>
+          <li>
+            <h3>{{ firstTrait[0].Trait}}</h3>
+          </li>
+        </ul>
+      </ion-item>
+
+      <ion-item lines="none" class="ion-no-margin" [hidden]="!isTraitsSectionExpanded"
+        *ngFor="let i of getUserProfileAsPerPrivacy.userProfile.UserTraits.slice(1)">
+        <ul>
+          <li>
+            <h3>{{i.Trait}} </h3>
+          </li>
+        </ul>
+      </ion-item>
+
+      <ion-buttons *ngIf="firstTrait?.length > 0" class="collapse-button" [hidden]="!firstTrait">
+        <ion-button shape="round" (click)="toggleSection('traits')">
+          <ion-icon [name]="isTraitsSectionExpanded ? 'bluearrowup' : 'bluearrowdown'"></ion-icon>
+        </ion-button> 
+      </ion-buttons>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Contact -->
+  <ion-card>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-icon name="contact" slot="start">
+        </ion-icon>
+        <ion-label>
+          <h3>Contact</h3>
+        </ion-label>
+
+        <div class="edit-button" *ngIf="userId === logInfo.UserId">
+          <button (click)="contactSection()"> <ion-icon name='edit' style="font-size: 14px;"></ion-icon></button>
+        </div>
+      </ion-item>
+      <ion-item lines="none"
+        *ngIf="contact">
+        <!-- *ngIf="commonService.contactDetails.AddressLine1 || getUserProfileAsPerPrivacy?.userProfile?.ContactDetail?.Email || commonService.contactDetails.PhoneNumber || commonService.contactDetails.AddressLine2 || commonService.contactDetails.Zipcode"> -->
+        <ul>
+          <li *ngIf="contact?.Email"
+            (click)="openDefaultEmailApp(commonService.contactDetails.Email)">
+            <h3>{{contact?.Email}}</h3>
+          </li>
+          <li *ngIf="contact?.PhoneNumber"
+            (click)="commonService.callNumberFn(commonService.contactDetails.PhoneNumber)">
+            <h3>{{contact?.PhoneNumber}}</h3>
+          </li>
+          <li *ngIf="contact?.Website">
+            <h3>{{contact?.Website}}</h3>
+          </li>
+          <li
+            *ngIf="contact?.AddressLine1  || contact?.AddressLine2 || contact?.Zipcode">
+            <h3>
+              {{contact?.AddressLine1}}
+              <br *ngIf="contact?.AddressLine1">{{contact?.AddressLine2}}
+              <br *ngIf="contact?.AddressLine2">{{contact?.Zipcode}}
+              <br *ngIf="contact?.City">{{contact?.City}}
+              <br *ngIf="contact?.State">{{contact?.State}}
+              <br *ngIf="contact?.Country">{{contact?.Country}}
+            </h3>
+          </li>
+        </ul>
+      </ion-item>
+
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

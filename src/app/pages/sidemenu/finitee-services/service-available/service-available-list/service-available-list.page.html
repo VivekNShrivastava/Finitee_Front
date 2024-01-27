@@ -1,0 +1,167 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <app-notification-icon></app-notification-icon>
+    </ion-buttons>
+    <ion-title>Services Available</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <!-- Active list -->
+  <ion-segment *ngIf="serviceRequiredService.serviceList.length > 0 && !loading">
+    <ion-text>
+      Active
+    </ion-text>
+  </ion-segment>
+
+  <ion-grid>
+    <ng-container *ngFor="let i of serviceRequiredService.serviceList;">
+      <ion-row class="ion-align-items-center" (click)="viewDetails(i.Id)" *ngIf="i.DaysLeft >= 0">
+        <ion-col size="4">
+          <ion-img [src]="appConstants.mediaPrefix+i.ImageList[0]">
+          </ion-img>
+        </ion-col>
+        <ion-col size="8">
+          <ion-card class="ion-no-padding">
+            <ion-card-content>
+              <ion-label>
+                {{i.Title}}
+              </ion-label>
+              <br>
+              <ion-label>
+                {{currencySymbol}}{{i.Price}}<ng-container *ngIf="i.PriceType == 'lumpsum'">&nbsp; </ng-container>{{i.PriceType}}
+              </ion-label>
+              <ion-label>
+                <h5>({{i.DaysLeft}} days left)</h5>
+              </ion-label>
+              <ion-buttons>
+                <ion-button class="fi-delete-btn" shape="round" (click)="delete(i.Id) ; $event.stopPropagation();">
+                  <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+                </ion-button>
+                &nbsp;
+                <ion-button class="fi-edit-btn" shape="round" (click)="edit(i.Id) ; $event.stopPropagation();">
+                  <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+
+  <!-- Expired list -->
+  <ion-segment *ngIf="serviceRequiredService.serviceList.length > 0">
+    <ion-text>
+      Expired
+    </ion-text>
+  </ion-segment>
+
+  <ion-grid>
+    <ng-container *ngFor="let i of serviceRequiredService.serviceList;">
+      <ion-row class="ion-align-items-center" (click)="viewDetails(i.Id)" *ngIf="i.DaysLeft < 0 && i.DaysLeft > -8">
+        <ion-col size="4">
+          <ion-img [src]="appConstants.mediaPrefix+i.ImageList[0]">
+          </ion-img>
+        </ion-col>
+        <ion-col size="8">
+          <ion-card class="ion-no-padding">
+            <ion-card-content>
+              <ion-label style=" color: #E57676;">
+                {{i.Title}}
+              </ion-label>
+              <br>
+              <ion-label style=" color: #E57676;">
+                {{currencySymbol}}{{i.Price}}{{i.PriceType}}
+              </ion-label>
+              <ion-label>
+                <h5 style=" color: #E57676;">(Expired)</h5>
+              </ion-label>
+              <ion-buttons>
+                <ion-button class="fi-delete-btn" shape="round" (click)="delete(i.Id) ; $event.stopPropagation();">
+                  <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+                </ion-button>
+                &nbsp;
+                <ion-button class="fi-edit-btn" shape="round" (click)="edit(i.Id) ; $event.stopPropagation();">
+                  <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+
+  <!-- Service available list for other user -->
+  <!-- <ion-grid >
+    <ng-container *ngFor="let i of serviceRequiredService.serviceList;">
+      <ion-row class="ion-align-items-center" (click)="viewDetails(i.Id)" *ngIf="i.DaysLeft >= 0">
+        <ion-col size="4">
+          <ion-img [src]="i.ImageList[0]">
+          </ion-img>
+        </ion-col>
+        <ion-col size="8">
+          <ion-card class="ion-no-padding">
+            <ion-card-content>
+              <ion-label>
+                {{i.Title}}
+              </ion-label>
+              <br>
+              <ion-label>
+                {{currencySymbol}}{{i.Price}}<ng-container *ngIf="i.PriceType == 'lumpsum'">&nbsp; </ng-container>{{i.PriceType}}
+              </ion-label>
+              <ion-label>
+                <h5>({{i.DaysLeft}} days left)</h5>
+              </ion-label>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+  </ion-grid> -->
+
+  <!-- skeleton -->
+  <ion-list *ngIf="loading" class="ion-padding" style="margin-top: -20px;">
+    <ion-item *ngFor="let i of [1,2,3,4,5,6,7]" lines="none">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text style="border-radius: 10px;" [animated]="true"></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text [animated]="true" style="width: 90%;"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text [animated]="true" style="width: 70%;"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Show when not data available -->
+  <ng-container *ngIf="!loading && serviceRequiredService.serviceList.length == 0">
+    <div class="nodata">
+      <img style="margin-top: 20px;" src="assets/imgs/new/NoData.png">
+      <h3> You have no service available listings at this time.</h3>
+      <h3> Create a service available listing to put your talents to good use.</h3>
+    </div>
+  </ng-container>
+  <br>
+  <br>
+  <br>
+  <br>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="primary" (click)="create()">
+      <ion-icon class="add-post-icon" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

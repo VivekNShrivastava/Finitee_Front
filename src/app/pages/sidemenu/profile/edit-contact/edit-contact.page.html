@@ -1,0 +1,245 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit contact</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()" #form="ngForm">
+
+
+    <!-- email -->
+    <!-- YourComponent.html -->
+    <ion-label class="input-label">Email</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input placeholder="email" type="email" #Email="ngModel" name="Email" [(ngModel)]="contact.Email"
+        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'email')"></ion-icon>
+    </ion-item>
+
+    <div class="error-message" *ngIf="Email.invalid && Email.touched">
+      Please enter a valid email address.
+    </div>
+
+    <!-- phone number -->
+    <ion-label class="input-label"> Phone number</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input placeholder="phone number"  inputmode="numeric" name="PhoneNumber"
+        [(ngModel)]="contact.PhoneNumber" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'phone')" ></ion-icon>
+    </ion-item>
+
+
+    <!-- webiste -->
+    <ion-label class="input-label">Website</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input placeholder="website" type="text" #Website="ngModel" name="Website" [(ngModel)]="contact.Website"
+        pattern="^(https?://)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event,'website')" ></ion-icon>
+    </ion-item>
+    <div class="error-message" *ngIf="Website.invalid && Website.touched">
+      Please enter a valid website URL.
+    </div>
+
+
+    <!-- address line 1 -->
+    <ion-label class="input-label"> Address Line 1</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="address line 1" type="text" #AddressLine1="ngModel"
+        name="AddressLine1" [(ngModel)]="contact.AddressLine1" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'address1')"></ion-icon>
+    </ion-item>
+
+    <!-- address line 2 -->
+    <ion-label class="input-label"> Address Line 2</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="address line 2" type="text" #AddressLine2="ngModel"
+        name="AddressLine2" [(ngModel)]="contact.AddressLine2" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'address2')"></ion-icon>
+    </ion-item>
+
+    <!-- city -->
+    <ion-label class="input-label"> City</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="city" type="text" #City="ngModel" name="City"
+        [(ngModel)]="contact.City" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'city')"></ion-icon>
+    </ion-item>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="7">
+          <ion-label class="input-label"> State</ion-label>
+          <ion-item color="none" class="input" lines="none">
+            <ion-input autocapitalize="on" placeholder="state" type="text" #State="ngModel" name="State"
+              [(ngModel)]="contact.State" maxlength="30"></ion-input>
+            <ion-icon name="ellipsis-vertical" (click)="presentPopover($event,'state')"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4.6">
+          <ion-label class="input-label"> Zip</ion-label>
+          <ion-item color="none" class="input" lines="none">
+            <ion-input placeholder="zip ocde" inputmode="numeric"  #ZipCode="ngModel" name="ZipCode"
+              [(ngModel)]="contact.Zipcode" maxlength="30" pattern="[0-9]*"></ion-input>
+            <ion-icon name="ellipsis-vertical" (click)="presentPopover($event,'zip')"></ion-icon>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="7">
+
+        </ion-col>
+        <ion-col size="4">
+          <div *ngIf="ZipCode?.invalid && (ZipCode.dirty || ZipCode.touched)"
+          class="error-message">
+         invalid zipcode
+        </div>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- country -->
+    <ion-label class="input-label"> Country</ion-label>
+    <ion-item color="none" class="input" lines="none">
+      <ion-input autocapitalize="on" placeholder="country" type="text" #Country="ngModel" name="Country"
+        [(ngModel)]="contact.Country" maxlength="30"></ion-input>
+      <ion-icon name="ellipsis-vertical" (click)="presentPopover($event, 'country' )"></ion-icon>
+    </ion-item>
+
+
+    <ion-button class="fi-submit-btn" expand="block" shape="round" [disabled]="!form.valid" type="submit">
+      Save
+    </ion-button>
+  </form>
+
+</ion-content>
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #emailPop [isOpen]="EmailPrivacyisOpen" (didDismiss)="EmailPrivacyisOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" mode="md" [(ngModel)]="contact.EmailPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #phonePop [isOpen]="PhoneNumberPrivacyisOpen" (didDismiss)="PhoneNumberPrivacyisOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.PhoneNumberPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #websitePop [isOpen]="WebsitePrivacysOpen" (didDismiss)="WebsitePrivacysOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.WebsitePrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #address1Pop [isOpen]="AddressLine1PrivacyisOpen" (didDismiss)="AddressLine1PrivacyisOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.AddressLine1Privacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #address2Pop [isOpen]="AddressLine2PrivacyisOpen" (didDismiss)="AddressLine2PrivacyisOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.AddressLine2Privacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #cityPop [isOpen]="CityPrivacysOpen" (didDismiss)="CityPrivacysOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.CityPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ion-popover class="fi-edit-contact-popover" mode="ios" alignment="end" #statePop [isOpen]="StatePrivacyisOpen" (didDismiss)="StatePrivacyisOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.StatePrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #zipPop [isOpen]="ZipcodePrivacyisOpen" (didDismiss)="ZipcodePrivacyisOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.ZipcodePrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+
+
+
+<ion-popover class="fi-edit-personal-popover" mode="ios" alignment="end" #countryPop [isOpen]="CountryPrivacyisOpen" (didDismiss)="CountryPrivacyisOpen = false">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group mode="md" [(ngModel)]="contact.CountryPrivacy">
+        <ion-item *ngFor="let i of privacyType" lines="none">
+          <ion-label>{{i.name}}</ion-label>
+          <ion-radio slot="start" [value]="i.value"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+

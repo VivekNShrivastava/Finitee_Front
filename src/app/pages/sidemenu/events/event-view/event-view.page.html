@@ -1,0 +1,137 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Events</ion-title>
+    <ion-buttons slot="end">
+      <ion-button shape="round" expand="block" *ngIf="createdById != logInfoDetails.UserId">
+        <ion-icon name="location-circle-blue-icon">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <ion-img alt="Logo" src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
+      </ion-avatar>
+      <ion-label>
+        <h3>{{logInfoDetails.UserName}}</h3>
+        <p>3 mins ago</p>
+      </ion-label>
+      <ion-label slot="end" class="fd-views-label" *ngIf="event.RequireInvite == true">
+        <p>300 views</p>
+        <ion-icon name="heat-map-icon"></ion-icon>
+      </ion-label>
+    </ion-item>
+ 
+    <ion-item lines="none">
+      <ion-text class="ion-padding-start">
+        <h2>{{event.Title}}</h2>
+      </ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-slides pager="true">
+        <ion-slide *ngFor="let i of event.EventImages">
+          <ion-card class="ion-no-margin">
+            <ion-img  
+              [src]="appConstants.mediaPrefix+i"></ion-img>
+          </ion-card>
+        </ion-slide>
+      </ion-slides> 
+    </ion-item>
+
+    <ion-item *ngIf="event.StartDate | date ">
+      <div>
+        <ion-text>
+          <h4>{{event.StartDate | date}}</h4>
+        </ion-text>
+        <ion-text  *ngIf="event.StartDate | date ">
+          <h4>{{event.StartDate | date:'shortTime'}} to {{event.EndDate | date:'shortTime'}}</h4>
+        </ion-text>
+      </div>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-text>
+        <p>{{event.Desription}}</p>
+      </ion-text>
+    </ion-item>
+
+    <ion-item lines="none" *ngIf="event.AddressLine1 || event.AddressLine2 || event.AddressLine3">
+      <div>
+        <ion-text>
+          <h4>Address</h4>
+        </ion-text>
+        <ion-text>
+          <p class="ion-no-margin">{{event.AddressLine1}}  </p>
+          <p class="ion-no-margin">  {{event.AddressLine2}} </p>
+          <p class="ion-no-margin">  {{event.AddressLine3}}</p>
+        </ion-text>
+      </div>
+    </ion-item>
+
+    <ion-item lines="none" *ngIf="createdById == logInfoDetails.UserId">
+      <div>
+        <ion-text>
+          <h4>Viewable by</h4>
+        </ion-text>
+        <ion-text>
+          <p class="ion-no-margin">{{event.VisibleTo}}</p>
+        </ion-text>
+      </div>
+    </ion-item>
+
+    <ion-item lines="none">
+      <div>
+        <ion-text>
+          <h4>Location</h4>
+        </ion-text>
+        <ion-text>
+          <p class="ion-no-margin">{{event.location}} location</p>
+        </ion-text>
+      </div>
+    </ion-item> 
+      <ion-item lines="none">
+      <div>
+        <ion-text>
+          <h4>Offset location</h4>
+        </ion-text>
+        <ion-text>
+          <p class="ion-no-margin"*ngIf="!event.locationOffset">Disabled</p>
+          <p class="ion-no-margin"*ngIf="event.locationOffset">Enabled</p>
+        </ion-text>
+      </div>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <div *ngIf="createdById != logInfoDetails.UserId">
+    <ion-button expand="block" shape="round" class="footer-button" *ngIf="(event.RequireInvite == true || event.RequireInvite == false) && (requiredValue.IsRequestSent == false && requiredValue.IsRequestAccepted == false)"
+    (click)="openRequestToAttend()">
+        <p *ngIf="event.RequireInvite == true">Request to attend</p>
+        <p *ngIf="event.RequireInvite == false">RSVP</p>
+    </ion-button>
+    <ion-button expand="block" shape="round" class="footer-button fi-cancel-btn" *ngIf="(event.RequireInvite == true || event.RequireInvite == false) && (requiredValue.IsRequestSent == true || requiredValue.IsRequestAccepted == true)"
+    (click)="cancelRSVP(logInfoDetails.UserId,'DECLINE')">
+        <p>Cancel RSVP</p>
+    </ion-button>
+  </div>
+
+  <div class="fi-twoBtns"  *ngIf="createdById == logInfoDetails.UserId">
+      <ion-button  *ngIf="event.RequireInvite == true" expand="block" shape="round" class="footer-button" (click)="openRequestRsvpPage(event.Id , 'invite')">
+          <p>View requests ({{requestList.length}})</p>
+      </ion-button>
+      <ion-button expand="block" shape="round" [class.fi-w100]="event.RequireInvite == false" class="footer-button" (click)="openRequestRsvpPage(event.Id , 'rsvp')">
+        <p>View RSVP ({{inviteAcceptedList.length}})</p>
+      </ion-button>
+    </div>
+</ion-footer>

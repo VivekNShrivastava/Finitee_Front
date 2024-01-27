@@ -1,0 +1,137 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Privacy Setting</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="loaded">
+
+    <ion-toolbar>
+      <ion-text>Connected members</ion-text>
+    </ion-toolbar>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>MakeConnectionRequest</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.MakeConnectionRequest)}}</p>
+        </ion-text>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-text>
+          <h3>ShowConnectionList</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.ShowConnectionList)}}</p>
+        </ion-text>
+        <ion-buttons slot="end" *ngIf=" (privacySetting.FreeUserType !== 'I') && (privacySetting.FreeUserType !== 'G') " (click)="presentPopover($event,'ShowConnectionList', 'ShowConnectionList' )">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Can refer others to me</h3>
+          <p>{{_commonService.getFullPrivacyForNone(privacySetting.AllowReferralsFrom)}}</p>
+        </ion-text>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Can refer me to others</h3>
+          <p>{{_commonService.getFullPrivacyForNone(privacySetting.AllowReferralsTo)}}</p>
+        </ion-text>
+      </ion-item>
+      
+      
+      <!-- <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connection requests</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowConnectionRequest"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connected members to recommend my product sections</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowConnectionToReferMe"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connected members to send me recommendations</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowConnectionToSendMeRecommedation"></ion-toggle>
+      </ion-item> -->
+    </ion-list>
+
+    <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+      <ng-template>
+        <ion-list>
+          <ion-radio-group [value]="selectedPopoverValue" (ionChange)="radioGroupChange($event)">
+            <ion-item lines="none" *ngIf="para1">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'A'}">All Finitee users</ion-label>
+              <ion-radio slot="start" value="A"></ion-radio>
+            </ion-item>
+            <ion-item lines="none" *ngIf="para2">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'C'}">Connected members</ion-label>
+              <ion-radio slot="start" value="C"></ion-radio>
+            </ion-item>
+            <ion-item lines="none" *ngIf="para3">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'O'}">Only me</ion-label>
+              <ion-radio slot="start" value="O"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ng-template>
+    </ion-popover>
+  </ng-container>
+
+  <ng-container *ngIf="!loaded">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+  
+
+</ion-content>
+
+<!-- <ion-footer class="create-btn" *ngIf="loaded">
+  <ion-button shape="round" expand="block" color="primary" (click)="saveUserPrivacy()">
+    Save
+  </ion-button>
+</ion-footer> -->

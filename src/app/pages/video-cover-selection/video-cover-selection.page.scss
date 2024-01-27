@@ -1,0 +1,41 @@
+  
+/*   .mainVideo {
+    max-width: 400px;
+  } */
+  
+  .video-container{
+    text-align: center;
+  }
+  .canvas-container {
+    text-align: center;
+    margin: 50px auto;
+    height: 44px;
+  }
+  
+  .slider {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    -webkit-appearance: none;
+    height: 44px;
+    background: transparent;
+    outline: none;
+    opacity: 1;
+  }
+  
+  .slider:hover {
+    opacity: 1;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -6px;
+    width: 47px;
+    height: 44px;
+    background: #000000;
+    border: 2px solid #03A9F5;
+    border-radius: 2px;
+    opacity: 1;
+    cursor: pointer;
+  }

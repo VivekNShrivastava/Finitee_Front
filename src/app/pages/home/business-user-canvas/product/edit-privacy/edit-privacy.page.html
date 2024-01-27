@@ -1,0 +1,87 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit privacy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="product.Privacy">
+    <ion-label>Product Section viewable by</ion-label>
+    <ion-item>
+      <ion-radio-group value="{{product.Privacy}}" class="display-flex ion-justify-content-between">
+        <ion-item lines="none" *ngFor="let privacy of appConstants.GeneralPivacy">
+          <ion-radio slot="start" value="{{privacy.key}}"></ion-radio>
+          <ion-label [ngClass]="{'selected': (product.Privacy==privacy.value)}">{{privacy.value}}</ion-label>
+        </ion-item>
+      </ion-radio-group>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        <ion-label>Allow to make posts</ion-label>
+        <p>All Finitee users</p>
+      </ion-text>
+      <ion-buttons (click)="presentPopover($event)" slot="end">
+        <ion-button shape="round">
+          <ion-icon name="three-dots"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        <ion-label>Allow to beam</ion-label>
+        <p>All Finitee users</p>
+      </ion-text>
+      <ion-buttons (click)="presentPopover($event)" slot="end">
+        <ion-button shape="round">
+          <ion-icon name="three-dots"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        <ion-label>Posts available as inflows to</ion-label>
+        <p>All Finitee users</p>
+      </ion-text>
+      <ion-buttons id="three-dots" slot="end">
+        <ion-button shape="round">
+          <ion-icon name="three-dots"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-text>
+        <ion-label>Allow mentions/speak-tos to be made by</ion-label>
+        <p>All Finitee users</p>
+      </ion-text>
+      <ion-buttons (click)="presentPopover($event)" slot="end">
+        <ion-button shape="round">
+          <ion-icon name="three-dots"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+  <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+    <ng-template>
+      <ion-list>
+        <ion-radio-group value="All Finitee users">
+          <ion-item lines="none">
+            <ion-label class="selected">All Finitee users</ion-label>
+            <ion-radio slot="start" value="All Finitee users"></ion-radio>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>Connected members</ion-label>
+            <ion-radio slot="start" value="Connected members"></ion-radio>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label>Only me</ion-label>
+            <ion-radio slot="start" value="Only me"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+    </ng-template>
+  </ion-popover>
+</ion-content>

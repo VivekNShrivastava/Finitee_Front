@@ -1,0 +1,51 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <app-notification-icon></app-notification-icon>
+    </ion-buttons>
+    <ion-title>Shopping List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="edit()">
+        <ion-icon name="pencil-outline"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon name="menu-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid  *ngIf="salesService.shoppingListWords.length > 0" class="box-shadow">
+    <ion-row>
+      <ion-col size="4" style="font-size: 14px;">Shopping word</ion-col>
+      <ion-col size="2" style="font-size: 14px;">Price</ion-col>
+      <ion-col size="3" style="font-size: 14px; text-align: end;">Condition</ion-col>
+      <ion-col size="3" style="font-size: 14px; text-align: end;">Distance</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-item *ngFor="let i of salesService.shoppingListWords" class="ion-no-padding ion-no-margin">
+    <ion-grid style="text-align: center; font-size: 13px; font-weight: 500;">
+      <ion-row>
+        <ion-col size="4">{{i.Word}}</ion-col>
+        <ion-col size="2">{{i.Price}}</ion-col>
+        <ion-col size="4">{{i.Condition}}</ion-col>
+        <ion-col size="2">{{i.Distance}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
+
+  <ng-container *ngIf="salesService.shoppingListWords.length == 0">
+    <div class="nodata">
+      <img style="margin-top: 20px;" src="assets/imgs/new/NoData.png">
+      <h3> You have no shopping words listings at this time.</h3>
+      <!-- <h3> Create a shopping words listing to attract the correct talent for your requirements.</h3> -->
+    </div>
+  </ng-container>
+</ion-content>
+
+<ion-button (click)="viewMatchedResult()" style="text-transform: none;" shape="round" expand="full" class="save-button">
+  View all matches</ion-button>

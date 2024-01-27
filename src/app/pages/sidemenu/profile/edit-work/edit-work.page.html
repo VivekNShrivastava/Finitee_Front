@@ -1,0 +1,341 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button"> </ion-back-button>
+    </ion-buttons>
+    <ion-title>{{pageTitle}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- work create / edit section -->
+  <div *ngIf="isEdit || isCreate" class="fi-edit-container">
+
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+
+      <!--Company-->
+      <div class="input-container">
+        <ion-label class="input-label"><ion-note color="danger">*</ion-note> Company</ion-label>
+        <ion-item lines="none">
+          <ion-input autocapitalize="on" class="input" placeholder="Company" type="text" maxlength="30"
+            #Company="ngModel" name="Company" minlength="2" maxlength="25"
+            [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.Company"
+            required>
+          </ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="Company.invalid && (Company.dirty || Company.touched)" class="error-message">
+        <div *ngIf="Company.errors?.['required']">
+          Company is required.
+        </div>
+        <div *ngIf="Company.errors?.['minlength']">
+          Company must be at least 2 characters long.
+        </div>
+      </div>
+      
+
+      <!--Job Title-->
+      <div class="input-container">
+        <ion-label class="input-label"><ion-note color="danger">*</ion-note>Job Title</ion-label>
+        <ion-item lines="none">
+          <ion-input autocapitalize="on" class="input" minlength="2" maxlength="25" placeholder="Job Title" type="text" #JobTitle="ngModel"
+            maxlength="30" name="JobTitle" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.JobTitle"
+            required>
+          </ion-input>
+        </ion-item>
+      </div>
+
+      <div *ngIf="JobTitle.invalid && (JobTitle.dirty || JobTitle.touched)" class="error-message">
+        <div *ngIf="JobTitle.errors?.['required']">
+          JobTitle is required.
+        </div>
+        <div *ngIf="JobTitle.errors?.['minlength']">
+          JobTitle must be at least 2 characters long.
+        </div>
+      </div>
+
+      <!--Location-->
+      <div class="input-container">
+        <ion-label class="input-label"><ion-note color="danger">*</ion-note>Location</ion-label>
+        <ion-item lines="none">
+          <ion-input autocapitalize="on" class="input" placeholder="Location" minlength="2" maxlength="30" type="text" #WorkLocation="ngModel"
+            maxlength="30" name="WorkLocation" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.WorkLocation"></ion-input>
+        </ion-item>
+      </div>
+
+      <div *ngIf="WorkLocation.invalid && (WorkLocation.dirty || WorkLocation.touched)" class="error-message">
+        <div *ngIf="WorkLocation.errors?.['required']">
+          WorkLocation is required.
+        </div>
+        <div *ngIf="WorkLocation.errors?.['minlength']">
+          WorkLocation must be at least 2 characters long.
+        </div>
+      </div>
+
+      <!-- is current working -->
+      <ion-item lines="none">
+        <ion-label class="input-label">Currently Working</ion-label>
+        <ion-toggle name="CurrentWorking" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.IsCurrentWorking"></ion-toggle>
+      </ion-item>
+
+      <!-- date from  -->
+      <ion-label class="input-label">From</ion-label>
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+
+          <ion-col size="4">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input style="text-align: center;" placeholder="MM" #WorkingMonthFrom="ngModel" inputmode="numeric"
+                name="WorkingMonthFrom" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.WorkingMonthFrom"
+                (ionChange)="inputDateChange()" pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item color="none" class="input" lines="none">
+              <ion-input style="text-align: center;" placeholder="YYYY" #WorkingYearFrom="ngModel" inputmode="numeric"
+                (ionChange)="inputDateChange()" name="WorkingYearFrom"
+                [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.WorkingYearFrom" pattern="^\d{4}$" maxlength="4"></ion-input>
+              <!-- pattern="^\d{4}$" -->
+
+            </ion-item>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+      <!-- date from error -->
+      <ion-grid class="ion-no-padding">
+        <ion-row>
+
+          <ion-col size="4">
+            <div *ngIf="WorkingMonthFrom?.invalid && (WorkingMonthFrom.dirty || WorkingMonthFrom.touched)"
+              class="error-message">
+              Invalid month
+            </div>
+
+          </ion-col>
+          <ion-col size="6">
+            <div *ngIf="WorkingYearFrom?.invalid && (WorkingYearFrom.dirty || WorkingYearFrom.touched)"
+              class="error-message">
+              Invalid year
+            </div>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div *ngIf="dateError.is_date_from_error" class="error-message">
+        {{dateError.message}}
+      </div>
+      <!-- date to  -->
+      <div *ngIf="!getUserProfileAsPerPrivacy.userProfile.WorkExperience.IsCurrentWorking">
+
+
+        <ion-label class="input-label">To Date</ion-label>
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+
+            <ion-col size="4">
+              <ion-item color="none" class="input" lines="none">
+                <ion-input style="text-align: center;" placeholder="MM" #WorkingMonthToDate="ngModel"
+                  (ionChange)="inputDateChange()" name="WorkingMonthToDate"
+                  [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.WorkingMonthToDate" inputmode="numeric"
+                  pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2">
+                </ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-item color="none" class="input" lines="none">
+                <ion-input style="text-align: center;" placeholder="YYYY" #WorkingYearToDate="ngModel" pattern="^\d{4}$"
+                  inputmode="numeric" (ionChange)="inputDateChange()" name="WorkingYearToDate"
+                  [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.WorkingYearToDate" maxlength="4"></ion-input>
+
+              </ion-item>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+        <!-- date to error -->
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+
+            <ion-col size="4">
+              <div *ngIf="WorkingMonthToDate?.invalid && (WorkingMonthToDate.dirty || WorkingMonthToDate.touched)"
+                class="error-message">
+                Invalid month
+              </div>
+
+            </ion-col>
+            <ion-col size="6">
+              <div *ngIf="WorkingYearToDate?.invalid && (WorkingYearToDate.dirty || WorkingYearToDate.touched)"
+                class="error-message">
+                Invalid year
+              </div>
+
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div *ngIf="dateError.is_date_to_error" class="error-message">
+          {{dateError.message}}
+        </div>
+      </div>
+
+
+
+      <!-- visibility -->
+      <ion-label class="input-label">Visibility</ion-label>
+      <ion-item lines="none" (click)="presentPopover($event)" class="fi-popover-item">
+        <ion-label class="input-label">
+          <p *ngIf="getUserProfileAsPerPrivacy.userProfile.WorkExperience.Privacy === 1" > All </p>
+          <p *ngIf="getUserProfileAsPerPrivacy.userProfile.WorkExperience.Privacy === 2" > Connections </p>
+        </ion-label>
+        <ion-buttons slot="end" >
+          <ion-button>
+            <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false" mode="ios" alignment="end">
+        <ng-template>
+          
+          <ion-list>
+            <ion-radio-group name="Privacy" [(ngModel)]="getUserProfileAsPerPrivacy.userProfile.WorkExperience.Privacy"  mode="md">
+              <ion-item lines="none" (click)="isOpen = false">
+                <ion-label>All</ion-label>
+                <ion-radio slot="start" [value]=1></ion-radio>
+              </ion-item>
+              <ion-item lines="none" (click)="isOpen = false">
+                <ion-label>Connections Only</ion-label>
+                <ion-radio slot="start" [value]=2></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ng-template>
+      </ion-popover>
+      <ion-button *ngIf="isEdit || isCreate" 
+        [disabled]="!form.valid" type="submit" expand="block"
+        class="fi-footer-btn" shape="round" color="primary">
+        Save
+      </ion-button>
+    </form>
+
+  </div>
+
+  <!-- work list section -->
+  <div *ngIf="isList">
+
+
+    <div *ngIf="getUserProfileAsPerPrivacy.userProfile.WorkExperiences?.length == 0 || !getUserProfileAsPerPrivacy.userProfile.WorkExperiences" class="ion-text-center nodata">
+      <img src="assets/imgs/icons/noresults.png">
+      <p> You have not entered any work experience. </p>
+
+    </div>
+    <ion-card *ngFor="let i of getUserProfileAsPerPrivacy.userProfile.WorkExperiences" class="ion-no-padding">
+      <ion-card-content>
+        <ion-item lines="none" class="ion-no-margin fi-list-item">
+          <ul>
+            <li>
+              <h3 class="fi-list-h3">{{i.JobTitle}}<ng-container *ngIf="i.JobTitle"> at </ng-container>{{ i.Company
+                }}</h3>
+              <p class="fi-list-p">{{getFormattedDate (i.WorkingMonthFrom , i.WorkingYearFrom ) }}
+                <ng-container *ngIf="!i.IsCurrentWorking && i.WorkingMonthFrom">- {{getFormattedDate(
+                  i.WorkingMonthToDate , i.WorkingYearToDate ) }}
+                </ng-container>
+                <ng-container *ngIf="i.IsCurrentWorking"> - Present</ng-container><br>
+                {{i.WorkLocation}}
+              </p>
+            </li>
+          </ul>
+          <div slot="end" *ngIf="!commonService.isWorkListOnly">
+            <div class="edit-button fi-edit">
+              <button (click)="editWork(i)"> <ion-icon name='edit'></ion-icon></button>
+            </div>
+            &nbsp;
+            <div class="edit-button fi-delete">
+              <button (click)="deleteWork(i)"> <ion-icon name='trash'></ion-icon></button>
+            </div>
+          </div>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</ion-content>
+
+<ion-footer *ngIf="!commonService.isWorkListOnly">
+
+  <ion-button *ngIf="!isEdit && !isCreate" (click)="button()" expand="block" class="fi-footer-btn" shape="round"
+    color="primary">
+    {{buttonText}}
+  </ion-button>
+
+
+</ion-footer>
+
+
+<!-- <div class="input-container" style="margin-bottom: -20px;">
+        <ion-label class="input-label">From </ion-label>
+        <ion-item lines="none">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-input class="input month" placeholder="MM" type="number" #WorkingMonthFrom="ngModel"
+                  name="WorkingMonthFrom" [(ngModel)]="userProfile.user.WorkExperience.WorkingMonthFrom"></ion-input>
+                <br>
+
+                <div *ngIf="WorkingMonthFrom.invalid && (WorkingMonthFrom.dirty || WorkingMonthFrom.touched)"
+                  class="error-message">
+
+                </div>
+              </ion-col>
+              <ion-col>
+                <ion-input class="input year" placeholder="YYYY" type="number" #WorkingYearFrom="ngModel"
+                  name="WorkingYearFrom" [(ngModel)]="userProfile.user.WorkExperience.WorkingYearFrom" maxlength="4"
+                  title="Please enter a valid year (YYYY)"></ion-input>
+                <br>
+
+                <div *ngIf="WorkingYearFrom.invalid && (WorkingYearFrom.dirty || WorkingYearFrom.touched)"
+                  class="error-message">
+
+                </div>
+              </ion-col>
+            </ion-row>
+            <div *ngIf="(fromDateInputError)" class="error-message">
+              Please enter valid from date
+            </div>
+            <div *ngIf="WorkingYearFrom.errors?.['required']">
+              Please enter valid from Date
+            </div>
+          </ion-grid>
+        </ion-item>
+      </div> -->
+
+<!--
+      <div class="input-container" style="margin-bottom: -40px;"
+      *ngIf="!userProfile.user.WorkExperience.IsCurrentWorking">
+      <ion-label class="input-label">To Date </ion-label>
+      <ion-item lines="none">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-input class="input month" placeholder="MM" type="number" name="WorkingMonthToDate"
+                [(ngModel)]="userProfile.user.WorkExperience.WorkingMonthToDate"></ion-input>
+              <br>
+
+            </ion-col>
+
+            <ion-col>
+              <ion-input class="input year" placeholder="YYYY" type="number" name="WorkingYearToDate"
+                [(ngModel)]="userProfile.user.WorkExperience.WorkingYearToDate"></ion-input>
+              <br>
+
+
+            </ion-col>
+
+          </ion-row>
+
+        </ion-grid>
+      </ion-item>
+    </div> -->

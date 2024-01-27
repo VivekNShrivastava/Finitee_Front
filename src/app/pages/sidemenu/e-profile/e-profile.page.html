@@ -1,0 +1,135 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button" slot="start">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>e-Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-card>
+      <ion-card-header>
+        <ion-avatar>
+          <img [src]="userProfile.user.ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" />
+        </ion-avatar>
+        <ion-thumbnail *ngIf="scanString">
+          <qrcode [qrdata]="scanString" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
+        </ion-thumbnail>
+      </ion-card-header>
+      <ion-card-content>
+        <h3>{{userProfile.user.DisplayName}}</h3>
+        <h5>{{userProfile.user.About}}</h5>
+      </ion-card-content>
+    </ion-card>
+    <ion-item>
+      <ion-text>
+        Phone
+      </ion-text>
+      <h3>
+        {{userProfile.user.Phone}}
+      </h3>
+      <!--   <ion-buttons slot="end">
+        <ion-button shape="round" (click)="presentPopover($event)">
+          <ion-icon style="font-size: 15px" name="three-dots"></ion-icon>
+        </ion-button>
+      </ion-buttons> -->
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        Email
+      </ion-text>
+      <h3>
+        {{userProfile.user.Email}}
+      </h3>
+
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        Website
+      </ion-text>
+      <h3>
+        {{userProfile.user.Website}}
+      </h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        Address 1
+      </ion-text>
+      <h3>
+        {{userProfile.user.Address.AddressLine1}}
+      </h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        Address 2
+      </ion-text>
+      <h3>
+        {{userProfile.user.Address.AddressLine2}}
+      </h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        City
+      </ion-text>
+      <h3>
+        {{userProfile.user.Address.CityId}}
+      </h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        State
+      </ion-text>
+      <h3>
+        {{userProfile.user.Address.StateId}}
+      </h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        Zip
+      </ion-text>
+      <h3>
+        {{userProfile.user.Address.ZipCode}}
+      </h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        Country
+      </ion-text>
+      <h3>
+        {{userProfile.user.Address.CountryId}}
+      </h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>
+        Contact Person
+      </ion-text>
+      <h3 style="margin-left: 50px;">
+        {{userProfile.user.FullName}}
+      </h3>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<!-- <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+  <ng-template>
+    <ion-text>Visible to</ion-text>
+    <ion-list>
+      <ion-radio-group value="All Finitee users">
+        <ion-item lines="none">
+          <ion-label class="selected">All Finitee users</ion-label>
+          <ion-radio slot="start" value="All Finitee users"></ion-radio>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>Connections only</ion-label>
+          <ion-radio slot="start" value="Connections only"></ion-radio>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>No one</ion-label>
+          <ion-radio slot="start" value="No one"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover> -->

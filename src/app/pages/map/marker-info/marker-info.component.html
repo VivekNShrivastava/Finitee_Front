@@ -1,0 +1,254 @@
+<div class="ctdfur">
+  <div>
+    <ng-container *ngTemplateOutlet="userAvatarView"></ng-container>
+    <div class="conth" (click)="goToViewConnection()">
+      <h5>myTitle</h5>
+    </div>
+  </div>
+</div>
+
+<div class="reject">
+  <p style="white-space: normal;">If you want to send greeting again, please send after 1 hour</p>
+</div>
+
+
+<div class="ctdfur-req">
+  <div>
+    <ng-container *ngTemplateOutlet="userAvatarView"></ng-container>
+    <div class="conth" (click)="goToViewConnection()">
+      <h5>myTitle</h5>
+    </div>
+  </div>
+</div>
+
+<div class="busdiv-bl">
+  <div>
+    <ng-container *ngTemplateOutlet="userAvatarView"></ng-container>
+    <div class="conth" (click)="goToViewConnection()">
+      <h5>myTitle</h5>
+      <h6>Business</h6>
+    </div>
+  </div>
+</div>
+
+<div class="group-gp" (click)="gotoGroupPage()">
+  <div>
+    <ng-container *ngTemplateOutlet="userAvatarView"></ng-container>
+    <div class="conth" (click)="goToViewConnection()">
+      <h5>myTitle</h5>
+      <h6>header</h6>
+    </div>
+  </div>
+  <div style="display: inline-grid;
+    width: 100%;">
+    <div class="img-circle" [ngStyle]="{'background-image':'url(' + profileImage + ')'}" style="
+        display: inline-block;
+        width: 100%;
+        height: 100px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 3px;">
+    </div>
+    <ion-button *ngIf="false" (click)="addToMap('G')" style="margin-top: 2px;
+      font-size: 9px;margin-left: 7px;" shape="round" color="dark" size="small">
+      + Sonar
+    </ion-button>
+    <ion-button *ngIf="true" (click)="removeMap('G')" style="margin-top: 2px;
+      font-size: 9px;margin-left: 7px;" shape="round" color="dark" size="small">
+      - Sonar
+    </ion-button>
+  </div>
+</div>
+
+<div class="event-ev" style="display: inline-flex;" (click)="getEventById()">
+  <div class="img-circle" [ngStyle]="{'background-image':'url(' + profileImage + ')'}" style="
+    display: inline-block;
+    width: 85px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 3px;
+    ">
+  </div>
+
+  <div class="conth">
+    <h5 style="font-size: 15px;"> myTitle </h5>
+    <span style="
+      font-size: 11px;
+      margin: 5px 10px;
+      display: -webkit-box;
+  ">header</span>
+    <span style="
+      font-size: 11px;
+      margin: 5px 10px;
+      display: -webkit-box;
+  ">desc</span>
+    <ion-button *ngIf="false" (click)="addToMap('E')" style="margin-top: 2px;
+    font-size: 9px;margin-left: 7px;" shape="round" color="dark" size="small">
+      + Sonar
+    </ion-button>
+    <ion-button *ngIf="true" (click)="removeMap('E')" style="margin-top: 2px;
+    font-size: 9px;margin-left: 7px;" shape="round" color="dark" size="small">
+      - Sonar
+    </ion-button>
+    <ion-button size="small" (click)="gotoEvent()"
+      class="more button button-small button-solid ion-activatable ion-focusable hydrated">
+      More</ion-button>
+  </div>
+</div>
+<div class="multiple">
+  <!-- <ion-item *ngFor="let item of []" (click)="fromMultiple(item)">
+    <div>
+      <ion-icon name="bluetotem"></ion-icon>
+    </div>
+    <div class="img-circle">
+      <img [src]="item.usrimg" style="width:100%;height:35px"
+        onerror="this.onerror=null;this.src='assets/imgs/male.png';">
+    </div>
+    <div>
+      <ion-label>{{item.myTitle}}</ion-label>
+    </div>
+    <ion-item *ngIf="item.buysell">
+      <ion-item *ngFor="let bs of item.buysell" (click)="gotoSalesItem(bs.spid)">
+        <div>
+          <ion-icon name="bluetotem"></ion-icon>
+        </div>
+        <div>
+          <img [src]="bs.image" style="width:100%;height:35px"
+            onerror="this.onerror=null;this.src='assets/imgs/male.png';">
+        </div>
+        <div>
+          {{bs.titl}}
+        </div>
+      </ion-item>
+    </ion-item>
+  </ion-item> -->
+</div>
+
+
+<div class="refrence-FiniteeService" style="overflow: hidden;">
+  <div style="font: normal normal 600 14px/19px SF Pro Display;letter-spacing: 0.22px;">
+    <div style="max-width:200px;">{{finiteeService.Title}}</div>
+    <div>${{finiteeService.Price}}/{{finiteeService.PriceType}}</div>
+  </div>
+  <div class="image-div" style="text-align: center;">
+    <img [src]="attachmentURL + finiteeService.Images" alt="{{finiteeService.Title}}"
+      onerror="this.onerror=null;this.src='assets/images/image_not_available.png';">
+  </div>
+  <div (click)="goToViewConnection()" class="display-flex--row flex-align-center">
+    <div>
+      <ng-container
+        *ngTemplateOutlet="userAvatarSmallView; context: {image : finiteeService.UserProfileImage}"></ng-container>
+    </div>
+    <div>
+      <div style="font: normal normal 600 13px/19px SF Pro Display; letter-spacing: 0.21px;">
+        {{finiteeService.DisplayName}}
+      </div>
+      <div style="font: normal normal normal 11px/21px SF Pro Display;letter-spacing: 0.18px;line-height: 1;">
+        {{finiteeService.CreatedOn | date:'short'}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="refrence-Totem totem-div display-flex--column font-primary-text" style="line-height: 1;">
+  <div (click)="gotototem()" style="font: normal normal 600 14px/19px SF Pro Display;letter-spacing: 0.22px;">
+    <div>{{totem.TotemTitle}}</div>
+  </div>
+  <div class="image-div" style="text-align: center;">
+    <img [src]="attachmentURL + totem.TotemImage" alt="{{totem.TotemTitle}}"
+      onerror="this.onerror=null;this.src='assets/images/image_not_available.png';">
+  </div>
+  <div (click)="goToViewConnection()" class="display-flex--row flex-align-center">
+    <div>
+      <ng-container
+        *ngTemplateOutlet="userAvatarSmallView; context: totem.UserProfileImage"></ng-container>
+    </div>
+    <div>
+      <div style="font: normal normal 600 13px/19px SF Pro Display; letter-spacing: 0.21px;">
+        {{totem.UserName}}
+      </div>
+      <div style="font: normal normal normal 11px/21px SF Pro Display;letter-spacing: 0.18px;line-height: 1;">
+        {{totem.CreatedOn | date:'short'}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="refrence-FreeUser display-flex--column font-primary-text font-weight-600">
+  <ion-row class="ion-align-items-center flex-gap-10" (click)="goToViewConnection(freeUser)">
+    <ng-container
+      *ngTemplateOutlet="userAvatarView; context: {image :freeUser.ProfilePhoto}"></ng-container>
+    <div class="conth">
+      <div>{{freeUser.DisplayName}}</div>
+    </div>
+  </ion-row>
+  <div style="font-size: 30px;display: flex;gap: 10px;">
+    <greeting-view [fromUserId]="freeUser.UserId" [fromUserName]="freeUser.DisplayName"
+      [isUserConnected]="freeUser.IsConnected"
+      [fromUserProfile]="freeUser.ProfilePhoto"></greeting-view>
+    <ion-icon name="chat-ignore" class="common-icon-style" (click)="ignoreUser()"></ion-icon>
+    <ion-icon name="no-profile" class="common-icon-style" (click)="blockUser()"></ion-icon>
+  </div>
+</div>
+
+<div class="refrence-BusinessNonProfitUser">
+  <ng-container *ngTemplateOutlet="businessInfo; context: {dataInfo : businessAndNonProfitUser}"></ng-container>
+</div>
+
+<div class="refrence-SavedLocation">
+  <ng-container *ngTemplateOutlet="businessInfo; context: {dataInfo : savedLocation}"></ng-container>
+</div>
+
+<div class="refrence-Sales">
+
+</div>
+
+
+<ng-template #businessInfo let-dataItem="dataInfo">
+  <div class="font-primary-text display-flex--row flex-align-center"
+    style="font: normal normal 600 16px/19px SF Pro Display;letter-spacing: 0.25px;margin-bottom: 10px;">
+    <div>
+      <ng-container
+        *ngTemplateOutlet="userAvatarView; context: {image:dataItem.ProfilePhoto}"></ng-container>
+    </div>
+    <div class="conth" (click)="goToViewConnection(dataItem)">
+      <span>{{dataItem.DisplayName}}</span>
+    </div>
+  </div>
+  <div style="line-height: 2;text-align: center;font-weight: 500;letter-spacing: 0.19px;">
+    <span>{{dataItem.SonarDescription}}</span>
+  </div>
+  <div class="font-primary-text display-flex--column flex-align-center" style="padding: 0px 10px;">
+    <div style="width: 100%;">
+      <ion-button (click)="startChat()" shape="round" size="small" class="primary-button" style="width: 100%;">
+        <ion-icon name="chatwhitenew" class="icon-40" (click)="startChat()" style="margin-right: 10px;"></ion-icon>
+        Chat now
+      </ion-button>
+    </div>
+    <div style="width: 100%;">
+      <ion-button *ngIf="!isSavedLocation" (click)="addToMap('B')" shape="round" color="primary" size="small"
+        class="primary-button" style="width: 100%;">
+        + Sonar
+      </ion-button>
+      <ion-button *ngIf="isSavedLocation" (click)="removeMap('B')" shape="round" color="primary" size="small"
+        class="primary-button" style="width: 100%;">
+        - Sonar
+      </ion-button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #userAvatarView let-profileImage="image">
+  <ion-avatar style="width: 38px;height: 38px;overflow: hidden;">
+    <img [src]="attachmentURL + profileImage" style="width:100%;" (click)="goToViewConnection()"
+      onerror="this.onerror=null;this.src='assets/imgs/male.png';">
+  </ion-avatar>
+</ng-template>
+
+<ng-template #userAvatarSmallView let-profileImage>
+  <ion-avatar style="width: 25px;height: 25px;overflow: hidden;">
+    <img [src]="attachmentURL + profileImage" style="width:100%;" (click)="goToViewConnection()"
+      onerror="this.onerror=null;this.src='assets/imgs/male.png';">
+  </ion-avatar>
+</ng-template>

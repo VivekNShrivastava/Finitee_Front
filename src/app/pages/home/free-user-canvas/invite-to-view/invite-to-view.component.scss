@@ -1,0 +1,230 @@
+
+ion-header {
+  background-color: #ffffff !important;
+  padding: 10px;
+
+  & ion-toolbar {
+    --background: #EAF1F4;
+    border-radius: 26px;
+    height: 51px;
+    display: flex;
+    align-items: center;
+
+    & ion-title {
+      font: normal normal 600 20px/28px SF Pro Display;
+      letter-spacing: 0.32px;
+      color: #285078;
+    }
+
+  }
+}
+
+
+ion-content {
+  & ion-segment {
+    justify-content: start;
+    padding: 0 0 0 15px;
+    background-color: #F0F5F7;
+
+
+    & ion-list {
+      padding: 0;
+      width: 100%;
+
+      & ion-item {
+        margin-bottom: 0;
+        width: 100%;
+        --background: rgba(234, 241, 244, 0.7);
+
+        & ion-avatar {
+          width: 45px;
+          height: 45px;
+          background-color: #ffffff;
+          padding: 2px;
+          margin-right: 6px;
+
+          & ion-img {
+            width: 40px;
+            height: 40px;
+
+            &.subuser-avatar {
+              position: absolute;
+              bottom: 8px;
+              left: 20px;
+              width: 31px;
+              height: 31px;
+
+            }
+          }
+        }
+
+        & ion-icon {
+          &.right-arrow {
+            height: 12px;
+            width: 12px;
+            margin: 18px 5px auto 0;
+          }
+        }
+
+        & ion-label {
+          max-width: 120px;
+
+          h3 {
+            font: normal normal 600 15px/24px SF Pro Display;
+            letter-spacing: 0.24px;
+            color: #1A3253;
+            width: max-content;
+            height: 18px;
+            line-height: 18px;
+            margin: 0;
+          }
+
+          p {
+            font: normal normal normal 11px/21px SF Pro Display;
+            letter-spacing: 0.18px;
+            width: max-content;
+            color: #1A3253;
+            height: 13px;
+            line-height: 13px;
+          }
+
+          &.subuser-label-one {
+            margin-left: 8px;
+          }
+        }
+      }
+
+      & ion-buttons {
+        align-items: start;
+        background-color: #EAF1F4;
+
+        & ion-button {
+          margin-top: 10px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  & div {
+    &.post {
+      padding: 0 10px;
+
+      p {
+        font: normal normal normal 14px/16px SF Pro Display;
+        letter-spacing: 0.22px;
+        color: #1A3253;
+      }
+
+      & ion-card {
+        box-shadow: none !important;
+        border-radius: 26px;
+
+
+        & ion-img {
+          object-fit: cover;
+          height: 184px;
+          width: auto;
+        }
+      }
+    }
+  }
+
+  & ion-list {
+
+    &.input-form {
+
+      padding: 0 20px;
+
+      & > ion-item {
+        margin-bottom: 0;
+
+        & > ion-checkbox {
+          --size: 21px;
+          --background-checked: #fff;
+          --border-color-checked: #03A9F5;
+          --checkmark-color: #03A9F5;
+          margin-inline-end: 8px;
+        }
+
+        & > ion-avatar {
+          margin-inline-end: 8px;
+        }
+
+        & > ion-label {
+          font: normal normal 600 15px/21px SF Pro Display;
+          letter-spacing: 0.24px;
+          color: #1A3253;
+
+          &.checked {
+            color: #03A9F5;
+          }
+
+        }
+
+        & > ion-textarea {
+          --background: #F0F5F7;
+          border-radius: 11px !important;
+          --color: #285078;
+          --placeholder-color: #A8A8A8;
+          --placeholder-opacity: .8;
+          --padding-end: 19px;
+          --padding-start: 19px;
+          font-size: 15px;
+          min-height: 164px;
+          letter-spacing: 0.24px;
+        }
+
+        & > ion-buttons {
+          margin-right: 44px;
+          height: 14px;
+          width: 7px;
+
+        }
+
+      }
+
+      & > ion-buttons {
+        & > ion-button {
+          text-decoration: underline;
+          color: #285078;
+          text-transform: none;
+          font-size: 15px;
+          letter-spacing: 0.2px;
+          margin-bottom: 4px;
+        }
+
+      }
+    }
+  }
+}
+
+ion-footer {
+  --padding-start: 0;
+  background-color: #FFFFFF;
+  padding: 10px;
+
+  &::before {
+    display: none;
+  }
+
+  & ion-button {
+    text-transform: none;
+    font: normal normal bold 16px/24px SF Pro Display;
+    letter-spacing: 0.25px;
+    color: #FFFFFF;
+    --box-shadow: none;
+    margin-top: 0;
+    --background: #A8A8A8;
+  }
+}
+
+.descriptionPost {
+  border-radius: 0px !important;
+  color: #FFFFFF !important;
+  text-decoration: solid;
+}
+
+.bg5{
+  background-color: #1976D2 !important;
+}

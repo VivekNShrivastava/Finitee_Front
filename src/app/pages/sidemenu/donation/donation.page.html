@@ -1,0 +1,95 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button" slot="start">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end" class="fi-header-buttons" *ngIf="userId!=logInfo.UserId">
+      <ion-button class="fi-announcement-btn" (click)="startStopInflows()">
+        <ion-icon name="inflowset" *ngIf="!userProfile.IsInflowsStarted">
+        </ion-icon>
+        <ion-icon name="inflowsRed" *ngIf="userProfile.IsInflowsStarted">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <div>
+    <ion-img src="{{appConstants.mediaPrefix + userProfile.user.ProfileImage}}"
+      onError="this.src='assets/icons/business/anonymous.svg'"></ion-img>
+    <ion-text>
+      <span *ngIf="userProfile.user.DisplayName">
+        {{userProfile.user.DisplayName}}
+      </span>
+      <span *ngIf="!userProfile.user.DisplayName">
+        ANONYMOUS
+      </span>
+    </ion-text>
+  </div>
+
+</ion-header>
+
+<ion-content>
+  <ion-segment>
+    <ion-text>
+      Donation requests
+    </ion-text>
+  </ion-segment>
+
+  <div class="donation-list">
+    <ion-row *ngIf="loaded">
+      <ng-container *ngFor="let post of postList; let i=index">
+        <ion-col size="6">
+          <ion-card class="donation-list-card">
+            <div *ngIf="post.PostImages && post.PostImages.length>0" (click)="openPostScreen(post)">
+              <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]"></ion-img>
+            </div>
+            <div *ngIf="post.PostImages && post.PostImages.length==0" (click)="openPostScreen(post)">
+              <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]"></ion-img>
+            </div>
+            <ion-buttons class="donation-list-card--extra-icon" (click)="openDonationPostOption(post,i)"
+              *ngIf="userId==logInfo.UserId">
+              <ion-button shape="round">
+                <ion-icon name="dots"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <ion-card-header class="donation-list-card--header">
+              <ion-card-title class="fi-truncate">{{post.Title}} {{post.PostDescription}}</ion-card-title>
+              <p>{{post.PostDescription}}</p>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+
+    <ng-container *ngIf="loaded && postList && postList.length==0">
+      <div class="ion-text-center fi-no-result">
+        <img src="assets/imgs/icons/noresults.png">
+        <p> No data to show</p>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!loaded">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="ion-text-center">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="ion-text-center">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+
+  </div>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="addPost()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

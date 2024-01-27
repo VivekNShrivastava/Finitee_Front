@@ -1,0 +1,432 @@
+<ion-header>
+  <ion-toolbar color="white">
+    <app-notification-icon></app-notification-icon>
+    <ion-buttons slot="end">
+      <div class="toggle">
+        <ion-text>Global</ion-text>
+        <ion-toggle [(ngModel)]="globalSearch" class="ion-no-padding"></ion-toggle>
+      </div>
+      <ion-button shape="round">Advanced search</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-searchbar autocapitalize="off" autocomplete="off" search-icon="searchi" class="ion-no-padding" placeholder="Search" [debounce]="1000" (ionChange)="onSearchValueChange($event)"></ion-searchbar>
+  <!-- <ion-spinner name="dots"></ion-spinner> -->
+  <ion-progress-bar type="indeterminate" *ngIf="loadingResult"></ion-progress-bar>
+  <ion-segment scrollable="true">
+    <ng-container *ngFor="let filter of searchFilters">
+      <div>
+        <ion-button [ngClass]="{'selected': (filter.selected)}" (click)="filterChanged(filter.value)">
+          {{filter.title}}
+        </ion-button>
+      </div>
+    </ng-container>
+  </ion-segment>
+</ion-header>
+
+
+<ion-content>
+  <ng-container value="all" *ngIf="getResultCount()==0">
+    <div class="ion-text-center">
+      <img style="margin-top: 20px;" src="assets/imgs/icons/noresults.png">
+      <p style="margin: 0px;
+      font-weight: 500;
+      color: #758EA8;
+      font-size: 16px;
+      margin-top: 15px;"> No results found</p>
+    </div>
+  </ng-container>
+  <!--  ************************* Advance Search *************************  -->
+  <!--
+      <ion-list class="input-form">
+        <ion-item lines="none">
+          <ion-input placeholder="First Name" value="Maggie"></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="ion-no-margin">
+          <ion-input placeholder="Last Name"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="gender ion-no-margin">
+          <ion-radio-group value="Male" class="display-flex">
+            <ion-item lines="none" class="ion-no-margin ion-no-padding">
+              <ion-radio slot="start" value="Male" class="ion-no-margin"></ion-radio>
+              <ion-label class="selected">Male</ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-margin ion-no-padding">
+              <ion-radio slot="start" value="Female" class="ion-no-margin"></ion-radio>
+              <ion-label>Female</ion-label>
+            </ion-item>
+          </ion-radio-group>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-input placeholder="Title"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-input placeholder="Workplace"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="two-inputs">
+          <ion-grid>
+            <ion-row class="ion-align-items-center ion-justify-content-between">
+              <ion-col size="5.5">
+                <ion-input placeholder="Country"></ion-input>
+              </ion-col>
+              <ion-col size="5.5">
+                <ion-input placeholder="State"></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item lines="none" class="two-inputs">
+          <ion-grid>
+            <ion-row class="ion-align-items-center ion-justify-content-between">
+              <ion-col size="5.5">
+                <ion-input placeholder="City"></ion-input>
+              </ion-col>
+              <ion-col size="5.5">
+                <ion-input placeholder="Zip"></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+  -->
+
+  <!--  ************************* Global Search *************************  -->
+
+  <ion-accordion-group #accordionGroup multiple="true" *ngIf="getResultCount()>0" [value]="['users', 'businesses', 'nonprofits', 'events', 'donations', 'sales_listings', 'service_available', 'service_required', 'posts']">
+    <ion-accordion value="businesses" toggleIcon="accordion-icon" *ngIf="businessUserList.length>0 && userCanViewSection('businesses')">
+      <ion-item slot="header">
+        <ion-icon name="bluebusiness"></ion-icon>
+        <ion-label>Businesses ({{businessUserList.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of businessUserList">
+          <ion-item lines="none" *ngIf="user.UserTypeId==2" (click)="openUser(user)">
+            <!-- <ion-item lines="none" *ngIf="user.UserTypeId==2 && user.UserId != logInfo.UserId" (click)="openUser(user)"></ion-item> -->
+            <ion-thumbnail slot="start">
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfilePhoto}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{user.DisplayName}}</h3>
+              <p class="ion-text-wrap">{{user.About}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="nonprofits" toggleIcon="accordion-icon" *ngIf="nonProfitUserList.length>0 && userCanViewSection('nonprofits')">
+      <ion-item slot="header">
+        <ion-icon name="nonprofit"></ion-icon>
+        <ion-label>Nonprofits ({{nonProfitUserList.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of nonProfitUserList">
+          <ion-item lines="none" *ngIf="user.UserTypeId==3" (click)="openUser(user)">
+            <ion-thumbnail slot="start">
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfilePhoto}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{user.DisplayName}}</h3>
+              <p class="ion-text-wrap">{{user.About}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-accordion>
+   <!--  <ion-accordion value="nonprofits" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="nonprofit"></ion-icon>
+        <ion-label>Nonprofits (1)</ion-label>
+      </ion-item>
+      <div slot="content">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          </ion-thumbnail>
+          <ion-label>
+            <h3>Global giving</h3>
+            <p class="ion-text-wrap">GlobalGiving is 501 non-profit organization based in the United States that
+              provide...</p>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-accordion>
+  <img class="business-logo" src="{{appConstants.mediaPrefix + userProfile.user.ProfileImage}}"
+        onError="this.src='assets/icons/business/anonymous.svg'" />
+
+  -->
+    <ion-accordion value="users" toggleIcon="accordion-icon" *ngIf="freeUserList.length>0 && userCanViewSection('users')">
+      <ion-item slot="header">
+        <ion-icon name="blueuser"></ion-icon>
+        <ion-label>Users ({{freeUserList.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of freeUserList">
+          <ion-item lines="none" *ngIf="user.UserTypeId==1" (click)="openUser(user)">
+            <ion-thumbnail slot="start">
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfilePhoto}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{user.DisplayName}}</h3>
+              <!-- <p class="ion-text-wrap">{{user.About}}</p> -->
+              <p class="ion-text-wrap">100 Posts - 1.1k Connections (test)</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-accordion>
+
+     <ion-accordion value="events" toggleIcon="accordion-icon" *ngIf="eventItemList.length>0 && userCanViewSection('events')">
+      <ion-item slot="header">
+        <ion-icon name="bluepost"></ion-icon>
+        <ion-label>Events ({{eventItemList.length}})</ion-label>
+      </ion-item>
+      <div slot="content" *ngFor="let event of eventItemList">
+        <ion-item lines="none" (click)="openEvent(event)">
+          <ion-thumbnail class="square-thumbnail" slot="end">
+            <img src="{{appConstants.mediaPrefix + event.EventImages[0]}}"
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+          </ion-thumbnail>
+          <ion-item class="user-info" lines="none">
+            <ion-grid>
+              <ion-row>
+                <ion-avatar>
+
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + event.User?.ProfilePhoto}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{event.User?.DisplayName}}</h3>
+                  <p>{{event.CreatedOn | dateAgo}}</p>
+                  <!-- <p>1 year ago {{event.CreatedOn}}</p> -->
+                </ion-label>
+              </ion-row>
+              <ion-row>
+                <ion-text>
+                  <h3>{{event.Title}}</h3>
+                </ion-text>
+              </ion-row>
+              <ion-row>
+                <h3>{{event.StartDate | date: "mediumDate"}} | {{event.StartDate | date: "shortTime"}} to {{event.EndDate | date: "shortTime"}}</h3>
+                <!-- <h3>{{getEventDescription(event)}}</h3> -->
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-item>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="sales_listings" toggleIcon="accordion-icon" *ngIf="salesItemList.length>0 && userCanViewSection('sales_listings')">
+      <ion-item slot="header">
+        <ion-icon name="sales"></ion-icon>
+        <ion-label>Sales listings ({{salesItemList.length}})</ion-label>
+      </ion-item>
+      <div slot="content" *ngFor="let salesItem of salesItemList">
+        <ion-item lines="none" (click)="openSalesItem(salesItem)">
+          <ion-thumbnail class="square-thumbnail" slot="end">
+            <img src="{{appConstants.mediaPrefix + salesItem.SalesItemImages[0]}}"
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+          </ion-thumbnail>
+          <ion-item class="user-info" lines="none">
+            <ion-grid>
+              <ion-row>
+                <ion-avatar>
+
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + salesItem.User?.ProfilePhoto}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{salesItem.User?.DisplayName}}</h3>
+                  <p>{{salesItem.CreatedOn | dateAgo}}</p>
+                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
+                </ion-label>
+              </ion-row>
+              <ion-row>
+                <ion-text>
+                  <h3>{{salesItem.Title}}</h3>
+                </ion-text>
+              </ion-row>
+              <ion-row>
+                <h3>{{salesItem.CurrencyCode}} {{salesItem.Price}}</h3>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-item>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="service_available" toggleIcon="accordion-icon" *ngIf="sevicesAvailableList.length>0 && userCanViewSection('service_available')">
+      <ion-item slot="header">
+        <ion-icon name="sales"></ion-icon>
+        <ion-label>Services available ({{sevicesAvailableList.length}})</ion-label>
+      </ion-item>
+      <div slot="content" *ngFor="let service of sevicesAvailableList">
+        <ion-item lines="none" (click)="viewServiceAvailable(service.Id)">
+          <ion-thumbnail class="square-thumbnail" slot="end">
+            <img src="{{appConstants.mediaPrefix + service.Images[0]}}"
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+          </ion-thumbnail>
+          <ion-item class="user-info" lines="none">
+            <ion-grid>
+              <ion-row>
+                <ion-avatar>
+
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{service.User?.DisplayName}}</h3>
+                  <p>{{service.CreatedOn | dateAgo}}</p>
+                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
+                </ion-label>
+              </ion-row>
+              <ion-row>
+                <ion-text>
+                  <h3>{{service.Title}}</h3>
+                </ion-text>
+              </ion-row>
+              <ion-row>
+                <h3>{{service.CurrencyCode}} {{service.Price}}/{{service.PriceType}}</h3>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-item>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="service_required" toggleIcon="accordion-icon" *ngIf="sevicesRequiredList.length>0 && userCanViewSection('service_required')">
+      <ion-item slot="header">
+        <ion-icon name="sales"></ion-icon>
+        <ion-label>Services required ({{sevicesRequiredList.length}})</ion-label>
+      </ion-item>
+      <div slot="content" *ngFor="let service of sevicesRequiredList">
+        <ion-item lines="none" (click)="viewServiceRequired(service.Id)">
+          <ion-thumbnail class="square-thumbnail" slot="end">
+            <img src="{{appConstants.mediaPrefix + service.Images[0]}}"
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+          </ion-thumbnail>
+          <ion-item class="user-info" lines="none">
+            <ion-grid>
+              <ion-row>
+                <ion-avatar>
+
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{service.User?.DisplayName}}</h3>
+                  <p>{{service.CreatedOn | dateAgo}}</p>
+                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
+                </ion-label>
+              </ion-row>
+              <ion-row>
+                <ion-text>
+                  <h3>{{service.Title}}</h3>
+                </ion-text>
+              </ion-row>
+              <ion-row>
+              <h3>{{service.CurrencyCode}} {{service.Price}}/{{service.PriceType}}</h3>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-item>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="posts" toggleIcon="accordion-icon" *ngIf="postList.length>0 && userCanViewSection('posts')">
+      <ion-item slot="header">
+        <ion-icon name="bluepost"></ion-icon>
+        <ion-label>Posts ({{postList.length}})</ion-label>
+      </ion-item>
+      <div slot="content" *ngFor="let post of postList">
+        <ion-item lines="none" (click)="openPostScreen(post)">
+          <ion-thumbnail class="square-thumbnail" slot="end">
+            <img src="{{appConstants.mediaPrefix + post.PostImages[0]}}"
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+          </ion-thumbnail>
+          <ion-item class="user-info" lines="none">
+            <ion-grid>
+              <ion-row>
+                <ion-avatar>
+
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + post.CreatedBy?.ProfileImage}}"
+              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                </ion-avatar>
+                <ion-label>
+                  <h3>{{post.CreatedBy?.DisplayName}}</h3>
+                  <p>{{post.CreatedOn | dateAgo}}</p>
+                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
+                </ion-label>
+                <!-- <ion-label><h3>-></h3></ion-label>
+                <ion-label>
+                  <h3>{{post.Title}}</h3>
+                </ion-label> -->
+              </ion-row>
+              <ion-row *ngIf="post.Title && post.Title.length > 0">
+                <ion-text>
+                  <h3>{{post.Title}}</h3>
+                </ion-text>
+              </ion-row>
+              <ion-row>
+                <ion-text>
+                  <h3>{{post.PostDescription}}</h3>
+                </ion-text>
+              </ion-row>
+              <ion-row>
+                <p>{{post.FavourCount}} Favors • {{post.BeamCount}} Beams • {{post.CommentCount}} Comments</p>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-item>
+      </div>
+    </ion-accordion>
+
+    <!--<ion-accordion value="donations" toggleIcon="accordion-icon">
+      <ion-item slot="header">
+        <ion-icon name="donation"></ion-icon>
+        <ion-label>Donations (1)</ion-label>
+      </ion-item>
+      <div slot="content">
+        <ion-item lines="none">
+          <ion-thumbnail class="square-thumbnail" slot="end">
+            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          </ion-thumbnail>
+          <ion-item class="user-info" lines="none">
+            <ion-grid>
+              <ion-row>
+                <ion-avatar>
+                  <img alt="Logo" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                </ion-avatar>
+                <ion-label>
+                  <h3>Global giving
+                    <ion-icon name="right-arrow"></ion-icon>
+                    Old cloth
+                  </h3>
+                  <p>1 year ago</p>
+                </ion-label>
+              </ion-row>
+              <ion-row>
+                <ion-text>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor..</p>
+                </ion-text>
+              </ion-row>
+
+            </ion-grid>
+          </ion-item>
+        </ion-item>
+      </div>
+    </ion-accordion>-->
+  </ion-accordion-group>
+</ion-content>
+
+<!--  ************************* Advance Search *************************  -->
+<!--
+<ion-footer>
+  <ion-button expand="block" color="primary" shape="round">
+    Search
+  </ion-button>
+</ion-footer>
+-->

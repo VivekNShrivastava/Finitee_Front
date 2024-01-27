@@ -1,0 +1,39 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Address</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<form>
+  <ion-item lines="none"  style="margin-left: 14px;margin-right: 14px; margin-bottom: -15px;">
+    <p style="color: red;font-size: medium;" ></p>
+  </ion-item>
+  <ion-item lines="none" class="fi-padding" >
+
+    <!-- <ion-label *ngIf="errorMsgGrp.loginResponse.length>0">{{errorMsgGrp.loginResponse}}</ion-label> -->
+    
+    <ion-input class="input fi-margin"  formControlName="firstname"
+      placeholder="First Name" type="firstname" name="firstname"></ion-input>
+    <!-- <span slot="error" *ngIf="errorMsgGrp.loginResponse.length > 0">{{errorMsgGrp.loginResponse}}</span> -->
+  </ion-item>
+
+  <!-- <ion-input class="input1" (ionChange) = "onEmailInputChange($event)" formControlName="email" placeholder="Email/Phone number" type="inputTypePhone ? number:email" name="email"></ion-input> -->
+  <ion-item lines="none" class="fi-padding" >
+    <ion-input class="input fi-margin" formControlName="lastname" placeholder="Last Name" type="lastname" name="lastname"></ion-input>
+  </ion-item>
+
+
+  <ion-item lines="none" class="fi-padding" >
+    <ion-input class="input fi-margin" formControlName="password" placeholder="Password" type="password" name="password"></ion-input>
+  </ion-item>
+    <!-- <span slot="error">{{errorMsgGrp.password}}</span> -->
+    <!-- <re-captcha [(ngModel)]="captcha" name="captcha" required #captchaControl="ngModel"></re-captcha> -->
+    <!-- <re-captcha formControlName="recaptchaReactive"></re-captcha> -->
+  <ion-button  color="primary" class="lgn-button" type="submit">Continue</ion-button>
+  <!-- <ion-button *ngIf="inputTypePhone" color="primary" class="lgn-button" type="button" (click)="sendSignInOTP()">Sign in using OTP</ion-button> -->
+</form>

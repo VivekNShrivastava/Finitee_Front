@@ -1,0 +1,167 @@
+ion-card {
+    box-shadow: none;
+}
+
+ion-header.headth {
+
+    box-shadow: 0px 5px 6px rgb(0 0 0 / 5%);
+    padding-bottom: 0px;
+}
+
+.submenu ion-card {
+    margin: 0px 10px !important;
+}
+
+ion-range {
+
+    div[slot="start"],
+    div[slot="end"] {
+        font-size: 15px;
+        font-weight: 300;
+    }
+}
+
+.toolb {
+    --min-height: inherit;
+    --background: transparent;
+    border-radius: 0px;
+}
+
+span.dott {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #e91e63;
+    border-radius: 10px;
+    left: 6px;
+    top: 14px;
+}
+
+.label ion-label {
+    padding: 10px 15px 0px;
+    font-size: 14px;
+    color: #989898;
+    display: inline-block;
+    background: #fff;
+    width: 100%;
+    margin-bottom: 0px;
+    // border-top: 1px solid #eee;
+    margin-top: 10px;
+}
+
+.menus ion-item {
+    border: none;
+}
+
+ion-range {
+    padding: 0px 0px;
+}
+
+.search-button {
+    height: 40px !important;
+}
+
+/* .stop-ping {
+    background: url("assets/imgs/icons/ping.gif");
+    --ion-color-base: white !important;
+} */
+
+.frequency-container {
+    justify-content: space-around;
+
+    .frequency-box-clicked {
+        color: white;
+        background: skyblue;
+        font-weight: bold;
+    }
+
+    .frequency-box {
+        border: 1px solid skyblue;
+        padding: 5px;
+        border-radius: 1em;
+    }
+}
+
+ion-item {
+    --min-height: 20px;
+
+    ion-checkbox {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+}
+
+.ele td ion-input {
+
+    display: inline-block;
+    /* min-width: 88px; */
+    width: 70px;
+    border-radius: 17px;
+    margin: 10px 0px;
+
+    font-size: 14px;
+    text-align: center;
+    --padding-start: 0px;
+    font-family: "SF Pro";
+}
+
+.search-bar {
+    // --background: rgb(234 241 244 / 70%);
+    border-radius: 30px;
+    padding-right: 0px;
+    --padding-start: 0px;
+    --padding-end: 7px;
+}
+
+.search-input {
+    width: 100%;
+}
+
+.to-label {
+    display: inline-block;
+    width: 49px;
+    text-align: center;
+}
+
+.ping-sliders {
+    padding: 25px 25px 0px;
+    margin-bottom: 10px;
+
+    .slider-item {
+        color: #285078;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+}
+
+.search-button {
+    height: 50px;
+    --box-shadow: none;
+    text-transform: capitalize;
+}
+
+.location-item ion-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(193, 193, 193, 0.35);
+}
+
+.c-checkbox {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.search-box{
+    background: #EAF1F4;
+    width: 100%;
+    border-radius: 26px;
+    padding: 0px 50px;
+}
+
+.input-field{
+    font: normal normal normal 14px/28px SF Pro Display;
+    letter-spacing: 0.22px;
+    height: 34px;
+}

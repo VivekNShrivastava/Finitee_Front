@@ -1,0 +1,136 @@
+
+/* ion-tab-bar {
+  --background: #f0f5f7;
+}
+
+ion-tab-button {
+  color: #181e3c;
+
+  &.tab-selected {
+    --background: #ffffff;
+    color: #03a9f5;
+  }
+
+
+} */
+
+ion-header ion-toolbar ion-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font: normal normal 600 14px/28px SF Pro Display;
+  letter-spacing: 0.32px;
+  color: #285078;
+}
+
+
+ion-menu {
+  --max-width: 252px;
+
+  & > ion-content {
+    & > ion-item {
+      --border-style: dashed;
+      --border-color: #285078;
+      margin-bottom: 0;
+      margin-left: 20px;
+      margin-right: 20px;
+
+
+      & > ion-icon {
+        color: #1A3253;
+        padding-left: 4px;
+        margin-right: 18px;
+      }
+
+      & > ion-label {
+        font: normal normal bold 16px/24px SF Pro Display;
+        letter-spacing: 0.25px;
+        color: #285078;
+      }
+    }
+
+    & > ion-accordion-group {
+
+
+      & > ion-accordion {
+
+
+        & > ion-item {
+          background: rgba(139, 161, 183, 0.1);
+          --background: rgba(139, 161, 183, 0.1);
+          padding-left: 20px;
+          padding-right: 20px;
+          margin-bottom: 0;
+
+          & > ion-icon {
+            color: #1A3253;
+            padding-left: 4px;
+            margin-right: 18px;
+          }
+
+          & > ion-label {
+            font: normal normal bold 16px/24px SF Pro Display;
+            letter-spacing: 0.25px;
+            color: #285078;
+          }
+        }
+
+        & > div.sub-menu {
+          & > ion-item {
+            --border-color: #79838D;
+            margin-bottom: 0;
+            margin-left: 20px;
+            margin-right: 20px;
+
+            & > ion-icon {
+              color: #79838D;
+              padding-left: 4px;
+              margin-right: 18px;
+            }
+
+            & > ion-label {
+              font: normal normal bold 14px/24px SF Pro Display;
+              letter-spacing: 0.22px;
+              color: #79838D;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & > ion-footer {
+
+    &::before {
+      display: none;
+    }
+
+    & > ion-toolbar {
+
+
+      & > ion-item {
+        margin-bottom: 0;
+
+        & > ion-icon {
+          padding-left: 26px;
+          margin-inline-end: 22px;
+          color: #1A3253;
+        }
+
+        & > ion-label {
+          font: normal normal bold 16px/24px SF Pro Display;
+          letter-spacing: 0.25px;
+          color: #285078;
+        }
+
+      }
+    }
+  }
+}
+
+.header-md::after {
+  background-image: none;
+}

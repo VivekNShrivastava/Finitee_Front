@@ -1,0 +1,269 @@
+ion-card {
+  --background: #fff;
+  --color: #000;
+  // box-shadow:none;
+  width: 100% !important;
+  margin: 0px !important;
+}
+
+ion-card-title {
+  --color: #000;
+  text-align: left;
+  letter-spacing: 0.24px;
+  color: #1A3253;
+  opacity: 1;
+  font-size: 15px;
+}
+
+ion-card-subtitle {
+  --color: #000;
+  text-align: left;
+  letter-spacing: 0.24px;
+  color: #505050;
+  opacity: 1;
+  font-size: 10px;
+}
+
+ion-header {
+  background-color: #ffffff !important;
+  color: #1A3253;
+  background-image: none !important;
+}
+
+.header-md::after {
+  background-image: none !important;
+}
+
+.main-img {
+  height: 184px !important;
+  width: 100% !important;
+  object-fit: cover;
+}
+
+// This is a sample CSS
+
+.avatar {
+  height: 45px;
+  width: 45px;
+}
+
+.connection-card {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 2px;
+  height: 65px;
+  background-color: #F0F5F7;
+}
+
+.connection-card-bottom {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  width: 100%;
+  height: 60px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: -2px 6px 11px -7px rgba(0, 0, 0, 0.75);
+}
+
+.first-section {
+  display: flex;
+  flex: 0.1;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.description {
+  display: flex;
+  //justify-content:center;
+  text-align: justify;
+  width: 100%;
+  padding: 5px;
+
+  p {
+    letter-spacing: 0.22px;
+    color: #1A3253;
+    opacity: 1;
+    font-size: 14px;
+  }
+}
+
+.second-section {
+  flex: 0.7;
+  align-items: left;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  margin-left: 7px;
+}
+
+.third-section {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 5px;
+  flex: 0.2;
+}
+
+.icons-menu {
+  padding: 8px;
+  width: 35px;
+  height: 28px;
+  align-items: flex-end;
+  margin-left: 10px;
+  display: flex;
+}
+
+// This is sample CSS
+
+
+.search-bar {
+  display: flex;
+  background-color: #EAF1F4;
+  flex-direction: row;
+  height: 51px;
+  border-radius: 26px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.item-two {
+  display: flex;
+  flex: 0.7;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  letter-spacing: 0.32px;
+  color: #285078;
+  font-size: 20px;
+}
+
+.item-three {
+  display: flex;
+  flex: 0.2;
+  justify-content: space-between;
+}
+
+item-one {
+  display: flex;
+  flex: 0.1;
+  align-items: flex-start;
+  padding-left: 5px;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+
+  ion-icon {
+    width: 75%;
+    margin-left: 20px;
+    //  margin-top: 16px;
+
+  }
+
+  ion-badge {
+    position: absolute;
+    height: 5px;
+    width: 5px;
+    top: 8px;
+    left: -20px;
+  }
+
+}
+
+.icon-bell {
+  width: 23px;
+  height: 23px;
+}
+
+ion-segment {
+  & ion-button {
+    height: 26px;
+    --border-radius: 13px;
+    font: normal normal 600 15px/28px SF Pro Display;
+    letter-spacing: 0.21px;
+    color: #285078;
+    text-transform: none;
+    --background: #F0F5F7;
+    --box-shadow: none;
+    margin: 5px;
+
+    &.selected {
+      color: #FFFFFF;
+      --background: #0AA5F5;
+
+    }
+
+  }
+}
+
+ /*  ion-segment {}
+
+  ion-segment-button {
+    height: 26px;
+  }
+
+  .segment-button-checked {
+    background-color: #0AA5F5;
+    border-radius: 16px;
+  }
+ */
+  .my-label {
+    font-size: 12px;
+    color: #285078;
+    opacity: 1;
+  }
+
+  .my-label-ckd {
+    font-size: 12px;
+    color: white;
+  }
+
+  .lower-icons-menu {
+    height: 22px;
+    width: 22px;
+  }
+
+  .lower-section {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-left: 10px;
+    align-items: center;
+    flex: 0.3;
+  }
+
+  .lower-section-feilds {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-right: 10px;
+    align-items: center;
+    flex: 0.7;
+  }
+
+  .lower-section-items {
+    display: flex;
+    gap: 2px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.04px;
+    color: #1A3253;
+    opacity: 1;
+
+    span {
+      font-size: 11px !important;
+    }
+
+    p {
+      font-size: 11px !important;
+    }
+  }

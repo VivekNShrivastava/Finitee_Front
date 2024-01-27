@@ -1,0 +1,100 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>{{product.Title}}</ion-title>
+    <ion-buttons slot="end" (click)="openProductOption()">
+      <ion-button shape="round">
+        <ion-icon name="three-dots">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides [pager]="product.ProductImages.length>1 ? true : false">
+    <ion-slide *ngFor="let pImage of product.ProductImages">
+      <ion-card>
+        <ion-img  [src]="appConstants.mediaPrefix + pImage"></ion-img>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <div class="product-description ion-padding-horizontal ">
+    <h3 class="ion-padding-horizontal">
+      {{product.TitleDescription}}
+    </h3>
+    <p class="ion-padding-horizontal">
+      {{product.Description}}
+    </p>
+  </div>
+
+  <ion-grid *ngIf="product && postList && postList.length>0">
+    <ion-row>
+      <ion-col size="6" *ngFor="let post of postList" (click)="openPostScreen(post)">
+        <div *ngIf="post.PostImages && post.PostImages.length>0">
+          <ion-buttons *ngIf="post.PostImages.length>1">
+            <ion-button shape="round">
+              <ion-icon name="posting-multiple-picture"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]"></ion-img>
+        </div>
+
+        <div class="ion-text-center"
+          *ngIf="post.PostImages && (post.PostImages.length==0 || post.PostImages.length>0 && post.PostImages[0]=='')">
+          <h3> {{post.PostDescription}}</h3>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="product.CreatedBy.Id == logInfo.UserId"
+    (click)="addPostScreen()">
+    <ion-fab-button color="primary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<!-- <ion-buttons id="filter" class="filter-icon">
+  <ion-button shape="round">
+    <ion-icon name="canvas-filter"></ion-icon>
+  </ion-button>
+</ion-buttons>
+<ion-popover trigger="filter" triggerAction="click">
+  <ng-template>
+    <ion-list>
+      <ion-radio-group value="All">
+        <ion-item lines="none">
+          <ion-label class="selected">All</ion-label>
+          <ion-radio slot="start" value="All"></ion-radio>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>Images</ion-label>
+          <ion-radio slot="start" value="Images"></ion-radio>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>Videos</ion-label>
+          <ion-radio slot="start" value="Videos"></ion-radio>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>Text</ion-label>
+          <ion-radio slot="start" value="Text"></ion-radio>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>Traits</ion-label>
+          <ion-radio slot="start" value="Traits"></ion-radio>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>Beamed</ion-label>
+          <ion-radio slot="start" value="Beamed"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </ng-template>
+</ion-popover> -->

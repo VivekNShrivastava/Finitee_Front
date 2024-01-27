@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Personal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!--logo-->
+  <div class="logo-edit">.
+
+    <img src="{{appConstants.mediaPrefix + ( userProfileImgAbt.ProfileImage || userCanvasProfile.canvasProfile.ProfileImage)}}"
+    onError="this.src='assets/icons/business/anonymous.svg'" (click)="openImage(userProfileImgAbt.ProfileImage || userCanvasProfile.canvasProfile.ProfileImage)" />
+
+    <ion-spinner color="primary"
+      *ngIf="(userProfileImgAbt.ProfileImage && userProfileImgAbt.ProfileImage.indexOf('localhost')!=-1) || (userCanvasProfile.canvasProfile.ProfileImage && userCanvasProfile.canvasProfile.ProfileImage.indexOf('localhost') != -1)"
+      style="position: absolute; margin-top: 41px;width: 80px !important; height: 80px !important;"></ion-spinner>
+    <ion-buttons>
+      <button class="camera-icon" id="present-alert" (click)="captuerMedia($event)">
+        <ion-icon src="assets/icons/screen-wise-icons/Chat icons as svg/Upload picture icon.svg"></ion-icon>
+      </button>
+    </ion-buttons>
+    <!-- <ion-alert
+      trigger="present-alert"
+      header="Alert!"
+      [buttons]="alertButtons"
+      (didDismiss)="setResult($event)"
+    ></ion-alert> -->
+  </div>
+
+  <!--about-->
+  <ion-card class="header-about">
+    <ion-card-content>
+      <ion-textarea maxlength="150" auto-grow="true" class="custom-textarea" placeholder="About" [(ngModel)]="userCanvasProfile.canvasProfile.About"></ion-textarea>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" shape="round"
+    [color]="(userCanvasProfile.canvasProfile.ProfileImage && userCanvasProfile.canvasProfile.ProfileImage.indexOf('localhost')!=-1) ? 'medium' : 'primary'"
+    (click)="saveUserImgAbt()">Save</ion-button>
+</ion-footer>

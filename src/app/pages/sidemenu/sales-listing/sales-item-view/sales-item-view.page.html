@@ -1,0 +1,101 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Sales listing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <ion-img alt="Logo" src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
+      </ion-avatar>
+      <ion-label>
+        <h3>{{logInfo.DisplayName}}</h3>
+        <p>3 mins ago</p>
+      </ion-label>
+      <ion-label slot="end" class="fd-views-label">
+        <p>300 views</p>
+        <ion-icon name="heat-map-icon"></ion-icon>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-text class="ion-padding-start">
+        <h2>{{salesItem.Title}}, {{salesItem.Condition}}</h2>
+      </ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-slides pager="true">
+        <ion-slide *ngFor="let i of salesItem.SalesItemImages">
+          <ion-card class="ion-no-margin">
+            <ion-img alt="thumbnail-img" [src]="appConstants.mediaPrefix+i"></ion-img>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label style="font-size: 18px; font-weight: 500; color: #285078;">
+        {{currencySymbol}}{{salesItem.Price}}
+      </ion-label>
+      <ion-label style="font-size: 13px; font-weight: 500; color: #285078;" slot="end">
+        {{salesItem.CreatedOn | date :"dd/MM/YYYY"}}
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-text class="desc" style="margin-bottom: 10px;">
+        {{salesItem.Description}}
+      </ion-text>
+    </ion-item>
+    <br>
+    <div style="margin-bottom: 10px;">
+      <ion-label class="input-label">Condition</ion-label>
+      <br>
+      <ion-label class="desc">
+        {{salesItem.Condition}}
+      </ion-label>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <ion-label class="input-label">Viewable by</ion-label>
+      <br>
+      <ion-label class="desc">
+        {{salesItem.VisibleTo}}
+      </ion-label>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+      <ion-label class="input-label">Location</ion-label>
+      <br>
+      <ion-label class="desc">
+        {{salesItem.Location}} location
+      </ion-label>
+    </div>
+    <div style="margin-bottom: 10px;">
+      <ion-label class="input-label">Offset location</ion-label>
+      <br>
+      <ion-label class="desc">
+        <ng-container *ngIf="!salesItem.IsOffsetLocation">Disabled</ng-container>
+        <ng-container *ngIf="salesItem.IsOffsetLocation">Enabled</ng-container>
+      </ion-label>
+    </div>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+
+  <ion-button *ngIf="salesItem.daysLeft >=0" expand="block" shape="round" class="footer-button" (click)="edit()">
+    Edit
+  </ion-button>
+  <ion-button *ngIf="salesItem.daysLeft < 0" expand="block" shape="round" class="footer-button" (click)="renew()">
+    Renew
+  </ion-button>
+</ion-footer>

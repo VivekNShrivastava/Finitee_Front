@@ -1,0 +1,49 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <app-notification-icon></app-notification-icon>
+    </ion-buttons>
+    <ion-title>Service alert</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="edit()">
+        <ion-icon  style="font-weight: bold;" name="pencil-outline"></ion-icon>
+      </ion-button>
+      <ion-menu-button></ion-menu-button>
+
+      <!-- <ion-button>
+      <ion-menu-button></ion-menu-button>
+      </ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-item *ngIf="finiteeService.ServiceAlertWords.length > 0" lines="none" class="box-shadow">
+    <ion-label style="font-size: 16px; font-weight: bold;">Service trait words</ion-label>
+    <ion-label slot="end" style="font-size: 16px; font-weight: bold; margin-right: 55px;">Distance</ion-label>
+  </ion-item>
+
+  <ion-item *ngFor="let i of finiteeService.ServiceAlertWords">
+    <ion-label style="font-weight: 500;">{{i.TraitWord}}</ion-label>
+    <ion-label slot="end">
+      <h3>{{i.Distance}} km</h3>
+    </ion-label>
+    <ion-buttons slot="end">
+      <ion-button (click)="deleteTraitWord(i.Id)"> <ion-icon style="color: #782828;"
+          name="trash-outline"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-item>
+
+  <ng-container *ngIf="finiteeService.ServiceAlertWords.length == 0">
+    <div class="nodata">
+      <img style="margin-top: 20px;" src="assets/imgs/new/NoData.png">
+      <h3> You have no service trait words listings at this time.</h3>
+      <!-- <h3> Create a shopping words listing to attract the correct talent for your requirements.</h3> -->
+    </div>
+  </ng-container>
+
+</ion-content>
+
+<ion-button (click)="viewMatchedResult()" style="text-transform: none;" shape="round" expand="full" class="save-button">
+  View all matches</ion-button>

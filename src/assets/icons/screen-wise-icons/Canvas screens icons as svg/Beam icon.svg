@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27.399" height="20" viewBox="0 0 27.399 20">
+  <g id="Group_406" data-name="Group 406" transform="translate(-93 -306)">
+    <g id="Group_397" data-name="Group 397" transform="translate(5 -2)">
+      <path id="Path_116" data-name="Path 116" d="M286.8,312.218a.313.313,0,0,1,0,.542l-4.907,4.352a.313.313,0,0,1-.47-.271v-1.964a.313.313,0,0,0-.313-.313h-4.395a.313.313,0,0,1-.313-.313v-3.524a.313.313,0,0,1,.313-.313h4.395a.313.313,0,0,0,.313-.313v-1.964a.313.313,0,0,1,.47-.271Z" transform="translate(-171.561 5.177)" fill="#1a3253"/>
+    </g>
+    <g id="Group_405" data-name="Group 405">
+      <g id="Group_404" data-name="Group 404" transform="translate(0 -2)">
+        <g id="Group_403" data-name="Group 403" transform="translate(93 308)">
+          <g id="Rectangle_84" data-name="Rectangle 84" fill="#fff" stroke="#1a3253" stroke-width="1">
+            <rect width="16" height="20" rx="3" stroke="none"/>
+            <rect x="0.5" y="0.5" width="15" height="19" rx="2.5" fill="none"/>
+          </g>
+          <g id="Group_402" data-name="Group 402" transform="translate(3.332 4.444)">
+            <g id="Group_401" data-name="Group 401" transform="translate(-0.333 6.167)">
+              <path id="Path_120" data-name="Path 120" d="M999.687,104.376q-2.173,0-4.347,0a.632.632,0,1,1-.076-1.262c.04,0,.08,0,.121,0q4.309,0,8.618,0a.684.684,0,0,1,.557.214.629.629,0,0,1-.391,1.044,1.512,1.512,0,0,1-.211.007Z" transform="translate(-994.66 -104.722)" fill="#1a3253" stroke="#1a3253" stroke-width="0.2"/>
+              <path id="Path_122" data-name="Path 122" d="M999.687,104.376q-2.173,0-4.347,0a.632.632,0,1,1-.076-1.262c.04,0,.08,0,.121,0q4.309,0,8.618,0a.684.684,0,0,1,.557.214.629.629,0,0,1-.391,1.044,1.512,1.512,0,0,1-.211.007Z" transform="translate(-994.66 -108.722)" fill="#1a3253" stroke="#1a3253" stroke-width="0.2"/>
+              <path id="Path_121" data-name="Path 121" d="M999.687,104.376q-2.173,0-4.347,0a.632.632,0,1,1-.076-1.262c.04,0,.08,0,.121,0q4.309,0,8.618,0a.684.684,0,0,1,.557.214.629.629,0,0,1-.391,1.044,1.512,1.512,0,0,1-.211.007Z" transform="translate(-994.66 -100.722)" fill="#1a3253" stroke="#1a3253" stroke-width="0.2"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

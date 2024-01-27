@@ -1,0 +1,120 @@
+ion-header {
+  padding: 15px 10px;
+  background: #ffffff;
+
+  & ion-toolbar {
+    height: 51px;
+    --background: #EAF1F4;
+    border-radius: 26px;
+
+    & ion-buttons {
+      & ion-button {
+        margin-inline-start: 8px;
+      }
+    }
+
+    & ion-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font: normal normal 600 20px/28px SF Pro Display;
+      letter-spacing: 0.32px;
+      color: #285078;
+
+    }
+  }
+}
+
+ion-content {
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+  --padding-start: 15px;
+  --padding-end: 15px;
+  height: 100%;
+  text-align: center;
+
+  & > ion-text {
+    font: normal normal normal 15px/24px SF Pro Display;
+    letter-spacing: 0.24px;
+    color: #285078;
+  }
+
+  & > ion-list {
+    & > ion-item {
+      margin-bottom: 0;
+      border-bottom: 2px solid #e4e5e9;
+
+      padding: 10px 0;
+
+      & > ion-avatar {
+        height: 46px;
+        width: 46px;
+        background: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 8px;
+
+        & > img {
+          height: 40px;
+          width: 40px;
+        }
+      }
+
+      & > ion-label {
+        h3 {
+          font: normal normal 600 15px/21px SF Pro Display;
+          letter-spacing: 0.24px;
+          color: #1A3253;
+          height: 18px;
+          line-height: 18px;
+          margin: 0;
+        }
+
+        p {
+          font: normal normal 600 13px/24px SF Pro Display;
+          letter-spacing: 0.21px;
+          color: #505050;
+          height: 15px;
+          line-height: 15px;
+          margin: 2px 0 0;
+
+          &.date {
+            font: normal normal 600 12px/21px SF Pro Display;
+            letter-spacing: 0.19px;
+            color: #A8A8A8;
+            height: 14px;
+            line-height: 14px;
+
+          }
+
+        }
+
+
+      }
+
+      & ion-buttons {
+        ion-chip {
+          font: normal normal 600 11px/28px SF Pro Display;
+          letter-spacing: 0.18px;
+          color: #FFFFFF;
+          padding: 8px 27px;
+
+          &.yes {
+            background-color: #03A9F5;
+          }
+
+          &.no {
+            background-color: #E57676;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+

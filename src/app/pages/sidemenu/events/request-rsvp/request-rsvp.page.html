@@ -1,0 +1,59 @@
+<ion-header class="fi-chat-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title> {{ navParams == "rsvp" ? "RSVPs" : "Requests" }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="activated">
+        <ion-icon name="searchi"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text>Number of attendees: {{navParams == 'rsvp' ? inviteAcceptedList.length : requestList.length}} </ion-text>
+  <ion-list *ngIf="navParams == 'rsvp'">
+      <ion-item class="ion-align-items-center" *ngFor="let user of inviteAcceptedList; let i=index">
+          <div class="connection-card">
+            <div class="first-section">
+              <ion-avatar class="avatar">
+                <img src='https://finitee.sgp1.digitaloceanspaces.com/dev/{{user.ProfilePhoto}}'
+                  onError="this.src='assets/imgs/male.png'" />
+              </ion-avatar>
+            </div>
+            <div class="second-section">
+              <ion-card-title>{{user?.DisplayName}}</ion-card-title>
+              <ion-card-subtitle>{{user?.UserName}}</ion-card-subtitle>
+            </div>
+          </div>
+      </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="navParams == 'invite'">
+      <ion-item class="ion-align-items-center" *ngFor="let user of requestList; let i=index">
+          <div class="connection-card">
+            <div class="first-section">
+              <ion-avatar class="avatar">
+                <img src='https://finitee.sgp1.digitaloceanspaces.com/dev/{{user.ProfilePhoto}}'
+                  onError="this.src='assets/imgs/male.png'" />
+              </ion-avatar>
+            </div>
+            <div class="second-section">
+              <ion-card-title>{{user?.DisplayName}}</ion-card-title>
+              <ion-card-subtitle>{{user?.UserName}}</ion-card-subtitle>
+            </div>
+            <div class="third-section">
+              <div class="accept" (click)="acceptDecline(user,'ACCEPT',i)">
+                <p>Accept</p>
+              </div>
+              <div class="declain" (click)="acceptDecline(user,'DECLINE',i)">
+                <p>Decline</p>
+              </div>
+            </div>
+          </div>
+      </ion-item>
+  </ion-list>
+</ion-content>

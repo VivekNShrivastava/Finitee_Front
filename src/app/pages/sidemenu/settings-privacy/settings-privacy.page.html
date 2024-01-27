@@ -1,0 +1,366 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Privacy Setting</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="loaded">
+
+    <ion-toolbar>
+      <ion-text>Account Type</ion-text>
+    </ion-toolbar>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Introvert Account</h3>
+        </ion-text>
+        <ion-toggle
+          slot="end"
+          [checked]="isToggleChecked('I')"
+          [disabled]="isToggleChecked('I')"
+          (ionChange)="handleToggleChange($event, 'I')"
+        ></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Extrovert Account</h3>
+        </ion-text>
+        <ion-toggle
+          slot="end"
+          [checked]="isToggleChecked('E')"
+          [disabled]="isToggleChecked('E')"
+          (ionChange)="handleToggleChange($event, 'E')"
+        ></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Superstar Account</h3>
+        </ion-text>
+        <ion-toggle
+          slot="end"
+          [checked]="isToggleChecked('S')"
+          [disabled]="isToggleChecked('S')"
+          (ionChange)="handleToggleChange($event, 'S')"
+        ></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Ghost Account</h3>
+        </ion-text>
+        <ion-toggle
+          slot="end"
+          [checked]="isToggleChecked('G')"
+          [disabled]="isToggleChecked('G')"
+          (ionChange)="handleToggleChange($event, 'G')"
+        ></ion-toggle>
+      </ion-item>
+    </ion-list>
+    
+    <!-- <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Introvert Account</h3>
+        </ion-text>
+        <ion-toggle slot="end" [checked]=" check_I"  (ionChange)="handleToggleChange($event,'I')"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Extrovert Account</h3>
+        </ion-text>
+        <ion-toggle slot="end" [checked]="check_E" (ionChange)="handleToggleChange($event, 'E')"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Superstar Account</h3>
+        </ion-text>
+        <ion-toggle slot="end" [checked]="check_S"  (ionChange)="handleToggleChange($event,'S')"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Ghost Account</h3>
+        </ion-text>
+        <ion-toggle slot="end" [checked]=" check_G"  (ionChange)="handleToggleChange($event,'G')"></ion-toggle>
+      </ion-item>
+    </ion-list> -->
+
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="navigateToAnotherRoute('sonar')"> <img src="../../../../assets/icon/fin/forward_arrow.svg"> </ion-button>
+      </ion-buttons>
+      <ion-text>Sonar</ion-text>
+    </ion-toolbar>
+
+    <!-- <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Sonar location visible to</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.LocationVisibleTo)}}</p>
+        </ion-text>
+        <ion-buttons slot="end" (click)="presentPopover($event,'LocationVisibleTo')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Sonar location shown only when logged in</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.LocationShowOnlyWhenLoggedIn"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Available for greetings when logged in</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AvailableForGreetingWhenLoggedIn"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Offset sonar location when showing Business Location</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.OffSetLocation"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Mobile business</h3>
+          <p>Select if your business location changes regularly</p>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.IsMobileBusiness"></ion-toggle>
+      </ion-item>
+    </ion-list> -->
+
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="navigateToAnotherRoute('canvas')"> <img src="../../../../assets/icon/fin/forward_arrow.svg"> </ion-button>
+      </ion-buttons>
+      <ion-text>Canvas</ion-text>
+    </ion-toolbar>
+
+    <!-- <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="navigateToAnotherRoute('home')"> <img src="../../../../assets/icon/fin/forward_arrow.svg"> </ion-button>
+      </ion-buttons>
+      <ion-text>Home</ion-text>
+    </ion-toolbar> -->
+    
+    <!-- <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Home screen visible by</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.HomeScreenViewableBy)}}</p>
+        </ion-text>
+        <ion-buttons slot="end" (click)="presentPopover($event,'HomeScreenViewableBy')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Be found and shown as a summary screen to users not allowed to view your home screen?</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowToViewHomeScreen"></ion-toggle>
+      </ion-item>
+    </ion-list> -->
+
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="navigateToAnotherRoute('connections')"> <img src="../../../../assets/icon/fin/forward_arrow.svg"> </ion-button>
+      </ion-buttons>
+      <ion-text>Connection</ion-text>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="navigateToAnotherRoute('chat')"> <img src="../../../../assets/icon/fin/forward_arrow.svg"></ion-button>
+      </ion-buttons>
+      <ion-text>Chat</ion-text>
+    </ion-toolbar>
+
+    <ion-toolbar *ngIf="!privacySetting.FreeUserType">
+      <ion-buttons slot="primary">
+        <ion-button (click)="navigateToAnotherRoute('eprofile')"> <img src="../../../../assets/icon/fin/forward_arrow.svg"> </ion-button>
+      </ion-buttons>
+      <ion-text>eProfile</ion-text>
+      <!-- <ion-title>></ion-title> -->
+    </ion-toolbar>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>eProfile viewable by</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.CanvasViewableBy)}}</p>
+        </ion-text>
+        <ion-buttons slot="end" (click)="presentPopover($event,'CanvasViewableBy')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow other users to receive my eProfile</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowToViewCanvas"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connected members to refer my eProfile</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowToReferCanvas"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <ion-toolbar >
+      <ion-text>eCard</ion-text>
+    </ion-toolbar>
+
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>eChat viewable by</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.CanvasViewableBy)}}</p>
+        </ion-text>
+        <ion-buttons slot="end" (click)="presentPopover($event,'CanvasViewableBy')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow other users to receive my eCard</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowToViewCanvas"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connected members to refer my eCard</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowToReferCanvas"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    
+    <!-- <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Receive messages from unconnected users</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.ReceiveMessageFromNonConnection"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Receive messages from unconnected businesses</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.ReceiveMessageFromNonConnectionBusiness"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Receive messages from unconnected nonprofits</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.ReceiveMessageFromNonConnectionNPUser"></ion-toggle>
+      </ion-item>
+    </ion-list> -->
+
+    
+    <!-- <ion-list>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Connected members viewable by</h3>
+          <p>{{_commonService.getPrivacyFullValue(privacySetting.ConnectionViewableBy)}}</p>
+        </ion-text>
+        <ion-buttons slot="end" (click)="presentPopover($event,'ConnectionViewableBy')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connection requests</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowConnectionRequest"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connected members to recommend my product sections</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowConnectionToReferMe"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3>Allow connected members to send me recommendations</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowConnectionToSendMeRecommedation"></ion-toggle>
+      </ion-item>
+    </ion-list> -->
+
+    <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+      <ng-template>
+        <ion-list>
+          <ion-radio-group [value]="selectedPopoverValue" (ionChange)="radioGroupChange($event)">
+            <ion-item lines="none">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'A'}">All Finitee users</ion-label>
+              <ion-radio slot="start" value="A"></ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'C'}">Connected members</ion-label>
+              <ion-radio slot="start" value="C"></ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label [ngClass]="{selected : selectedPopoverValue == 'O'}">Only me</ion-label>
+              <ion-radio slot="start" value="O"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ng-template>
+    </ion-popover>
+  </ng-container>
+  <ng-container *ngIf="!loaded">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;" >
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+</ion-content>
+
+<!-- <ion-footer class="create-btn" *ngIf="loaded">
+  <ion-button shape="round" expand="block" color="primary" (click)="saveUserPrivacy()">
+    Save
+  </ion-button>
+</ion-footer> -->

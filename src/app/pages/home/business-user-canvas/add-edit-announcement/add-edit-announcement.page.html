@@ -1,0 +1,47 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="!isEdit">Create Announcement</ion-title>
+    <ion-title *ngIf="isEdit">Edit Announcement</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="input-form">
+    <!-- title -->
+    <ion-item lines="none">
+      <ion-input placeholder="Title" [(ngModel)]="announcement.AnnouncementTitle" #ctrl1="ngModel" required></ion-input>
+    </ion-item>
+    <div class="error-message" *ngIf="saveClicked && !ctrl1.valid">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span>Title is mandatory</span>
+    </div>
+
+    <!-- description -->
+    <ion-item lines="none">
+      <ion-textarea [(ngModel)]="announcement.AnnouncementDescription" #ctrl2="ngModel" required class="custom-textarea"
+        [autoGrow]="true" placeholder="Type your product description here"
+        value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.">
+      </ion-textarea>
+    </ion-item>
+    <div class="error-message" *ngIf="saveClicked && !ctrl2.valid">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span> description is mandatory</span>
+    </div>
+  </ion-list>
+
+  <!-- multiple file uplaod -->
+  <app-multiple-media-upload [mediaFiles]="announcement.Images"
+    (filePathEvent)="addMedia($event)"></app-multiple-media-upload>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" shape="round" (click)="saveAnnouncement()"
+    [color]="(announcement.AnnouncementTitle=='' || announcement.AnnouncementDescription=='') ? 'medium' : 'primary'">
+    <span *ngIf="!isEdit">Create</span>
+    <span *ngIf="isEdit">Save</span>
+  </ion-button>
+</ion-footer>

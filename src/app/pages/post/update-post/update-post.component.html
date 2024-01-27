@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button icon="back-button">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Update Post</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment>
+    <ion-list class="display-flex ion-justify-content-between">
+      <ion-item lines="none">
+        <ion-avatar slot="start" class="display-flex ion-justify-content-center ion-align-items-center">
+          <ion-img src="https://finitee.sgp1.digitaloceanspaces.com/{{paramsData.selectedPost.CreatedBy.ProfileImage}}"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h3 class="display-flex ion-align-items-center">
+            {{paramsData.selectedPost.CreatedBy.DisplayName}}
+          </h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-segment>
+
+  <div class="post">
+    <!-- <p>{{paramsData.selectedPost.PostDescription}}</p> -->
+    <ion-slides *ngIf="paramsData.selectedPost.PostImages && paramsData.selectedPost.PostImages.length>0">
+      <ion-slide *ngFor="let postImage of paramsData.selectedPost.PostImages">
+        <ion-img src="https://finitee.sgp1.digitaloceanspaces.com/{{postImage}}"></ion-img>
+      </ion-slide>
+    </ion-slides>
+    <ion-card *ngIf="paramsData.selectedPost.PostImages && paramsData.selectedPost.PostImages.length==0" class="descriptionPost bg5">
+      <h3> {{paramsData.selectedPost.PostDescription}}</h3>
+    </ion-card>
+  </div>
+
+  <ion-item lines="none">
+    <ion-textarea  autocapitalize="on" class="custom-textarea" [(ngModel)]="paramsData.selectedPost.PostDescription"
+      placeholder="Type description here">{{paramsData.selectedPost.PostDescription}}</ion-textarea>
+  </ion-item>
+
+  
+
+</ion-content>
+
+<ion-footer class="create-btn">
+  <ion-button shape="round" expand="block" (click)="edit_post()">Edit Post</ion-button>
+</ion-footer>

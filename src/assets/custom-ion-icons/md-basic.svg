@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 42" width="60" height="60">
+	<defs>
+		<image width="24" height="24" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAAXNSR0IB2cksfwAAAPlQTFRFAAAAAKr3Aqj2A6n1BKn2A6n1Aqr2AKf2AK32A6n1A6n1A6n1A6n1A6n0A6j2A6n1A6j1AKr2A6n1A6n1A6n1A6n0BKr3AKr/BKfzA6r1A6n2A6r1Aqr2A6n1A6j1Bar2Baj2A6n1Aqn2A6r1AKbyA6n1AK7yAKf1BKf0A6n1BKrzBKr2A6n1BKn2A6n1BKn3Bqb0A6n1Bqr0Aqn1A6n1AJ//AL//A6n1A6n1A6n2A6r1A6n0Aqn1A6n0A6n0A6n1BKn0A6r2A6r0BKj2A6n1Aqr1A6n1A6n1BKf2A6j1ALP/AKrzA6n1AK31A6n1A6n1BKnzA6j1Aqj10b3TUwAAAFN0Uk5TAB5tuNj0bB0cnfz/68Gl7JwbUPP+qT8DQKryTm/93TY43m7FFMYTGkP4QjmbjKs+LuEta7cIBLXbvrbAzKan8dm/wtftaaz7OpkKFd8Zx01BTGpF9oJOAAABI0lEQVR4nG2Q6VbCMBCFR9aQQAsmSCkGKRaRVZHSKoIoIDuKvv/DWGi6eMr8yHxz72SSMwBOXESisXg8Fk0kIRgohUk6I0kZmeBsztcvKctfFY5UUIpMLbn6NS/f+F0VjVdFP7/Vg3P1Gj/dQbR8JxTh65pat1OKiTn3jUbToRZr2//EeTGiQ0hHYBcjqJIHUT32ek8CFdIHI11wXx0MXDJlC55fvO8Mhx6+xoBKXjUaeTimQMfnjLcJvH+cM6YzMGQzbJhzCxJECRtN8glJXAwbiyUCyLKKKA1DwIqt7TOnamJ5m42Tt7vJ/phLvPZv7dsv/u1QlWstX1/teMTlksq6h9PKzMOCTX78rnobE3kqSdM5Wa73wbmA+sMZpTPrFwnhDzhlHw2v1//NAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #f0f5f7 } 
+		.shp1 { fill: none;stroke: #ffffff;stroke-width: 4 } 
+	</style>
+	<g id="Layer">
+		<g id="Layer">
+			<path id="Layer" class="shp0" d="M21 42C9.39 42 0 32.61 0 21C0 9.39 9.39 0 21 0C32.61 0 42 9.39 42 21C42 32.61 32.61 42 21 42Z" />
+			<path id="Layer" class="shp1" d="M21 40C10.49 40 2 31.51 2 21C2 10.49 10.49 2 21 2C31.51 2 40 10.49 40 21C40 31.51 31.51 40 21 40Z" />
+		</g>
+		<g id="Layer">
+			<g id="Layer">
+				<use id="Layer 1" href="#img1" x="9" y="9" />
+			</g>
+		</g>
+	</g>
+</svg>

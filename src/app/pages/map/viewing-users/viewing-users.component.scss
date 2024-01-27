@@ -1,0 +1,30 @@
+.lines-bottom {
+    border-bottom: 1px solid #d3e8ef;
+}
+
+ion-title{
+    text-align: center;
+}
+
+.action-list {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.maptab {
+    text-align: center;
+    padding: 15px;
+    display: flex;
+
+    ion-button {
+        --background: #f0f5f7;
+        --box-shadow: none;
+        color: #285078;
+        font-size: 13px;
+        text-transform: none;
+        margin: 0px 10px;
+        --padding-end: 25px;
+        --padding-start: 25px;
+    }
+}

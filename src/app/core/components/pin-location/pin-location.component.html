@@ -1,0 +1,10 @@
+<div style="width: 100%;height:100%;" class="whiteblue">
+  <div id="map_canvas" #map_canvas style="height:100%;"> </div>
+
+  <div *ngIf="!locationEnabled" class="icons-list" style="display: flex;flex-direction: column;gap: 10px;align-items: center;">
+    <ion-fab-button (click)="onClickGetCurrentPosition()" class="map-fab-button2">
+      <ion-icon style="font-size: 35px;" name="bluecur"></ion-icon>
+    </ion-fab-button>
+  </div>
+
+</div>

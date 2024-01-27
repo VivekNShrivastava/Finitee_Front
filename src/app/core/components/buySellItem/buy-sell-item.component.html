@@ -1,0 +1,40 @@
+<div class="lborder" style="border-bottom: 1px solid">
+  <!-- <ion-item lines="none">
+    <app-image-shell style="    width: 40px; height: 40px;" slot="start" type="AV" [src]="data.creator.img"></app-image-shell>
+    <ion-label><h6>{{data.creator.name}}</h6>
+      <small style="font-size: 11px;  opacity: 0.5;">{{data.timeAgo}}</small>
+    </ion-label>
+  </ion-item> -->
+  <div>
+    <ion-item button lines="none" class="whiteblue2 whiteblue">
+      <ion-thumbnail (click)="goToDetail()" *ngIf="data.arrPath.length>0 && showMedia" slot="start">
+        <ion-slides style="margin-left: 0px;    width: 100%;">
+          <ion-slide *ngFor="let media of data.arrPath" (click)="goToDetail()">
+            <app-image-shell [type]="'SI'" [src]="media.path" *ngIf="media.status=='P'"></app-image-shell>
+            <app-inline-video [type]="'PO'" style="width:100%;" *ngIf="media.status == 'V'" [src]="media?.path">
+            </app-inline-video>
+          </ion-slide>
+        </ion-slides>
+      </ion-thumbnail>
+      <ion-label class="vlightbbg">
+        <div class="cont" (click)="goToDetail()">
+          <h6 class="medbf"> {{data.title}}</h6>
+          <p class="medbf" *ngIf="rupeesym"> ₹{{data.price}}</p>
+          <p class="medbf" *ngIf="dollarsym"> ${{data.price}}</p>
+          <p class="lastc" *ngIf="data.daysToExpiry>0"> ({{data.daysToExpiry}} days left)</p>
+          <p class="lastc expired" *ngIf=" data.daysToExpiry==0">Expires Today</p>
+          <p class="lastc expired" *ngIf=" data.daysToExpiry<0"> Listing Expired</p>
+        </div>
+        <div class=" butts">
+          <ion-fab-button size="small" style="--box-shadow: none; " (click)="deleteItem()" *ngIf="data.isOwner">
+            <ion-icon style="font-size: 17px;" name="delete"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button size="small" style="--box-shadow: none; "
+            *ngIf="data.isOwner && data.daysToExpiry>=0">
+            <ion-icon style="font-size: 14px;" name="edit"></ion-icon>
+          </ion-fab-button><!--  (click)="editItem(media)" -->
+        </div>
+      </ion-label>
+    </ion-item>
+  </div>
+</div>

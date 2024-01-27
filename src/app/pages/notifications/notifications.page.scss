@@ -1,0 +1,67 @@
+ion-content {
+  --padding-start: 20px;
+  --padding-end: 20px;
+  height: 100%;
+  ion-item {
+    margin-bottom: 0;
+    border-bottom: 2px solid #e4e5e9;
+    padding: 10px 0px;
+    ion-avatar {
+      width: 50px;
+      height: 50px;
+      border: 3px solid white;
+      margin-right: 5px;
+    }
+    ion-card-title {
+      text-align: left;
+      font: normal normal bold 17px/21px SF Pro Display;
+      letter-spacing: 0.27px;
+      color: #1a3253;
+      opacity: 1;
+      white-space: normal;
+      padding-right: 23px;
+    }
+    ion-card-subtitle {
+      text-align: left;
+      font: normal normal 600 14px/17px SF Pro Display;
+      letter-spacing: 0.22px;
+      color: #285078;
+      opacity: 1;
+      margin: 2px 0px;
+      white-space: normal;
+      padding-right: 37px;
+    }
+    ion-text {
+      text-align: left;
+      font: normal normal 600 12px/24px SF Pro Display;
+      letter-spacing: 0.19px;
+      color: #788692;
+      opacity: 1;
+    }
+    .fi-notification-delete {
+      position: absolute;
+      top: 10px;
+      right: 0px;
+    }
+    .fi-viewNot-span {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      right: 0px;
+      bottom: 10px;
+      span {
+        text-align: left;
+        text-decoration: underline;
+        font: normal normal 600 13px/28px SF Pro Display;
+        letter-spacing: 0.18px;
+        color: #000000;
+        opacity: 1;
+      }
+      ion-icon {
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        border-radius: 50%;
+        padding: 3px;
+      }
+    }
+  }
+}

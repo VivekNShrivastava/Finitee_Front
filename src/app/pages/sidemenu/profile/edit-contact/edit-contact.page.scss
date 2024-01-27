@@ -1,0 +1,252 @@
+ion-header {
+  background-color: #ffffff !important;
+  padding: 10px 15px;
+}
+
+ion-toolbar {
+  --background: #EAF1F4;
+  border-radius: 26px;
+  --height: 51px;
+}
+
+.error-message{
+
+  color: red;
+  margin-top: -10px;
+  margin-left: 15px;
+  font-size: 13px;
+  margin-bottom: 11px;
+
+}
+
+.input-label {
+  padding-inline: 20px;
+  font-family: serif;
+  line-height: 1.5;
+}
+
+ion-title {
+  font: normal normal 600 20px/28px SF Pro Display;
+  letter-spacing: 0.32px;
+  color: #285078;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+
+ion-content {
+  --padding-top: 15px;
+  --padding-bottom: 15px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+
+
+  &>.logo-edit {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &>img {
+      height: 64px;
+      width: 64px;
+      border-radius: 50%;
+    }
+
+    &>ion-buttons {
+      margin-top: -70px;
+      margin-right: -60px;
+    }
+  }
+
+  .camera-icon {
+    background-color: transparent;
+
+    &>ion-icon {
+      height: 36px;
+      width: 36px;
+    }
+  }
+
+  ion-card {
+    background-color: #F0F5F7;
+    box-shadow: none;
+    border-radius: 11px !important;
+
+    &.header-about {
+      margin-top: 50px;
+      color: #1A3253;
+
+      ion-card-content {
+        font: normal normal normal 14px/16px SF Pro Display;
+        letter-spacing: 0.22px;
+        color: #1A3253;
+
+        ion-textarea {
+          --padding-top: 0;
+          margin-top: 0;
+
+        }
+      }
+    }
+
+    &.header-thumbnail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-height: 185px;
+      min-height: 185px;
+
+      &>ion-buttons {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+    }
+  }
+
+  ion-chip {
+    height: 28px;
+    padding: 2px 5px;
+    background-color: #0AA5F5;
+    color: #FFFFFF;
+    border-radius: 27px;
+
+    &>ion-label {
+      font-size: 15px;
+      margin-left: 13px;
+      font-weight: lighter;
+    }
+
+    &>ion-icon {
+      height: 24px;
+      width: 24px;
+    }
+
+  }
+  .fi-submit-btn{
+    height: 53px;
+    background: #0AA5F5 0% 0% no-repeat padding-box;
+    border-radius: 27px;
+    opacity: 1;
+  }
+
+}
+
+ion-list {
+
+  &.input-form {
+
+    padding: 0 10px;
+
+    &>ion-item {
+      --background: #F0F5F7;
+      border-radius: 11px !important;
+
+      &>ion-input {
+        height: 53px;
+        --color: #1A3253;
+        --placeholder-color: #A8A8A8;
+        --placeholder-opacity: .8;
+        --padding-end: 19px;
+        --padding-start: 19px;
+        font: normal normal normal 15px/24px SF Pro Display;
+        letter-spacing: 0.24px;
+      }
+
+      &>ion-select {
+        height: 53px;
+        --color: #1A3253;
+        --placeholder-color: #A8A8A8;
+        --placeholder-opacity: .8;
+        --padding-end: 19px;
+        --padding-start: 19px;
+        font: normal normal normal 15px/24px SF Pro Display;
+        letter-spacing: 0.24px;
+      }
+
+      &>ion-buttons {
+        margin-right: 40px;
+        height: 15px;
+        width: 4px;
+
+      }
+
+    }
+
+    &>ion-buttons {
+      &>ion-button {
+        text-decoration: underline;
+        color: #285078;
+        text-transform: none;
+        font-size: 15px;
+        letter-spacing: 0.2px;
+        margin-bottom: 4px;
+      }
+
+    }
+
+    ion-chip {
+      ion-label {
+        font: normal normal normal 15px/24px SF Pro Display;
+        letter-spacing: 0.24px;
+        color: #fff;
+      }
+    }
+  }
+}
+
+
+ion-popover {
+  --max-width: 183px;
+
+
+  ion-text {
+    padding: 10px 10px 0;
+    font: normal normal normal 16px/26px SF Pro Display;
+    letter-spacing: 0.25px;
+    // color: #285078;
+    text-align: center;
+  }
+
+  ion-list {
+    ion-radio-group {
+      ion-item {
+        margin-bottom: 0;
+        --min-height: 25px;
+
+        ion-label {
+          font: normal normal normal 14px/24px SF Pro Display;
+          letter-spacing: 0.22px;
+          color: #616161;
+          margin: 0;
+        }
+
+        ion-radio {
+          width: 18px;
+          height: 18px;
+          margin: 0 5px 0 15px;
+          --color: #ddd;
+          --color-checked: #03A9F5;
+        }
+      }
+    }
+
+  }
+
+}
+
+.search-popup {
+  max-width: 300px;
+  max-height: 300px;
+
+  left: calc(50% - (300px/2));
+
+  top: calc(50% - (300px/2));
+  border-radius: 10px;
+}

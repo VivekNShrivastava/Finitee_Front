@@ -1,0 +1,132 @@
+
+ion-header {
+  background-color: #ffffff !important;
+  padding: 10px
+}
+
+ion-toolbar {
+  --background: #EAF1F4;
+  border-radius: 26px;
+  height: 51px;
+  display: flex;
+  align-items: center;
+}
+
+
+ion-title {
+  color: #285078;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 20px;
+}
+
+ion-content {
+  padding: 0 10px;
+
+  & div.header-title {
+    & ion-avatar {
+      width: 33px;
+      height: 33px;
+      margin: 0 8px;
+    }
+
+    & ion-text {
+      h3 {
+        margin: 0;
+        font: normal normal 600 18px/24px SF Pro Display;
+        letter-spacing: 0.29px;
+        color: #1A3253;
+
+        span {
+          font: normal normal 600 16px/28px SF Pro Display;
+          letter-spacing: 0.25px;
+          color: #285078;
+        }
+      }
+
+    }
+  }
+
+  & ion-card {
+    border-radius: 22px;
+    --background: #F0F5F7;
+    box-shadow: none !important;
+    --height: 184px;
+
+  }
+
+  & ion-textarea {
+    --background: #F0F5F7;
+    --color: #285078;
+    --padding-end: 15px;
+    --padding-start: 15px;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+    --placeholder-color: #A8A8A8;
+    --placeholder-opacity: 1;
+    font: normal normal normal 15px/24px SF Pro Display;
+    letter-spacing: 0.24px;
+    min-height: 164px;
+    margin: 0 10px;
+    border-radius: 11px;
+  }
+
+  & ion-list {
+    padding: 5px 10px;
+
+    & ion-item {
+      border-bottom: 1px solid rgba(26, 50, 83, 0.23);
+      margin: 0;
+
+      & ion-checkbox {
+        margin: 3px;
+        --background-checked: none;
+        --border-color: #285078;
+        --border-color-checked: #03A9F5;
+        --checkmark-color: #03A9F5;
+      }
+
+      & ion-avatar {
+        width: 40px;
+        height: 40px;
+        margin: 8px;
+      }
+
+      & ion-label {
+        font: normal normal 600 15px/21px SF Pro Display;
+        letter-spacing: 0.24px;
+        color: #1A3253;
+
+        &.checked {
+          color: #03A9F5;
+        }
+
+      }
+
+    }
+  }
+}
+
+ion-footer {
+  --padding-start: 0;
+  background-color: #FFFFFF;
+  padding: 5px 10px;
+
+  &::before {
+    display: none;
+  }
+
+  & ion-button {
+    --box-shadow: none;
+    margin-top: 0;
+    text-transform: none;
+    --background: #0AA5F5;
+    font: normal normal bold 16px/24px SF Pro Display;
+    letter-spacing: 0.25px;
+    color: #FFFFFF;
+  }
+}

@@ -1,0 +1,60 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit service alert</ion-title>
+    <ion-buttons slot="end">
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form #form="ngForm">
+
+  <ion-item lines="none" class="box-shadow">
+    <ion-label style="font-size: 16px; font-weight: bold;">Service trait words</ion-label>
+    <ion-label slot="end" style="font-size: 16px; font-weight: bold; margin-right: 30px;">Distance</ion-label>
+  </ion-item>
+ 
+    <!-- Repeat this structure for all 5 items -->
+    <ng-container *ngFor="let alertItem of ServiceAlertWords; let i = index">
+
+      <ion-item>
+
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+            <ion-col size="7">
+              <!--  alert Word Field -->
+              <ion-item color="none" lines="none">
+                <ion-input type="text" class="input" style="text-align: center;" placeholder="Service trait word"
+                  name="TraitWord{{i}}" [(ngModel)]="alertItem.TraitWord"></ion-input>
+              </ion-item>
+            </ion-col>
+
+            <ion-col size="5">
+              <!-- Distance Field -->
+              <ion-item color="none" lines="none">
+                <ion-input type="number" class="input" style="text-align: center;" placeholder="Distance"
+                  name="Distance{{i}}" [(ngModel)]="alertItem.Distance" #distance="ngModel"></ion-input>
+                <ion-label>
+                  km
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+
+    </ng-container>
+
+  </form>
+
+</ion-content>
+
+<ion-button [disabled]="!form.valid" style="text-transform: none;" shape="round" (click)="submit()" expand="full"
+  class="save-button">save</ion-button>

@@ -1,0 +1,92 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="display-flex ion-align-items-center">
+    <ion-buttons slot="start">
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Shopping List</ion-title>
+    <ion-buttons slot="end">
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form #form="ngForm">
+
+    <ion-grid>
+      <ion-row style="font-weight: bold;">
+        <ion-col size="4" style="font-size: 13px; text-align: center;">Shopping word</ion-col>
+        <ion-col size="2" style="font-size: 13px; text-align: center;">Price</ion-col>
+        <ion-col size="3" style="font-size: 13px; text-align: center;">Condition</ion-col>
+        <ion-col size="3" style="font-size: 13px; text-align: center;">Distance</ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Repeat this structure for all 5 items -->
+    <ng-container *ngFor="let shoppingItem of shoppingListWords; let i = index">
+
+      <ion-item>
+
+        <ion-grid class="ion-no-padding">
+          <ion-row>
+            <ion-col size="4">
+              <!-- Shopping Word Field -->
+              <ion-item color="none" class="input" lines="none">
+                <ion-input type="text" style="text-align: center; font-size: 12px;" name="Word{{i}}"
+                  [(ngModel)]="shoppingItem.Word"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="2">
+              <!-- Price Field -->
+              <ion-item color="none" class="input" lines="none">
+                <ion-input type="number" style="text-align: center; font-size: 12px;" name="Price{{i}}"
+                  [(ngModel)]="shoppingItem.Price" #price="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="3">
+              <!-- Condition Field -->
+              <ion-item  id="pop-condition-{{i}}" color="none" class="input" lines="none">
+                <ion-input  type="text" readonly style="text-align: center; font-size: 12px;" name="Condition{{i}}"
+                  [(ngModel)]="shoppingItem.Condition"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="2.8">
+              <!-- Distance Field -->
+              <ion-item color="none" lines="none">
+                <ion-input type="number" class="input" style="text-align: center; font-size: 12px;" name="Distance{{i}}"
+                  [(ngModel)]="shoppingItem.Distance" #distance="ngModel"></ion-input>
+                <ion-label >
+             <h3>     km</h3>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-popover id="popover-{{i}}" trigger="pop-condition-{{i}}" [dismissOnSelect]="true" triggerAction="click"
+        mode="ios" alignment="end">
+        <ng-template>
+          <ion-list>
+            <ion-radio-group [value]="shoppingItem.Condition" name="Condition{{i}}" [(ngModel)]="shoppingItem.Condition"
+              mode="md">
+              <ion-item lines="none" *ngFor="let condition of conditionList">
+                <ion-label [ngClass]="{'selected': (shoppingItem.Condition==condition)}">{{condition}}</ion-label>
+                <ion-radio slot="start" value="{{condition}}"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ng-template>
+      </ion-popover>
+
+    </ng-container>
+
+
+  </form>
+
+</ion-content>
+
+<ion-button [disabled]="!form.valid" style="text-transform: none;" shape="round" (click)="submit()" expand="full"
+class="save-button">save</ion-button>
