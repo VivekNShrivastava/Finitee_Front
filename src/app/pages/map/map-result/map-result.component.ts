@@ -58,7 +58,7 @@ export class MapResultComponent implements OnInit {
       const serviceRequired = this.results.filter((val: any) => val.entity == 'SR');
 
     }
-   }
+  }
 
   goBack() {
     this._modalController.dismiss();
@@ -89,7 +89,7 @@ export class MapResultComponent implements OnInit {
       UserId: user?.Id,
       DisplayName: user?.DisplayName,
       ProfilePhoto: user?.ProfilePhoto,
-      groupId:null
+      groupId: null
     }
     // this._chatsService.openChat(selctedUser);
 
@@ -104,8 +104,8 @@ export class MapResultComponent implements OnInit {
 
   }
 
-  viewBusiness(dataItem:any){
-    console.log("dataItem",dataItem);
+  viewBusiness(dataItem: any) {
+    console.log("dataItem", dataItem);
     // const navigationExtras1s: NavigationExtras = {
     //   state: {
     //     data: dataItem

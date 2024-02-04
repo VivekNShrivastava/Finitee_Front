@@ -36,7 +36,7 @@ export class MapService {
     this.firestoreInstance = firestoreService.getFirestoreInstance();
     // this.initializeViewList();.
     this.firestore = getFirestore();
-    console.log("firestore from map.service", this.firestore);
+    // console.log("firestore from map.service", this.firestore);
    
   }
 
@@ -63,11 +63,11 @@ export class MapService {
       });
       // this.firechatdb = getFirestore();
       await terminate(this.firestore);
-      console.log("terminate firestore success from map");
+      // console.log("terminate firestore success from map");
       return true;
     }
     catch (e) {
-      console.log("terminate firestore fail from map", e);
+      // console.log("terminate firestore fail from map", e);
       return true;
     }
   }
@@ -84,7 +84,7 @@ export class MapService {
   //   }
   // }
 
-  public async addToViewList(customDocumentId: string, name: string) {
+  public async addToViewList(customDocumentId: string, name: any) {
     try {
       const docRef = doc(this.firestore, 'viewingList', customDocumentId);
       
@@ -110,8 +110,8 @@ export class MapService {
 
   public async removeNameFromViewList(customDocumentId: string, name: string) {
     try {
-      console.log("to remove from", customDocumentId);
-      console.log("to reomve", name);
+      // console.log("to remove from", customDocumentId);
+      // console.log("to reomve", name);
       const docRef = doc(this.firestore, 'viewingList', customDocumentId);
   
       // Retrieve the existing document

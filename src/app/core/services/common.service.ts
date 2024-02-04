@@ -129,7 +129,7 @@ export class CommonService {
   }
 
   showLoader(functionName?: string) {
-    console.log('showLoader: Start: ', functionName);
+    // console.log('showLoader: Start: ', functionName);
     this.loaderLoading = false;
     this.loadingController
       ?.create({
@@ -138,12 +138,12 @@ export class CommonService {
       .then((response) => {
         response.present();
         this.loaderLoading = true;
-        console.log('showLoader: End');
+        // console.log('showLoader: End');
       });
   }
 
   hideLoader(functionName?: string) {
-    console.log('hideLoader: Start', functionName);
+    // console.log('hideLoader: Start', functionName);
     let self = this;
     if (!this.loaderLoading) {
       setTimeout(() => {
@@ -158,15 +158,15 @@ export class CommonService {
 
   dismissLoader(functionName?: string) {
     // if (this.loaderLoading) {
-    console.log('dismissLoader: Start', functionName);
+    // console.log('dismissLoader: Start', functionName);
     this.loadingController
       ?.dismiss()
       .then((response) => {
-        console.log('dismissLoader closed!', response);
+        // console.log('dismissLoader closed!', response);
         this.loaderLoading = false;
       })
       .catch((err) => {
-        console.log('dismissLoader Error occured : ', err);
+        // console.log('dismissLoader Error occured : ', err);
         this.loaderLoading = false;///?
       });
     // }

@@ -11,6 +11,10 @@
   color: #FFFFFF;
   opacity: 1;
 }
+
+.mainuserview{
+  position: absolute;
+}
 // .header-md::after {
 //   background-image: none !important;
 // }
@@ -58,20 +62,22 @@
   border-radius: 50%;
   margin-right: 8px;
   object-fit: cover;
+
+  top: 30px;
 }
-.user-logo-main {
-  display: inline-block;
-  vertical-align: middle;
-  height: 64px;
-  width: 64px;
-  border-radius: 50%;
-  //margin-right: 8px;
-  object-fit: cover;
-}
+
 .action-list {
   display: flex;
   gap: 10px;
   align-items: center;
+  margin-top: 20px;
+}
+
+.closecross{
+  top: 641px;
+left: 366px;
+width: 23px;
+height: 23px;
 }
 // .item-two {
 //   display: flex;
@@ -115,40 +121,48 @@ ion-card {
   }
 } */
 .header-card {
-  background: #f0f5f7;
-  padding: 12px 1px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 5px;
-  width: max-content;
-  &-details {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 300px;
+  height: 204px;
 
-  }
-  // &-details-other {
+
+/* UI Properties */
+background: #EAF1F4 0% 0% no-repeat padding-box;
+border-radius: 30px;
+  // background: #f0f5f7;
+  // padding: 12px 1px;
+  // display: flex;
+  // flex-direction: column;
+  // row-gap: 5px;
+  // width: max-content;
+  // &-details {
   //   display: flex;
   //   align-items: center;
-  //   justify-content: space-evenly;
+  //   justify-content: center;
 
-  //   & > ion-col {
-
-
-  //     & > ion-button {
-  //       margin: 0;
-  //       --padding-start: 0;
-  //       --padding-end: 0;
-  //       text-transform: none;
-
-  //       & > ion-label {
-  //         letter-spacing: 0.18px;
-  //         font: normal normal 600 11px/16px;
-  //       }
-  //     }
-
-  //   }
   // }
+  
+  &-details-other {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    & > ion-col {
+
+
+      & > ion-button {
+        margin: 0;
+        --padding-start: 0;
+        --padding-end: 0;
+        text-transform: none;
+
+        & > ion-label {
+          letter-spacing: 0.18px;
+          font: normal normal 600 11px/16px;
+        }
+      }
+
+    }
+  }
   ion-card-header {
     padding: 5px;
     text-align: center;
@@ -158,47 +172,53 @@ ion-card {
       letter-spacing: 0.22px;
       color: #1A3253;
       opacity: 1;
+      height: 19px;
+     
     }
   }
   ion-text {
-    font: normal normal 600 18px/16px SF Pro Display;
-    letter-spacing: 0.22px;
-    color: #1A3253;
-    margin: 5px auto;
-    opacity: 1;
+   
+ text-align: center;
+ margin-bottom: 15px;
+ 
+    font: normal normal 600 23px/25px SF Pro Display;
+    letter-spacing: 0.37px;
+    color: #285078;
+
   }
+
   /*  ion-fab-button {
     --border-radius: 10px;
     --transform: rotate(45deg);
     --box-shadow: none;
   }  */
-  ion-card-content {
-    padding: 0;
-    ion-label {
-      height: 27px;
-      border-radius: 17px;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #1A3253;
-      width: max-content;
-      padding: 0 10px;
-      font-weight: 600;
-      &.connected-members {
-        background: #03A9F5;
-        color: #FFFFFF;
-        font-size: 11px;
-      }
-      &.endorsements {
-        border: 1px solid #1A3253;
-        font-size: 11px;
-      }
-    }
-  }
-  .text-center {
-    text-align: center;
-  }
+  // ion-card-content {
+  //   padding: 0;
+  //   ion-label {
+  //     height: 27px;
+  //     border-radius: 17px;
+  //     text-align: left;
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     color: #1A3253;
+  //     width: max-content;
+  //     padding: 0 10px;
+  //     font-weight: 600;
+  //     &.connected-members {
+  //       background: #03A9F5;
+  //       color: #FFFFFF;
+  //       font-size: 11px;
+  //     }
+  //     &.endorsements {
+  //       border: 1px solid #1A3253;
+  //       font-size: 11px;
+  //     }
+  //   }
+  // }
+  // .text-center {
+  //   text-align: center;
+  // }
 }
 .thumbnail-card {
   display: flex;
@@ -382,6 +402,7 @@ ion-fab-button {
   }
 } */
 .header-card-details1{
+
   display: flex;
   justify-content: center;
   .connected-members,.connected-members-chat{
@@ -405,14 +426,19 @@ ion-fab-button {
   }
 }
 .header-card-details{
+  justify-content: center;
+  align-items: center;
   ion-button{
     --box-shadow:none;
+    align-items: center;
+    margin-bottom: 10px;
   }
   ion-button:nth-child(1){
     width: 160px !important;;
   }
 }
 .endorsement-btn{
+
   --background: transparent;
   --box-shadow: none;
   border: 1px solid #1A3253;
@@ -420,6 +446,7 @@ ion-fab-button {
   color: #1A3253;
   width: 150px;
   height: 29px;
+  font-size: 17px;
 }
 .endorsement-btn::part(native){
   background: none;
@@ -480,4 +507,94 @@ ion-img::part(image){
     .fi-tab-height{
       height: 100px !important;
     }
+}
+
+.janvi{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.closecross{
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  top: 20px;
+  left: 306px;
+}
+
+.userimg {
+
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+   
+
+}
+.janvi{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+}
+.back{
+  position: absolute;
+ left: 16px;
+ width: 23px;
+height: 23px;
+color: black;
+
+}
+.front{
+  position: absolute;
+  right: 18px;
+  width: 23px;
+  height: 23px;
+  color: black;
+
+}
+.followeruser{
+  margin-top:25px ;
+}
+
+.traitshead{
+  text-align: center;
+  font: var(--unnamed-font-style-normal) normal bold 20px/38px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+
+font: normal normal bold 20px/38px SF Pro Display;
+letter-spacing: 0.32px;
+color: #285078;
+opacity: 1;
+}
+
+ion-col {
+  background-color: #135d54;
+  border: solid 1px #fff;
+  color: #fff;
+  text-align: center;
+}
+
+.alltraits{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.person_trait{
+ 
+height: 37px;
+background: #E8F7FE 0% 0% no-repeat padding-box;
+border: 2px solid #AED6E9;
+border-radius: 22px;
+opacity: 1;
+font: var(--unnamed-font-style-normal) normal medium 18px/40px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+text-align: left;
+font: normal normal medium 16px/38px SF Pro Display;
+letter-spacing: 0.25px;
+color: #285078;
+opacity: 1;
 }

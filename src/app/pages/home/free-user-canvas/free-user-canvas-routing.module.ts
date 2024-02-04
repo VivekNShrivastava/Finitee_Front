@@ -5,7 +5,7 @@ import { FreeUserCanvasPage } from './free-user-canvas.page';
 import { InviteToViewComponent } from './invite-to-view/invite-to-view.component';
 import { TraitSectionComponent } from './trait-section/trait-section.component';
 // import { NewTraitPageModule } from './new-trait-page/new-trait-page.module';
-
+import { EditPersonalPage } from './edit-personal/edit-personal.page';
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'invite-to-view',
     component: InviteToViewComponent,
   },
+  {
+    path:'edit-personal',
+    component: EditPersonalPage
+  }
   // {
   //   path: 'new-trait-section',
   //   component: NewTraitPageModule,

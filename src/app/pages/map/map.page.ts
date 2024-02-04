@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, Injector, NgZone, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, Injector, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { IonModal, MenuController, ModalController, NavController, Platform } from '@ionic/angular';
@@ -45,7 +45,7 @@ export enum MapFlag {
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage {
+export class MapPage implements OnDestroy {
   @ViewChild('map_canvas') mapRef?: ElementRef<HTMLElement>;
   @ViewChild('sonarSettingModal') sonarSettingModal?: IonModal;
   @ViewChild('markerDetailModal') markerDetailModal?: IonModal;
@@ -114,6 +114,7 @@ export class MapPage {
   markerCurrentIndex = -1;
   private swipeCoord?: [number, number];
   private swipeTime?: number;
+  private firestoreSubscription: Subscription | null = null;
 
   currentArea: Area = { Coordinate: {
     Latitude: 0.0,
@@ -148,21 +149,25 @@ export class MapPage {
     private firestoreService: FirestoreService
   ) {
     this.user = this.authService.getUserInfo();
-    // this.eventListen = this.mapService.listener.subscribe((data) => {
-    //   console.log("listener", data);
+
+    // this.firestoreService.viewList$.subscribe(updatedData => {
+    //   console.log("map updated data", updatedData);
+    //   this.viewList = updatedData
+    //   this.viewListNumber = this.viewList?.names?.length
+    //   console.log("res -", this.viewListNumber);
     // })
-    this.firestoreService.viewList$.subscribe(updatedData => {
+
+    this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
       console.log("map updated data", updatedData);
-      this.viewList = updatedData.filter(id => id.id === this.user.UserName);
-      this.viewListNumber = this.viewList[0]?.names?.length
+      this.viewList = updatedData;
+      this.viewListNumber = this.viewList?.names?.length;
       console.log("res -", this.viewListNumber);
-    })
+    });
   }
 
   
 
   async ngOnInit() {
-    // this.getViewList();
     this.currentPageHref = window.location.pathname;
     console.log("Map: Init: window: ", window.history);
     await this.platform.ready();
@@ -189,16 +194,66 @@ export class MapPage {
     }
   }
 
-  // async getViewList() {
-  //   console.log("geting view list...");
-  //   this.viewList = this.mapService.setupRealtimeListener();
-  //   console.log('Fetched viewList:', this.viewList);
-  // }
+  ionViewWillEnter(){
+    console.log("ionViewWillEnter - maps");
+    this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
+      // console.log("map updated data", updatedData);
+      this.viewList = updatedData;
+      this.viewListNumber = this.viewList?.names?.length;
+      // console.log("res -", this.viewListNumber);
+    });
+    
+  }
+
+  ionViewWillLeave() {
+    // this.authService.stopFirebase();
+    console.log("ionViewWillLeave...");
+    console.log(this.user);
+    this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
+   
+    
+    if (this.firestoreSubscription) {
+      this.firestoreSubscription.unsubscribe();
+    }
+    this.commData = [];
+    this.totemData = [];
+    if (!!this.mapWindow) {
+      this.mapWindow.close();
+    }
+    if (!!this.compRef) {
+      this.compRef.destroy();
+    }
+    if (this.subscription && !this.isPingActive) {
+      this.subscription.unsubscribe();
+      this.subscription.remove(this.subscription);
+    }
+    this.deleteSearch();
+    this.intervalTimer = interval(60000);
+  }
 
   async ngAfterViewInit() {
     await this.platform.ready();
     this.loadMap();
     this.fetchCurrentArea();
+  }
+
+  ionTabsWillChange(){
+    console.log("ionTabsWillChange");
+  }
+
+  ngOnDestroy() {
+    console.log('destroy tab5');
+    // if (this.firestoreSubscription) {
+    //   this.firestoreSubscription.unsubscribe();
+    // }
+    // this.events.unsubscribe('active:user');
+    // this.events.unsubscribe('greeting:tab5');
+    // this.events.unsubscribe('sonar:tab5');
+    // this.authService.stopFirebase();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription.remove(this.subscription);
+    }
   }
 
   fetchCurrentArea() {
@@ -739,24 +794,6 @@ export class MapPage {
     });
   }
 
-  ionViewWillLeave() {
-    // this.authService.stopFirebase();
-    this.commData = [];
-    this.totemData = [];
-    if (!!this.mapWindow) {
-      this.mapWindow.close();
-    }
-    if (!!this.compRef) {
-      this.compRef.destroy();
-    }
-    if (this.subscription && !this.isPingActive) {
-      this.subscription.unsubscribe();
-      this.subscription.remove(this.subscription);
-    }
-    this.deleteSearch();
-    this.intervalTimer = interval(60000);
-  }
-
   search(myArray: any, markers: any, user_markers: any) {
     if (markers.length > 0) {
       const index = markers.findIndex((o1: any) => {
@@ -1202,17 +1239,6 @@ export class MapPage {
     this.router.navigate(['tabs', 'map', 'create-totem'], params);
   }
 
-  ngOnDestroy() {
-    console.log('destroy tab5');
-    // this.events.unsubscribe('active:user');
-    // this.events.unsubscribe('greeting:tab5');
-    // this.events.unsubscribe('sonar:tab5');
-    // this.authService.stopFirebase();
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription.remove(this.subscription);
-    }
-  }
   setTotemData(tres: any) {
     return {
       icon: icons.TOTEM,

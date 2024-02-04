@@ -45,7 +45,7 @@ export class LocationService {
     if (this.platform.is("android") || this.platform.is("ios")) {
       //  console.log("LocationService: requestPermissions: android or ios")
       const permResult = await Geolocation.requestPermissions();
-      // console.log('Perm request result: ', permResult);
+      console.log('Perm request result: ', permResult);
     }
     else {
       // console.log("LocationService: requestPermissions: desktop:" + this.platform.is("desktop") + " pwa:" +

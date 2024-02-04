@@ -78,7 +78,8 @@ export class ChatItemComponent implements OnInit {
     }
     console.log(
       'deletingChatMsgSelection',
-      this.chatsService.selctedChatsJSONString
+      // this.chatsService.selctedChatsJSONString
+      this.chatsService.selectedChats
     );
   }
 

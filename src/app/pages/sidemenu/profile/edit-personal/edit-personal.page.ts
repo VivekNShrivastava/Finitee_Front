@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActionSheetController, IonInput, IonModal, IonPopover, NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BasePage } from 'src/app/base.page';
 import { City } from 'src/app/core/models/places/City';
 import { SelectSearchableInput } from 'src/app/core/models/select-searchable/select-searchable-input';
@@ -81,9 +81,13 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
     private authService: AuthService,
     public placeService: PlacesService, private commonService: CommonService,
     private navCtrl: NavController,
+    private route: ActivatedRoute
 
   ) {
     super(authService);
+    const activeRoute = this.route.snapshot; // This gives information about the current route
+    console.log("activeRoute", activeRoute);
+
     // this.userProfile = this.router!.getCurrentNavigation()!.extras.state!['data'];
     this.getUserProfileAsPerPrivacy = this.router!.getCurrentNavigation()!.extras.state!['data'];
     this.editPersonal = this.router!.getCurrentNavigation()!.extras.state!['data'];

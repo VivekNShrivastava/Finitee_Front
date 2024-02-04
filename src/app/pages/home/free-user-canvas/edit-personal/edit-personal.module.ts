@@ -11,6 +11,6 @@ import { SelectSearchableComponent } from 'src/app/core/components/select-search
 @NgModule({
   imports: [
     CommonModule, FormsModule, IonicModule, TraitsComponent, SelectSearchableComponent, RouterModule.forChild([{ path: '', component: EditPersonalPage }]),],
-  declarations: [EditPersonalPage],
+  declarations: [],
 })
 export class EditPersonalModule { }

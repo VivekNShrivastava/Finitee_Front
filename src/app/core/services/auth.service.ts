@@ -132,7 +132,7 @@ export class AuthService {
         localStorage.setItem("ACCESS_TOKEN_KEY", this.storageService.getUserData().AccessToken);
       }
     }
-    console.log("if Logged In -", response);
+    // console.log("if Logged In -", response);
     if (response) {
       this.authState.next(true);
       window.document.title = this.storageService.getUserData().DisplayName;
@@ -142,7 +142,7 @@ export class AuthService {
   }
 
   showLoader(functionName?: string) {
-    console.log('showLoader: Start: ', functionName);
+    // console.log('showLoader: Start: ', functionName);
     this.loaderLoading = false;
     this.loadingController
       ?.create({
@@ -151,12 +151,12 @@ export class AuthService {
       .then((response) => {
         response.present();
         this.loaderLoading = true;
-        console.log('showLoader: End');
+        // console.log('showLoader: End');
       });
   }
 
   hideLoader(functionName?: string) {
-    console.log('hideLoader: Start', functionName);
+    // console.log('hideLoader: Start', functionName);
     let self = this;
     if (!this.loaderLoading) {
       setTimeout(() => {
@@ -170,26 +170,26 @@ export class AuthService {
   }
   dismissLoader(functionName?: string) {
     // if (this.loaderLoading) {
-    console.log('dismissLoader: Start', functionName);
+    // console.log('dismissLoader: Start', functionName);
     this.loadingController
       ?.dismiss()
       .then((response) => {
-        console.log('dismissLoader closed!', response);
+        // console.log('dismissLoader closed!', response);
         this.loaderLoading = false;
       })
       .catch((err) => {
-        console.log('dismissLoader Error occured : ', err);
+        // console.log('dismissLoader Error occured : ', err);
         this.loaderLoading = false;///?
       });
     // }
   }
 
   login(data: any, loginViaPhone?: boolean) {
-    console.log("login service data from body", data);
+    // console.log("login service data from body", data);
     // this.showLoader();
     return this.http.post<any>((loginViaPhone ? LOGINPHONE_API : LOGIN_API), data).pipe(
       switchMap((response: { AccessToken: any, RefreshToken: any }) => {
-        console.log("login res", response);
+        // console.log("login res", response);
         // this.hideLoader();
 
         try {

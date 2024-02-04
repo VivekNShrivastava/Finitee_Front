@@ -9,7 +9,8 @@ import { BasePage } from 'src/app/base.page';
 import { App } from '@capacitor/app';
 import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/core/services/auth.service';
-
+import { FiniteeUserOnMap } from '../models/MapSearchResult';
+import { NavigationExtras, Router } from '@angular/router';
 @Component({
   selector: 'app-marker-detail',
   templateUrl: './marker-detail.component.html',
@@ -33,7 +34,8 @@ export class MarkerDetailComponent implements OnInit {
   swipeSubsciption!: Subscription;
   constructor(public swipeService: SwipeService,
     public mapService: MapService,
-    public authService: AuthService) { 
+    public authService: AuthService,
+    public router: Router) { 
       this.user = this.authService.getUserInfo();
       console.log("marker-user", this.user);
     }
@@ -43,13 +45,25 @@ export class MarkerDetailComponent implements OnInit {
     console.log("markerCurrentIndex: ", this.markerCurrentIndex);
     console.log("markerList: ", this.markerList);
     const temp = this.user.UserName + "_" + this.user.UserId
-    this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, temp)
+    this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
     // this.addToViewList();
     this.subscribeSwipeEvent();
     this.loadCurrentItem();
+  }
 
-    
+  openUser(user: FiniteeUserOnMap) {
+    this.closeDetails();
+    console.log("openUser: ", user);
 
+    const navigationExtras1s: NavigationExtras = {
+      state: {
+        data: user
+      }
+    };
+    if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
+      this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
+    else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
+      this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
   }
 
   // public async addToViewList() {
@@ -154,8 +168,8 @@ export class MarkerDetailComponent implements OnInit {
       }
       console.log("loadNextItem: previous: " + previous + " NewIndex: "+ this.markerCurrentIndex);
       const temp = this.user.UserName + "_" + this.user.UserId
-      await this.mapService.removeNameFromViewList(this.markerList[this.markerCurrentIndex+1].UserName, temp);
-      await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, temp)
+      // await this.mapService.removeNameFromViewList(this.markerList[this.markerCurrentIndex+1].UserName, temp);
+      await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
       this.setNextPreviousVisibility();
     }
   }

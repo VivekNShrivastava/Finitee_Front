@@ -10,6 +10,7 @@ import { AppNotificationIconComponent } from 'src/app/core/components/app-notifi
 import { FreeUserCanvasPage } from './free-user-canvas.page';
 import { InviteToViewComponent } from './invite-to-view/invite-to-view.component';
 import { TraitSectionComponent } from './trait-section/trait-section.component';
+import { EditPersonalPage } from './edit-personal/edit-personal.page';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { TraitSectionComponent } from './trait-section/trait-section.component';
     FreeUserCanvasPage,
     TraitSectionComponent,
     InviteToViewComponent,
+    EditPersonalPage
   ],
 })
 export class FreeUserCanvasPageModule {}
