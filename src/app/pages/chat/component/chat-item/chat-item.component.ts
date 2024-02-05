@@ -52,10 +52,9 @@ export class ChatItemComponent implements OnInit {
 
   ngOnInit() {
 
-  }
+  }  
 
-  longPressAction(chatMsg: { deleted: boolean; chatId: any }) {
-    //console.log("event", chatMsg);
+  longPressActions(chatMsg: { deleted: boolean; chatId: any }, str: any) {
     if (chatMsg.deleted == true || chatMsg.deleted == this.logInfo.UserId) {
       this.chatsService.showtoast('You can not select deleted message');
     } else {
@@ -78,8 +77,7 @@ export class ChatItemComponent implements OnInit {
     }
     console.log(
       'deletingChatMsgSelection',
-      // this.chatsService.selctedChatsJSONString
-      this.chatsService.selectedChats
+      this.chatsService.selctedChatsJSONString
     );
   }
 

@@ -1,5 +1,6 @@
 <ion-item-sliding class="message-item-sliding" *ngFor="let message of chats; let index = index; let last = last"
-  long-press [data]="message" (press)="longPressAction($event)" [hidden]="message.deleted">
+  [selectedChats]="chatsService.selectedChats"
+  long-press [data]="message" (press)="longPressActions($event, 'asd')" [hidden]="message.pdeleted">
   <!--  #slidingItem (ionDrag)="messageDraged($event, slidingItem,message)" -->
 
   <!-- User message -->

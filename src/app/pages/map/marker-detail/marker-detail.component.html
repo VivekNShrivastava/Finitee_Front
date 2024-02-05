@@ -2,7 +2,7 @@
 
   <ion-row class="janvi">
 
-    <img (click)="openUser(currentItem)" class="userimg" src="{{appConstants.mediaPrefix + currentItem.ProfilePhoto}}"
+    <img (click)="openUser(currentItem)" class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.UserProfileImage) }}"
       onError="this.src='assets/icons/business/anonymous.svg'" />
     <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
   </ion-row>
@@ -14,8 +14,7 @@
 
       <ion-card-header class="followeruser">
         <ion-text class="ion-text-center ">{{currentItem.DisplayName}}</ion-text>
-        <ion-card-subtitle class="fi-multiline-truncate">@{{currentItem.UserName}}
-          | 100 Followers</ion-card-subtitle>
+        <ion-card-subtitle class="fi-multiline-truncate">@{{currentItem.UserName}} | 100 Followers</ion-card-subtitle>
       </ion-card-header>
       <!-- <ion-text>inflows</ion-text> -->
       <ion-card-content>
