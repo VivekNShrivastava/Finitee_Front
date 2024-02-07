@@ -22,6 +22,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
   editItemIndex!: number;
   saveClicked: boolean = false;
   invite = false;
+  eventDuration: number = 0;
 
   startTime = {
     shh: '',
@@ -47,6 +48,15 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     is_show: false
   }
   _startDate: any = {
+    day: '',
+    month: '',
+    year: ''
+  }
+  endDateError: any = {
+    message: '',
+    is_show: false
+  }
+  _endDate: any = {
     day: '',
     month: '',
     year: ''
@@ -128,9 +138,42 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     {
       title: 'Only me'
     }
-
-
   ]
+
+  isEndDateGreaterOrEqualToToday(){
+    this.endDateError.is_show = false;
+    if(this._endDate || this._endDate.day || this._endDate.month || this._endDate.year){
+      const yearStr: string = this._endDate.year;
+      if(yearStr.length == 4){
+        // Get the current date
+        // const today: Date = new Date();
+        // today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+        const day: number = parseInt(this._startDate.day);
+        const month: number = parseInt(this._startDate.month) - 1; // JavaScript months are 0-based
+        const year: number = parseInt(yearStr);
+        const startDateObj: Date = new Date(year, month, day);
+        const endDateObj : Date = new Date(this._endDate.year, this._endDate.month - 1, this._endDate.day);
+        console.log("startDate", startDateObj);
+        console.log("endDate", endDateObj);
+        if (!(startDateObj <= endDateObj)) {
+          this.endDateError.is_show = true;
+          this.endDateError.message = 'Event End date must be greater than or equal to Start Date.';
+        } else {
+          const yearDiff = this._endDate.year - this._startDate.year;
+          const monthDiff = this._endDate.month - this._startDate.month;
+          const dayDiff = this._endDate.day - this._startDate.day;
+          console.log("difference", this._endDate.day, this._startDate.day, dayDiff);
+          if(yearDiff > 0) this.eventDuration = 1;  
+          else if(monthDiff > 0) this.eventDuration = 1;
+          else if(dayDiff > 0) this.eventDuration = 1;
+          console.log("event-duration", this.eventDuration);
+          this.endDateError.is_show = false;
+        }
+      }
+    }
+    this.isStartTimeIsGreaterThanCurrentTime();
+  }
+
   isStartDateGreaterOrEqualToToday() {
     this.startDateError.is_show = false;
     if (this._startDate || this._startDate.day || this._startDate.month || this._startDate.year) {
@@ -184,25 +227,35 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       }
     }
 
-    this.isEndTimeGreaterThanStartTime()
+    this.isEndTimeGreaterThanStartTime();
   }
 
   isEndTimeGreaterThanStartTime() {
+    console.log("eventDuration", this.eventDuration);
     if (this.startTime.shh && this.startTime.smm && this.endTime.ehh && this.endTime.emm) {
 
       const startHours = this.convertTo24Hours(this.startTime.sampm, this.startTime.shh)
       const endHours = this.convertTo24Hours(this.endTime.eampm, this.endTime.ehh)
 
+      
+
       const startTimeObj = `${startHours.toString().padStart(2, '0')}:${parseInt(this.startTime.smm).toString().padStart(2, '0')}:00`;
       const endTimeObj = `${endHours.toString().padStart(2, '0')}:${parseInt(this.endTime.emm).toString().padStart(2, '0')}:00`;
-      if (!(startTimeObj < endTimeObj)) {
-        this.endTimeError.is_show = true;
-        this.endTimeError.message = 'Event end time must be greater than to event start time.';
-      } else {
-        this.endTimeError.is_show = false;
-      }
+      console.log("startTimeObj", startTimeObj);
+      console.log("endTimeObj", endTimeObj);
+      const dayDiff = Number(this._endDate.day)  - Number(this._startDate. day) ;
+      console.log("ads", dayDiff)
+      if(dayDiff <= 0){
+        if (!(startTimeObj < endTimeObj)) {
+          this.endTimeError.is_show = true;
+          this.endTimeError.message = 'Event End time must be greater than to event start time.';
+        } else {
+          this.endTimeError.is_show = false;
+        }
+      }else this.endTimeError.is_show = false;
 
     }
+   
   }
 
   isStartDateEqualToToday() {
@@ -250,7 +303,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     try {
 
       this.eventItem.StartDate = new Date(`${this._startDate.year}-${this._startDate.month}-${this._startDate.day}`);
-      this.eventItem.EndDate = new Date(`${this._startDate.year}-${this._startDate.month}-${this._startDate.day}`);
+      this.eventItem.EndDate = new Date(`${this._endDate.year}-${this._endDate.month}-${this._endDate.day}`);
 
       if (this.startTime.shh) {
         let startHours = this.convertTo24Hours(this.startTime.sampm, parseInt(this.startTime.shh));
@@ -343,8 +396,9 @@ export class CreateEditEventPage extends BasePage implements OnInit {
   async onSubmit() {
 
     this.isStartDateGreaterOrEqualToToday();
+    this.isEndDateGreaterOrEqualToToday();
     this.checkDateTimeAvailability();
-    if (this.startDateError.is_show || this.startTimeError.is_show || this.endTimeError.is_show) {
+    if (this.startDateError.is_show || this.endDateError.is_show || this.startTimeError.is_show || this.endTimeError.is_show) {
 
     } else {
 

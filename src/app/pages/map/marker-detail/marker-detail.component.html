@@ -2,7 +2,7 @@
 
   <ion-row class="janvi">
 
-    <img (click)="openUser(currentItem)" class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.UserProfileImage) }}"
+    <img (click)="openUser(currentItem)" class="userimg" src="{{appConstants.mediaPrefix + ( currentItem.UserProfileImage || currentItem.ProfilePhoto ) }}"
       onError="this.src='assets/icons/business/anonymous.svg'" />
     <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
   </ion-row>

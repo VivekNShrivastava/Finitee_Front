@@ -4,7 +4,7 @@ export class EventItem {
   Id?: number;
   UserId?: string;
   Title: string = "";
-  Desription: string = "";
+  Description: string = "";
   Address: string = '' 
   
   StartDate: any
