@@ -483,7 +483,7 @@ export class MapPage implements OnDestroy {
   removeSearchResultFromMap() {
     const forLoop = async (i: any) => {
       if (i < this.markers.length) {
-        await this.markers[i].setMap(null);
+        this.markers[i].setMap(null);
         forLoop(i + 1)
       } else {
         this.markers = [];
@@ -511,6 +511,7 @@ export class MapPage implements OnDestroy {
         }
         if (result.data.oneTimeSearch) {
           result.data[`location`] = this.location;
+          this.markers = [];
           this.searchResultUpdate();
         } else {
           this.clearMap();
@@ -1066,7 +1067,7 @@ export class MapPage implements OnDestroy {
 
   public async onMapResultsClick(): Promise<void> {
 
-
+    
     let results = this.mapService.mainList;
     // this.resultCount = results.length;
     // if (results.length > 0) {
@@ -1178,8 +1179,10 @@ export class MapPage implements OnDestroy {
       componentProps: { values: obj }
     });
     modal.onDidDismiss().then(result => {
+      this.markers.splice(0, this.markers.length);
+      // this.clearResults();
       this.mapSearchResult = result;
-      // this.removeSearchResultFromMap();
+      this.removeSearchResultFromMap();
       if (result.data) {
         if (result.data?.status == 'L') {
 

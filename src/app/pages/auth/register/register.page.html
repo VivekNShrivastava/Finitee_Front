@@ -57,7 +57,7 @@
             <ion-input class="input" autocapitalize="words" placeholder="Last Name" formControlName="lname"></ion-input>
           </ion-item>
           <ion-item lines="none" id="open-gender-popup" class="item-selection">
-            <ion-input class="input" placeholder="Gender" [value]="genderInputValue"id="selectGender"></ion-input>
+            <ion-input class="input" placeholder="Gender" [value]="genderInputValue"id="selectGender" readonly></ion-input>
           </ion-item>
           <ion-popover trigger="open-gender-popup" [dismissOnSelect]="true" triggerAction="click" mode="ios" alignment="end">
             <ng-template>

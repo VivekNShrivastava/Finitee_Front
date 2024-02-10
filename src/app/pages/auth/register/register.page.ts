@@ -22,6 +22,7 @@ import { SelectSearchableInput } from 'src/app/core/models/select-searchable/sel
 import { Address, AddressMap } from 'src/app/core/models/places/Address';
 import { NgOtpInputComponent } from 'ng-otp-input';
 import { User } from 'src/app/core/models/user/UserProfile';
+import { error } from 'console';
 // import { Filesystem } from '@capacitor/filesystem';
 
 const secTimer = interval(1000);
@@ -160,7 +161,7 @@ export class RegisterPage implements OnInit {
   }
 
   stepFlow: any = {
-    basic: [ this.REG_STEP.CHOOSE_ACC, this.REG_STEP.NAME, this.REG_STEP.BIRTHDAY, this.REG_STEP.PHONE_NO, this.REG_STEP.PHONE_OTP, this.REG_STEP.EMAIL]
+    basic: [this.REG_STEP.CHOOSE_ACC, this.REG_STEP.NAME, this.REG_STEP.BIRTHDAY, this.REG_STEP.PHONE_NO, this.REG_STEP.PHONE_OTP, this.REG_STEP.EMAIL]
   }
 
   constructor(
@@ -198,7 +199,7 @@ export class RegisterPage implements OnInit {
 
     }
 
-    
+
 
     this.platform.pause.subscribe(async () => {
       // alert('Pause event detected');
@@ -558,20 +559,26 @@ export class RegisterPage implements OnInit {
       "u_ustypid": this.currentUser.UserTypeId // 1 - Free User / 2 - Business User / 3 - Non Profit User
     }
     this.regService.apiService.sendEmailVerification(body)
-      .subscribe(response => {
-        this.currentUser.EmailCode = "";
-        this.regService.commonService.hideLoader()
-        if (response.ResponseData && response.ResponseData.EmailCode && response.ResponseStatus == "OK") {
-          this.currentUser.EmailCode = response.ResponseData.EmailCode;
-          this.nextStep(this.REG_STEP.EMAIL_VERIFY);
-          this.setupEmailVerifyTimer();
-          this.regService.commonService.presentToast("Email verification link sent successfully!");
+      .subscribe(
+        response => {
+          this.currentUser.EmailCode = "";
+          this.regService.commonService.hideLoader()
+          if (response.ResponseData && response.ResponseData.EmailCode && response.ResponseStatus == "OK") {
+            this.currentUser.EmailCode = response.ResponseData.EmailCode;
+            this.nextStep(this.REG_STEP.EMAIL_VERIFY);
+            this.setupEmailVerifyTimer();
+            this.regService.commonService.presentToast("Email verification link sent successfully!");
+          }
+          else {
+            //SHOW ERROR of Invalid OTP //TODO
+            this.regService.commonService.presentToast("Error sending email verification link");
+          }
+        },
+        error => {
+          this.regService.commonService.presentToast(error);
+          console.log("Wrong OTP"); 
         }
-        else {
-          //SHOW ERROR of Invalid OTP //TODO
-          this.regService.commonService.presentToast("Error sending email verification link");
-        }
-      });
+      );
   }
 
   //Not Used..  to be removed?
@@ -790,19 +797,27 @@ export class RegisterPage implements OnInit {
         "PhoneCode": this.currentUser.PhoneCode
       }
       this.regService.apiService.verifyRegisterPhoneOTP(body)
-        .subscribe(response => {
-          this.regService.commonService.hideLoader('phoneOTPInput');
-          if (response.Success) {
-            this.nextStep(this.REG_STEP.EMAIL);
-            // this.registerUser(this.REG_STEP.EMAIL);
-            // this.registerUser(this.REG_STEP.ADDRESS);//TODO MAnoj UNDO THIS
-            this.regService.commonService.presentToast("OTP Verified Successfully!");
+        .subscribe(
+            response => {
+            this.regService.commonService.hideLoader('phoneOTPInput');
+            if (response.Success) {
+              this.nextStep(this.REG_STEP.EMAIL);
+              // this.registerUser(this.REG_STEP.EMAIL);
+              // this.registerUser(this.REG_STEP.ADDRESS);//TODO MAnoj UNDO THIS
+              this.regService.commonService.presentToast("OTP Verified Successfully!");
+            }
+            else {
+              //SHOW ERROR of Invalid OTP //TODO
+              this.regService.commonService.hideLoader('phoneOTPInput');
+              this.regService.commonService.presentToast(response.Error);
+            }
+          },
+          error => {
+            this.regService.commonService.hideLoader('phoneOTPInput');
+            this.regService.commonService.presentToast(error);
+            console.log("wrong otp");
           }
-          else {
-            //SHOW ERROR of Invalid OTP //TODO
-            this.regService.commonService.presentToast(response.Error);
-          }
-        });
+        );
     }
   }
 
@@ -1088,7 +1103,6 @@ export class RegisterPage implements OnInit {
       .subscribe(response => {
         this.regService.commonService.hideLoader('checkUserDetailsExist');
         if (((response.ResponseData && response.ResponseData.Id == 0) || (!response.ResponseData)) && response.ResponseStatus == "OK") {
-
           if (type == "Email") {
             // this.step = this.REG_STEP.EMAIL;
             // this.sendEmailForVerification();
@@ -1183,11 +1197,11 @@ export class RegisterPage implements OnInit {
       if (!this.currentLocation) {
         console.log("REG: fetchCurrentLocation: unsubscribe");
         this.regService.commonService.hideLoader('fetchCurrentLocation');
-  
+
         // currentPosSubs.unsubscribe();//TODO
       }
     });
-   
+
     this.locationService.requestPermissions();
     this.locationService.fetchCurrentCoordinate();
 
@@ -1256,7 +1270,7 @@ export class RegisterPage implements OnInit {
       DeviceId: 1000
     }
     this.authService.login(body).subscribe(response => {
-      
+
     }, error => {
       // this.error = JSON.stringify(error);
       this.regService.commonService.presentToast(error.error.Error);
@@ -1535,5 +1549,5 @@ export class RegisterPage implements OnInit {
 
 
   }
-  
+
 }
