@@ -1,6 +1,6 @@
-<!-- <div class="mainuserview"> -->
+<div class="mainuserview">
 
-  <ion-row class="firstrow">
+  <ion-row class="janvi">
 
     <img (click)="openUser(currentItem)" class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.UserProfileImage) }}"
       onError="this.src='assets/icons/business/anonymous.svg'" />
@@ -8,30 +8,32 @@
   </ion-row>
 
 
-  <ion-row class="secondrow">
+  <ion-row class="janvi">
+    <!--Card for Regular user-->
+    <ion-card (click)="openUser(currentItem)" class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1">
 
-    <ion-card (click)="openUser(currentItem)" class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1" style="background-color:  #EAF1F4;">
-
-      <ion-card-header class="followeruser" style="background-color:  #EAF1F4;">
-        <ion-text class="ion-text-center name">{{currentItem.DisplayName}}</ion-text>
-        <ion-card-subtitle class="fi-multiline-truncate username">@{{currentItem.UserName}} | 100 Followers</ion-card-subtitle>
+      <ion-card-header class="followeruser">
+        <ion-text class="ion-text-center ">{{currentItem.DisplayName}}</ion-text>
+        <ion-card-subtitle class="fi-multiline-truncate">@{{currentItem.UserName}} | 100 Followers</ion-card-subtitle>
       </ion-card-header>
-
+      <!-- <ion-text>inflows</ion-text> -->
       <ion-card-content>
-    
+        <!-- row for business home own -->
         <ion-row class="header-card-details">
-     
+          <!-- <ion-icon   *ngIf="showPrevious" name="back-button" class="back"
+          (click)="loadNextItem(true)"></ion-icon> -->
           <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
             5.2k Connections
           </ion-button>
 
-     
+          <!-- <ion-icon *ngIf="showNext" name="chevron-forward-outline"class="front"
+          (click)="loadNextItem(false)"></ion-icon> -->
         </ion-row>
 
         <ion-row class="header-card-details">
           <div class="action-list">
             <ion-icon name="greeting" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
-            <ion-icon name="onhold" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
+            <ion-icon name="bluechat" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
             <ion-icon name="user-block" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
 
           </div>
@@ -41,7 +43,7 @@
     <ion-icon *ngIf="showPrevious" name="chevron-back-circle-outline" class="back"
       (click)="loadNextItem(true)"></ion-icon>
 
-
+    <!-- Card for Business / non-profit User-->
     <ion-card class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
       <ion-text>{{currentItem.DisplayName}}</ion-text>
       <p><ion-text>{{currentItem.SonorDescription}}</ion-text></p>
@@ -49,11 +51,11 @@
         <ion-card-subtitle class="fi-multiline-truncate">@{{currentItem.UserName}}
           | 100 Followers</ion-card-subtitle>
       </ion-card-header>
-
+      <!-- <ion-text>inflows</ion-text> -->
       <ion-card-content>
-
+        <!-- row for business home own -->
         <ion-row class="header-card-details">
-          <ion-button shape="round" size="small" color="light" class="endorsement-btn connectios" (click)="tempClick()">
+          <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
             5.2k Connections
           </ion-button>
           <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
@@ -83,7 +85,7 @@
   </ion-row>
 
   <div class="traitshead" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1">
-    <ion-text>My Traits</ion-text>
+    <ion-text>My traits</ion-text>
   </div>
 
   <div class="alltraits">
@@ -91,12 +93,10 @@
     <ion-chip class="person_trait" color="primary">football Play</ion-chip>
     <ion-chip class="person_trait" color="primary">Music</ion-chip>
     <ion-chip class="person_trait" color="primary">Cricket</ion-chip>
-    <ion-chip class="person_trait" color="primary">Event creating</ion-chip>
-    <ion-chip class="person_trait" color="primary">Reading Books</ion-chip>
-    <ion-chip class="person_trait" color="primary">Stiching</ion-chip>
+    <ion-chip class="person_trait" color="primary">Music</ion-chip>
   </div>
 
   <!-- <div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
     <ion-text>Products & Services</ion-text>
   </div> -->
-<!-- </div> -->
+</div>
