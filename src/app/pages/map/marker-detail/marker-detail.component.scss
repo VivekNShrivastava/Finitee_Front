@@ -14,7 +14,6 @@
 
 .mainuserview{
   position: absolute;
-  display: contents;
 }
 // .header-md::after {
 //   background-image: none !important;
@@ -69,12 +68,17 @@
 
 .action-list {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
   margin-top: 20px;
 }
 
-
+.closecross{
+  top: 641px;
+left: 366px;
+width: 23px;
+height: 23px;
+}
 // .item-two {
 //   display: flex;
 //   flex: 0.7;
@@ -87,7 +91,6 @@ ion-card {
   background-color: #EAF1F4;
   box-shadow: none;
   border-radius: 20px !important;
-  z-index: 0;
 }
 // .text {
 //   font-size: 10px;
@@ -118,7 +121,7 @@ ion-card {
   }
 } */
 .header-card {
-  width: 345px;
+  width: 300px;
   height: 204px;
 
 
@@ -137,7 +140,6 @@ border-radius: 30px;
   //   justify-content: center;
 
   // }
-  margin-top: 18px;
   
   &-details-other {
     display: flex;
@@ -171,7 +173,6 @@ border-radius: 30px;
       color: #1A3253;
       opacity: 1;
       height: 19px;
-      margin-top: 10px;
      
     }
   }
@@ -508,59 +509,49 @@ ion-img::part(image){
     }
 }
 
-.secondrow{
+.janvi{
 
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.firstrow{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 20px;
 }
 
 .closecross{
-  width: 11px;
+  width: 23px;
   height: 23px;
   position: absolute;
-  top: 5px;
-  left: 334px;
+  top: 20px;
+  left: 306px;
 }
 
 .userimg {
 
-  height: 120px;
-  width: 120px;
+  height: 70px;
+  width: 70px;
   border-radius: 50%;
-  position: absolute;
-  border: 6px solid white;
-  z-index: 1;
-  margin-top: -74px;
    
 
 }
-.secondrow{
+.janvi{
   display: flex;
   justify-content: center;
   align-items: center;
-// height: 20px;
+  margin-top: 20px;
   position: relative;
 }
 .back{
   position: absolute;
- left: 11px;
- width: 30px;
-  height: 79px;
+ left: 16px;
+ width: 23px;
+height: 23px;
 color: black;
 
 }
 .front{
   position: absolute;
-  right: 11px;
-  width: 30px;
-  height: 79px;
+  right: 18px;
+  width: 23px;
+  height: 23px;
   color: black;
 
 }
@@ -591,7 +582,6 @@ ion-col {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin: 20px 20px 0px 20px;
 }
 .person_trait{
  
@@ -607,112 +597,4 @@ font: normal normal medium 16px/38px SF Pro Display;
 letter-spacing: 0.25px;
 color: #285078;
 opacity: 1;
-font-size: 18px;
-}
-.modal-wrapper, .modal-shadow {
-  overflow: visible !important; // Use !important to ensure the override
-}
-.ion-overlay-wrapper{
-  overflow: visible;
-}
-/* app-marker-detail.component.scss */
-
-:host {
-  display: block;
-  overflow: visible !important;
-}
-
-.your-ionic-modal-class {
-  overflow: visible !important;
-}
-/* app-marker-detail.component.scss */
-
-
-.custom-modal .modal-wrapper {
-  overflow: visible !important;
-}
-
-.modal-handle{
-  z-index: 0;
-}
-@media (min-width: 600px){
-  .closecross{
-  top: 14px;
-  left: 473px;
-  width: 23px;
-  height: 23px;
-  }
-  .header-card {
-    width: 407px;
-    height: 256px;
-  
-  }  
-  .header-card ion-text{
-    margin-bottom: 20px;
-    font-size: 30px;
-  }
-  ion-card-header {
- 
-
-    ion-card-subtitle {
-   margin-top: 15px;
-     
-    }
-  }
-
-  .header-card-details button{
-    width:187px !important; ;
-  }
-}
-
-@media (min-width: 471px){
-  .front{
-    right: 68px;
-  }
-  .back{
-    left: 67px;
-  }
-  ion-card-subtitle {
-    margin-top: 15px;
-      
-     }
-}
-
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  ion-card-header {
-  ion-card-subtitle {
-
-    margin-top: 25px;
-        font: normal normal normal 20px/18px SF Pro Display;
-     }}
-
-
-     .header-card{
-      width: 440px;
-    height: 287px;
-     }
-
-     @media screen and (min-width: 768px) and (max-width: 1024px) {
-      .header-card-details{
-      
-        ion-button:nth-child(1){
-          width: 185px !important;
-          height: 38.6px;
-          font-size: 25px;
-        }
-      }
-    }
-   
-     
-}
-
-
-ion-icon[name="chevron-back-circle-outline"] {
-  --ion-color-primary: blue;
-}
-
-/* Apply a border to simulate the circle outline */
-ion-icon[name="chevron-back-circle-outline"]::part(inner) {
-  border: 1px solid black;
-  border-radius: 50%;
 }
