@@ -894,3 +894,20 @@ ion-button.fi-countryCode-btn::part(native) {
   }
 }
 // edit-personal page popover arrow css end
+
+
+
+ion-modal > .ion-page {
+
+  overflow: visible;
+  margin-top: 20px;
+  
+
+
+}
+
+.modal-wrapper, .modal-shadow {
+  overflow: visible !important; // Use !important to ensure the override
+}
+
+

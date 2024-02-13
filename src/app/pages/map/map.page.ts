@@ -29,6 +29,7 @@ import { ChatsService } from 'src/app/core/services/chat/chats.service';
 import { SwipeService } from 'src/app/core/services/swipe.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { AddressMap, Area } from 'src/app/core/models/places/Address';
+import {  OnInit} from '@angular/core';
 
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 
@@ -49,6 +50,7 @@ export class MapPage implements OnDestroy {
   @ViewChild('map_canvas') mapRef?: ElementRef<HTMLElement>;
   @ViewChild('sonarSettingModal') sonarSettingModal?: IonModal;
   @ViewChild('markerDetailModal') markerDetailModal?: IonModal;
+
   // @ViewChild(IonModal) sonarSettingModal?: IonModal;
 
   public mapWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
@@ -146,7 +148,8 @@ export class MapPage implements OnDestroy {
     public _chatsService: ChatsService,
     public swipeService: SwipeService,
     private locationService: LocationService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private elementRef: ElementRef
   ) {
     this.user = this.authService.getUserInfo();
 
@@ -192,6 +195,14 @@ export class MapPage implements OnDestroy {
         this.updatelocation();
       }
     }
+
+    
+    const buttonElement = document.querySelector('.modal-handle');
+    if (buttonElement) {
+      buttonElement.setAttribute('style', 'z-index: 0 !important');
+    }
+   
+
   }
 
   ionViewWillEnter(){
@@ -254,6 +265,9 @@ export class MapPage implements OnDestroy {
       this.subscription.unsubscribe();
       this.subscription.remove(this.subscription);
     }
+
+
+    
   }
 
   fetchCurrentArea() {
@@ -322,6 +336,11 @@ export class MapPage implements OnDestroy {
       }
       this.setCurrentLocationMarker();
     }
+
+
+
+
+
   }
 
 

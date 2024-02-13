@@ -39,6 +39,7 @@ export const finiteeIconMapper = {
   bluearrowup: 'assets/custom-ion-icons/md-bluearrowup.svg',
   bluebusiness: 'assets/custom-ion-icons/md-bluebusiness.svg',
   bluechat: 'assets/custom-ion-icons/md-bluechat.svg',
+  onhold:'assets/custom-ion-icons/on-hold.svg',
   bluecur: 'assets/custom-ion-icons/md-bluecur.svg',
   bluemenu: 'assets/custom-ion-icons/md-bluemenu.svg',
   bluepost: 'assets/custom-ion-icons/md-bluepost.svg',

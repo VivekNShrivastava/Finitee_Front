@@ -53,6 +53,8 @@ export class MarkerDetailComponent implements OnInit {
 
   openUser(user: FiniteeUserOnMap) {
     this.closeDetails();
+
+  
     console.log("openUser: ", user);
 
     const navigationExtras1s: NavigationExtras = {
@@ -82,6 +84,7 @@ export class MarkerDetailComponent implements OnInit {
 
 
   public closeDetails(): void {
+  
     this.onCloseDetails.emit();
   }
 
