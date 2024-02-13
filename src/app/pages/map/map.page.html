@@ -82,28 +82,27 @@
 
       </div>
     </div>
-    <div *ngIf=" islocationEnabled==false">
+    <div *ngIf="islocationEnabled==false">
       <div class="permission-message">
-        <p class="darkbf" style="margin-bottom: 0px;">To see places near you, turn on location services.
-        </p>
+        <p class="darkbf" style="margin-bottom: 0px;">To see places near you, turn on location services.</p>
         <p class="darkbf" style="margin-top: 9px;">You can also search friends with greetings.</p>
-        <ion-button color="secondary" style="    text-transform: capitalize;" (click)="checkGPSPermission()">Turn on
-          Location Service</ion-button>
+        <ion-button color="secondary" style="text-transform: capitalize;" (click)="checkGPSPermission()">
+          Turn on Location Service
+        </ion-button>
       </div>
     </div>
   </div>
 
-  <ion-modal #sonarSettingModal [initialBreakpoint]="0.50" [breakpoints]="[0, 0.25, 0.5, 0.75]" style="z-index: 0;">
+  <ion-modal #sonarSettingModal [initialBreakpoint]="0.50" [breakpoints]="[0, 0.25, 0.5, 0.75]">
     <ng-template>
       <sonar-settings (onCloseSetting)="closeSetting()"></sonar-settings>
     </ng-template>
   </ion-modal>
 
-  <ion-modal #markerDetailModal id="markerDetailModal" class="custom-modal" [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]" style=" overflow: visible;" handle="false">
-    <ng-template style="margin-top: 50px;">
-      
-      <div  (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')" style="background-color:#F6F6F6" >
-        <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="mainResultFromSearch" 
+  <ion-modal #markerDetailModal [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+    <ng-template>
+      <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
+        <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="mainResultFromSearch"
         (onCloseDetails)="closeMarkerDetails()" (onShowPrevious)="onShowPreviousMarker()" (onShowNext)="onShowNextMarker()"></app-marker-detail>
       </div>
     </ng-template>
