@@ -22,6 +22,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
   editItemIndex!: number;
   saveClicked: boolean = false;
   invite = false;
+  eventDuration: number = 0;
 
   startTime = {
     shh: '',
@@ -50,6 +51,15 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     day: '',
     month: '',
     year: ''
+  }
+  _endDate: any = {
+    day: '',
+    month: '',
+    year: ''
+  }
+  endDateError: any = {
+    message: '',
+    is_show: false
   }
 
   constructor(
@@ -120,17 +130,66 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       title: 'All Individuals/Businesses/Nonprofits'
     },
     {
-      title: 'All Finitee users'
+      title: 'All Finitee users',
+      value: 'A'
     },
     {
-      title: 'Connected members'
+      title: 'Connected members',
+      value: 'C'
     },
     {
-      title: 'Only me'
+      title: 'Only me',
+      value: 'N'
     }
 
 
   ]
+
+  selectedVisibleTo(data: any) {
+    console.log("selec", data);
+    // this.eventItem.VisibleTo = data.detail.value;
+    if(data.detail.value === "All Finitee users") this.eventItem.VisibleTo = 'A';
+    else if(data.detail.value === "Connected members") this.eventItem.VisibleTo = 'C';
+    else if(data.detail.value === "Only me") this.eventItem.VisibleTo = 'N';
+  }
+
+  isEndDateGreaterOrEqualToToday(){
+    this.endDateError.is_show = false;
+    if(this._endDate || this._endDate.day || this._endDate.month || this._endDate.year){
+      const yearStr: string = this._endDate.year;
+      if(yearStr.length == 4){
+        // Get the current date
+        // const today: Date = new Date();
+        // today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+        const sday: number = parseInt(this._startDate.day);
+        const smonth: number = parseInt(this._startDate.month) - 1; // JavaScript months are 0-based
+        const syear: number = parseInt(this._startDate.year);
+        const startDateObj: Date = new Date(syear, smonth, sday);
+        const endDateObj : Date = new Date(this._endDate.year, this._endDate.month - 1, this._endDate.day);
+        console.log("startDate", startDateObj);
+        console.log("endDate", endDateObj);
+        console.log(startDateObj <= endDateObj);
+        if (!(startDateObj <= endDateObj)) {
+          console.log("error end date");
+          this.endDateError.is_show = true;
+          this.endDateError.message = 'Event End date must be greater than or equal to Start Date.';
+        } else {
+          console.log("perfect end date");
+          const yearDiff = this._endDate.year - this._startDate.year;
+          const monthDiff = this._endDate.month - this._startDate.month;
+          const dayDiff = this._endDate.day - this._startDate.day;
+          console.log("difference", this._endDate.day, this._startDate.day, dayDiff);
+          if(yearDiff > 0) this.eventDuration = 1;  
+          else if(monthDiff > 0) this.eventDuration = 1;
+          else if(dayDiff > 0) this.eventDuration = 1;
+          console.log("event-duration", this.eventDuration);
+          this.endDateError.is_show = false;
+        }
+      }
+    }
+    this.isStartTimeIsGreaterThanCurrentTime();
+  }
+
   isStartDateGreaterOrEqualToToday() {
     this.startDateError.is_show = false;
     if (this._startDate || this._startDate.day || this._startDate.month || this._startDate.year) {
@@ -398,10 +457,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       this.eventItem.EventImages.push(filePath);
     else
       this.eventItem.EventImages[this.eventItem.EventImages.length - 1] = filePath;
-  }
-
-  selectedVisibleTo(data: any) {
-    this.eventItem.VisibleTo = data.detail.value;
   }
 }
 

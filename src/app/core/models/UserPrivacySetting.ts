@@ -1,10 +1,10 @@
 export interface UserPrivacySetting {
     LocationVisibleTo: string;
     LocationShowAt: string;
-    LocationShowWhileLoggedIn: boolean;
-    AvailableForGreetingWhileLoggedIn: boolean;
+    LocationShowOnlyWhenLoggedIn: boolean;
+    AvailableForGreetingWhenLoggedIn: boolean;
     OffSetHomeLocation: boolean;
-    OffSetLiveLocation: boolean;
+    OffSetLocation: boolean;
     IsMobileBusiness: boolean;
     
     HomeScreenViewableBy: string;
