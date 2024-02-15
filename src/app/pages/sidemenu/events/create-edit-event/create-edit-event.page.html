@@ -65,10 +65,9 @@
       <ion-row>
         <ion-col size="3.5">
           <ion-item color="none" class="input" lines="none">
-            <ion-input style="text-align: center;" placeholder="DD" type="text" inputmode="numeric" #sday="ngModel" name="day"
+            <ion-input style="text-align: center;" placeholder="DD" inputmode="numeric" #sday="ngModel" name="day"
               (ionChange)="isStartDateGreaterOrEqualToToday()" [(ngModel)]="_startDate.day"
-              pattern="^(0?[1-9]|1\d|2\d|3[01])$" maxlength="2" required>
-            </ion-input>
+              pattern="^(0?[1-9]|1\d|2\d|3[01])$" maxlength="2"></ion-input>
           </ion-item>
 
         </ion-col>
@@ -76,7 +75,7 @@
           <ion-item color="none" class="input" lines="none">
             <ion-input style="text-align: center;" placeholder="MM" inputmode="numeric" #smonth="ngModel" name="month"
               (ionChange)="isStartDateGreaterOrEqualToToday()" [(ngModel)]="_startDate.month"
-              pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2" required>
+              pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2">
             </ion-input>
           </ion-item>
         </ion-col>
@@ -84,8 +83,8 @@
           <ion-item color="none" class="input" lines="none">
             <ion-input style="text-align: center;" placeholder="YYYY" inputmode="numeric" #syear="ngModel" name="year"
               (ionChange)="isStartDateGreaterOrEqualToToday()" [(ngModel)]="_startDate.year" pattern="^\d{4}$"
-              maxlength="4" required>
-            </ion-input>
+              maxlength="4"></ion-input>
+
           </ion-item>
         </ion-col>
 
@@ -186,16 +185,14 @@
             <ion-item color="none" class="input" lines="none">
               <ion-input style="text-align: center;" placeholder="HH" inputmode="numeric" maxlength="2"
                 #starthh="ngModel" (ionChange)="isStartTimeIsGreaterThanCurrentTime()" name="shh"
-                [(ngModel)]="startTime.shh" pattern="^(?:0?[1-9]|1[0-2])$" required>
-              </ion-input>
+                [(ngModel)]="startTime.shh" pattern="^(?:0?[1-9]|1[0-2])$"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col class="ion-no-padding" size="2.5">
             <ion-item color="none" class="input" lines="none">
               <ion-input style="text-align: center;" placeholder="MM" inputmode="numeric" maxlength="2"
                 #startmm="ngModel" (ionChange)="isStartTimeIsGreaterThanCurrentTime()" name="smm"
-                [(ngModel)]="startTime.smm" pattern="^(?:[0-5]?[0-9])$" required>
-              </ion-input>
+                [(ngModel)]="startTime.smm" pattern="^(?:[0-5]?[0-9])$"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col size="0.5"></ion-col>
@@ -239,16 +236,14 @@
             <ion-item color="none" class="input" lines="none">
               <ion-input style="text-align: center;" placeholder="HH" inputmode="numeric" #endhh="ngModel"
                 (ionChange)="isEndTimeGreaterThanStartTime()" name="ehh" [(ngModel)]="endTime.ehh"
-                pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2" required>
-              </ion-input>
+                pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col class="ion-no-padding" size="2.5">
             <ion-item color="none" class="input" lines="none">
               <ion-input style="text-align: center;" placeholder="MM" inputmode="numeric" #endmm="ngModel"
                 (ionChange)="isEndTimeGreaterThanStartTime()" name="emm" [(ngModel)]="endTime.emm"
-                pattern="^(?:[0-5]?[0-9])$" maxlength="2" required>
-              </ion-input>
+                pattern="^(?:[0-5]?[0-9])$" maxlength="2"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col size="0.5"></ion-col>
