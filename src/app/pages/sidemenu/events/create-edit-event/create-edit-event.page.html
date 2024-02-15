@@ -35,9 +35,21 @@
     <div class="input-container">
       <ion-label class="input-label">Description</ion-label>
       <ion-item lines="none">
-        <ion-input autocapitalize="on" class="input" placeholder="desription" type="text" name="Desription"
-          [(ngModel)]="eventItem.Desription" maxlength="30"></ion-input>
+        <!-- <ion-input autocapitalize="on" class="input" placeholder="desription" type="text" name="Desription"
+          [(ngModel)]="eventItem.Description" minlength="80" maxlength="1200">
+        </ion-input> -->
+        <ion-textarea autocapitalize="on" class="input" placeholder="description" type="text" #Description="ngModel" name="Description"
+          [(ngModel)]="eventItem.Description" minlength="80" maxlength="1200">
+        </ion-textarea>
       </ion-item>
+    </div>
+    <div *ngIf="Description.invalid && (Description.dirty || Description.touched)" class="error-message">
+      <div *ngIf="Description.errors?.['required']">
+        Description is required.
+      </div>
+      <div *ngIf="Description.errors?.['minlength']">
+        Enter atleast 80 character.
+      </div>
     </div>
 
     <!-- traits -->
@@ -96,6 +108,62 @@
         </ion-col>
         <ion-col size="4.5">
           <div *ngIf="syear?.invalid && (syear.dirty || syear.touched)" class="error-message">
+            Invalid year
+          </div>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- End date -->
+    <ion-label class="input-label">End date</ion-label>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="3.5">
+          <ion-item color="none" class="input" lines="none">
+            <ion-input style="text-align: center;" placeholder="DD" inputmode="numeric" #eday="ngModel" name="endDay"
+              (ionChange)="isEndDateGreaterOrEqualToToday()" [(ngModel)]="_endDate.day"
+              pattern="^(0?[1-9]|1\d|2\d|3[01])$" maxlength="2" required>
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3.5">
+          <ion-item color="none" class="input" lines="none">
+            <ion-input style="text-align: center;" placeholder="MM" inputmode="numeric" #emonth="ngModel" name="endMonth"
+              (ionChange)="isEndDateGreaterOrEqualToToday()" [(ngModel)]="_endDate.month"
+              pattern="^(?:0?[1-9]|1[0-2])$" maxlength="2" required>
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4.5">
+          <ion-item color="none" class="input" lines="none">
+            <ion-input style="text-align: center;" placeholder="YYYY" inputmode="numeric" #eyear="ngModel" name="endYear"
+              (ionChange)="isEndDateGreaterOrEqualToToday()" [(ngModel)]="_endDate.year" pattern="^\d{4}$"
+              maxlength="4" required>
+            </ion-input>
+          </ion-item>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+    <div *ngIf="endDateError.is_show && !(eday?.invalid && (eday.dirty || eday.touched)) && !(emonth?.invalid && (emonth.dirty || emonth.touched)) && !(eyear?.invalid && (eyear.dirty || eyear.touched))" class="error-message">
+      {{endDateError.message}}
+    </div>
+    <ion-grid class="ion-no-padding">
+      <ion-row>
+        <ion-col size="3.5">
+          <div *ngIf="eday?.invalid && (eday.dirty || eday.touched)" class="error-message">
+            Invalid day
+          </div>
+        </ion-col>
+        <ion-col size="3.5">
+          <div *ngIf="emonth?.invalid && (emonth.dirty || emonth.touched)" class="error-message">
+            Invalid End month
+          </div>
+        </ion-col>
+        <ion-col size="4.5">
+          <div *ngIf="eyear?.invalid && (eyear.dirty || eyear.touched)" class="error-message">
             Invalid year
           </div>
 
@@ -239,7 +307,7 @@
     <ion-label class="input-label">Viewable by </ion-label>
     <ion-item color="none" class="input" lines="none" id="viewable-by">
       <ion-label>
-        <h3 *ngIf="eventItem.VisibleTo">{{eventItem.VisibleTo}}</h3>
+        <h3 *ngIf="eventItem.VisibleTo">{{CommonService.getPrivacyFullValue(eventItem.VisibleTo)}}</h3>
         <h3 *ngIf="!eventItem.VisibleTo">select</h3>
       </ion-label>
       <ion-buttons>
@@ -298,8 +366,8 @@
       <ion-radio-group [value]="eventItem.VisibleTo" [(ngModel)]="eventItem.VisibleTo" (ionChange)="selectedVisibleTo($event)" mode="md">
        
         <ion-item lines="none" *ngFor="let i of privacyTypes">
-          <ion-label [ngClass]="{'selected': (eventItem.VisibleTo==i.title)}">{{i.title}}</ion-label>
-          <ion-radio slot="start" value="{{i.title}}"></ion-radio>
+          <ion-label [ngClass]="{'selected': (eventItem.VisibleTo == i.value)}">{{i.title}}</ion-label>
+          <ion-radio slot="start" value="{{i.value}}"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>

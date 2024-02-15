@@ -1,52 +1,121 @@
-<ng-template #selectionView let-setting="setting">
-  <div class="display-flex--row">
-    <div class="flex-grow-1">
-      <div>
-        {{setting.SettingName}}
+  <ng-container *ngIf="loaded">
+    <ng-template #selectionView let-setting="setting">
+      <div class="display-flex--row">
+        <div class="flex-grow-1">
+          <div>
+            {{setting.SettingName}}
+          </div>
+          <div *ngIf="setting.SettingField === 'LocationVisibleTo' ">
+            <!-- {{getSettingField(setting)}} -->
+            {{_commonService.getPrivacyFullValue(getUserProfileAsPerPrivacy.LocationVisibleTo)}}
+          </div>
+          <div *ngIf="setting.SettingField === 'LocationShowAt' ">
+            <!-- {{getSettingField(setting)}} -->
+            {{_commonService.getLocationShowAt(getUserProfileAsPerPrivacy.LocationShowAt)}}
+          </div>
+        </div>
+        <div (click)="presentPopover($event, setting)">
+          <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+        </div>
       </div>
-      <div>
-        {{getSettingField(setting)}}
+    </ng-template>
+  
+    <ng-template #checkboxView let-setting="setting">
+      <div class="display-flex--row">
+        <div class="flex-grow-1">
+          <div style="margin-top: 11px">
+            {{setting.SettingName}}
+          </div>
+        </div>
+        <div *ngIf="setting.SettingField === 'LocationShowOnlyWhenLoggedIn' ">
+          <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.LocationShowOnlyWhenLoggedIn"
+            (ngModelChange)="toggleChanged($event, 'LocationShowOnlyWhenLoggedIn')" slot="end"></ion-toggle>
+          <!-- <ion-toggle [(ngModel)]="sonarSetting[setting.SettingField]" slot="end"></ion-toggle> -->
+        </div>
+  
+        <div *ngIf="setting.SettingField === 'AvailableForGreetingWhenLoggedIn' ">
+          <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.AvailableForGreetingWhenLoggedIn"
+            (ngModelChange)="toggleChanged($event, 'AvailableForGreetingWhenLoggedIn')" slot="end"></ion-toggle>
+        </div>
+  
+        <div *ngIf="setting.SettingField === 'OffSetLocation' ">
+          <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.OffSetLocation"
+            (ngModelChange)="toggleChanged($event, 'OffSetLocation')" slot="end"></ion-toggle>
+        </div>
+  
+        <div *ngIf="setting.SettingField === 'OffSetHomeLocation' ">
+          <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.OffSetHomeLocation"
+            (ngModelChange)="toggleChanged($event, 'OffSetHomeLocation')" slot="end"></ion-toggle>
+        </div>
+  
+        <div *ngIf=" (logInfo.UserTypeId != 1) && ( setting.SettingField === 'IsMobileBusiness' ) ">
+          <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.IsMobileBusiness"
+            (ngModelChange)="toggleChanged($event, 'IsMobileBusiness')" slot="end"></ion-toggle>
+        </div>
       </div>
-    </div>
-    <div (click)="presentPopover($event,setting)">
-      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-    </div>
-  </div>
-</ng-template>
+  
+    </ng-template>
+  
+    <ion-list class="custom-class-list">
+      <!-- <ion-icon name="close-icon" (click)="closeSetting()"
+        style="position: absolute;right: 12px;top: 5px;font-size: 12px;"></ion-icon> -->
+      <ion-item *ngFor="let setting of privacySettings" style="margin-bottom: 0;">
+        <ion-label *ngIf="setting.Type =='Select'">
+          <ng-container *ngTemplateOutlet="selectionView; context: {setting : setting}"></ng-container>
+        </ion-label>
+        <ion-label *ngIf="setting.Type =='Checkbox'">
+          <ng-container *ngTemplateOutlet="checkboxView; context: {setting : setting}"></ng-container>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  
+  
+    <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
+      <ng-template>
+        <ion-content *ngFor="let each of editedSetting?.Options??[]" (click)="onOptionSelect(each, editedSetting)"
+          class="ion-padding">{{each.Text}}</ion-content>
+      </ng-template>
+    </ion-popover>
+  </ng-container>
 
-<ng-template #checkboxView let-setting="setting">
-  <div class="display-flex--row">
-    <div class="flex-grow-1">
-      <div>
-        {{setting.SettingName}}
-      </div>
-      <div>
-        {{sonarSetting[setting.SettingField]}}
-      </div>
-    </div>
-    <div>
-      <ion-toggle [(ngModel)]="sonarSetting[setting.SettingField]" slot="end"></ion-toggle>
-    </div>
-  </div>
-</ng-template>
+  <ng-container *ngIf="!loaded">
+    <ion-list>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;">
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;">
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;">
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;">
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;">
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text style="width: 100%;">
+          <ion-skeleton-text style="height:50px;" animated></ion-skeleton-text>
+        </ion-text>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+  
 
-<ion-list class="custom-class-list">
-  <!-- <ion-icon name="close-icon" (click)="closeSetting()"
-    style="position: absolute;right: 12px;top: 5px;font-size: 12px;"></ion-icon> -->
-  <ion-item *ngFor="let setting of privacySettings" style="margin-bottom: 0;">
-    <ion-label *ngIf="setting.Type =='Select'">
-      <ng-container *ngTemplateOutlet="selectionView; context: {setting : setting}"></ng-container>
-    </ion-label>
-    <ion-label *ngIf="setting.Type =='Checkbox'">
-      <ng-container *ngTemplateOutlet="checkboxView; context: {setting : setting}"></ng-container>
-    </ion-label>
-  </ion-item>
-</ion-list>
+  
 
-
-<ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
-  <ng-template>
-    <ion-content *ngFor="let each of editedSetting?.Options??[]" (click)="onOptionSelect(each)"
-      class="ion-padding">{{each.Text}}</ion-content>
-  </ng-template>
-</ion-popover>
+  <!-- <ion-button shape="round" expand="block" color="primary" (click)="saveUserPrivacy()">
+    Save
+  </ion-button> -->

@@ -2,7 +2,7 @@ export class UserPrivacySetting {
     Id: string = "";
     //sonar
     LocationVisibleTo: string = "A";
-    LocationShowAt: string = "";
+    LocationShowAt: string = "H";
     LocationShowOnlyWhenLoggedIn: boolean = true;
     AvailableForGreetingWhenLoggedIn: boolean = true;
     OffSetLocation: boolean = false;

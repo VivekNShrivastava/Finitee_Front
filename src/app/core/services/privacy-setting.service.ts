@@ -51,6 +51,24 @@ export class PrivacySettingService {
     });
   }
 
+  updateSonarPrivacySetting(traitOrProductId: any) {
+    return new Promise<any>((resolve, reject) => {
+      this.commonService.showLoader();
+      var url = config.API.USER_PROFILE.PRIVACY_SETTING.UPDATE_SONAR_SETTING;
+      return this.http.post<any>(url, traitOrProductId).subscribe((response: any) => {
+        this.commonService.hideLoader();
+        resolve(response.ResponseData);
+      },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+
   updateBeamPrivacy(traitOrProductId: string) {
     return new Promise<any>((resolve, reject) => {
       var url = config.API.USER_PROFILE.PRIVACY_SETTING.UPDATE_BEAM + "/" + traitOrProductId;
