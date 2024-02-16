@@ -136,13 +136,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     {
       title: 'Connected members',
       value: 'C'
-    },
-    {
-      title: 'Only me',
-      value: 'N'
     }
-
-
   ]
 
   selectedVisibleTo(data: any) {
