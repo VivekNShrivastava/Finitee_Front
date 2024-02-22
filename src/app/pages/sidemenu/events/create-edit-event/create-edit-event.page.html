@@ -39,7 +39,7 @@
           [(ngModel)]="eventItem.Description" minlength="80" maxlength="1200">
         </ion-input> -->
         <ion-textarea autocapitalize="on" class="input" placeholder="description" type="text" #Description="ngModel" name="Description"
-          [(ngModel)]="eventItem.Description" minlength="80" maxlength="1200">
+          [(ngModel)]="eventItem.Description" minlength="40" maxlength="1200">
         </ion-textarea>
       </ion-item>
     </div>
@@ -48,7 +48,7 @@
         Description is required.
       </div>
       <div *ngIf="Description.errors?.['minlength']">
-        Enter atleast 80 character.
+        Enter atleast 40 character.
       </div>
     </div>
 
@@ -318,7 +318,7 @@
     </ion-item>
 
     <!-- location -->
-    <ion-radio-group name="location" [(ngModel)]="eventItem.location" (ionChange)="getLatlng()">
+    <!-- <ion-radio-group name="location" [(ngModel)]="eventItem.location" (ionChange)="getLatlng()">
       <ion-item lines="none" class="ion-no-margin">
         <ion-label class="locationInput">Location:</ion-label>
         <ion-radio value="current"></ion-radio>
@@ -333,15 +333,15 @@
           <ion-label style="font-size: 14px;">&nbsp;Business location</ion-label>
         </ng-container>
       </ion-item>
-    </ion-radio-group>
+    </ion-radio-group> -->
 
     <!-- offset location -->
-    <div style="margin-left: 12px;">
+    <!-- <div style="margin-left: 12px;">
       <ion-item color="none" lines="none" class="ion-no-margin">
         <ion-checkbox name="locationOffset" [(ngModel)]="eventItem.locationOffset"> </ion-checkbox>
         <ion-label>&nbsp; Offset location</ion-label>
       </ion-item>
-    </div>
+    </div> -->
 
     <div style="margin-left: 12px;">
       <ion-item lines="none" class="ion-no-margin">
