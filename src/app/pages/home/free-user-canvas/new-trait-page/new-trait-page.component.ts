@@ -29,6 +29,7 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
   isUploadDisabled: boolean = false;
   userId: string = "";
   navParams: any;
+  isTraitReadOnly : boolean = true;
 
   constructor(
     private router: Router,
