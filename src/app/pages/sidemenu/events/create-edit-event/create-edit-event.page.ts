@@ -8,8 +8,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { DatePipe } from '@angular/common';
-import moment from 'moment';
-import { LocationService } from 'src/app/core/services/location.service';
+ import { LocationService } from 'src/app/core/services/location.service';
 
 @Component({
   selector: 'app-create-edit-event',

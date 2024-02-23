@@ -19,7 +19,7 @@
         placeholder="Title"></ion-input>
     </ion-item>
 
-    <p  *ngIf="paramsData.Type === 'TRAIT' ">Trait</p>
+    <p style=" font: normal normal 600 15px/24px SF Pro Display; letter-spacing: 0.21px; color: #505050; margin-left: 5px;"  *ngIf="paramsData.Type === 'TRAIT' ">Trait</p>
     <ion-item lines="none" *ngIf="paramsData.Type === 'TRAIT' " >
       <ion-input [(ngModel)]="paramsData.TraitRequest.Trait" [readonly]="isTraitReadOnly" autocapitalize="on" class="custom-textarea"
         placeholder="Trait"></ion-input>

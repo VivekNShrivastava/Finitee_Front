@@ -29,6 +29,7 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
   isUploadDisabled: boolean = false;
   userId: string = "";
   navParams: any;
+  isTraitReadOnly : boolean = true;
 
   constructor(
     private router: Router,
@@ -124,8 +125,9 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
     // userTrait.Id = null;
     var res = await this._postService.saveUserTrait(userTrait);
     if(res){
-      this.navEx!.state!['data'] = true;
-      this.router.navigateByUrl('tabs/free-user-canvas')
+      // this.navEx!.state!['data'] = true;
+      this.postService.traitList.next({ event: "ADD", data: userTrait});
+      this.router.navigateByUrl('tabs/free-user-canvas');
     }
     // console.log(userTrait);
   }
