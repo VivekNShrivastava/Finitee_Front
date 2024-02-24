@@ -10,6 +10,7 @@ import { AppNotificationIconComponent } from 'src/app/core/components/app-notifi
 import { MultipleMediaUploadComponent } from 'src/app/core/components/mutiple-media-upload/mutiple-media-upload.component';
 import { TraitsComponent } from 'src/app/core/components/traits/traits.component';
 import { CreateEditEventPage } from './create-edit-event.page';
+import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component'; 
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { CreateEditEventPage } from './create-edit-event.page';
     RouterModule.forChild([{ path: '', component: CreateEditEventPage }]),
     AppNotificationIconComponent,
     MultipleMediaUploadComponent,
-    TraitsComponent
+    TraitsComponent,
+    MapLocation
   ],
   declarations: [
     CreateEditEventPage

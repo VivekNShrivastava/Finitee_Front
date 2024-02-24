@@ -13,6 +13,7 @@ import { PaymentService } from "./payment.service";
 import { config } from '../models';
 import { AppConstants } from "../models/config/AppConstants";
 import { CommonService } from "./common.service";
+import { add } from "lodash";
 
 @Injectable({
   providedIn: 'root'
@@ -144,7 +145,6 @@ export class LocationService {
             longitude: results[0].geometry.location.lng(),
             accuracy: -1
           };
-          console.log("getLatLngFromAddress: Coord", self.addressCoordinate);
           self.setGeocodingResult(self.addressCoordinate);
         }
         else {
@@ -169,6 +169,7 @@ export class LocationService {
           // console.log("getAddressFromLatLng: Formatted Address: ", address);
           // console.log("getAddressFromLatLng: Full Result: 0 : ", results[0]);
           // self.setUserEnteredCoord(self.addressCoordinate);
+          // console.log("formated add", results, address);
           let fAddress = await self.mapAddressFromGoogleResults(results[0], latLng);
           if (loadArea) {
             self.currentArea = new Area();

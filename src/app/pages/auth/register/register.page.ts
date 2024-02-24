@@ -195,7 +195,7 @@ export class RegisterPage implements OnInit {
     else {
       this.currentUser = new User();//new BasicUser();
       this.nextStep(this.REG_STEP.CHOOSE_ACC);
-      // this.nextStep(this.REG_STEP.USERNAME);
+      // this.nextStep(this.REG_STEP.ADDRESS);
 
     }
 

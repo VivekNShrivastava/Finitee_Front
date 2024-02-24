@@ -1,0 +1,29 @@
+<!-- <div id="map" #map_location></div> -->
+<!-- <button (click)="closeModal()">Close</button> -->
+
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-title>
+      Select Location
+    </ion-title> -->
+    <ion-item>
+      <label for="searchInput">Search Location</label>
+      <input [(ngModel)]="eventLocation" placeholder="Enter location" id="searchInput" />
+      <!-- <ion-label stacked>Search Location</ion-label>
+      <ion-input [(ngModel)]="searchInput" placeholder="Enter location" id="searchInput" (ngModelChange)="onSearchInputChange($event)" #searchInputField></ion-input> -->
+    </ion-item>
+    <!-- <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Close</ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Map container -->
+  <div id="map" #map_location></div>
+
+  <!-- Confirm Location button -->
+  <div class="confirm_button">
+    <ion-button (click)="confirmLocation()">Confirm Location</ion-button>
+  </div>
+</ion-content>
