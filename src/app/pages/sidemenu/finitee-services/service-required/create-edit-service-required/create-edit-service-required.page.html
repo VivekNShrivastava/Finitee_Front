@@ -29,15 +29,20 @@
         </div>
       </div>
 
-
-
-
       <!-- Description -->
       <ion-label  class="input-label"> Description</ion-label>
       <ion-item lines="none">
         <ion-input autocapitalize="on" class="input" placeholder="Enter description" type="text" name="Description"
           [(ngModel)]="serviceObj.Description" maxlength="30"></ion-input>
       </ion-item>
+
+      <!-- traits -->
+    <div style=" margin-left: 10px; margin-right: 10px;">
+      <app-traits [traits]="serviceObj.ServiceTraits" (traitEvent)="allTraits($event)" ></app-traits>
+    </div>
+    <div *ngIf="commonService.eventTraitError" class="error-message">
+      Only 5 traits allowed.
+    </div>
 
       <!-- start date -->
       <ion-label class="input-label">Start date</ion-label>

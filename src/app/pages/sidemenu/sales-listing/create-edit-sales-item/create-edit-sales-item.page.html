@@ -43,6 +43,14 @@
       </div>
     </ng-container>
 
+    <!-- traits -->
+    <div style=" margin-left: 10px; margin-right: 10px;">
+      <app-traits [traits]="salesItem.SalesTraits" (traitEvent)="allTraits($event)" ></app-traits>
+    </div>
+    <div *ngIf="commonService.eventTraitError" class="error-message">
+      Only 5 traits allowed.
+    </div>
+
     <!--  Condition -->
     <ng-container *ngIf="!isEdit">
       <ion-label class="input-label">Condition </ion-label>
