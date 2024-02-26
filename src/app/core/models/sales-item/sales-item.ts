@@ -2,6 +2,7 @@ export class SalesItem {
   Id?: number ;
   Title: string = "";
   Description: string = "";
+  SalesTraits: Array<string> = [];
   Condition: string = "New";
   Price: any;
   VisibleTo: string = "All Finitee users";

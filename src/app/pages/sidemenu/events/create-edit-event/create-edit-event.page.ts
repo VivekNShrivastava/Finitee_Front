@@ -8,8 +8,11 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { DatePipe } from '@angular/common';
-import moment from 'moment';
 import { LocationService } from 'src/app/core/services/location.service';
+import { ModalController } from '@ionic/angular';
+import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component';
+import { AddressMap } from 'src/app/core/models/places/Address';
+import { add } from 'lodash';
 
 @Component({
   selector: 'app-create-edit-event',
@@ -23,7 +26,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
   saveClicked: boolean = false;
   invite = false;
   eventDuration: number = 0;
-
+  eventLocation: any;
   startTime = {
     shh: '',
     smm: '',
@@ -64,12 +67,14 @@ export class CreateEditEventPage extends BasePage implements OnInit {
 
   constructor(
     private router: Router,
-    private navCtrl: NavController, private datePipe: DatePipe,
+    private navCtrl: NavController, 
+    private datePipe: DatePipe,
     private eventService: EventsService,
-    private authService: AuthService, private locationService: LocationService,
+    private authService: AuthService, 
+    private locationService: LocationService,
     private route: ActivatedRoute,
-    //private AppConstants : AppConstants,
     public CommonService: CommonService,
+    public modalController: ModalController
   ) {
     super(authService);
     this.eventItem = this.router!.getCurrentNavigation()!.extras!.state!['data'];
@@ -125,6 +130,38 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     }
   }
 
+  async openMap() {
+    const modal = await this.modalController.create({
+      component: MapLocation,
+      // breakpoints: [0.75],
+      // initialBreakpoint: 0.75,
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data && data.location) {
+      // Handle the chosen location data (latitude, longitude)
+      const { latitude, longitude } = data.location;
+      console.log('Chosen Location:', { latitude, longitude });
+    }
+
+    const latLng = {
+      lat: data.location.latitude,
+      lng: data.location.longitude
+    }
+
+    const res = await this.locationService.getAddressFromLatLng(latLng);
+    console.log("res", res);
+
+    let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+      console.log("MAP fetchCurrentArea observeReverseGeocodingResult: ", address);
+      if(address) this.eventLocation = address.FormattedAddress;      
+    });
+
+  }
+
   privacyTypes: any = [
     {
       title: 'All Individuals/Businesses/Nonprofits'
@@ -145,43 +182,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     if(data.detail.value === "All Finitee users") this.eventItem.VisibleTo = 'A';
     else if(data.detail.value === "Connected members") this.eventItem.VisibleTo = 'C';
     else if(data.detail.value === "Only me") this.eventItem.VisibleTo = 'N';
-  }
-
-  isEndDateGreaterOrEqualToToday(){
-    this.endDateError.is_show = false;
-    if(this._endDate || this._endDate.day || this._endDate.month || this._endDate.year){
-      const yearStr: string = this._endDate.year;
-      if(yearStr.length == 4){
-        // Get the current date
-        // const today: Date = new Date();
-        // today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
-        const sday: number = parseInt(this._startDate.day);
-        const smonth: number = parseInt(this._startDate.month) - 1; // JavaScript months are 0-based
-        const syear: number = parseInt(this._startDate.year);
-        const startDateObj: Date = new Date(syear, smonth, sday);
-        const endDateObj : Date = new Date(this._endDate.year, this._endDate.month - 1, this._endDate.day);
-        console.log("startDate", startDateObj);
-        console.log("endDate", endDateObj);
-        console.log(startDateObj <= endDateObj);
-        if (!(startDateObj <= endDateObj)) {
-          console.log("error end date");
-          this.endDateError.is_show = true;
-          this.endDateError.message = 'Event End date must be greater than or equal to Start Date.';
-        } else {
-          console.log("perfect end date");
-          const yearDiff = this._endDate.year - this._startDate.year;
-          const monthDiff = this._endDate.month - this._startDate.month;
-          const dayDiff = this._endDate.day - this._startDate.day;
-          console.log("difference", this._endDate.day, this._startDate.day, dayDiff);
-          if(yearDiff > 0) this.eventDuration = 1;  
-          else if(monthDiff > 0) this.eventDuration = 1;
-          else if(dayDiff > 0) this.eventDuration = 1;
-          console.log("event-duration", this.eventDuration);
-          this.endDateError.is_show = false;
-        }
-      }
-    }
-    this.isStartTimeIsGreaterThanCurrentTime();
   }
 
   isStartDateGreaterOrEqualToToday() {
@@ -205,6 +205,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       }
     }
     this.isStartTimeIsGreaterThanCurrentTime();
+    this.isEndDateGreaterOrEqualToToday();
   }
 
   isStartTimeIsGreaterThanCurrentTime() {
@@ -237,7 +238,43 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       }
     }
 
-    this.isEndTimeGreaterThanStartTime()
+    this.isEndTimeGreaterThanStartTime();
+  }
+
+  isEndDateGreaterOrEqualToToday(){
+    this.endDateError.is_show = false;
+    if(this._endDate || this._endDate.day || this._endDate.month || this._endDate.year){
+      const yearStr: string = this._endDate.year;
+      if(yearStr.length == 4){
+        // Get the current date
+        // const today: Date = new Date();
+        // today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+        const sday: number = parseInt(this._startDate.day);
+        const smonth: number = parseInt(this._startDate.month) - 1; // JavaScript months are 0-based
+        const syear: number = parseInt(this._startDate.year);
+        const startDateObj: Date = new Date(syear, smonth, sday);
+        const endDateObj : Date = new Date(this._endDate.year, this._endDate.month - 1, this._endDate.day);
+        console.log("startDate", startDateObj);
+        console.log("endDate", endDateObj);
+        console.log(startDateObj <= endDateObj);
+        if (!(startDateObj <= endDateObj)) {
+          this.endDateError.is_show = true;
+          this.endDateError.message = 'Event End date must be greater than or equal to Start Date.';
+        } else {
+          const yearDiff = this._endDate.year - this._startDate.year;
+          const monthDiff = this._endDate.month - this._startDate.month;
+          const dayDiff = this._endDate.day - this._startDate.day;
+          console.log("difference", yearDiff, monthDiff, dayDiff);
+          if(yearDiff > 0) this.eventDuration = 1;  
+          else if(monthDiff > 0) this.eventDuration = 1;
+          else if(dayDiff > 0) this.eventDuration = 1;
+          else this.eventDuration = 0;
+          console.log("event-duration", this.eventDuration);
+        }
+      }
+    }
+    this.isStartTimeIsGreaterThanCurrentTime();
+    this.isEndTimeGreaterThanStartTime();
   }
 
   isEndTimeGreaterThanStartTime() {
@@ -248,9 +285,13 @@ export class CreateEditEventPage extends BasePage implements OnInit {
 
       const startTimeObj = `${startHours.toString().padStart(2, '0')}:${parseInt(this.startTime.smm).toString().padStart(2, '0')}:00`;
       const endTimeObj = `${endHours.toString().padStart(2, '0')}:${parseInt(this.endTime.emm).toString().padStart(2, '0')}:00`;
+      console.log(startTimeObj, endTimeObj)
+      console.log("checking end TIme: ", (startTimeObj < endTimeObj))
       if (!(startTimeObj < endTimeObj)) {
-        this.endTimeError.is_show = true;
-        this.endTimeError.message = 'Event end time must be greater than to event start time.';
+        if(this.eventDuration === 0){
+          this.endTimeError.is_show = true;
+          this.endTimeError.message = 'Event end time must be greater than to event start time.';
+        }else this.endTimeError.is_show = false;
       } else {
         this.endTimeError.is_show = false;
       }

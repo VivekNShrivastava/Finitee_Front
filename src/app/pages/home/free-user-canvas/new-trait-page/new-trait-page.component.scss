@@ -76,16 +76,26 @@ ion-row {
   
 
 ion-textarea.custom-textarea {
-    --background: #F0F5F7;
-    --color: #000;
-    --padding-end: 10px;
-    --padding-start: 10px;
-    --placeholder-color: #ddd;
-    --placeholder-opacity: 0.8;
-    min-height: 256px;
-    background: #F0F5F7 0% 0% no-repeat padding-box;
-    border-radius: 11px;
-    opacity: 1;
+    // --background: #F0F5F7;
+    // --color: #000;
+    // --padding-end: 10px;
+    // --padding-start: 10px;
+    // --placeholder-color: #ddd;
+    // --placeholder-opacity: 0.8;
+    // min-height: 256px;
+    // background: #F0F5F7 0% 0% no-repeat padding-box;
+    // border-radius: 11px;
+    // opacity: 1;
+
+    
+    height: 53px;
+    --color: #285078;
+    --placeholder-color: #A8A8A8;
+    --placeholder-opacity: .8;
+    --padding-end: 19px;
+    --padding-start: 19px;
+    font-size: 15px;
+    
   }
 
   

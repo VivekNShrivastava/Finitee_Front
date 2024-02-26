@@ -17,7 +17,9 @@ import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { AuthService } from './auth.service';
 import { ERR_PLUGIN_NOT_INSTALLED } from '@awesome-cordova-plugins/core/decorators/common';
 import { Plugin } from '@awesome-cordova-plugins/core';
-
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { ModalController } from '@ionic/angular';
+import { ImageCropperComponent } from '../components/image-cropper/image-cropper.component';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +47,8 @@ export class AttachmentHelperService {
     private sanitizer: DomSanitizer,
     private httpService: HttpClient,
     private authService: AuthService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private modalController: ModalController
   ) {
     this.user = this.authService.getUserInfo();
   }
@@ -63,17 +66,31 @@ export class AttachmentHelperService {
 
 
   async openCameraToTakePhoto(edit: any, source: any) {
-    console.log(source)
     
     const image = await Camera.getPhoto({
-      quality: 50,
-      allowEditing: edit,
-      resultType: CameraResultType.Uri,
+      quality: 100,
+      allowEditing: true,
+      resultType: CameraResultType.Base64,
       source: source // Camera, Photos or Prompt!
       // source: CameraSource.Prompt,
     });
     if (image) {
-      this.saveMedia(image.webPath, "I")
+      // Open the image cropper modal
+      const modal = await this.modalController.create({
+        component: ImageCropperComponent,
+        componentProps: {
+          imageUri: image.base64String,
+        },
+      });
+  
+      // Present the modal
+      await modal.present();
+
+      const { data } = await modal.onDidDismiss();
+
+      if (data) {
+        this.saveMedia(data, "I")
+      }
     }
   }
 

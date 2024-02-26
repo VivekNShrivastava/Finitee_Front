@@ -116,17 +116,21 @@ export class MapPage implements OnDestroy {
   private swipeTime?: number;
   private firestoreSubscription: Subscription | null = null;
 
-  currentArea: Area = { Coordinate: {
-    Latitude: 0.0,
-    Longitude: 0.0,
-  },
-  Locality: "",
-  City: "",
-  Zip: "",
-  State: "",
-  Country: "",
-  CountryId: -1
-};
+  currentArea: Area = {
+    Coordinate: {
+      Latitude: 0.0,
+      Longitude: 0.0,
+    },
+    Locality: "",
+    City: "",
+    Zip: "",
+    State: "",
+    Country: "",
+    CountryId: -1
+  };
+
+  newLat: any;
+  newLng: any;
 
   constructor(
     private platform: Platform,
@@ -165,7 +169,7 @@ export class MapPage implements OnDestroy {
     });
   }
 
-  
+
 
   async ngOnInit() {
     this.currentPageHref = window.location.pathname;
@@ -194,7 +198,7 @@ export class MapPage implements OnDestroy {
     }
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     console.log("ionViewWillEnter - maps");
     this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
       // console.log("map updated data", updatedData);
@@ -202,7 +206,7 @@ export class MapPage implements OnDestroy {
       this.viewListNumber = this.viewList?.names?.length;
       // console.log("res -", this.viewListNumber);
     });
-    
+
   }
 
   ionViewWillLeave() {
@@ -210,8 +214,8 @@ export class MapPage implements OnDestroy {
     console.log("ionViewWillLeave...");
     console.log(this.user);
     this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
-   
-    
+
+
     if (this.firestoreSubscription) {
       this.firestoreSubscription.unsubscribe();
     }
@@ -237,7 +241,7 @@ export class MapPage implements OnDestroy {
     this.fetchCurrentArea();
   }
 
-  ionTabsWillChange(){
+  ionTabsWillChange() {
     console.log("ionTabsWillChange");
   }
 
@@ -260,9 +264,10 @@ export class MapPage implements OnDestroy {
 
     let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
       console.log("MAP fetchCurrentArea observeReverseGeocodingResult: ", address);
-      this.currentArea = this.locationService.getCurrentArea();
-      console.log("MAP fetchCurrentArea Area: ", this.currentArea);
+      
     });
+    this.currentArea = this.locationService.getCurrentArea();
+      console.log("MAP fetchCurrentArea Area: ", this.currentArea);
 
     this.locationService.requestPermissions();
     this.locationService.fetchCurrentCoordinate(true);
@@ -300,7 +305,7 @@ export class MapPage implements OnDestroy {
           };
           this.loadMap();
         }, function (error) {
-        //  console.log(error);
+          //  console.log(error);
         }, options);
         setTimeout(() => {
           this.loadMap();
@@ -333,8 +338,21 @@ export class MapPage implements OnDestroy {
           position: this.location,
           map: this.map,
           title: "You are here",
+          // draggable: true,
           icon: !this.isBackEnabled ? 'assets/markers/curr-invisible.svg' : 'assets/markers/curr.svg',
         });
+
+        // this.currentLocationMarker.addListener('dragend', (event: any) => {
+        //   const newPosition = this.currentLocationMarker.getPosition();
+        //   this.newLat = newPosition.lat();
+        //   this.newLng = newPosition.lng();
+
+        //   // Do something with the new coordinates (newLat, newLng)
+        //   console.log('New Marker Position:', this.newLat, this.newLng );
+        //   const latln = {lat : this.newLat, lng: this.newLng}
+        //   const add = this.locationService.getAddressFromLatLng(latln);
+        //   console.log("new add", add);
+        // });
       }
     } else {
       if (this.location && this.location.lat) {
@@ -558,7 +576,7 @@ export class MapPage implements OnDestroy {
     }
   }
 
-  addUserToMap(users: FiniteeUserOnMap[], startIndexInResult:number, isViewing: boolean = false) {
+  addUserToMap(users: FiniteeUserOnMap[], startIndexInResult: number, isViewing: boolean = false) {
     users.forEach(async (res: FiniteeUserOnMap) => {
       // remove user if existing
       let isExist = false;
@@ -974,7 +992,7 @@ export class MapPage implements OnDestroy {
     //console.log("onMarkerClick: ", marker);
     const markerData: MarkerInfo<any> = (marker as any)?.markerData;
     console.log("onMarkerClickV2: markerData: ", markerData);
-    this.markerCurrentIndex =  markerData.itemIndex;
+    this.markerCurrentIndex = markerData.itemIndex;
     await this.openMarkerDetails();
   }
 
@@ -1067,7 +1085,7 @@ export class MapPage implements OnDestroy {
 
   public async onMapResultsClick(): Promise<void> {
 
-    
+
     let results = this.mapService.mainList;
     // this.resultCount = results.length;
     // if (results.length > 0) {
@@ -1136,13 +1154,13 @@ export class MapPage implements OnDestroy {
     var bounds = new google.maps.LatLngBounds();
     for (var i in markers) {// your marker list here
       // console.log("mapBoundsToFitMarker: position: ", markers);
-        bounds.extend(markers[i].position) // your marker position, must be a LatLng instance
+      bounds.extend(markers[i].position) // your marker position, must be a LatLng instance
     }
     this.map?.fitBounds(bounds); // map should be your map class
   }
 
-  viewBusiness(dataItem:any){
-    console.log("dataItem",dataItem);
+  viewBusiness(dataItem: any) {
+    console.log("dataItem", dataItem);
     const navigationExtras1s: NavigationExtras = {
       state: {
         data: dataItem
@@ -1520,16 +1538,16 @@ export class MapPage implements OnDestroy {
     else if (when === 'end') {
       const direction = [coord[0] - this.swipeCoord![0], coord[1] - this.swipeCoord![1]];
       const duration = time - this.swipeTime!;
-    if (duration < 1000
-      && Math.abs(direction[0]) > 30
-      && Math.abs(direction[0]) > Math.abs(direction[1] * 3)) {
-      if (direction[0] < 0) {
-        //next
-        this.swipeService.swipeNext();
-      } else {
-        //previous
-        this.swipeService.swipePrevious();
-      }
+      if (duration < 1000
+        && Math.abs(direction[0]) > 30
+        && Math.abs(direction[0]) > Math.abs(direction[1] * 3)) {
+        if (direction[0] < 0) {
+          //next
+          this.swipeService.swipeNext();
+        } else {
+          //previous
+          this.swipeService.swipePrevious();
+        }
       }
     }
   }

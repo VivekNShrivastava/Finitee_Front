@@ -2,6 +2,7 @@ export class FiniteeService {
   Id?: number;
   Title: string = "";
   Description: string = "";
+  ServiceTraits: Array<string> = [];
   StartDate:  Date = new Date();
   ExpiryOn: Date = new Date();
   Price?: number;

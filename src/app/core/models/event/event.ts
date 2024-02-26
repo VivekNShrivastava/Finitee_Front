@@ -8,13 +8,13 @@ export class EventItem {
   Address: string = '' 
   
   StartDate: any
-  location : string = "current";
-  locationOffset : boolean =true;
+  // location : string = "current";
+  // locationOffset : boolean =true;
 
   EndDate: any;
   Latitude: any  ;
   Longitude: any  ;
-  Scope: number = 10;
+  // Scope: number = 10;
   VisibleTo: string = 'A';
   EventImages: Array<string> = [];
   EventTraits: Array<string> = [];
