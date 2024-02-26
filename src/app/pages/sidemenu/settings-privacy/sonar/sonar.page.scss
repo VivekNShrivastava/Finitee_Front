@@ -6,7 +6,7 @@ ion-header {
   
   ion-toolbar {
     --background: #EAF1F4;
-    border-radius: 26px;
+    border-radius: none !important;
     height: 51px;
     display: flex;
     align-items: center;
@@ -26,8 +26,8 @@ ion-header {
   }
   
   ion-text {
-    margin-left: 20px;
-    font: normal normal 600 17px/24px SF Pro Display;
+    margin-left: 16px;
+    font: normal normal 600 18px/24px SF Pro Display;
     letter-spacing: 0.27px;
     color: #505050;
   }
@@ -43,16 +43,16 @@ ion-header {
     // }
   
     & ion-button{
-      margin-right: 20px;
+      margin-right: 4px;
     }
   
     & ion-toolbar {
       --background: #EAF1F4;
-      border-radius: 26px;
+      border-radius: none !important;
       height: 40px;
       display: flex;
       align-items: center;
-      margin-left: 12px;
+   
       margin-bottom: 10px;
       width:auto;
     }
@@ -75,6 +75,7 @@ ion-header {
   
     & ion-list {
       padding: 0 15px;
+      padding-left: 0px;
   
       & > ion-text {
   
@@ -99,19 +100,20 @@ ion-header {
   
   
         & ion-text {
-          padding: 0 10px;
+          padding: 0px;
+          margin-bottom: 15px;
   
           h3 {
-            font: normal normal 600 15px/24px SF Pro Display;
+            font: normal normal 600 17px/24px SF Pro Display;
             letter-spacing: 0.24px;
             color: #285078;
             min-height: 18px;
-            margin: 5px 0 0 0;
+            margin: 10px 0 5px 0;
             line-height: 18px;
           }
   
           p {
-            font: normal normal normal 14px/24px SF Pro Display;
+            font: normal normal normal 16px/24px SF Pro Display;
             letter-spacing: 0.22px;
             color: #505050;
             margin: 0 0 5px 0;
@@ -138,6 +140,7 @@ ion-header {
   
           --handle-border-radius: 50%;
           --handle-box-shadow: none;
+          padding-top: 0px;
         }
   
   
@@ -223,3 +226,7 @@ ion-header {
   
   }
   
+  .buttonsave{
+    font-size:16px ;
+    margin-bottom: 25px;
+  }

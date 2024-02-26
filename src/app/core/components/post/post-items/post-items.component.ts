@@ -36,7 +36,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
   @ViewChild('commentOrReplyInputelm', { static: false }) commentOrReplyInputelm!: IonInput;
   @Input() paramsData: any;
 
-
+  beamicon: string = 'assets/icons/screen-wise-icons/Canvas screens icons/Beam icon.svg';
   slideOptions = {
     direction: 'vertical',
     initialSlide: 0
@@ -120,6 +120,9 @@ export class PostItemsComponent extends BasePage implements OnInit {
     }, 200);
 
   }
+
+
+
 
   updateFontSize(PostDescription: any) {
     const maxLength = 2000; // Your character limit

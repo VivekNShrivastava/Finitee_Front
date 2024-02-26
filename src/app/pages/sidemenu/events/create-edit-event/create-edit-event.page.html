@@ -236,18 +236,21 @@
       (filePathEvent)="addMedia($event)"></app-multiple-media-upload>
 
     <!--  Viewable by -->
-    <ion-label class="input-label">Viewable by </ion-label>
-    <ion-item color="none" class="input" lines="none" id="viewable-by">
-      <ion-label>
-        <h3 *ngIf="eventItem.VisibleTo">{{eventItem.VisibleTo}}</h3>
-        <h3 *ngIf="!eventItem.VisibleTo">select</h3>
-      </ion-label>
-      <ion-buttons>
-        <ion-button shape="round">
-          <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-item>
+    <div class="viewby">
+      <ion-label class="input-label">Viewable by </ion-label>
+      <ion-item color="none" class="input" lines="none" id="viewable-by">
+        <ion-label>
+          <h3 *ngIf="eventItem.VisibleTo">{{eventItem.VisibleTo}}</h3>
+          <h3 *ngIf="!eventItem.VisibleTo">select</h3>
+        </ion-label>
+        <ion-buttons>
+          <ion-button shape="round">
+            <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </div>
+   
 
     <!-- location -->
     <ion-radio-group name="location" [(ngModel)]="eventItem.location" (ionChange)="getLatlng()">
@@ -283,7 +286,7 @@
     </div>
     <br>
     <!-- onSubmit -->
-    <ion-button [disabled]="!form.valid" style="text-transform: none;" type="submit" expand="block" shape="round"
+    <ion-button  [disabled]="!form.valid" style="text-transform: none; font-size: 20px; height: 46px; margin-bottom: 8px;" type="submit" expand="block" shape="round"
       color="primary">
       <span *ngIf="!isEdit">Create</span>
       <span *ngIf="isEdit">Save</span>

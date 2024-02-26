@@ -154,6 +154,7 @@ export class AppConstants {
       icon: 'right-menu-invite-to-finitee',
       pagelink: 'events',
       access: 0,
+      
     },
     {
       category: 'Settings',
@@ -181,6 +182,7 @@ export class AppConstants {
           icon: 'right-menu-account-management',
           pagelink: 'account-management',
         },
+    
       ],
     },
     {

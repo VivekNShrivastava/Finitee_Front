@@ -1,15 +1,15 @@
-<ion-header class="headth">
+<ion-header class="headth totemcreate">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-fab-button (click)="gotoback()" size="small" style="--box-shadow:none;--background:transparent">
-        <img style="height:20px" src="assets/icon/fin/back.png">
+        <img class="backbutton" style="height:20px" src="assets/icon/fin/back.png">
       </ion-fab-button>
     </ion-buttons>
-    <ion-title>Create Totem</ion-title>
+    <ion-title style="color: #285078;">Create Totem</ion-title>
     <ion-buttons slot="end" style="visibility: hidden;">
-      <ion-fab-button (click)="gotoback()" size="small" style="--box-shadow:none;--background:transparent">
+      <!-- <ion-fab-button (click)="gotoback()" size="small" style="--box-shadow:none;--background:transparent">
         <img style="height:20px" src="assets/icon/fin/back.png">
-      </ion-fab-button>
+      </ion-fab-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -22,7 +22,7 @@
           placeholder="Totem Title"></textarea>
       </ion-row>
       <ion-row style="padding: 0px 10px;">
-        <textarea [(ngModel)]="ttmDesc" class="writepost" rows="9"
+        <textarea [(ngModel)]="ttmDesc" class="writepost1" rows="9"
           placeholder="Type your totem description here.."></textarea>
       </ion-row>
       <ion-row>
@@ -30,12 +30,13 @@
           <ion-button (click)="addMedia('C')">
             <ion-icon slot="icon-only" name="cameraicon"></ion-icon>
           </ion-button>
-          <ion-button (click)="addMedia('G')">
-            <ion-icon slot="icon-only" name="galleryicon"></ion-icon>
-          </ion-button>
           <ion-button (click)="addMedia('V')">
             <ion-icon slot="icon-only" name="videoicon"></ion-icon>
           </ion-button>
+          <ion-button (click)="addMedia('G')">
+            <ion-icon slot="icon-only" name="galleryicon"></ion-icon>
+          </ion-button>
+       
         </ion-buttons>
       </ion-row>
 

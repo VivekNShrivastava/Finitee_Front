@@ -40,19 +40,19 @@
       </div>
       <ion-item class="fi-bio-item" lines="none" [hidden]="!isPersonalSectionExpanded">
         <ul>
-          <li>
+          <li style="margin-top: 5px; margin-bottom: 10px;">
             <h3>Bio</h3>
             <p>
               {{getUserProfileAsPerPrivacy.userProfile.Bio}}
             </p>
           </li>
-          <li>
+          <li style="margin-top: 5px; margin-bottom: 10px;">
             <h3>Gender</h3>
             <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Gender =='1'">Male</p>
             <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Gender =='2'">Female</p>
             <p *ngIf="getUserProfileAsPerPrivacy.userProfile.Gender =='3'">Other</p>
           </li>
-          <li>
+          <li style="margin-top: 5px; margin-bottom: 10px;">
             <h3>DateOfBirth</h3>
             <p>
               {{getUserProfileAsPerPrivacy.userProfile.DoB | date:'dd MMM yyyy' }}
@@ -72,14 +72,14 @@
               </p>
             </li>
           </div> -->
-          <li>
+          <li style="margin-top: 5px; margin-bottom: 10px;">
             <h3>Languages</h3>
             <p>
               {{getUserProfileAsPerPrivacy.userProfile.Languages}}
 
             </p>
           </li>
-          <li>
+          <li style="margin-top: 5px; margin-bottom: 10px;">
             <h3>Professional skills</h3>
             <p>
               {{getUserProfileAsPerPrivacy.userProfile.Professionalskills}}
@@ -87,7 +87,7 @@
               <!-- Photography, Handmade accessories, Business management & soccer coaching -->
             </p>
           </li>
-          <li>
+          <li style="margin-top: 5px; margin-bottom: 10px;">
             <h3>Previous cities</h3>
             <p>
               {{getUserProfileAsPerPrivacy.userProfile.Previous_cities}}
@@ -95,7 +95,7 @@
               <!-- Los Angeles, Mumbai & Cairo. -->
             </p>
           </li>
-          <li>
+          <li style="margin-top: 5px; margin-bottom: 10px;">
             <h3>Religion</h3>
             <p>
               {{getUserProfileAsPerPrivacy.userProfile.Religion}}
@@ -323,7 +323,7 @@
           </li>
           <li
             *ngIf="contact?.AddressLine1  || contact?.AddressLine2 || contact?.Zipcode">
-            <h3>
+            <h3 class="fulladd">
               {{contact?.AddressLine1}}
               <br *ngIf="contact?.AddressLine1">{{contact?.AddressLine2}}
               <br *ngIf="contact?.AddressLine2">{{contact?.Zipcode}}

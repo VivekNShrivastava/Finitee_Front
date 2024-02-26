@@ -112,7 +112,7 @@
         </ion-col>
       </ion-row>
 
-      <div style="margin-bottom: 8px;">
+      <div style="margin-bottom: 8px; margin-top: 50px;">
         <ion-label class="input-label">Viewable by</ion-label>
         <br>
         <ion-label class="desc">
@@ -137,20 +137,23 @@
     </ng-container>
 
     <!-- Viewable by -->
-    <ng-container *ngIf="!isEdit">
+    <ng-container *ngIf="!isEdit" style="margin-top: 20px;">
+      <div class="viewby">
+        <ion-label class="input-label " >Viewable by </ion-label>
+        <ion-item color="none" class="input" lines="none" id="viewable-by">
+          <ion-label>
+            <h3 *ngIf="salesItem.VisibleTo">{{salesItem.VisibleTo}}</h3>
+            <h3 *ngIf="!salesItem.VisibleTo">select</h3>
+          </ion-label>
+          <ion-buttons>
+            <ion-button shape="round">
+              <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </div>
 
-      <ion-label class="input-label">Viewable by </ion-label>
-      <ion-item color="none" class="input" lines="none" id="viewable-by">
-        <ion-label>
-          <h3 *ngIf="salesItem.VisibleTo">{{salesItem.VisibleTo}}</h3>
-          <h3 *ngIf="!salesItem.VisibleTo">select</h3>
-        </ion-label>
-        <ion-buttons>
-          <ion-button shape="round">
-            <ion-icon style="font-size: 13px;" name="down-arrow"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </ion-item>
+    
     </ng-container>
 
     <!-- location -->
@@ -188,9 +191,9 @@
     </div>
 
 
-    <ion-button style="text-transform: none;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
-      type="submit">
-      <span *ngIf="!isEdit">Create</span>
+    <ion-button style="text-transform: none; height: 47px; margin-bottom: 5px;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
+      type="submit" >
+      <span *ngIf="!isEdit" style="font-size:18px ;">Create</span>
       <span *ngIf="isEdit">Save</span>
     </ion-button>
   </form>

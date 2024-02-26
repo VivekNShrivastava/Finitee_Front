@@ -1174,8 +1174,12 @@ export class MapPage implements OnDestroy {
       radius: this.radius,
       searchCriteria: this.searchCriteria,
     };
+   
     const modal = await this.modalController.create({
       component: MapSearchComponent,
+      breakpoints: [0, 0.8],
+      initialBreakpoint: 0.8,
+      handle:false,
       componentProps: { values: obj }
     });
     modal.onDidDismiss().then(result => {

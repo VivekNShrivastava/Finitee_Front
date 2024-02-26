@@ -43,6 +43,7 @@ ion-header {
     --min-height: 51px !important;
     --background: #f0f5f7 0% 0% no-repeat padding-box;
     border-radius: 26px;
+
     & ion-buttons {
       & ion-badge {
         position: absolute;
@@ -70,10 +71,13 @@ ion-header {
     }
   }
 }
+
 ion-header.fi-chat-header {
   background: #f6f6f6 0% 0% no-repeat padding-box;
+
   & ion-toolbar {
     --background: #d3e8ef 0% 0% no-repeat padding-box;
+
     & ion-title {
       font: normal normal 600 20px/28px SF Pro Display;
       letter-spacing: 0.32px;
@@ -82,6 +86,7 @@ ion-header.fi-chat-header {
     }
   }
 }
+
 ion-footer {
   --padding-start: 0;
   background-color: #ffffff;
@@ -194,9 +199,11 @@ ion-modal {
     padding: 0 10px;
   }
 }
+
 .search-modal::part(content) {
   border-radius: 11px;
 }
+
 ion-modal::part(backdrop) {
   background: rgba(40, 80, 120, 1);
   opacity: 1;
@@ -263,7 +270,7 @@ ion-icon.ion-accordion-toggle-icon {
 
 // Block-user-alert
 .block-user-alert {
-  & > div.alert-wrapper {
+  &>div.alert-wrapper {
     box-shadow: 0px 3px 6px #00000021;
     border-radius: 11px;
     text-align: center;
@@ -296,7 +303,7 @@ ion-icon.ion-accordion-toggle-icon {
       justify-content: space-between;
       flex-direction: row;
 
-      & > button {
+      &>button {
         padding: 15px 50px;
         border-radius: 22px;
         font: normal normal normal 13px/16px SF Pro Display;
@@ -324,14 +331,22 @@ ion-icon.ion-accordion-toggle-icon {
   }
 }
 
+.alert-title.sc-ion-alert-md {
+
+  font-size: 22px;
+ 
+  padding-right: 8px;
+
+}
+
 // Add-user-alert
 
 .add-user-alert {
-  & > div.alert-wrapper {
+  &>div.alert-wrapper {
     box-shadow: 0px 3px 6px #00000021;
     border-radius: 11px;
     text-align: center;
-    min-width: 321px;
+    min-width: 330px;
 
     & .alert-head {
       text-align: center;
@@ -347,11 +362,12 @@ ion-icon.ion-accordion-toggle-icon {
 
     & .alert-input-group {
       & .alert-input-wrapper {
-        & > textarea#alert-input-1-0 {
-          background: #f0f5f7;
+        &>textarea#alert-input-1-0 {
+          background: #F0F5F7;
+
           color: #285078;
           padding: 10px;
-          height: 162px;
+          height: 162px !important;
           border-radius: 11px;
           border-bottom: none;
         }
@@ -359,10 +375,13 @@ ion-icon.ion-accordion-toggle-icon {
     }
 
     & .alert-button-group {
-      justify-content: space-around;
+      justify-content: center;
+      gap: 6px;
       flex-direction: row;
+      padding-right: 0;
+      padding-bottom: 17px;
 
-      & > button {
+      &>button {
         padding: 15px 22px;
         border-radius: 22px;
         font: normal normal normal 13px/16px SF Pro Display;
@@ -372,11 +391,12 @@ ion-icon.ion-accordion-toggle-icon {
 
         &.add-user-alert-close-button {
           position: absolute;
-          top: 20px;
-          right: 5px;
+          top: 11px;
+          right: 2px;
           padding: 4px 8px;
           color: #285078;
           font-weight: bold;
+          font-size: 18px;
         }
       }
     }
@@ -394,7 +414,7 @@ ion-icon.ion-accordion-toggle-icon {
 // Report-user-alert
 
 .report-user-alert {
-  & > div.alert-wrapper {
+  &>div.alert-wrapper {
     box-shadow: 0px 3px 6px #00000021;
     border-radius: 11px;
     text-align: center;
@@ -425,11 +445,11 @@ ion-icon.ion-accordion-toggle-icon {
       padding-bottom: 0;
 
       & .alert-input-wrapper {
-        & > textarea#alert-input-2-0 {
-          background: #f0f5f7;
-          color: #285078;
+        &>textarea#alert-input-2-0 {
+          background: #F0F5F7;
+          color: #000000;
           padding: 10px;
-          height: 162px;
+          height: 162px !important;
           border-radius: 11px;
           border-bottom: none;
         }
@@ -440,7 +460,7 @@ ion-icon.ion-accordion-toggle-icon {
       justify-content: space-around;
       flex-direction: row;
 
-      & > button {
+      &>button {
         padding: 15px 30px;
         border-radius: 22px;
         font: normal normal normal 13px/16px SF Pro Display;
@@ -561,6 +581,7 @@ button.action-sheet-button.product-option-action-sheet-button {
     }
   }
 }
+
 .fi-extra-margin {
   ion-icon.action-sheet-icon {
     margin-left: 4px;
@@ -586,6 +607,7 @@ button.action-sheet-button.product-option-action-sheet-button {
   height: 41px;
   padding: 0px 12px;
 }
+
 .list-item-1-selected {
   background: #b2e2f9 0% 0% no-repeat padding-box;
   border-radius: 20px;
@@ -594,6 +616,7 @@ button.action-sheet-button.product-option-action-sheet-button {
   align-items: stretch;
   flex-wrap: nowrap;
 }
+
 .icon-small {
   height: 32px;
   width: 32px;
@@ -611,7 +634,7 @@ button.action-sheet-button.product-option-action-sheet-button {
 
 // delete mesage popup UI changes start
 .fi-alert-header {
-  & > div.alert-wrapper {
+  &>div.alert-wrapper {
     top: 307px;
     left: 85px;
     width: 245px;
@@ -620,6 +643,7 @@ button.action-sheet-button.product-option-action-sheet-button {
     box-shadow: 0px 3px 6px #00000021;
     border-radius: 11px;
     opacity: 1;
+
     & .alert-head {
       text-align: center;
 
@@ -631,8 +655,10 @@ button.action-sheet-button.product-option-action-sheet-button {
         opacity: 1;
       }
     }
+
     & .alert-button-group {
       display: flex;
+
       & .alert-button-confirm1 {
         width: 170px;
         height: 44px;
@@ -642,9 +668,11 @@ button.action-sheet-button.product-option-action-sheet-button {
         margin: auto;
         margin-bottom: 8px;
       }
+
       & .alert-button-confirm1-1 {
         display: none;
       }
+
       & .alert-button-confirm2 {
         width: 170px;
         height: 44px;
@@ -655,6 +683,7 @@ button.action-sheet-button.product-option-action-sheet-button {
         margin: auto;
         margin-bottom: 8px;
       }
+
       & .alert-button-cancel1 {
         width: 170px;
         height: 44px;
@@ -663,10 +692,11 @@ button.action-sheet-button.product-option-action-sheet-button {
         opacity: 1;
         margin: auto;
       }
+
       .alert-button-confirm1,
       .alert-button-confirm2,
       .alert-button-cancel1 {
-        & > span {
+        &>span {
           justify-content: center;
           text-align: center;
           font: normal normal normal 13px/16px SF Pro Display;
@@ -681,7 +711,7 @@ button.action-sheet-button.product-option-action-sheet-button {
 }
 
 .fi-delete-alert {
-  & > div.alert-wrapper {
+  &>div.alert-wrapper {
     top: 357px;
     left: 47px;
     width: 321px;
@@ -690,8 +720,10 @@ button.action-sheet-button.product-option-action-sheet-button {
     box-shadow: 0px 3px 6px #00000021;
     border-radius: 11px;
     opacity: 1;
+
     .alert-head {
       text-align: center;
+
       h2 {
         font: normal normal bold 18px/26px SF Pro Display;
         letter-spacing: 0.25px;
@@ -699,16 +731,19 @@ button.action-sheet-button.product-option-action-sheet-button {
         opacity: 1;
       }
     }
+
     .alert-message {
       text-align: center;
       letter-spacing: 0.22px;
       color: #788692;
       opacity: 1;
-      ion-icon{
+
+      ion-icon {
         font-size: 25px;
       }
     }
-    .alert-close{
+
+    .alert-close {
       position: absolute;
       top: 20px;
       right: 10px;
@@ -716,8 +751,10 @@ button.action-sheet-button.product-option-action-sheet-button {
       color: #285078;
       cursor: pointer;
     }
+
     .alert-button-group {
       display: flex;
+
       .alert-no-button {
         width: 127px;
         height: 44px;
@@ -727,6 +764,7 @@ button.action-sheet-button.product-option-action-sheet-button {
         opacity: 1;
         margin: auto;
       }
+
       .alert-yes-button {
         width: 127px;
         height: 44px;
@@ -735,6 +773,7 @@ button.action-sheet-button.product-option-action-sheet-button {
         opacity: 1;
         margin: auto;
       }
+
       .alert-yes-button,
       .alert-no-button {
         span {
@@ -750,6 +789,7 @@ button.action-sheet-button.product-option-action-sheet-button {
     }
   }
 }
+
 // delete mesage popup UI changes end
 
 .my-popover .popover-arrow {
@@ -757,9 +797,11 @@ button.action-sheet-button.product-option-action-sheet-button {
   border-color: transparent;
   box-shadow: none;
 }
+
 ion-content.fi-chat-container::part(background) {
   background: #f6f6f6 0% 0% no-repeat padding-box;
 }
+
 // IONIC TOASTER CUSTOM CSS
 ion-toast::part(container) {
   background: #0b1131 0% 0% no-repeat padding-box;
@@ -773,6 +815,7 @@ ion-toast::part(container) {
   width: 236px;
   height: 48px;
 }
+
 ion-toast::part(message) {
   text-align: center;
   color: #ffffff;
@@ -792,6 +835,7 @@ ion-text.hetitle {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .fi-multiline-truncate {
   -webkit-line-clamp: 2;
   display: -webkit-box;
@@ -799,22 +843,26 @@ ion-text.hetitle {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 // CSS FOR TEXT... END
 // CSS FOR VIEW POST MODAL STARTS
 .fi-custom-ion-modal-75 {
-  > .ion-page {
+  >.ion-page {
     height: 75% !important;
   }
 }
+
 .fi-custom-ion-modal-100 {
-  > .ion-page {
+  >.ion-page {
     height: 100% !important;
   }
 }
+
 // CSS FOR VIEW POST MODAL ENDS
 //country code popup searchbar star
 .fi-ion-searchbar {
   --box-shadow: none !important;
+
   .searchbar-input-container {
     input {
       background: #f0f5f7 0% 0% no-repeat padding-box;
@@ -826,6 +874,7 @@ ion-text.hetitle {
     }
   }
 }
+
 //country code popup searchbar end
 // css for country code btn start
 .fi-countryCode-btn {
@@ -838,14 +887,17 @@ ion-text.hetitle {
   justify-content: space-evenly;
   align-items: center;
   margin-right: 10px;
+
   ion-img {
     width: 26px;
     height: 26px;
   }
 }
+
 ion-button.fi-countryCode-btn::part(native) {
   border: none;
 }
+
 // css for country code btn end
 //css for tag on image for free user canvas start
 .fi-freeUser-nameTag {
@@ -867,6 +919,7 @@ ion-button.fi-countryCode-btn::part(native) {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 //css for tag on image for free user canvas end
 // no data content css start
 .nodata {
@@ -876,21 +929,71 @@ ion-button.fi-countryCode-btn::part(native) {
   color: #758ea8;
   opacity: 1;
   margin-top: calc(50% - 50px);
+
   img {
     width: 93px;
     height: 93px;
   }
 }
+
 // no data content css end
 // edit-personal and edit-contact page popover arrow css start
-.fi-edit-personal-popover::part(arrow){
+.fi-edit-personal-popover::part(arrow) {
   left: auto !important;
   transform: translateX(0%) !important;
   right: 8%;
 }
-.fi-edit-personal-popover,.fi-edit-contact-popover{
-  ion-list{
+
+.fi-edit-personal-popover,
+.fi-edit-contact-popover {
+  ion-list {
     padding: 10px;
   }
 }
+
 // edit-personal page popover arrow css end
+
+
+
+ion-modal>.ion-page {
+
+  overflow: visible;
+  margin-top: 14px;
+  --background:#F6F6F6;
+
+
+
+}
+
+.modal-wrapper,
+.modal-shadow {
+  overflow: visible !important; // Use !important to ensure the override
+}
+
+textarea.alert-input.sc-ion-alert-md {
+  min-height: 162px !important;
+  resize: none;
+  background-color: #F0F5F7;
+  border-radius: 11px;
+  padding-left: 8px;
+}
+
+.add-user-alert-send-button{
+  .alert-button-inner.sc-ion-alert-md {
+    -ms-flex-pack: end;
+    justify-content: center;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: bold;
+    font: normal normal normal 16px/18px SF Pro Display;
+}
+}
+
+.add-user-alert-send-without-button{
+  .alert-button-inner.sc-ion-alert-md {
+   
+    font-weight: bold;
+    font: normal normal normal 16px/18px SF Pro Display;
+}
+}

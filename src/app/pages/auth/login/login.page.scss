@@ -178,12 +178,14 @@
 }
 .custom-height {
   height: 35px; 
+  text-align:right;
 }
 
 .height{
-  height: 28px;
-  padding-bottom: 9px;
+  height: 20px;
+  padding-bottom: 7px;
   font-size: 16px;
+  
 }
 .wle-p{
   font-size: 17px;
@@ -195,4 +197,11 @@
 height: 53px;
   margin-left: 10px;
   margin-right: 10px;
+}
+.errorlogin{
+  color: red;
+  text-align: center;
+  display: flex;
+  justify-content: left;
+  padding-left:23px;
 }

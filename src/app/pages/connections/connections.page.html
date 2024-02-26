@@ -1,11 +1,11 @@
 <ion-header class="ion-no-border">
   <!-- heading bar -->
-  <ion-toolbar>
+  <ion-toolbar >
     <ion-buttons slot="start">
       <app-notification-icon></app-notification-icon>
     </ion-buttons>
     <ion-title>
-      <ng-container *ngIf="logInfo && logInfo.UserTypeId!=appConstants.USER_TYPE.FR_USER">Connected Members</ng-container>
+      <ng-container class="tool" *ngIf="logInfo && logInfo.UserTypeId!=appConstants.USER_TYPE.FR_USER" >Connected Members</ng-container>
       <ng-container *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.FR_USER">Connections</ng-container>
 
     </ion-title>
