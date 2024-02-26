@@ -60,6 +60,7 @@ ion-content {
     background-color: #f0f5f7;
     box-shadow: none;
     border-radius: 22px !important;
+    height: 140px;
 
     &.header-about {
       margin-top: 50px;
@@ -97,17 +98,19 @@ ion-content {
       margin-right: -11px;
       padding: 5px 0px 10px 0px;
       .fi-list-h3 {
-        font: normal normal 600 16px/24px SF Pro Display;
+        font: normal normal 600 18px/26px SF Pro Display;
         letter-spacing: 0.22px;
         color: #285078;
         opacity: 1;
+        margin-bottom: 8px;
       }
       .fi-list-p {
-        font: normal normal normal 15px/24px SF Pro Display;
+        font: normal normal normal 17px/24px SF Pro Display;
         letter-spacing: 0.21px;
         color: #505050;
         opacity: 1;
-        line-height: 1;
+        line-height: 1.5;
+        
       }
       .edit-button {
         display: inline-block;
@@ -118,8 +121,8 @@ ion-content {
           background-color: transparent;
           border: none;
           color: #333;
-          width: 25px;
-          height: 25px;
+          width: 30px;
+          height: 30px;
           ion-icon {
             font-size: 14px;
           }
@@ -129,6 +132,7 @@ ion-content {
         position: absolute;
         top: 20px;
         right: 33px;
+        margin-right: 10px;
       }
       .fi-delete {
         position: absolute;
@@ -220,4 +224,5 @@ ion-button.fi-footer-btn {
   border-radius: 27px;
   opacity: 1;
   margin-bottom: 10px;
+  font-size: 20px;
 }

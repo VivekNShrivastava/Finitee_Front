@@ -112,9 +112,10 @@ export class AddPostPage extends BasePage implements OnInit {
       if (result) {
         this.post["Id"] = result;
         this.post.CreatedBy = this.getCreatedByData();
-        this.post.BelongsToNodeName = this.paramsData.TraitRequest.Trait;
         this.postService.postDataSbj.next({ event: "ADD", data: this.post, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
-        if (this.paramsData && this.paramsData.Trait) {//individual tarit post section screen
+        if (this.paramsData && this.paramsData.Trait) {
+          //individual tarit post section screen
+          this.post.BelongsToNodeName = this.paramsData.TraitRequest.Trait;
           this.postService.traitpostData.next({ event: "ADD", data: this.post });
         }
       }

@@ -59,7 +59,7 @@ export class CreateEditServiceRequiredPage extends BasePage implements OnInit {
     private locationService: LocationService,
     private navCtrl: NavController,
     private finiteeService: FiniteeServicesService,
-    private commonService: CommonService,
+    public commonService: CommonService,
     private authService: AuthService,
     private alertCtrl: AlertController, private paymentService: PaymentService
   ) {
@@ -99,6 +99,10 @@ export class CreateEditServiceRequiredPage extends BasePage implements OnInit {
   }
   async ionViewWillEnter() {
     this.currencySymbol = this.commonService.currentCurrency.CurrencySymbol;
+  }
+
+  allTraits(traits: any) {
+    this.serviceObj.ServiceTraits = traits;
   }
 
   getTodaysDMY() {

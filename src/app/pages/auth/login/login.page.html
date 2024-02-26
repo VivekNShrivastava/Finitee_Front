@@ -6,7 +6,8 @@
       <ion-icon class="logo-img" src="assets/images/login1.svg"></ion-icon>
       <ion-icon class="img2" src="assets/images/login2.svg"></ion-icon>
       <h3 >Welcome to Finitee</h3>
-      <p class="wle-p">UNLIMITED POSSIBILITES</p>
+      <!-- <p class="wle-p">UNLIMITED POSSIBILITES</p> -->
+      <span class="errorlogin" slot="error">{{errorMsgGrp.login}}</span>
 
       <form [formGroup]="loginForm" (ngSubmit)="login()">
         <ion-item lines="none"  style="margin-left: 14px;margin-right: 14px; margin-bottom: -40px;">
@@ -23,7 +24,7 @@
           </ion-button>
           <ion-input class="input fi-margin" (ionChange)="onInputChange($event, 'email')" formControlName="email"
             placeholder="Email/Phone number" type="inputTypePhone ? number:email" name="email"></ion-input>
-          <span slot="error">{{errorMsgGrp.login}}</span>
+          <!-- <span slot="error">{{errorMsgGrp.login}}</span> -->
           <!-- <span slot="error" *ngIf="errorMsgGrp.loginResponse.length > 0">{{errorMsgGrp.loginResponse}}</span> -->
         </ion-item>
 
@@ -39,15 +40,12 @@
         <!-- <ion-button *ngIf="inputTypePhone" color="primary" class="lgn-button" type="button" (click)="sendSignInOTP()">Sign in using OTP</ion-button> -->
       </form>
       <ion-row class="custom-height">
-        <ion-col size="6">
-          <!-- <ion-item>
-            <ion-checkbox slot="start"></ion-checkbox>
-            <ion-label class="ion-label1">Remember me</ion-label>
-          </ion-item> -->
+        <!-- <ion-col size="5">
+       
           <ion-button *ngIf="inputTypePhone" fill="clear" type="button" color="secondary" (click)="sendSignInOTP()">Sign
             in using OTP</ion-button>
-        </ion-col>
-        <ion-col size="6">
+        </ion-col> -->
+        <ion-col>
           <!-- <p class="ion-label2">Forgot Password?</p> -->
           <ion-button fill="clear" type="button" color="secondary" (click)="forgotPassword()" id="forgotPasswordId"
             class="height">Forgot Password?</ion-button>

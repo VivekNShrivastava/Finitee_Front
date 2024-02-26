@@ -6,7 +6,7 @@ ion-header {
   
   ion-toolbar {
     --background: #EAF1F4;
-    border-radius: 26px;
+    border-radius: none !important;
     height: 51px;
     display: flex;
     align-items: center;
@@ -26,7 +26,7 @@ ion-header {
   }
   
   ion-text {
-    margin-left: 20px;
+    margin-left: 0px;
     font: normal normal 600 17px/24px SF Pro Display;
     letter-spacing: 0.27px;
     color: #505050;
@@ -44,15 +44,16 @@ ion-header {
   
     & ion-button{
       margin-right: 20px;
+      margin-bottom: 17px;
     }
   
     & ion-toolbar {
       --background: #EAF1F4;
-      border-radius: 26px;
+      border-radius: none !important;
       height: 40px;
       display: flex;
       align-items: center;
-      margin-left: 12px;
+ 
       margin-bottom: 10px;
       width:auto;
     }
@@ -100,6 +101,7 @@ ion-header {
   
         & ion-text {
           padding: 0 10px;
+          margin-bottom: 10px;
   
           h3 {
             font: normal normal 600 15px/24px SF Pro Display;
@@ -222,4 +224,21 @@ ion-header {
     }
   
   }
-  
+.canvasselectoptions{
+  display: flex;
+  justify-content: space-between;
+}
+.canvaselect{
+  font-size: 15px;
+
+}
+.blue-label {
+  color: #03A9F5 !important; /* Make sure to use !important to override any default styles */
+}
+
+.grey-label {
+  color: #A8A8A8 !important; /* Make sure to use !important to override any default styles */
+}
+.ionitemcanvas{
+  --border-style: none !important;
+}

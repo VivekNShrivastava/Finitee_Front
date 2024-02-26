@@ -4,8 +4,8 @@
       <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
       </ion-back-button>
     </ion-buttons>
-    <ion-title *ngIf="!isEdit">Create Service required listing</ion-title>
-    <ion-title *ngIf="isEdit">Edit Service required listing</ion-title>
+    <ion-title style="margin-left: 10px;" *ngIf="!isEdit">Create Service required listing</ion-title>
+    <ion-title style="margin-left: 10px;" *ngIf="isEdit">Edit Service required listing</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -29,15 +29,20 @@
         </div>
       </div>
 
-
-
-
       <!-- Description -->
       <ion-label  class="input-label"> Description</ion-label>
       <ion-item lines="none">
         <ion-input autocapitalize="on" class="input" placeholder="Enter description" type="text" name="Description"
           [(ngModel)]="serviceObj.Description" maxlength="30"></ion-input>
       </ion-item>
+
+      <!-- traits -->
+    <div style=" margin-left: 10px; margin-right: 10px;">
+      <app-traits [traits]="serviceObj.ServiceTraits" (traitEvent)="allTraits($event)" ></app-traits>
+    </div>
+    <div *ngIf="commonService.eventTraitError" class="error-message">
+      Only 5 traits allowed.
+    </div>
 
       <!-- start date -->
       <ion-label class="input-label">Start date</ion-label>
@@ -231,9 +236,9 @@
     </div>
 
 
-    <ion-button style="text-transform: none;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
+    <ion-button style="text-transform: none; height: 46px; font-size: 20px;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
       type="submit">
-      <span *ngIf="!isEdit">Create</span>
+      <span  *ngIf="!isEdit">Create</span>
       <span *ngIf="isEdit">Save</span>
     </ion-button>
   </form>

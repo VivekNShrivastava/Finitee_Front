@@ -13,14 +13,42 @@
 
 
     <ion-toolbar>
-      <ion-text>Canvas</ion-text>
+      <ion-text style="margin-left: 20px; font-size: 19px;">Canvas</ion-text>
     </ion-toolbar>
+    <div>
+      <h2 style="font-size: 17px; color:#285078; margin-left: 15px; margin-bottom: 0px;">Canva Viewable by</h2>
+      <div class="canvasselectoptions">
+        <ion-radio-group [(ngModel)]="selectedOption" (ionChange)="handleRadioChange(selectedOption)" style="display: flex; margin-left: 10px; gap: 10px; margin: 10px; margin-top: 0; margin-bottom: 0px; ">
+          <ion-item class="ionitemcanvas" style="gap: 3px; margin-bottom: 0px; ">
+            <ion-radio style="margin-right: 3px;" value="all"></ion-radio>
+            <ion-label class="canvaselect" [ngClass]="getLabelColor('all')">All Finitee Users</ion-label>
+          </ion-item>
+          <ion-item  class="ionitemcanvas" style="gap: 3px; margin-bottom: 0px;">
+            <ion-radio style="margin-right: 3px;" value="connections"></ion-radio>
+            <ion-label class="canvaselect" [ngClass]="getLabelColor('connections')">Connections</ion-label>
+          </ion-item>
+          <ion-item  class="ionitemcanvas" style="gap: 3px; margin-bottom: 0px;">
+            <ion-radio style="margin-right: 3px;" value="onlyme"></ion-radio>
+            <ion-label class="canvaselect" [ngClass]="getLabelColor('onlyme')">Only me</ion-label>
+          </ion-item>
+        </ion-radio-group>
+      </div>
+    </div>
+    
 
-    <ion-list>
-      <ion-item lines="none">
+   
+
+    <ion-list >
+      <ion-item lines="none" style="margin-bottom: 20px;">
+        <ion-text style="margin: 0px;">
+          <h3 style="color: #285078; font-size: 15px; margin-bottom: 8px;">Be found and shown as a summary screen to users not allowed to view your canvas?</h3>
+        </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="privacySetting.LocationShowOnlyWhenLoggedIn"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none" style="margin-bottom: 20px;">
         <ion-text>
-          <h3>Allow Beam By</h3>
-          <p>{{_commonService.getPrivacyFullValue(privacySetting.AllowBeamBy)}}</p>
+          <h3 style="font-size: 17px;">Allow to make posts</h3>
+          <p style="font-size:16px ;  margin-top: 5px;">{{_commonService.getPrivacyFullValue(privacySetting.AllowBeamBy)}}</p>
         </ion-text>
         <ion-buttons *ngIf="!(privacySetting.FreeUserType === 'S' || privacySetting.FreeUserType === 'G')" slot="end" (click)="presentPopover($event,'AllowBeamBy', 'AllowBeamBy')">
           <ion-button shape="round">
@@ -34,23 +62,42 @@
         </ion-text>
         <ion-toggle slot="end" [(ngModel)]="privacySetting.AllowToViewHomeScreen"></ion-toggle>
       </ion-item> -->
-      <ion-item lines="none">
+      <ion-item lines="none" style="margin-bottom: 20px;">
         <ion-text>
-          <h3>Allow Inflows</h3>
-          <p>{{_commonService.getPrivacyFullValue(privacySetting.StartInflows)}}</p>
+          <h3 style="font-size: 17px;">Allow to beam</h3>
+          <p style="font-size:16px ;  margin-top: 5px;">{{_commonService.getPrivacyFullValue(privacySetting.StartInflows)}}</p>
         </ion-text>
-        <!-- <ion-buttons *ngIf="!(privacySetting.FreeUserType === 'S' || privacySetting.FreeUserType === 'G')"  slot="end" (click)="presentPopover($event,'StartInflows', 'StartInflows')">
+        <ion-buttons *ngIf="!(privacySetting.FreeUserType === 'S' || privacySetting.FreeUserType === 'G')"  slot="end" (click)="presentPopover($event,'StartInflows', 'StartInflows')">
           <ion-button shape="round">
             <ion-icon name="three-dots"></ion-icon>
           </ion-button>
-        </ion-buttons> -->
+        </ion-buttons>
       </ion-item>
 
       <ion-item lines="none">
         <ion-text>
-          <h3>CanvasViewableBy</h3>
-          <p>{{_commonService.getPrivacyFullValue(privacySetting.CanvasViewableBy)}}</p>
+          <h3 style="font-size: 17px;">Post available as inflows to</h3>
+          <p style="font-size:16px ;  margin-top: 5px;">No one</p>
+          <!-- <p>{{_commonService.getPrivacyFullValue(privacySetting.CanvasViewableBy)}}</p> -->
         </ion-text>
+        <ion-buttons *ngIf="!(privacySetting.FreeUserType === 'S' || privacySetting.FreeUserType === 'G')"  slot="end" (click)="presentPopover($event,'StartInflows', 'StartInflows')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-text>
+          <h3 style="font-size: 17px;">Allow mentions/speak-tos to be made by</h3>
+          <p style="font-size:16px ; margin-top: 5px;">No one</p>
+          <!-- <p>{{_commonService.getPrivacyFullValue(privacySetting.CanvasViewableBy)}}</p> -->
+        </ion-text>
+        <ion-buttons *ngIf="!(privacySetting.FreeUserType === 'S' || privacySetting.FreeUserType === 'G')"  slot="end" (click)="presentPopover($event,'StartInflows', 'StartInflows')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-item>
 
     </ion-list>
