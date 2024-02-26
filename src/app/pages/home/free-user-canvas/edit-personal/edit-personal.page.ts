@@ -137,7 +137,7 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
     event.stopPropagation();
     console.log("caputing....")
     event.preventDefault();
-    // await this.attachmentService.openCameraToTakePhoto(true, CameraSource.Camera);
+
     // await this.attachmentService.openCameraToTakePhoto(true, CameraSource.Prompt);
 
   }

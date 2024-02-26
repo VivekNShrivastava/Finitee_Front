@@ -1,0 +1,17 @@
+<!-- image-cropper.component.html -->
+
+<!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
+
+<image-cropper
+    [imageBase64]="myImage"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="4 / 3"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded()"
+    (loadImageFailed)="loadImageFailed()"
+></image-cropper>
+
+<img [src]="croppedImage" />
+
+<ion-button (click)="saveCroppedImage()">Save Cropped Image</ion-button>
