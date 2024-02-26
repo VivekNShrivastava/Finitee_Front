@@ -4,8 +4,8 @@
       <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
       </ion-back-button>
     </ion-buttons>
-    <ion-title *ngIf="!isEdit">Create Service required listing</ion-title>
-    <ion-title *ngIf="isEdit">Edit Service required listing</ion-title>
+    <ion-title style="margin-left: 10px;" *ngIf="!isEdit">Create Service required listing</ion-title>
+    <ion-title style="margin-left: 10px;" *ngIf="isEdit">Edit Service required listing</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -236,9 +236,9 @@
     </div>
 
 
-    <ion-button style="text-transform: none;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
+    <ion-button style="text-transform: none; height: 46px; font-size: 20px;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
       type="submit">
-      <span *ngIf="!isEdit">Create</span>
+      <span  *ngIf="!isEdit">Create</span>
       <span *ngIf="isEdit">Save</span>
     </ion-button>
   </form>

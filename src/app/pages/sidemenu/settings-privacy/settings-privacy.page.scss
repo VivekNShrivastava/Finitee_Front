@@ -47,14 +47,16 @@ ion-content {
   }
 
   & ion-toolbar {
-    --background: #EAF1F4;
-    border-radius: 26px;
+    --background: #ffffff;
+   border-radius: 0px !important;
     height: 40px;
     display: flex;
     align-items: center;
-    margin-left: 12px;
+ 
+
     margin-bottom: 10px;
     width:auto;
+    display: contents;
   }
 
   & ion-segment {
@@ -221,4 +223,9 @@ ion-popover {
 
   }
 
+}
+.settingsline{
+  background-color:  #EAF1F4;
+  width: 100%;
+  height: 5px;
 }

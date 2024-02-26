@@ -368,7 +368,7 @@ ion-content {
           letter-spacing: 0.22px;
           color: #285078;
           margin: 0;
-          line-height: 16px;
+          // line-height: 16px;
         }
 
         p {
@@ -427,4 +427,7 @@ ion-content {
   color: #333;
   padding: 6px 8px;
   font-size: 16px;
+}
+.fulladd{
+  line-height: 1.5;
 }

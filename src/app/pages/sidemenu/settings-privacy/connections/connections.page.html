@@ -18,15 +18,8 @@
     <ion-list>
       <ion-item lines="none">
         <ion-text>
-          <h3>MakeConnectionRequest</h3>
-          <p>{{_commonService.getPrivacyFullValue(privacySetting.MakeConnectionRequest)}}</p>
-        </ion-text>
-      </ion-item>
-
-      <ion-item lines="none">
-        <ion-text>
-          <h3>ShowConnectionList</h3>
-          <p>{{_commonService.getPrivacyFullValue(privacySetting.ShowConnectionList)}}</p>
+          <h3 style="font-size: 17px; margin-bottom: 7px;">ShowConnectionList</h3>
+          <p style="font-size: 16px; margin-bottom: 7px;">{{_commonService.getPrivacyFullValue(privacySetting.ShowConnectionList)}}</p>
         </ion-text>
         <ion-buttons slot="end" *ngIf=" (privacySetting.FreeUserType !== 'I') && (privacySetting.FreeUserType !== 'G') " (click)="presentPopover($event,'ShowConnectionList', 'ShowConnectionList' )">
           <ion-button shape="round">
@@ -34,18 +27,26 @@
           </ion-button>
         </ion-buttons>
       </ion-item>
+      <ion-item lines="none">
+        <ion-text>
+          <h3  style="font-size: 17px; margin-bottom: 7px;">MakeConnectionRequest</h3>
+          <p style="font-size: 16px; margin-bottom: 7px;">{{_commonService.getPrivacyFullValue(privacySetting.MakeConnectionRequest)}}</p>
+        </ion-text>
+      </ion-item>
+
+  
 
       <ion-item lines="none">
         <ion-text>
-          <h3>Can refer others to me</h3>
-          <p>{{_commonService.getFullPrivacyForNone(privacySetting.AllowReferralsFrom)}}</p>
+          <h3  style="font-size: 17px; margin-bottom: 7px;">Can refer others to me</h3>
+          <p style="font-size: 16px; margin-bottom: 7px;">{{_commonService.getFullPrivacyForNone(privacySetting.AllowReferralsFrom)}}</p>
         </ion-text>
       </ion-item>
 
       <ion-item lines="none">
         <ion-text>
-          <h3>Can refer me to others</h3>
-          <p>{{_commonService.getFullPrivacyForNone(privacySetting.AllowReferralsTo)}}</p>
+          <h3  style="font-size: 17px; margin-bottom: 7px;">Can refer me to others</h3>
+          <p style="font-size: 16px; margin-bottom: 7px;">{{_commonService.getFullPrivacyForNone(privacySetting.AllowReferralsTo)}}</p>
         </ion-text>
       </ion-item>
       
