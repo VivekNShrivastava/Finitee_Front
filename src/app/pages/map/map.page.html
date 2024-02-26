@@ -93,13 +93,13 @@
     </div>
   </div>
 
-  <ion-modal id="sonarSettingModal" #sonarSettingModal [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]"  >
+  <ion-modal id="sonarSettingModal" #sonarSettingModal [initialBreakpoint]="0.62" [breakpoints]="[0, 0.62]" >
     <ng-template>
       <sonar-settings (onCloseSetting)="closeSetting()"></sonar-settings>
     </ng-template>
   </ion-modal>
 
-  <ion-modal #markerDetailModal [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]" handle="false" >
+  <ion-modal #markerDetailModal [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]" handle="false">
     <ng-template>
       <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
         <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="mainResultFromSearch"

@@ -4,7 +4,7 @@ export class EventItem {
   Id?: number;
   UserId?: string;
   Title: string = "";
-  Desription: string = "";
+  Description: string = "";
   Address: string = '' 
   
   StartDate: any
@@ -15,7 +15,7 @@ export class EventItem {
   Latitude: any  ;
   Longitude: any  ;
   Scope: number = 10;
-  VisibleTo: string = 'All finitee users';
+  VisibleTo: string = 'A';
   EventImages: Array<string> = [];
   EventTraits: Array<string> = [];
   daysLeft : any;

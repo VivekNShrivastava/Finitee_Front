@@ -305,6 +305,17 @@ export class AppConstants {
     
   ];
 
+  public static GeneralLocationShowAt = [
+    {
+      key: 'L',
+      value: 'Live Location',
+    },
+    {
+      key: 'H',
+      value: 'Home Location',
+    }
+  ];
+
   public static GeneralNonePrivacy = [
     {
       key: 'A',

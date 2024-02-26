@@ -273,6 +273,14 @@ export class CommonService {
       return privacyFirstChar;
   }
 
+  getLocationShowAt(privacyFirstChar: string) {
+    var selectedPrivacy = _.filter(AppConstants.GeneralLocationShowAt, { 'key': privacyFirstChar });
+    if (selectedPrivacy.length > 0)
+      return selectedPrivacy[0].value;
+    else
+      return privacyFirstChar;
+  }
+
   getFullPrivacyForNone(privacyFirstChar: string) {
     var selectedPrivacy = _.filter(AppConstants.GeneralPivacy, { 'key': privacyFirstChar });
     if (selectedPrivacy.length > 0)

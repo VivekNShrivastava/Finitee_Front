@@ -77,10 +77,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
     },
     {
       title: 'Connections only'
-    },
-    {
-      title: 'No one'
-    },
+    }
   ]
 
   ngOnInit() {

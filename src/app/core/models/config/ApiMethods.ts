@@ -52,6 +52,7 @@ export const API = {
             UPDATE_USER_TYPE: `${environment.baseUrl}UserSetting/UpdateFreeUserTypePrivacy`,
             UPDATE_BEAM: `${environment.baseUrl}UserSetting/UpdateAllowBeamByPrivacy`,
             RECEIVE_CHAT: `${environment.baseUrl}UserSetting/UpdateReceiveChatFromPrivacy`,
+            UPDATE_SONAR_SETTING: `${environment.baseUrl}UserSetting/UpdateSonarPrivacySetting`
         },
         EDIT_USERNAME:{
             POST: `${environment.baseUrl}User/ChangeUserName`
