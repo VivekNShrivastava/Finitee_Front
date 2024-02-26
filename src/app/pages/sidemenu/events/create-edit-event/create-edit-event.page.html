@@ -56,7 +56,7 @@
     <div style=" margin-left: 10px; margin-right: 10px;">
       <app-traits [traits]="eventItem.EventTraits" (traitEvent)="allTraits($event)" ></app-traits>
     </div>
-    <div *ngIf="CommonService.eventTraitError" class="error-message">
+    <div *ngIf="commonService.eventTraitError" class="error-message">
       Only 5 traits allowed.
     </div>
     <!-- start date -->
@@ -294,7 +294,7 @@
     <ion-label class="input-label">Viewable by </ion-label>
     <ion-item color="none" class="input" lines="none" id="viewable-by">
       <ion-label>
-        <h3 *ngIf="eventItem.VisibleTo">{{CommonService.getPrivacyFullValue(eventItem.VisibleTo)}}</h3>
+        <h3 *ngIf="eventItem.VisibleTo">{{commonService.getPrivacyFullValue(eventItem.VisibleTo)}}</h3>
         <h3 *ngIf="!eventItem.VisibleTo">select</h3>
       </ion-label>
       <ion-buttons>

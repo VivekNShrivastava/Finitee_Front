@@ -31,6 +31,7 @@ export class MultipleMediaUploadComponent implements OnInit {
   @Input() isDisabled: boolean = false;
   @Input() postLimit: number = 0;
   @Input() videoRecDisable: number = 0;
+  @Input() photoLibrary: number = 0;
 
   constructor(public attachmentService: AttachmentHelperService) {
     this.mediaSaveCallBack();

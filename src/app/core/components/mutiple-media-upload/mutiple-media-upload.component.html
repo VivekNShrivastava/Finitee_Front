@@ -7,7 +7,7 @@
       <ion-button *ngIf="videoRecDisable != 11" [disabled]="isUploadDisabled || (postLimit == 5)" shape="round" (click)="captuerMedia($event,appConstants.MEDIA_VIDEO,appConstants.SOURCE_CAMERA)">
         <ion-icon src="assets/icons/screen-wise-icons/Sonar icons/Chat screen video icon.svg"></ion-icon>
       </ion-button>
-      <ion-button [disabled]="isUploadDisabled || isDisabled || (postLimit == 5)" shape="round"
+      <ion-button *ngIf="photoLibrary != 11" [disabled]="isUploadDisabled || isDisabled || (postLimit == 5)" shape="round"
         (click)="captuerMedia($event,appConstants.MEDIA_PICTURE,appConstants.SOURCE_PHOTOLIBRARY)">
         <ion-icon src="assets/icons/screen-wise-icons/Sonar icons/Chat screen gallery icon.svg"></ion-icon>
       </ion-button>

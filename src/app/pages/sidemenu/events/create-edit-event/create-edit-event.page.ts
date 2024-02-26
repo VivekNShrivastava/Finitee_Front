@@ -73,7 +73,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     private authService: AuthService, 
     private locationService: LocationService,
     private route: ActivatedRoute,
-    public CommonService: CommonService,
+    public commonService: CommonService,
     public modalController: ModalController
   ) {
     super(authService);
@@ -81,7 +81,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     if (this.eventItem.Id) {
       this.editItemIndex = this.router!.getCurrentNavigation()!.extras!.state!['extraParams'];
       this.isEdit = true;
-      this.eventItem.VisibleTo = this.CommonService.getPrivacyFullValue(this.eventItem.VisibleTo);
+      this.eventItem.VisibleTo = this.commonService.getPrivacyFullValue(this.eventItem.VisibleTo);
     } else {
       if (this.logInfo.UserTypeId == AppConstants.USER_TYPE.FR_USER) {
         this.appConstants.GeneralPivacy.unshift({ key: 'All Individuals, Businesses/Nonprofits', value: 'All Individuals, Businesses/Nonprofits', })
@@ -117,7 +117,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       this.endTime.eampm = this.datePipe.transform(this.eventItem.EndDate, 'a') as 'AM' | 'PM';
 
     } else {
-      this.eventItem.VisibleTo = 'All Finitee users'
+      this.eventItem.VisibleTo = this.commonService.getPrivacyFullValue("A");
       this.startTime = {
         shh: '',
         smm: '',
