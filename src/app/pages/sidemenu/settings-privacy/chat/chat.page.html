@@ -18,8 +18,8 @@
     <ion-list>
       <ion-item lines="none">
         <ion-text>
-          <h3>Receive messages from</h3>
-          <p>{{_commonService.getPrivacyFullValue(privacySetting.ReceiveChatFrom)}}</p>
+          <h3 style="font-size: 17px; margin-bottom: 7px;">Receive messages from</h3>
+          <p style="font-size: 16px;">{{_commonService.getPrivacyFullValue(privacySetting.ReceiveChatFrom)}}</p>
         </ion-text>
         <ion-buttons slot="end" *ngIf="(privacySetting.FreeUserType !== 'I') && (privacySetting.FreeUserType !== 'G') " (click)="presentPopover($event,'ReceiveChatFrom', 'ReceiveChatFrom' )">
           <ion-button shape="round">

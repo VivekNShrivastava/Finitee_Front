@@ -34,7 +34,7 @@ export class CanvasPage implements OnInit {
     this.getUserPrivacy();
 
   }
- 
+  selectedOption: string = '';
 
   presentPopover(e: Event, key: any, val: string) {
     console.log("eve", e);
@@ -91,5 +91,13 @@ export class CanvasPage implements OnInit {
     const res = this.privacySettingService.updateBeamPrivacy(this.privacySetting.AllowBeamBy)
   }
 
+  handleRadioChange(option: string) {
+    this.selectedOption = option;
+  }
+
+  // Function to determine whether a label should be blue or grey based on selection
+  getLabelColor(option: string): string {
+    return this.selectedOption === option ? 'blue-label' : 'grey-label';
+  }
 
 }

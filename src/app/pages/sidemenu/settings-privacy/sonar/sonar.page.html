@@ -29,6 +29,17 @@
       </ion-item>
       <ion-item lines="none">
         <ion-text>
+          <h3>Sonar location Shows to</h3>
+          <p>Live</p>
+        </ion-text>
+        <ion-buttons slot="end" (click)="presentPopover($event,'LocationVisibleTo')">
+          <ion-button shape="round">
+            <ion-icon name="three-dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text>
           <h3>Sonar location shown only when logged in</h3>
         </ion-text>
         <ion-toggle slot="end" [(ngModel)]="privacySetting.LocationShowOnlyWhenLoggedIn"></ion-toggle>
@@ -41,14 +52,14 @@
       </ion-item>
       <ion-item lines="none">
         <ion-text>
-          <h3>Offset sonar location when showing Business Location</h3>
+          <h3>Offset sonar location when showing Live Location</h3>
         </ion-text>
         <ion-toggle slot="end" [(ngModel)]="privacySetting.OffSetLocation"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-text>
-          <h3>Mobile business</h3>
-          <p>Select if your business location changes regularly</p>
+          <h3>Offset sonar Home Location</h3>
+         
         </ion-text>
         <ion-toggle slot="end" [(ngModel)]="privacySetting.IsMobileBusiness"></ion-toggle>
       </ion-item>

@@ -204,7 +204,7 @@ ion-footer {
 
 .map-fab-button2 {
     --background: rgb(255, 255, 255);
-    margin: auto; 
+    margin: auto;
     height: 44px;
     --background-hover: var(--ion-color-primary);
     width: 44px;
@@ -283,4 +283,126 @@ a {
     --background: white;
     width: 40px;
     height: 40px;
+}
+
+.user-flam-icon {
+    --background: white;
+    width: 40px;
+    height: 40px;
+}
+
+.janvi {
+    height: 100%;
+    position: relative;
+    overflow-y: visible;
+    z-index: auto;
+    --background:#F6F6F6;
+}
+
+
+
+
+
+ion-modal>.ion-page {
+    position: relative;
+    contain: layout style;
+    height: 100%;
+    overflow: visible;
+    margin-top: 50px;
+    --background:#F6F6F6;
+}
+
+:host(.modal-sheet) .modal-wrapper,
+:host(.modal-sheet) .modal-shadow {
+    position: relative;
+    bottom: 0px;
+    overflow: visible;
+
+}
+
+/* app-marker-detail.component.scss */
+
+:host {
+    display: block;
+    overflow: visible !important;
+}
+
+.your-ionic-modal-class {
+    overflow: visible !important;
+}
+
+.modal-wrapper {
+    overflow: visible !important;
+}
+
+.custom-modal .modal-wrapper {
+    overflow: visible !important;
+}
+
+//   ::ng-deep ion-modal { 
+//     --height: 320px; 
+//     margin-top: 500px; 
+//     border-radius: 50px 50px 0 0;
+//   }  
+::ng-deep ion-modal {
+    --overflow: visible;
+}
+
+:host(.modal-sheet) .modal-wrapper,
+:host(.modal-sheet) .modal-shadow {
+    position: absolute;
+    bottom: 0px;
+
+}
+
+
+.custom-modal {
+    --overflow: visible;
+    --border-radius: 25px;
+    --background:#F6F6F6;
+ 
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+
+.modal-wrapper button{
+    z-index: 0 !important;
+}
+
+.custom-modal button {
+    --z-index: 0 !important;
+}
+.custom-modal .modal-handle {
+    display: none;
+  }
+
+  @media (min-width: 768px){
+    .custom-modal {
+        --overflow: visible;
+    
+
+    }
+    .custom-modal>.ion-page {
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       margin-top: 50px;
+    }
+    
+  }
+  .custom-modal .ion-page{
+   margin-top: 50px;
+ }
+ 
+//  ion-content{
+//         --border-radius: 100px 10px 0 0;
+//     }
+
+.ion-overlay-wrapper{
+    --background:#680d0d !important;
+}
+
+ion-modal {
+    --overflow: visible;
+    --background: #F6F6F6;
 }

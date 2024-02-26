@@ -1,6 +1,7 @@
+
 <ion-progress-bar *ngIf="progressBar" type="indeterminate"></ion-progress-bar>
 <ion-header class="headth">
-  <ion-toolbar>
+  <!-- <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="closeModal()">
         <img style="height:20px" src="assets/icon/fin/back.png">
@@ -14,16 +15,15 @@
         <img style="height:20px" src="assets/icon/fin/back.png">
       </ion-button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-toolbar> -->
 
   <ion-toolbar class="toolb">
     <ion-segment [(ngModel)]="searchMode">
-      <ion-segment-button value="N" checked>
+      <ion-title value="N" class="searchsonar">Search</ion-title>
+      <!-- <ion-segment-button value="N" checked>
         Search
-      </ion-segment-button>
-      <ion-segment-button value="L">
-        Set map location
-      </ion-segment-button>
+      </ion-segment-button> -->
+     
     </ion-segment>
   </ion-toolbar>
 </ion-header>
@@ -44,7 +44,7 @@
 
           <ion-buttons slot="end" style="position: absolute;right: 5px;">
             <ion-button class="activated" (click)="keyinfo=''">
-              <img src="assets/icon/fin/close.png">
+              <img style="padding-right: 7px;" src="assets/icon/fin/close.png">
             </ion-button>
           </ion-buttons>
         </ion-item>
@@ -58,6 +58,14 @@
 
     <div class="ele" style="padding: 10px 25px 0px;" *ngIf="searchMode=='N'">
       <table class="medbf" style="width: 100%;font-weight: 500;">
+      <Tr>
+        <Td>
+          Location
+        </Td>
+        <Td>
+          <ion-input class=" locationsearch"  type="textarea"></ion-input>
+        </Td>
+      </Tr>
         <Tr>
           <Td style="width: 100px;">
             Scope
@@ -79,13 +87,14 @@
         </Tr>
       </table>
     </div>
+    <div class="linemark"><div class="line"></div></div>
     <div style="padding: 0px 10px;" *ngIf="searchMode=='N'">
       <div class="ele">
         <ion-list style="padding-right: 10px;" class="display-flex flex-wrap-wrap">
           <ion-item style="margin-bottom: 0px;" *ngFor="let type of searchType"
             [ngClass]="{ 'width-100':type.label == 'All' ,  'width-50':type.label != 'All'  }"
             [hidden]="((type.value=='F'||type.label=='Connections') && logInfo.UserTypeId!=1) || (logInfo.UserTypeId == 1 && type.label=='Connected Members') ">
-            <ion-label class="medbf" style="font-size: 14px;">{{type.label}}</ion-label>
+            <ion-label class="medbf" style="font-size: 15px;">{{type.label}}</ion-label>
             <ion-checkbox slot="start" [(ngModel)]="type.isChecked" (ionChange)="searchTypeChanged(type.value)">
             </ion-checkbox>
           </ion-item>

@@ -30,9 +30,10 @@ ion-content {
           margin: 0;
           & > ion-card-content {
             padding: 4px 13px;
+            height: 83px;
             & > ion-label {
               
-                font: normal normal 600 14px/24px SF Pro Display;
+                font: normal normal 600 15px/24px SF Pro Display;
                 letter-spacing: 0.22px;
                 color: #285078;
                // height: 14px;
@@ -43,7 +44,7 @@ ion-content {
                 }
                
               h5 {
-                font: normal normal 600 12px/24px SF Pro Display;
+                font: normal normal 600 13px/24px SF Pro Display;
                 letter-spacing: 0.19px;
                 color: #03A9F5;
               }
@@ -60,7 +61,7 @@ ion-content {
               }
               .fi-delete-btn::part(native){
                 margin-left: -4px;
-                width: 35px;
+                width: 33px;
                 }
               .fi-edit-btn::part(native){
                 margin-left: -4px;

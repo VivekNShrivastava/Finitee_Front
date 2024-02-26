@@ -32,6 +32,7 @@ export const finiteeIconMapper = {
   'ambassador-ss-small': 'assets/custom-ion-icons/md-ambassador-ss-small.svg',
   // announcement: 'assets/custom-ion-icons/md-announcement.svg',
   basic: 'assets/custom-ion-icons/md-basic.svg',
+  
   blockbusiness: 'assets/custom-ion-icons/md-blockbusiness.svg',
   blockconnection: 'assets/custom-ion-icons/md-blockconnection.svg',
   blocknonp: 'assets/custom-ion-icons/md-blocknonp.svg',
@@ -39,6 +40,7 @@ export const finiteeIconMapper = {
   bluearrowup: 'assets/custom-ion-icons/md-bluearrowup.svg',
   bluebusiness: 'assets/custom-ion-icons/md-bluebusiness.svg',
   bluechat: 'assets/custom-ion-icons/md-bluechat.svg',
+  onhold:'assets/custom-ion-icons/on-hold.svg',
   bluecur: 'assets/custom-ion-icons/md-bluecur.svg',
   bluemenu: 'assets/custom-ion-icons/md-bluemenu.svg',
   bluepost: 'assets/custom-ion-icons/md-bluepost.svg',
@@ -215,6 +217,8 @@ export const finiteeIconMapper = {
   //   Three dots
   'three-dots':
     'assets/icons/screen-wise-icons/Home screen icons/Product tile 3 dot icon.svg',
+
+    'beamicon':'assets/icons/screen-wise-icons/Canvas screens icons/Beam icon.svg',
 
   //   Header Back Button
   'back-button':

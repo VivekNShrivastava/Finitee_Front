@@ -20,7 +20,7 @@
         <ion-col size="4" style="font-size: 13px; text-align: center;">Shopping word</ion-col>
         <ion-col size="2" style="font-size: 13px; text-align: center;">Price</ion-col>
         <ion-col size="3" style="font-size: 13px; text-align: center;">Condition</ion-col>
-        <ion-col size="3" style="font-size: 13px; text-align: center;">Distance</ion-col>
+        <ion-col size="3" style="font-size: 13px; text-align: center;">Distance <br>   (km)</ion-col>
       </ion-row>
     </ion-grid>
 
@@ -57,9 +57,12 @@
               <ion-item color="none" lines="none">
                 <ion-input type="number" class="input" style="text-align: center; font-size: 12px;" name="Distance{{i}}"
                   [(ngModel)]="shoppingItem.Distance" #distance="ngModel"></ion-input>
-                <ion-label >
-             <h3>     km</h3>
-                </ion-label>
+              
+                
+                    <ion-icon style="width: 17px; margin-left: 3px;" name="delete-product"></ion-icon>
+                
+             <!-- <h3>     km</h3> -->
+             
               </ion-item>
             </ion-col>
           </ion-row>
@@ -87,6 +90,7 @@
   </form>
 
 </ion-content>
-
-<ion-button [disabled]="!form.valid" style="text-transform: none;" shape="round" (click)="submit()" expand="full"
-class="save-button">save</ion-button>
+<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
+  <ion-button [disabled]="!form.valid" style="text-transform: none; font-size: 20px; width: 336px; height: 46px;" shape="round" (click)="submit()" expand="full"
+  class="save-button">save</ion-button>
+</div>

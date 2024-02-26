@@ -51,16 +51,23 @@ ion-item {
     font-weight: 500;
 }
 
-.writepost {
+.writepost ,.writepost1{
     background: #f0f5f7;
     padding-left: 15px;
     width: 100%;
-    padding-top: 15px;
+    padding-top: 16px;
     padding-bottom: 16px;
     border: none;
     border-radius: 11px;
+    height: 53px;
+    color: #A8A8A8;
+    font: var(--unnamed-font-style-normal) normal normal 15px/24px var(--unnamed-font-family-sf-pro-display);
 }
-
+.writepost1{
+   
+    height: 256px;
+   
+}
 .postbtns ion-button {
     background: #f0f5f7;
     width: 42px;
@@ -166,4 +173,11 @@ textarea:focus {
         width: 100%;
         height: 300px;
     }
+}
+
+.header-md::after{
+    background-image: none !important;
+}
+.backnuttom{
+    height: 21px;
 }
