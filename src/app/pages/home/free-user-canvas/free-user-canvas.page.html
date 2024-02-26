@@ -241,10 +241,10 @@
           [(ngModel)]="traitInput" placeholder="Type here" (ionChange)="traitTextChange($event)">
         </ion-textarea>
 
-        <div class="line-with-text">
+        <div *ngIf="userTraitList.length > 0" class="line-with-text">
           <span class="centered-text">or</span>
         </div>
-        <p>Select trait section</p>
+        <p *ngIf="userTraitList.length > 0">Select trait section</p>
         <div style="max-height: 200px; overflow-y: auto;">
           <ion-list>
             <ion-radio-group [allowEmptySelection]="true" value="{{selectedTraitObj!.Id}}"

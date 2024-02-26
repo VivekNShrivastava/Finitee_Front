@@ -32,7 +32,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
     private navCtrl: NavController,
     private pickerCtrl: PickerController, private locationService: LocationService,
     private salesListingService: SalesListingService,
-    private commonService: CommonService,
+    public commonService: CommonService,
     private authService: AuthService,
     private alertCtrl: AlertController, private apiService: APIService, private paymentService: PaymentService
   ) {
@@ -88,6 +88,9 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
 
   initiliazeForm() {
     this.saveClicked = false;
+  }
+  allTraits(traits: any) {
+    this.salesItem.SalesTraits = traits;
   }
 
   getLatlng() {

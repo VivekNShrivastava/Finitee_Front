@@ -77,10 +77,26 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     else {
       this.userId = this.logInfo.UserId;
     }
+    console.log("free-user-canvas");
     this.subscribePostSubject();
+    this.subscribeTraitPostSubject();
   }
   
   async subscribePostSubject() {
+    this._postService.traitList.subscribe({
+      next: (result: any) => {
+        console.log(`observerA: ${result}`);
+        if (result.event == "ADD"){
+          // result.data.Thumbnail = null;
+          this.userTraitPostList.unshift(result.data);
+          this.loaded=false;
+          this.getUserTraitsWithPost();
+        }
+      }
+    });
+  }
+
+  async subscribeTraitPostSubject() {
     this._postService.postDataSbj.subscribe({
       next: (result: any) => {
         console.log(`observerA: ${result}`);

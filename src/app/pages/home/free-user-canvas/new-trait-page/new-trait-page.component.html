@@ -18,11 +18,17 @@
         placeholder="Title"></ion-input>
     </ion-item> -->
 
-    <!--Description-->
+    <p style=" font: normal normal 600 15px/24px SF Pro Display; letter-spacing: 0.21px; color: #505050; margin-left: 5px; margin-bottom: 3px;">Trait</p>
     <ion-item lines="none">
+      <ion-input [(ngModel)]="post.PostDescription" [readonly]="isTraitReadOnly" autocapitalize="on" class="custom-textarea"
+        placeholder="Trait"></ion-input>
+    </ion-item>
+
+    <!--Description-->
+    <!-- <ion-item lines="none">
       <ion-textarea [(ngModel)]="post.PostDescription" autocapitalize="on" class="custom-textarea"
         placeholder="Type description here"></ion-textarea>
-    </ion-item>
+    </ion-item> -->
 
     <!--traits-->
     <ion-chip *ngFor="let trait of post.PostTraits;  let i = index" color="primary">

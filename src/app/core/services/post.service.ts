@@ -14,6 +14,7 @@ export class PostService {
   postDataSbj: Subject<any> = new Subject();
   traitpostData: Subject<any> = new Subject();
   postTraits: Subject<any> = new Subject();
+  traitList: Subject<any> = new Subject();
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
   //post
@@ -340,6 +341,7 @@ export class PostService {
     return new Promise<any>((resolve, reject) => {
       this.commonService.showLoader();
       return this.http.delete<any>(config.API.POST.DELETE_USER_TRAIT + "/" + id).subscribe((response: any) => {
+        this.commonService.hideLoader();
         resolve(response);
       },
         (error) => {
