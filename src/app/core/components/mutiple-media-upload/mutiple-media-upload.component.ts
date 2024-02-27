@@ -4,10 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AppConstants } from '../../models/config/AppConstants';
-
 import { AttachmentHelperService } from '../../services/attachment-helper.service';
-import { Capacitor } from '@capacitor/core';
-import { Console } from 'console';
+
 
 @Component({
   standalone: true,
@@ -32,14 +30,12 @@ export class MultipleMediaUploadComponent implements OnInit {
   @Input() postLimit: number = 0;
   @Input() videoRecDisable: number = 0;
   @Input() photoLibrary: number = 0;
-
+  response: boolean = false;
   constructor(public attachmentService: AttachmentHelperService) {
     this.mediaSaveCallBack();
   }
 
   ngOnInit() {
-    console.log("rex", this.videoRecDisable )
-    console.log("sdf", this.isDisabled)
   }
 
 
@@ -81,15 +77,14 @@ export class MultipleMediaUploadComponent implements OnInit {
       formData.append('file', mediaObj.thumbBlob, mediaObj.thumbName);
     var response: any = await this.attachmentService.uploadFileToServerv2(formData);
     if (response != "error") {
+      this.response = true;
       var responseData: any = response.ResponseData;
       console.log("responseData", responseData);
       if (responseData && responseData.length > 0)
         this.filePathEvent.emit(responseData[0].thumbFilePath);
-      //responseData.forEach(async (photo: { thumbFilePath: any; }, index: number) => {
-
-      //});
     }
     this.isUploadDisabled = false;
+    this.response = false;
   }
 
   deleteProductImage(i: any) {

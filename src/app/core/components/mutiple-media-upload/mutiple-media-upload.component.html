@@ -27,7 +27,7 @@
       <ng-container *ngIf="mediaFile.indexOf('localhost')==-1 && mediaFile.indexOf('base64')==-1;">
         <img style="width:100%" src="{{appConstants.mediaPrefix + mediaFile}}" />
       </ng-container>
-      <ion-buttons class="remove">
+      <ion-buttons *ngIf="attachmentService.progress === 98" class="remove">
         <ion-button shape="round" (click)="deleteProductImage(i)">
           <ion-icon src="assets/icons/screen-wise-icons/Home screen icons/x icon in edit screen.svg"></ion-icon>
         </ion-button>

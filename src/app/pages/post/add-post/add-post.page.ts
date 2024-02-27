@@ -92,6 +92,7 @@ export class AddPostPage extends BasePage implements OnInit {
     });
 
     if (uploadFileInprogress.length) {
+      this.saveClicked = false;
       this._commonService.presentToast("Please wait! File upload is inprogress");
       return;
     }
