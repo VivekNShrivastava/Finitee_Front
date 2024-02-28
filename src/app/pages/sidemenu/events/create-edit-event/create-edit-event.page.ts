@@ -82,12 +82,15 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     if (this.eventItem.Id) {
       this.editItemIndex = this.router!.getCurrentNavigation()!.extras!.state!['extraParams'];
       this.isEdit = true;
+      console.log('visible', this.eventItem.VisibleTo);
       this.eventItem.VisibleTo = this.commonService.getPrivacyFullValue(this.eventItem.VisibleTo);
     } else {
       if (this.logInfo.UserTypeId == AppConstants.USER_TYPE.FR_USER) {
         this.appConstants.GeneralPivacy.unshift({ key: 'All Individuals, Businesses/Nonprofits', value: 'All Individuals, Businesses/Nonprofits', })
       }
-      this.eventItem.VisibleTo = "";
+      console.log('visible', this.eventItem.VisibleTo);
+
+      // this.eventItem.VisibleTo = "";
     }
     this.getLatlng();
   }
@@ -118,7 +121,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       this.endTime.eampm = this.datePipe.transform(this.eventItem.EndDate, 'a') as 'AM' | 'PM';
 
     } else {
-      this.eventItem.VisibleTo = this.commonService.getPrivacyFullValue("A");
+      // this.eventItem.VisibleTo = this.commonService.getPrivacyFullValue("A");
       this.startTime = {
         shh: '',
         smm: '',
@@ -154,6 +157,10 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
       if(address) this.eventLocation = address.FormattedAddress;      
     });
+
+  }
+
+  reversePrivacyType ( ){
 
   }
 
@@ -245,7 +252,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
         const syear: number = parseInt(this._startDate.year);
         const startDateObj: Date = new Date(syear, smonth, sday);
         const endDateObj : Date = new Date(this._endDate.year, this._endDate.month - 1, this._endDate.day);
-        console.log(startDateObj <= endDateObj);
         if (!(startDateObj <= endDateObj)) {
           this.endDateError.is_show = true;
           this.endDateError.message = 'Event End date must be greater than or equal to Start Date.';
@@ -261,8 +267,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
           else this.eventDuration = 0;
 
           const oneYearFromNow = new Date();
-          oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-
+          oneYearFromNow.setFullYear(startDateObj.getFullYear() + 1);
           if(!(endDateObj <= oneYearFromNow)){
             this.endDateError.is_show = true;
             this.endDateError.message = 'Event duration should not be more than One Year';

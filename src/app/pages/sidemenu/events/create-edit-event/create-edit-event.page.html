@@ -294,6 +294,8 @@
     <ion-label class="input-label">Viewable by </ion-label>
     <ion-item color="none" class="input" lines="none" id="viewable-by">
       <ion-label>
+        <!-- <h3 *ngIf="eventItem.VisibleTo">{{eventItem.VisibleTo}}</h3> -->
+
         <h3 *ngIf="eventItem.VisibleTo">{{commonService.getPrivacyFullValue(eventItem.VisibleTo)}}</h3>
         <h3 *ngIf="!eventItem.VisibleTo">select</h3>
       </ion-label>
@@ -340,7 +342,8 @@
     </div>
     <br>
     <!-- onSubmit -->
-    <ion-button  [disabled]="!form.valid" style="text-transform: none; font-size: 20px; height: 46px; margin-bottom: 8px;" type="submit" expand="block" shape="round"
+    <!-- [disabled]="!form.valid" -->
+    <ion-button   style="text-transform: none; font-size: 20px; height: 46px; margin-bottom: 8px;" type="submit" expand="block" shape="round"
       color="primary">
       <span *ngIf="!isEdit">Create</span>
       <span *ngIf="isEdit">Save</span>
