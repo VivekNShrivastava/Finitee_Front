@@ -217,17 +217,17 @@ export class AppConstants {
         {
           subcategory: 'FAQs',
           icon: 'right-menu-faqs',
-          pagelink: 'faa-faq',
+          pagelink: 'help/faqs',
         },
         {
           subcategory: 'Tutorials',
           icon: 'right-menu-tutorials',
-          pagelink: 'faa-tutorial',
+          pagelink: 'help/tutorials',
         },
         {
           subcategory: 'Legal',
           icon: 'right-menu-legal',
-          pagelink: 'faa-legal',
+          pagelink: 'help/legal',
         },
         {
           subcategory: 'Report',

@@ -205,3 +205,8 @@ height: 53px;
   justify-content: left;
   padding-left:23px;
 }
+@media screen and (max-width: 768px) {
+ .main_loginodiv{
+  margin-top: 60px;
+ }
+}
