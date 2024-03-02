@@ -328,7 +328,7 @@ export class MapPage implements OnDestroy {
       this.setCurrentLocationMarker();
     }
   }
-
+ 
 
   async setCurrentLocationMarker() {
     if (this.user?.UserTypeId != '2') {
@@ -1192,11 +1192,29 @@ export class MapPage implements OnDestroy {
       radius: this.radius,
       searchCriteria: this.searchCriteria,
     };
+    const screenWidth = window.innerWidth;
+
+let breakpoints: number[];
+let initialBreakpoint: number;
+
+if (screenWidth < 768) {
+  // Small screens (e.g., smartphones)
+  breakpoints = [0, 0.8];
+  initialBreakpoint = 0.8;
+} else if (screenWidth >= 768 && screenWidth < 1024) {
+  // Medium screens (e.g., tablets)
+  breakpoints = [0, 0.6];
+  initialBreakpoint = 0.6;
+} else {
+  // Large screens (e.g., desktops)
+  breakpoints = [0, 0.4];
+  initialBreakpoint = 0.4;
+}
    
     const modal = await this.modalController.create({
       component: MapSearchComponent,
-      breakpoints: [0, 0.8],
-      initialBreakpoint: 0.8,
+      breakpoints: breakpoints,
+      initialBreakpoint:initialBreakpoint,
       handle:false,
       componentProps: { values: obj }
     });
