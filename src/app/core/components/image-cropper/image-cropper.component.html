@@ -1,6 +1,14 @@
 <!-- image-cropper.component.html -->
 
 <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
+<ion-header class="ion-no-border">
+    <ion-toolbar class="display-flex ion-justify-content-center ion-align-items-center">
+      <ion-buttons slot="start">
+        <ion-icon name="chat-back">B</ion-icon>
+      </ion-buttons>
+      <ion-title>Crop Image</ion-title>
+    </ion-toolbar>
+</ion-header>
 
 <image-cropper
     [imageBase64]="myImage"

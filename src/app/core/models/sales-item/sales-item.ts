@@ -5,10 +5,10 @@ export class SalesItem {
   SalesTraits: Array<string> = [];
   Condition: string = "New";
   Price: any;
-  VisibleTo: string = "All Finitee users";
+  VisibleTo: string = "A";
   SalesItemImages: Array<string> = [];
   CreatedOn: Date = new Date();
-  ExpiredOn: Date = new Date();;
+  ExpireOn: Date = new Date();;
   ModifiedOn: Date = new Date();
   Location: string = "current";
   Latitude? : number

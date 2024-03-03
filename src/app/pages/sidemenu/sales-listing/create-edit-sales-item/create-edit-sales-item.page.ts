@@ -45,6 +45,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
 
       this.salesItemIndex = this.router!.getCurrentNavigation()!.extras!.state!['extraParams'];
       this.isEdit = true;
+      console.log('visible', this.salesItem.VisibleTo);
       this.salesItem.VisibleTo = this.commonService.getPrivacyFullValue(this.salesItem.VisibleTo);
       this.disableFrom = true;
       
@@ -53,7 +54,9 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
       if (this.logInfo.UserTypeId == AppConstants.USER_TYPE.FR_USER) {
         this.appConstants.GeneralPivacy.unshift({ key: 'AI', value: 'All Individuals, Businesses/Nonprofits', })
       }
-      this.salesItem.VisibleTo = this.appConstants.GeneralPivacy[0].value;
+      // this.salesItem.VisibleTo = this.appConstants.GeneralPivacy[0].value;
+      console.log('visible', this.salesItem.VisibleTo);
+
       this.disableFrom = false;
     }
     this.getLatlng();
@@ -73,10 +76,12 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
       title: 'All Individuals, Businesses/Nonprofits'
     },
     {
-      title: 'All Individual Finitee users'
+      title: 'All Finitee users',
+      value: 'A'
     },
     {
-      title: 'Connections only'
+      title: 'Connections only',
+      value: 'C'
     }
   ]
 
@@ -150,7 +155,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
   async onPaymentSuccess(event: any) {
     try {
       const today = new Date();
-      this.salesItem.ExpiredOn = new Date(today.setDate(today.getDate() + 30));
+      this.salesItem.ExpireOn = new Date(today.setDate(today.getDate() + 30));
       const result = await this.salesListingService.createSLItem(this.salesItem);
       if (result) {
         this.router.navigateByUrl('/sales-listing')

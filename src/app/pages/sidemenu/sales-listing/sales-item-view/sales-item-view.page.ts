@@ -41,7 +41,7 @@ export class SalesItemViewPage extends BasePage implements OnInit {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
 
-    const expiryDate = new Date(this.salesItem.ExpiredOn);
+    const expiryDate = new Date(this.salesItem.ExpireOn);
     expiryDate.setHours(0, 0, 0, 0);
     const timeDiff = expiryDate.getTime() - currentDate.getTime();
     this.salesItem.daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
@@ -66,8 +66,8 @@ export class SalesItemViewPage extends BasePage implements OnInit {
   async onPaymentSuccess(event: any) {
     try {
       const today = new Date;
-            this.salesItem.ExpiredOn = new Date;
-            this.salesItem.ExpiredOn.setDate(today.getDate() + 30);
+            this.salesItem.ExpireOn = new Date;
+            this.salesItem.ExpireOn.setDate(today.getDate() + 30);
             var res = await this.salesListingService.updateSLItem(this.salesItem);
       if (res) {
         this.router.navigateByUrl('/sales-listing');

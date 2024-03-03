@@ -29,7 +29,7 @@ import { ChatsService } from 'src/app/core/services/chat/chats.service';
 import { SwipeService } from 'src/app/core/services/swipe.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { AddressMap, Area } from 'src/app/core/models/places/Address';
-
+import { AllSonarSearchRequest } from 'src/app/core/models/mapSonarSearch';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 
 const LOCATION_UPDATE_TIME = 20;
@@ -1184,13 +1184,27 @@ export class MapPage implements OnDestroy {
   }
 
   async searchMap() {
-    const obj = {
-      lat: this.location.lat,
-      lng: this.location.lng,
-      id: this.user.UserId,
-      setting: this.privacySett,
-      radius: this.radius,
-      searchCriteria: this.searchCriteria,
+    // const obj = {
+    //   lat: this.location.lat,
+    //   lng: this.location.lng,
+    //   id: this.user.UserId,
+    //   setting: this.privacySett,
+    //   radius: this.radius,
+    //   searchCriteria: this.searchCriteria,
+    // };
+
+    const obj: AllSonarSearchRequest = {
+      geolocation: { latitude: this.location.lat, longitude: this.location.lng},
+      searchKey: 'nisa',
+      scope: 1,
+      freeUser: true,
+      connections: false,
+      businessUser: true,
+      nonProfitUser: false,
+      events: true,
+      sales: false,
+      serviceReq: true,
+      serviceAvailable: false,
     };
     const screenWidth = window.innerWidth;
 
@@ -1258,10 +1272,10 @@ if (screenWidth < 768) {
 
   async updateMapSearch(params: any) {
     this.radius = params.km;
-    const method: any = config.GET_SER_USR_MAP_V1;
+    const method: any = config.API.SEARCH.ALL_SONAR_SEARCH;
     await this.http.post(method, params)
       .subscribe(async (result: any) => {
-        console.log(config.GET_SER_USR_MAP_V1, result);
+        console.log(config.API.SEARCH.ALL_SONAR_SEARCH, result);
       });
   }
 

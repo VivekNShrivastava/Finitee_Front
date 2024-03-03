@@ -1,17 +1,16 @@
 // image-cropper.component.ts
 import { Component, ViewChild, Input } from '@angular/core';
-import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonicModule, LoadingController, ModalController } from '@ionic/angular';
-
 
 @Component({
     standalone: true,
     selector: 'app-image-cropper',
     templateUrl: './image-cropper.component.html',
     styleUrls: ['./image-cropper.component.scss'],
-    imports: [ImageCropperModule, IonicModule]
+    imports: [ImageCropperModule, IonicModule],
+
 })
 export class ImageCropperComponent {
     @ViewChild('cropper', { static: false }) cropper: any;

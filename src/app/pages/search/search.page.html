@@ -9,7 +9,8 @@
       <ion-button shape="round">Advanced search</ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-searchbar autocapitalize="off" autocomplete="off" search-icon="searchi" class="ion-no-padding" placeholder="Search" [debounce]="1000" (ionChange)="onSearchValueChange($event)"></ion-searchbar>
+  <ion-searchbar autocapitalize="off" autocomplete="off" search-icon="searchi" class="ion-no-padding"
+    placeholder="Search" [debounce]="1000" (ionChange)="onSearchValueChange($event)"></ion-searchbar>
   <!-- <ion-spinner name="dots"></ion-spinner> -->
   <ion-progress-bar type="indeterminate" *ngIf="loadingResult"></ion-progress-bar>
   <ion-segment scrollable="true">
@@ -25,7 +26,7 @@
 
 
 <ion-content>
-  <ng-container value="all" *ngIf="getResultCount()==0">
+  <ng-container value="RegSearchUsers" *ngIf="getResultCount()==0">
     <div class="ion-text-center">
       <img style="margin-top: 20px;" src="assets/imgs/icons/noresults.png">
       <p style="margin: 0px;
@@ -94,8 +95,12 @@
 
   <!--  ************************* Global Search *************************  -->
 
-  <ion-accordion-group #accordionGroup multiple="true" *ngIf="getResultCount()>0" [value]="['users', 'businesses', 'nonprofits', 'events', 'donations', 'sales_listings', 'service_available', 'service_required', 'posts']">
-    <ion-accordion value="businesses" toggleIcon="accordion-icon" *ngIf="businessUserList.length>0 && userCanViewSection('businesses')">
+  <ion-accordion-group #accordionGroup multiple="true" *ngIf="getResultCount()>0"
+    [value]="['RegSearchUsers', 'businesses', 'nonprofits', 'RegSearchEvents', 'donations', 'RegSearchSalesListing', 'service_available', 'service_required', 'posts']">
+
+    <!-- BUSINESS -->
+
+    <!-- <ion-accordion value="businesses" toggleIcon="accordion-icon" *ngIf="businessUserList.length>0 && userCanViewSection('businesses')">
       <ion-item slot="header">
         <ion-icon name="bluebusiness"></ion-icon>
         <ion-label>Businesses ({{businessUserList.length}})</ion-label>
@@ -103,7 +108,6 @@
       <div slot="content">
         <div *ngFor="let user of businessUserList">
           <ion-item lines="none" *ngIf="user.UserTypeId==2" (click)="openUser(user)">
-            <!-- <ion-item lines="none" *ngIf="user.UserTypeId==2 && user.UserId != logInfo.UserId" (click)="openUser(user)"></ion-item> -->
             <ion-thumbnail slot="start">
               <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfilePhoto}}"
               onError="this.src='assets/icons/business/anonymous.svg'"/>
@@ -115,8 +119,11 @@
           </ion-item>
         </div>
       </div>
-    </ion-accordion>
-    <ion-accordion value="nonprofits" toggleIcon="accordion-icon" *ngIf="nonProfitUserList.length>0 && userCanViewSection('nonprofits')">
+    </ion-accordion> -->
+
+    <!-- NON PROFIT -->
+
+    <!-- <ion-accordion value="nonprofits" toggleIcon="accordion-icon" *ngIf="nonProfitUserList.length>0 && userCanViewSection('nonprofits')">
       <ion-item slot="header">
         <ion-icon name="nonprofit"></ion-icon>
         <ion-label>Nonprofits ({{nonProfitUserList.length}})</ion-label>
@@ -135,8 +142,10 @@
           </ion-item>
         </div>
       </div>
-    </ion-accordion>
-   <!--  <ion-accordion value="nonprofits" toggleIcon="accordion-icon">
+    </ion-accordion> -->
+
+
+    <!-- <ion-accordion value="nonprofits" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="nonprofit"></ion-icon>
         <ion-label>Nonprofits (1)</ion-label>
@@ -154,11 +163,38 @@
         </ion-item>
       </div>
     </ion-accordion>
-  <img class="business-logo" src="{{appConstants.mediaPrefix + userProfile.user.ProfileImage}}"
-        onError="this.src='assets/icons/business/anonymous.svg'" />
+    <img class="business-logo" src="{{appConstants.mediaPrefix + userProfile.user.ProfileImage}}"
+        onError="this.src='assets/icons/business/anonymous.svg'" />-->
 
-  -->
-    <ion-accordion value="users" toggleIcon="accordion-icon" *ngIf="freeUserList.length>0 && userCanViewSection('users')">
+
+    <!-- REGULAR SEARCH USERS -->
+
+    <ion-accordion value="RegSearchUsers" toggleIcon="accordion-icon"
+      *ngIf="regularSearchUser.length>0 && userCanViewSection('RegSearchUsers')">
+      <ion-item slot="header">
+        <ion-icon name="blueuser"></ion-icon>
+        <ion-label> Users ({{regularSearchUser.length}})</ion-label>
+      </ion-item>
+      <div slot="content">
+        <div *ngFor="let user of regularSearchUser">
+          <ion-item lines="none">
+            <!-- *ngIf="user.UserTypeId==1" -->
+            <!-- (click)="openUser(user)" -->
+            <ion-thumbnail slot="start">
+              <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfileImage}}"
+                onError="this.src='assets/icons/business/anonymous.svg'" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{user.UserName}}</h3>
+              <!-- <p class="ion-text-wrap">{{user.About}}</p> -->
+              <p class="ion-text-wrap">100 Posts - 1.1k Connections (test)</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-accordion>
+
+    <!-- <ion-accordion value="users" toggleIcon="accordion-icon" *ngIf="freeUserList.length>0 && userCanViewSection('users')">
       <ion-item slot="header">
         <ion-icon name="blueuser"></ion-icon>
         <ion-label>Users ({{freeUserList.length}})</ion-label>
@@ -172,15 +208,17 @@
             </ion-thumbnail>
             <ion-label>
               <h3>{{user.DisplayName}}</h3>
-              <!-- <p class="ion-text-wrap">{{user.About}}</p> -->
               <p class="ion-text-wrap">100 Posts - 1.1k Connections (test)</p>
             </ion-label>
           </ion-item>
         </div>
       </div>
-    </ion-accordion>
+    </ion-accordion> -->
 
-     <ion-accordion value="events" toggleIcon="accordion-icon" *ngIf="eventItemList.length>0 && userCanViewSection('events')">
+    <!-- REGULAR SEARCH EVENTS -->
+
+    <ion-accordion value="RegSearchEvents" toggleIcon="accordion-icon"
+      *ngIf="eventItemList.length>0 && userCanViewSection('RegSearchEvents')">
       <ion-item slot="header">
         <ion-icon name="bluepost"></ion-icon>
         <ion-label>Events ({{eventItemList.length}})</ion-label>
@@ -188,16 +226,16 @@
       <div slot="content" *ngFor="let event of eventItemList">
         <ion-item lines="none" (click)="openEvent(event)">
           <ion-thumbnail class="square-thumbnail" slot="end">
-            <img src="{{appConstants.mediaPrefix + event.EventImages[0]}}"
-              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+            <img src="{{appConstants.mediaPrefix + event.Image}}"
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
           </ion-thumbnail>
           <ion-item class="user-info" lines="none">
             <ion-grid>
               <ion-row>
                 <ion-avatar>
 
-              <img class="user-logo-main" src="{{appConstants.mediaPrefix + event.User?.ProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + event.User?.ProfilePhoto}}"
+                    onError="this.src='assets/icons/business/anonymous.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{event.User?.DisplayName}}</h3>
@@ -211,7 +249,8 @@
                 </ion-text>
               </ion-row>
               <ion-row>
-                <h3>{{event.StartDate | date: "mediumDate"}} | {{event.StartDate | date: "shortTime"}} to {{event.EndDate | date: "shortTime"}}</h3>
+                <h3>{{event.StartDate | date: "mediumDate"}} | {{event.StartDate | date: "shortTime"}} to
+                  {{event.EndDate | date: "shortTime"}}</h3>
                 <!-- <h3>{{getEventDescription(event)}}</h3> -->
               </ion-row>
             </ion-grid>
@@ -219,7 +258,11 @@
         </ion-item>
       </div>
     </ion-accordion>
-    <ion-accordion value="sales_listings" toggleIcon="accordion-icon" *ngIf="salesItemList.length>0 && userCanViewSection('sales_listings')">
+
+    <!-- SALES ITEM LIST -->
+
+    <ion-accordion value="RegSearchSalesListing" toggleIcon="accordion-icon"
+      *ngIf="salesItemList.length>0 && userCanViewSection('RegSearchSalesListing')">
       <ion-item slot="header">
         <ion-icon name="sales"></ion-icon>
         <ion-label>Sales listings ({{salesItemList.length}})</ion-label>
@@ -227,21 +270,20 @@
       <div slot="content" *ngFor="let salesItem of salesItemList">
         <ion-item lines="none" (click)="openSalesItem(salesItem)">
           <ion-thumbnail class="square-thumbnail" slot="end">
-            <img src="{{appConstants.mediaPrefix + salesItem.SalesItemImages[0]}}"
-              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+            <img src="{{appConstants.mediaPrefix + salesItem.Image}}"
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
           </ion-thumbnail>
           <ion-item class="user-info" lines="none">
             <ion-grid>
               <ion-row>
                 <ion-avatar>
 
-              <img class="user-logo-main" src="{{appConstants.mediaPrefix + salesItem.User?.ProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + salesItem.User?.ProfilePhoto}}"
+                    onError="this.src='assets/icons/business/anonymous.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{salesItem.User?.DisplayName}}</h3>
                   <p>{{salesItem.CreatedOn | dateAgo}}</p>
-                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
                 </ion-label>
               </ion-row>
               <ion-row>
@@ -258,7 +300,10 @@
       </div>
     </ion-accordion>
 
-    <ion-accordion value="service_available" toggleIcon="accordion-icon" *ngIf="sevicesAvailableList.length>0 && userCanViewSection('service_available')">
+    <!-- SERVICE AVAILABE -->
+
+    <!-- <ion-accordion value="service_available" toggleIcon="accordion-icon"
+      *ngIf="sevicesAvailableList.length>0 && userCanViewSection('service_available')">
       <ion-item slot="header">
         <ion-icon name="sales"></ion-icon>
         <ion-label>Services available ({{sevicesAvailableList.length}})</ion-label>
@@ -267,20 +312,19 @@
         <ion-item lines="none" (click)="viewServiceAvailable(service.Id)">
           <ion-thumbnail class="square-thumbnail" slot="end">
             <img src="{{appConstants.mediaPrefix + service.Images[0]}}"
-              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
           </ion-thumbnail>
           <ion-item class="user-info" lines="none">
             <ion-grid>
               <ion-row>
                 <ion-avatar>
 
-              <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
+                    onError="this.src='assets/icons/business/anonymous.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{service.User?.DisplayName}}</h3>
                   <p>{{service.CreatedOn | dateAgo}}</p>
-                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
                 </ion-label>
               </ion-row>
               <ion-row>
@@ -295,9 +339,12 @@
           </ion-item>
         </ion-item>
       </div>
-    </ion-accordion>
+    </ion-accordion> -->
 
-    <ion-accordion value="service_required" toggleIcon="accordion-icon" *ngIf="sevicesRequiredList.length>0 && userCanViewSection('service_required')">
+    <!-- SERVICE REQUIRED -->
+
+    <!-- <ion-accordion value="service_required" toggleIcon="accordion-icon"
+      *ngIf="sevicesRequiredList.length>0 && userCanViewSection('service_required')">
       <ion-item slot="header">
         <ion-icon name="sales"></ion-icon>
         <ion-label>Services required ({{sevicesRequiredList.length}})</ion-label>
@@ -306,20 +353,19 @@
         <ion-item lines="none" (click)="viewServiceRequired(service.Id)">
           <ion-thumbnail class="square-thumbnail" slot="end">
             <img src="{{appConstants.mediaPrefix + service.Images[0]}}"
-              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
           </ion-thumbnail>
           <ion-item class="user-info" lines="none">
             <ion-grid>
               <ion-row>
                 <ion-avatar>
 
-              <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
+                    onError="this.src='assets/icons/business/anonymous.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{service.User?.DisplayName}}</h3>
                   <p>{{service.CreatedOn | dateAgo}}</p>
-                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
                 </ion-label>
               </ion-row>
               <ion-row>
@@ -328,15 +374,17 @@
                 </ion-text>
               </ion-row>
               <ion-row>
-              <h3>{{service.CurrencyCode}} {{service.Price}}/{{service.PriceType}}</h3>
+                <h3>{{service.CurrencyCode}} {{service.Price}}/{{service.PriceType}}</h3>
               </ion-row>
             </ion-grid>
           </ion-item>
         </ion-item>
       </div>
-    </ion-accordion>
+    </ion-accordion> -->
 
-    <ion-accordion value="posts" toggleIcon="accordion-icon" *ngIf="postList.length>0 && userCanViewSection('posts')">
+    <!-- POSTS -->
+
+    <!-- <ion-accordion value="posts" toggleIcon="accordion-icon" *ngIf="postList.length>0 && userCanViewSection('posts')">
       <ion-item slot="header">
         <ion-icon name="bluepost"></ion-icon>
         <ion-label>Posts ({{postList.length}})</ion-label>
@@ -345,25 +393,19 @@
         <ion-item lines="none" (click)="openPostScreen(post)">
           <ion-thumbnail class="square-thumbnail" slot="end">
             <img src="{{appConstants.mediaPrefix + post.PostImages[0]}}"
-              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'"/>
+              onError="this.src='https://ionicframework.com/docs/img/demos/thumbnail.svg'" />
           </ion-thumbnail>
           <ion-item class="user-info" lines="none">
             <ion-grid>
               <ion-row>
                 <ion-avatar>
-
-              <img class="user-logo-main" src="{{appConstants.mediaPrefix + post.CreatedBy?.ProfileImage}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+                  <img class="user-logo-main" src="{{appConstants.mediaPrefix + post.CreatedBy?.ProfileImage}}"
+                    onError="this.src='assets/icons/business/anonymous.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{post.CreatedBy?.DisplayName}}</h3>
                   <p>{{post.CreatedOn | dateAgo}}</p>
-                  <!-- <p>1 year ago {{salesItem.CreatedOn}}</p> -->
                 </ion-label>
-                <!-- <ion-label><h3>-></h3></ion-label>
-                <ion-label>
-                  <h3>{{post.Title}}</h3>
-                </ion-label> -->
               </ion-row>
               <ion-row *ngIf="post.Title && post.Title.length > 0">
                 <ion-text>
@@ -382,7 +424,9 @@
           </ion-item>
         </ion-item>
       </div>
-    </ion-accordion>
+    </ion-accordion> -->
+
+    <!-- DONATIONS -->
 
     <!--<ion-accordion value="donations" toggleIcon="accordion-icon">
       <ion-item slot="header">
@@ -419,6 +463,7 @@
         </ion-item>
       </div>
     </ion-accordion>-->
+
   </ion-accordion-group>
 </ion-content>
 

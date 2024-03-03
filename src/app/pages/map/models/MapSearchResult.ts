@@ -46,6 +46,7 @@ export interface SalesItemResponse {
   Price: any | null;
   VisibleTo: string | null;
   SalesItemImages: Array<string>;
+  Image : string;
   CreatedOn: string | null;
   ExpiredOn: string | null;
   ModifiedOn: string | null;
@@ -83,6 +84,7 @@ export interface EventItemResponse {
   VisibleTo: string | null;
   EventImages: Array<string>;
   EventTraits: Array<string>;
+  Image: string ;
   daysLeft : any;
   Views: number;
   User: FiniteeUserOnMap | null;
@@ -155,4 +157,16 @@ export interface PostResponse {
   BelongsToId: string | null;
   BelongsToNodeName: string | null;
 
+}
+
+export interface RegularSearchUser {
+  Id?: any;
+  UserName: string;
+  FirstName: string;
+  LastName: string;
+  ProfileImage: string;
+  TotalPosts: Number;
+  TotalConnections: Number;
+  PopularityScore: any;
+  ShowLocation: boolean;
 }
