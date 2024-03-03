@@ -182,7 +182,7 @@
 }
 
 .height{
-  height: 20px;
+  height: 25px;
   padding-bottom: 7px;
   font-size: 16px;
   
@@ -204,4 +204,9 @@ height: 53px;
   display: flex;
   justify-content: left;
   padding-left:23px;
+}
+@media screen and (max-width: 768px) {
+ .main_loginodiv{
+  margin-top: 60px;
+ }
 }

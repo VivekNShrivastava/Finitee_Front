@@ -222,12 +222,12 @@ export class AppConstants {
         {
           subcategory: 'Tutorials',
           icon: 'right-menu-tutorials',
-          pagelink: 'faa-tutorial',
+          pagelink: 'help/tutorials',
         },
         {
           subcategory: 'Legal',
           icon: 'right-menu-legal',
-          pagelink: 'faa-legal',
+          pagelink: 'help/legal',
         },
         {
           subcategory: 'Report',
