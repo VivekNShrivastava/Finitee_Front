@@ -229,21 +229,33 @@ export class SearchPage extends BasePage implements OnInit {
       } else{
       var result = await this._regularSerachService.regularSearch(requestBody.Filter[0], requestBody.SearchKey);
         if(result){
-          console.log("regularSearch", result);
-          this.regularSearchUser = result.FreeUserSearchRespond;
-          // this.businessUserList = result.BusinessUsers;
-          // this.nonProfitUserList = result.NonProfitUsers;
-          this.salesItemList = result.SalesListingSearchRespond;
-          this.eventItemList = result.EventSearchRespond;
-          this.sevicesAvailableList = result.ServiceAvailableSearchRespond;
-          this.sevicesRequiredList = result.ServiceRequiredSearchRespond;
 
-          let allResult = this.regularSearchUser.length + this.salesItemList.length + this.eventItemList.length + this.salesItemList.length + this.sevicesRequiredList.length + this.viewServiceAvailable.length;
-
-          this.setResultCount("RegAllSearch", allResult)
-          this.setResultCount("RegSearchUsers", this.regularSearchUser.length);
-          this.setResultCount("RegSearchEvents", this.eventItemList.length);
-          this.setResultCount("RegSearchSalesListing", this.salesItemList.length);
+          if(this.selectedFilter.value != "RegAllSearch"){
+            if(this.selectedFilter.value === "RegSearchEvents") {
+              this.eventItemList = result;
+              this.setResultCount("RegSearchEvents", this.eventItemList.length);
+            }else if(this.selectedFilter.value === "RegSearchSalesListing"){
+              this.salesItemList = result;
+              this.setResultCount("RegSearchSalesListing", this.salesItemList.length);
+            }
+          }else{
+            console.log("regularSearch", result);
+            this.regularSearchUser = result.FreeUserSearchRespond || "";
+            // this.businessUserList = result.BusinessUsers;
+            // this.nonProfitUserList = result.NonProfitUsers;
+            this.salesItemList = result.SalesListingSearchRespond || "";
+            this.eventItemList = result.EventSearchRespond || "";
+            this.sevicesAvailableList = result.ServiceAvailableSearchRespond || "";
+            this.sevicesRequiredList = result.ServiceRequiredSearchRespond || "";
+  
+            let allResult = this.regularSearchUser.length + this.salesItemList.length + this.eventItemList.length + this.salesItemList.length + this.sevicesRequiredList.length + this.viewServiceAvailable.length;
+  
+            this.setResultCount("RegAllSearch", allResult)
+            this.setResultCount("RegSearchUsers", this.regularSearchUser.length);
+            this.setResultCount("RegSearchEvents", this.eventItemList.length);
+            this.setResultCount("RegSearchSalesListing", this.salesItemList.length);
+          }
+          
           
         }else console.log("regularSearch error");
       } 

@@ -357,7 +357,7 @@ export class MapSearchComponent implements OnInit {
       },{
         geolocation: { latitude: 19.2616678, longitude: 72.9630232},
         searchKey: this.keyinfo || "",
-        scope: 1,
+        scope: 20,
         freeUser: true,
         connections: false,
         businessUser: true,
