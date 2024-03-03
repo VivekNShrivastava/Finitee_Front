@@ -217,7 +217,7 @@ export class AppConstants {
         {
           subcategory: 'FAQs',
           icon: 'right-menu-faqs',
-          pagelink: 'faa-faq',
+          pagelink: 'help/faqs',
         },
         {
           subcategory: 'Tutorials',

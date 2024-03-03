@@ -20,7 +20,6 @@ import { Plugin } from '@awesome-cordova-plugins/core';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from '../components/image-cropper/image-cropper.component';
-
 @Injectable({
   providedIn: 'root'
 })

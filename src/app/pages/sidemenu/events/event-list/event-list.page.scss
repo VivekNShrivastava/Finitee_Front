@@ -1,17 +1,17 @@
 ion-content {
-  & > ion-segment {
-    background: #EAF1F4;
-    padding: 4px;
-    justify-content: space-between;
-    margin: 5px 0;
-    height: 36px;
-    & > ion-text {
-      font: normal normal 600 17px/24px SF Pro Display;
-      letter-spacing: 0.27px;
-      color: #505050;
-      margin-left: 20px;
-    }
-  }
+  // & > ion-segment {
+  //   background: #EAF1F4;
+  //   padding: 4px;
+  //   justify-content: space-between;
+  //   margin: 5px 0;
+  //   height: 36px;
+  //   & > ion-text {
+  //     font: normal normal 600 17px/24px SF Pro Display;
+  //     letter-spacing: 0.27px;
+  //     color: #505050;
+  //     margin-left: 20px;
+  //   }
+  // }
   & > ion-grid {
     & > ion-row {
       & > ion-col {
@@ -93,4 +93,15 @@ ion-content {
     //  padding-left: 13px;
     }
   }
+}
+
+ion-segment-button.segment-button-checked ion-label {
+  color: #03A9F5;
+}
+.my-label {
+  font: normal normal normal 16px/28px SF Pro Display;
+  letter-spacing: 0.22px;
+  color: #285078;
+  opacity: 1;
+  text-transform: capitalize;
 }

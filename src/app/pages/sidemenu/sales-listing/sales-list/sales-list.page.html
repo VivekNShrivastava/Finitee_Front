@@ -22,10 +22,12 @@
   <!-- Active list -->
   <ion-grid>
     <ng-container *ngFor="let i of salesListingService.salesItemList; let j=index">
-      <ion-row class="ion-align-items-center" (click)="viewItem(i.Id)" *ngIf="i.daysLeft >= 0">
+      <!-- *ngIf="i.daysLeft >= 0" -->
+      <ion-row class="ion-align-items-center" (click)="viewItem(i.Id)">
         <ion-col size="4" >
-          <ion-img [src]="appConstants.mediaPrefix+i.SalesItemImages[0]">
-          </ion-img>
+          <!-- <ion-img [src]="appConstants.mediaPrefix+i.SalesItemImages[0]"></ion-img> -->
+          <img src="{{appConstants.mediaPrefix+i.SalesItemImages[0]}}" 
+            onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
         </ion-col>
         <ion-col size="8" >
           <ion-card class="ion-no-padding" >

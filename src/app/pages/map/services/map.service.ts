@@ -15,7 +15,7 @@ import { getFirestore, addDoc, arrayRemove, getDoc, arrayUnion, setDoc, doc, Fir
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { BehaviorSubject } from 'rxjs';
-
+import { AllSonarSearchRequest } from 'src/app/core/models/mapSonarSearch';
 @Injectable({
   providedIn: 'root'
 })
@@ -172,7 +172,7 @@ export class MapService {
     });
   }
 
-  public oneTimeSearch(searchTerms: MapSearchTerms, logInfo: FiniteeUser, location: any): Observable<any> {
+  public oneTimeSearch(searchTerms: MapSearchTerms, logInfo: FiniteeUser, location: any, sonarSearch: any): Observable<any> {
     const params = {
       UserId: logInfo.UserId,
       Latitude: location.lat,
@@ -187,7 +187,22 @@ export class MapService {
       IsProductSpecific: searchTerms.isprt,
       searchRequest: null
     };
-    return this.http.post<any>(config.GET_SER_USR_MAP_V1, params).pipe(
+
+    const obj: AllSonarSearchRequest = {
+      geolocation: { latitude: 19.2616678, longitude: 72.9630232},
+      searchKey: searchTerms.key || "",
+      scope: 1,
+      freeUser: true,
+      connections: false,
+      businessUser: true,
+      nonProfitUser: false,
+      events: true,
+      sales: false,
+      serviceReq: true,
+      serviceAvailable: false,
+    };
+    console.log(obj)
+    return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
       map((response: any) => {
         const responseData = response.ResponseData || {};
         this.mainList = [];

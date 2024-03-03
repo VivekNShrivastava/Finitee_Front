@@ -109,7 +109,10 @@ export const API = {
     },
     SEARCH: {
         REGULAR_SEARCH: `${MAP_ROUTE}RegularSearch`,
-        SEARCH: `${MAP_ROUTE}Search`
+        SEARCH_UPDATE: `${environment.baseUrl}Search`,
+        SEARCH: `${MAP_ROUTE}Search`,
+        UPDATE_LIVE_LOCATION: `${environment.baseUrl}Search/UpdateLiveLocation`,
+        ALL_SONAR_SEARCH: `${environment.baseUrl}Search/AllSonarSearch`
     },
     INFLOWS: {
         START_STOP_INFLOWS: `${environment.baseUrl}Inflows/StartStopRecievingInflows`,

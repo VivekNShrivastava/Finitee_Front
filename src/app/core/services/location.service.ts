@@ -10,10 +10,10 @@ import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Currency } from "../models/places/Currency";
 import { PaymentService } from "./payment.service";
-import { config } from '../models';
+// import { config } from '../models';
 import { AppConstants } from "../models/config/AppConstants";
 import { CommonService } from "./common.service";
-import { add } from "lodash";
+import * as config from 'src/app/core/models/config/ApiMethods';
 
 @Injectable({
   providedIn: 'root'
@@ -130,6 +130,25 @@ export class LocationService {
 
   getCurrentArea() {
     return this.currentArea;
+  }
+
+  updateLiveLocation(lat: Number, lng: Number) {
+    const body = {
+      Latitude: lat,
+      Longitude: lng
+    }
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.SEARCH.UPDATE_LIVE_LOCATION;
+      return this.http.post<any>(url, body).subscribe((response: any) => {
+        resolve(response.ResponseData);
+      },
+        (error) => {
+          console.log("abc error", error.error.text);
+          this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    })
   }
 
   getLatLngFromAddress(address: any) {

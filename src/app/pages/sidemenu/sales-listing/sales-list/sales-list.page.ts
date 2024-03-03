@@ -49,7 +49,7 @@ export class SalesListPage extends BasePage implements OnInit {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
         this.salesListingService.salesItemList.forEach(element => {
-          const expiryDate = new Date(element.ExpiredOn);
+          const expiryDate = new Date(element.ExpireOn);
           expiryDate.setHours(0, 0, 0, 0);
           const timeDiff = expiryDate.getTime() - currentDate.getTime();
           element.daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
@@ -64,7 +64,7 @@ export class SalesListPage extends BasePage implements OnInit {
 
   // navigate to item view page
   viewItem(slId: any) {
- this.salesListingService.id = slId;
+    this.salesListingService.id = slId;
     this.router.navigateByUrl(`/sales-listing/sales-item-view/${slId}`);
   }
 

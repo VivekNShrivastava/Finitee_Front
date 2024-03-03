@@ -10,6 +10,7 @@ import { Capacitor } from '@capacitor/core';
 import { CommonService } from './core/services/common.service';
 import { LocationService } from './core/services/location.service';
 import { PaymentService } from './core/services/payment.service';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,9 +18,13 @@ import { PaymentService } from './core/services/payment.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  locationUpdateInterval$: any;
   constructor(private authService: AuthService, private paymentService: PaymentService, private locationService: LocationService, private commonService: CommonService, private router: Router) {
     addIcons(finiteeIconMapper);
     this.initializeApp();
+    // this.currentLocationUpdate();
+    // this.setupLocationUpdates();
+
   }
 
   initializeApp() {
@@ -37,6 +42,28 @@ export class AppComponent {
     });
 
   }
+
+  setupLocationUpdates() {
+    this.locationUpdateInterval$ = interval(600000); // 60 seconds interval
+
+    this.locationUpdateInterval$.subscribe(() => {
+      this.currentLocationUpdate();
+    });
+  }
+
+  currentLocationUpdate() {
+    this.locationService.observeCurrentPosition().subscribe((position) => {
+      console.log("Current location", position.coords);
+      if(position) this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
+    });
+  }
+
+  // currentLocationUpdate () {
+  //   this.locationService.observeCurrentPosition().subscribe((position) => {
+      
+  //     console.log("current location", position);
+  //   })
+  // }
  
   setTextZoom() {
     var options: SetOptions = {
