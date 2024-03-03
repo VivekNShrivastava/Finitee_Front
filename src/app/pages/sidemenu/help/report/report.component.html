@@ -32,7 +32,7 @@
     </div>
   </ion-list>
 </ion-content>
-<ion-footer class="create-btn">
+<ion-footer class="create-btn" style="display: flex; justify-content: center; align-items: center;">
   <ion-button shape="round" expand="block"
     [color]="(post.PostDescription=='' && post.PostImages.length==0) ? 'medium' : 'primary'" (click)="sendReport()">Send Report</ion-button>
 </ion-footer>

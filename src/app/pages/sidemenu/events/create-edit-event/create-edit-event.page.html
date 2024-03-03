@@ -307,8 +307,8 @@
     </ion-item>
 
     <!-- location -->
-    <ion-button (click)="openMap()">SET LOCATION</ion-button>
-    <p>{{eventLocation || "Location not set" }}</p>
+    <ion-button style="margin-left: 10px;" (click)="openMap()">SET LOCATION</ion-button>
+    <p style="margin-left: 10px; color: red;">{{eventLocation || "Location not set!!" }}</p>
     <!-- <ion-radio-group name="location" [(ngModel)]="eventItem.location" (ionChange)="getLatlng()">
       <ion-item lines="none" class="ion-no-margin">
         <ion-label class="locationInput">Location:</ion-label>

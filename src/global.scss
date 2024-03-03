@@ -997,3 +997,14 @@ textarea.alert-input.sc-ion-alert-md {
     font: normal normal normal 16px/18px SF Pro Display;
 }
 }
+
+.ion-page{
+  justify-content: inherit !important;
+}
+
+.safe--area {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  --ion-safe-area-top: 20px;
+  --ion-safe-area-bottom: 20px;
+}
