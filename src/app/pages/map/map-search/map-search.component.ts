@@ -351,10 +351,21 @@ export class MapSearchComponent implements OnInit {
       pplr: null,
       type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
     },
-      this.logInfo,
-      <UserLocation>{
+      this.logInfo,<UserLocation>{
         lat: this.mapParams.lat,
         lng: this.mapParams.lng
+      },{
+        geolocation: { latitude: 19.2616678, longitude: 72.9630232},
+        searchKey: this.keyinfo || "",
+        scope: 1,
+        freeUser: true,
+        connections: false,
+        businessUser: true,
+        nonProfitUser: false,
+        events: true,
+        sales: false,
+        serviceReq: true,
+        serviceAvailable: false,
       }
     ).subscribe(response => {
       this.progressBar = false;

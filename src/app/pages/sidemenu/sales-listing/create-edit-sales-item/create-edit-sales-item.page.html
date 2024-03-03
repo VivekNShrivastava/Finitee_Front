@@ -38,9 +38,9 @@
         <ion-label class="input-label">Description</ion-label>
         <ion-item lines="none">
           <ion-input autocapitalize="on" class="input" placeholder="Enter item description" type="text"
-            name="Description" [(ngModel)]="salesItem.Description" maxlength="30" [disabled]="isEdit"></ion-input>
+            name="Description" [(ngModel)]="salesItem.Description" minlength="40" maxlength="1200" [disabled]="isEdit"></ion-input>
         </ion-item>
-      </div>
+      </div>   
     </ng-container>
 
     <!-- traits -->
@@ -150,7 +150,7 @@
         <ion-label class="input-label " >Viewable by </ion-label>
         <ion-item color="none" class="input" lines="none" id="viewable-by">
           <ion-label>
-            <h3 *ngIf="salesItem.VisibleTo">{{salesItem.VisibleTo}}</h3>
+            <h3 *ngIf="salesItem.VisibleTo">{{commonService.getPrivacyFullValue(salesItem.VisibleTo)}}</h3>
             <h3 *ngIf="!salesItem.VisibleTo">select</h3>
           </ion-label>
           <ion-buttons>
@@ -198,8 +198,8 @@
       </ion-label>
     </div>
 
-
-    <ion-button style="text-transform: none; height: 47px; margin-bottom: 5px;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
+    <!-- [disabled]="!form.valid" -->
+    <ion-button style="text-transform: none; height: 47px; margin-bottom: 5px;"  expand="block" shape="round" color="primary"
       type="submit" >
       <span *ngIf="!isEdit" style="font-size:18px ;">Create</span>
       <span *ngIf="isEdit">Save</span>
@@ -231,7 +231,7 @@
       <ion-radio-group [value]="salesItem.VisibleTo" [(ngModel)]="salesItem.VisibleTo" mode="md">
         <ion-item lines="none" *ngFor="let i of privacyTypes">
           <ion-label [ngClass]="{'selected': (salesItem.VisibleTo==i.title)}">{{i.title}}</ion-label>
-          <ion-radio slot="start" value="{{i.title}}"></ion-radio>
+          <ion-radio slot="start" value="{{i.value}}"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>

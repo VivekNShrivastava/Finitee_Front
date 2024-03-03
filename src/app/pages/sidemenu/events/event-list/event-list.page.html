@@ -41,7 +41,9 @@
         <ion-row class="ion-align-items-center" *ngFor="let event of upcomingEventList; let i=index"
           (click)="openEventViewPage(event.Id)">
           <ion-col size="4">
-            <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
+            <!-- <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img> -->
+            <img src="{{appConstants.mediaPrefix+event.EventImages[0]}}" 
+            onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
           </ion-col>
           <ion-col size="8">
             <ion-card button="true">

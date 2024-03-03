@@ -18,6 +18,7 @@ export class EventItem {
   VisibleTo: string = 'A';
   EventImages: Array<string> = [];
   EventTraits: Array<string> = [];
+  Image: string = "";
   daysLeft : any;
   RequireInvite: any;
   CreatedBy!: CreatedByDto;
