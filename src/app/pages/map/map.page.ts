@@ -1235,6 +1235,7 @@ if (screenWidth < 768) {
     modal.onDidDismiss().then(result => {
       this.markers.splice(0, this.markers.length);
       // this.clearResults();
+      console.log("res", result);
       this.mapSearchResult = result;
       this.removeSearchResultFromMap();
       if (result.data) {

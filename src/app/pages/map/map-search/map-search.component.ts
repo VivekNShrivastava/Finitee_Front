@@ -32,7 +32,10 @@ export class MapSearchComponent implements OnInit {
     { label: 'Finitee specials', isChecked: false, value: 'FS' },
     { label: 'Buy', isChecked: false, value: 'S' },
     { label: 'Connected Members', isChecked: false, value: 'C' },
-    { label: 'Individual Users', isChecked: false, value: 'F' }
+    { label: 'Individual Users', isChecked: false, value: 'F' },
+    { label: 'Events', isChecked: false, value: 'E' },
+    { label: 'Sales', isChecked: false, value: 'SA' }
+
   ];
   pages: any;
   showLevel1 = null;
@@ -357,15 +360,15 @@ export class MapSearchComponent implements OnInit {
       },{
         geolocation: { latitude: 19.2616678, longitude: 72.9630232},
         searchKey: this.keyinfo || "",
-        scope: 20,
-        freeUser: true,
-        connections: false,
-        businessUser: true,
-        nonProfitUser: false,
-        events: true,
-        sales: false,
-        serviceReq: true,
-        serviceAvailable: false,
+        scope: this.radius,
+        freeUser: this.searchType[1].isChecked,
+        connections: this.searchType[3].isChecked,
+        businessUser: this.searchType[5].isChecked,
+        nonProfitUser: this.searchType[7].isChecked,
+        events: this.searchType[14].isChecked,
+        sales: this.searchType[14].isChecked,
+        serviceReq: this.searchType[4].isChecked,
+        serviceAvailable: this.searchType[6].isChecked,
       }
     ).subscribe(response => {
       this.progressBar = false;

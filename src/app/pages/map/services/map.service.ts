@@ -204,6 +204,7 @@ export class MapService {
     console.log(obj)
     return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
       map((response: any) => {
+        console.log("response", response);
         const responseData = response.ResponseData || {};
         this.mainList = [];
         if (responseData.FreeUsers?.length) {
