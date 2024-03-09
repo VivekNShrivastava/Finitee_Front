@@ -38,6 +38,25 @@ export interface FiniteeUserOnMap {
     About: string | null;
 }
 
+export interface SonarFreeUserSearchRespond {
+  Id?: number;
+  FirstName: string | null;
+  LastName: string | null;
+  UserName: string | null;
+  ProfileImage: string | null;
+  LatLong : LatLong;
+  Traits: Array<string>;
+  ShowLocation: any;
+  PopularityScore: number;
+  TotalPosts: number;
+  TotalConnections: number;
+}
+
+export interface LatLong {
+  Latitude: any;
+  Longitude: any;
+}
+
 export interface SalesItemResponse {
   Id?: any ;
   Title: string | null;
@@ -61,6 +80,25 @@ export interface SalesItemResponse {
   Views: number;
   User: FiniteeUserOnMap | null;
 }
+
+export interface SonarEventSearchRespond {
+  Description: string;
+  Latitude: number;
+  Longitude: number;
+  AddressLine1: string;
+  AddressLine2: string;
+  EndDate: string;
+  Id: string;
+  Title: string;
+  FirstName: string;
+  LastName: string;
+  ProfileImage: string | null;
+  StartDate: string;
+  Image: string | null;
+  EventTraits: string[]; // You may need to adjust this type based on the actual structure of EventTraits
+  Proximity: number;
+}
+
 
 export interface EventItemResponse {
   Id?: any;

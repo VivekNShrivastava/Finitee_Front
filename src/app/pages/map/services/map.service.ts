@@ -5,7 +5,7 @@ import { SignalRService } from '../../../core/services/signal-r.service';
 import { environment } from '../../../../environments/environment';
 import * as config from '../../../core/models/config/ApiMethods';
 import { FiniteeService } from '../models/FiniteeService';
-import { TotemSearchResult, FiniteeUserOnMap } from '../models/MapSearchResult';
+import { TotemSearchResult, FiniteeUserOnMap, SonarEventSearchRespond, SonarFreeUserSearchRespond } from '../models/MapSearchResult';
 import { MapSearchTerms } from '../models/MapSearchTerm';
 import { Greeting } from '../models/UserOnMap';
 import { NotificationEvents } from '../../../core/models/notification/NotificationEvents';
@@ -205,10 +205,10 @@ export class MapService {
     return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
       map((response: any) => {
         console.log("response", response);
-        const responseData = response.ResponseData || {};
+        const responseData = response || {};
         this.mainList = [];
-        if (responseData.FreeUsers?.length) {
-          this.addUsers(responseData.FreeUsers, false);
+        if (responseData.SonarFreeUserSearchRespond?.length) {
+          this.addUsers(responseData.SonarFreeUserSearchRespond, false);
         }
         if (responseData.BusinessUsers?.length) {
           this.addUsers(responseData.BusinessUsers, false);
@@ -228,21 +228,24 @@ export class MapService {
         if (responseData.ServiceRequired) {
           this.addServices(responseData.ServiceRequired, 'SR', false);
         }
+        if (responseData.SonarEventSearchRespond) {
+          this.addEvents(responseData.SonarEventSearchRespond, false);
+        }
 
         return response;
       })
     );
   }
 
-  addUsers(listOfUsers: FiniteeUserOnMap[], isSearch?: boolean) {
+  addUsers(listOfUsers: SonarFreeUserSearchRespond[], isSearch?: boolean) {
     if (isSearch) {
       this.mainList = [];
     }
     const existingUserId = this.mainList.map((val: any) => val.entity == 'U' ? val.id : null).filter((a: any) => a);
     listOfUsers.forEach(newUser => {
-      if (existingUserId.indexOf(newUser.UserId) > -1) {
+      if (existingUserId.indexOf(newUser.Id) > -1) {
         this.mainList.forEach((val: any, idx: any) => {
-          if (val.entity == 'U' && val.UserId == newUser.UserId) {
+          if (val.entity == 'U' && val.UserId == newUser.Id) {
             this.mainList[idx] = { entity: 'U', ...newUser };
           }
         });
@@ -322,6 +325,24 @@ export class MapService {
         });
       }
     });
+  }
+
+  addEvents(listOfTotems: SonarEventSearchRespond[], isSearch?: boolean) {
+    if (isSearch) {
+      this.mainList = [];
+    }
+    const eventId = this.mainList.map((val: any) => val.entity == 'E' ? val.Id : null).filter((a: any) => a);
+    listOfTotems.forEach(val => {
+      if (eventId.indexOf(val.Id) > -1) {
+      } else {
+        // val.ttimg = val.ttimg ? val.UserId + '/' + val.ttimg : '';
+        this.mainList.push({
+          entity: 'E',
+          ...val
+        });
+      }
+    });
+    console.log("main", this.mainList);
   }
 
   sendGreeting(data: Greeting): Observable<Greeting> {

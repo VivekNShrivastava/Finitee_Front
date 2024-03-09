@@ -11,7 +11,10 @@ import { PlacesService } from 'src/app/core/services/places.service';
 import { APIService } from 'src/app/core/services/api.service';
 import { PaymentService } from 'src/app/core/services/payment.service';
 import { LocationService } from 'src/app/core/services/location.service';
- 
+import { ModalController } from '@ionic/angular';
+import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component';
+import { AddressMap } from 'src/app/core/models/places/Address';
+
 @Component({
   selector: 'app-create-edit-sales-item',
   templateUrl: './create-edit-sales-item.page.html',
@@ -25,6 +28,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
   saveClicked: boolean = false;
   conditionList = ['New', 'Like new', 'Refurbished', 'Used', 'Not working']
   disableFrom: boolean = false;
+  salesListingLocation : any;
 
   userProfile: any;
   constructor(
@@ -34,6 +38,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
     private salesListingService: SalesListingService,
     public commonService: CommonService,
     private authService: AuthService,
+    public modalController: ModalController,
     private alertCtrl: AlertController, private apiService: APIService, private paymentService: PaymentService
   ) {
     super(authService);
@@ -98,15 +103,67 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
     this.salesItem.SalesTraits = traits;
   }
 
-  getLatlng() {
-    this.locationService.getLatLngFromAddressType(this.salesItem.Location)
-      .then((latLng) => {
-       this.salesItem.Latitude = latLng.lat
-       this.salesItem.Longitude = latLng.lng
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  // getLatlng() {
+  //   this.locationService.getLatLngFromAddressType(this.salesItem.Location)
+  //     .then((latLng) => {
+  //      this.salesItem.Latitude = latLng.lat
+  //      this.salesItem.Longitude = latLng.lng
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }
+
+  getLatlng(add?: any) {
+
+    if(add){
+      this.salesItem.Latitude = add.Latitude;
+      this.salesItem.Longitude = add.Longitude;
+    }else{
+      // var addrress = this.salesItem.AddressLine1 + this.salesItem.AddressLine2 + this.eventItem.AddressLine3;
+      // this.locationService.getLatLngFromAddressType('home', addrress)
+      //   .then((latLng) => {
+      //    this.salesItem.Latitude = latLng.lat
+      //    this.salesItem.Longitude = latLng.lng
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error:', error);
+      //   });
+    }
+    // console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
+  }
+
+  async openMap() {
+    const modal = await this.modalController.create({
+      component: MapLocation,
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data && data.location) {
+      const { latitude, longitude } = data.location;
+    }
+
+    const latLng = {
+      lat: data.location.latitude,
+      lng: data.location.longitude
+    }
+
+    console.log("latnln", latLng)
+
+    const res = await this.locationService.getAddressFromLatLng(latLng);
+
+    let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+      if(address){
+        this.salesListingLocation = address.FormattedAddress;  
+        this.getLatlng(address);
+      }     
+    });
+
+    
+
   }
 
   async onSubmit() {

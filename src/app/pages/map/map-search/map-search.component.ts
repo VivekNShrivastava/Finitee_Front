@@ -385,7 +385,8 @@ export class MapSearchComponent implements OnInit {
         pplr: null,
         isprt: 0,
       };
-      this.modalController.dismiss(searchTerms);
+      console.log("search res", response, searchTerms);
+      this.modalController.dismiss(response);
     });
   }
   searchTypeChanged(typeCode: string) {

@@ -17,7 +17,7 @@ import { MarkerDetailComponent } from './marker-detail/marker-detail.component';
 import { FiniteeService } from "./models/FiniteeService";
 import { UserLocation } from './models/Location';
 import { mapStyle } from './models/MapOptions';
-import { TotemSearchResult, FiniteeUserOnMap } from './models/MapSearchResult';
+import { TotemSearchResult, FiniteeUserOnMap, SonarEventSearchRespond, SonarFreeUserSearchRespond } from './models/MapSearchResult';
 import { MarkerInfo, MarkerType } from './models/MarkerInfo';
 import { UserOnMap } from './models/UserOnMap';
 import { MapService } from './services/map.service';
@@ -72,6 +72,7 @@ export class MapPage implements OnDestroy {
   userMarkers: any[] = [];
   viewingMeList: UserOnMap[] = <UserOnMap[]>[];
   totusr_markers: any = [];
+  event_markers: any = [];
   searchMarkers: any = [];
   ser_usr_mark: any = [];
   markerCluster?: MarkerClusterer;
@@ -414,6 +415,7 @@ export class MapPage implements OnDestroy {
     this.totemMarkers = [];
     this.userMarkers = [];
     this.totusr_markers = [];
+    this.event_markers = [];
     this.isZoomOut = false;
     this.currentLocationMarker = null;
     this.totemMarkersOnSerach = [];
@@ -560,12 +562,15 @@ export class MapPage implements OnDestroy {
       const totems = results.filter((val: any) => val.entity == 'T');
       const serviceAvailable = results.filter((val: any) => val.entity == 'SA');
       const serviceRequired = results.filter((val: any) => val.entity == 'SR');
+      const events = results.filter((val: any) => val.entity == 'E');
       let indexResultItem = 0;
       if (users.length > 0) { indexResultItem = this.addUserToMap(users, indexResultItem); }
       if (totems.length > 0) { indexResultItem = this.addTotemToMap(totems, indexResultItem); }
       if (serviceAvailable.length > 0) { indexResultItem = this.addServiceToMap(serviceAvailable, 'SA', indexResultItem); }
       if (serviceRequired.length > 0) { indexResultItem = this.addServiceToMap(serviceRequired, 'SR', indexResultItem); }
-      this.totemMarkersOnSerach = results;
+      if (events.length > 0) { indexResultItem = this.addEventToMap(events, indexResultItem); }
+
+      // this.totemMarkersOnSerach = results;
       this.clearAddCurrentLocationMarker();
       this.mapBoundsToFitMarker(this.markers);
     } else {
@@ -576,13 +581,13 @@ export class MapPage implements OnDestroy {
     }
   }
 
-  addUserToMap(users: FiniteeUserOnMap[], startIndexInResult: number, isViewing: boolean = false) {
-    users.forEach(async (res: FiniteeUserOnMap) => {
+  addUserToMap(users: SonarFreeUserSearchRespond[], startIndexInResult: number, isViewing: boolean = false) {
+    users.forEach(async (res: SonarFreeUserSearchRespond) => {
       // remove user if existing
       let isExist = false;
       this.userMarkers.forEach((oldmarker: any) => {
-        let oldMarkerData: MarkerInfo<FiniteeUserOnMap> = oldmarker;
-        if (oldMarkerData?.data?.UserId == res.UserId) {
+        let oldMarkerData: MarkerInfo<SonarFreeUserSearchRespond> = oldmarker;
+        if (oldMarkerData?.data?.Id == res.Id) {
           isExist = true;
           oldmarker.setMap(null);
         }
@@ -593,48 +598,50 @@ export class MapPage implements OnDestroy {
       let icon: string = "";
       let templateView: string = "";
 
-      const { UserTypeId, IsConnected } = res;
+      // const { UserTypeId, IsConnected } = res;
+      const UserTypeId = 1;
+      const IsConnected = true;
       switch (UserTypeId) {
         case 1:
           icon = IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER;
           templateView = MarkerType.FreeUser;
           break;
-        case 2:
-          icon = IsConnected ? icons.CONNECTED_BUSINESS : icons.UNCONNECTED_BUSINESS;
-          templateView = MarkerType.BusinessNonProfitUser;
-          break;
-        case 3:
-          icon = IsConnected ? icons.CONNECTED_NONPROFIT : icons.UNCONNECTED_NONPROFIT;
-          templateView = MarkerType.BusinessNonProfitUser;
-          break;
-        default:
-          break;
+        // case 2:
+        //   icon = IsConnected ? icons.CONNECTED_BUSINESS : icons.UNCONNECTED_BUSINESS;
+        //   templateView = MarkerType.BusinessNonProfitUser;
+        //   break;
+        // case 3:
+        //   icon = IsConnected ? icons.CONNECTED_NONPROFIT : icons.UNCONNECTED_NONPROFIT;
+        //   templateView = MarkerType.BusinessNonProfitUser;
+        //   break;
+        // default:
+        //   break;
       }
 
-      if (isViewing) {
-        switch (UserTypeId) {
-          case 1:
-            icon = IsConnected ? icons.CONNECTED_USER_VIEWING : icons.UNCONNECTED_USER_VIEWING;
-            break;
-          case 2:
-            icon = IsConnected ? icons.CONNECTED_BUSINESS_VIEWING : icons.UNCONNECTED_BUSINESS_VIEWING;
-            break;
-          case 3:
-            icon = IsConnected ? icons.CONNECTED_NONPROFIT_VIEWING : icons.UNCONNECTED_NONPROFIT_VIEWING;
-            break;
-          default:
-            break;
-        }
-      }
+      // if (isViewing) {
+      //   switch (UserTypeId) {
+      //     case 1:
+      //       icon = IsConnected ? icons.CONNECTED_USER_VIEWING : icons.UNCONNECTED_USER_VIEWING;
+      //       break;
+      //     case 2:
+      //       icon = IsConnected ? icons.CONNECTED_BUSINESS_VIEWING : icons.UNCONNECTED_BUSINESS_VIEWING;
+      //       break;
+      //     case 3:
+      //       icon = IsConnected ? icons.CONNECTED_NONPROFIT_VIEWING : icons.UNCONNECTED_NONPROFIT_VIEWING;
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // }
 
       let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
-        position: { lat: userData.Latitude, lng: userData.Longitude },
+        position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude },
         icon: icon,
         title: userData.UserName
       };
 
-      let marker = await this.addMarkerToMap(markerOptions);
-      marker.set('markerData', <MarkerInfo<FiniteeService>>{
+      let marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
+      marker.set('markerData', <MarkerInfo<SonarFreeUserSearchRespond>>{
         data: userData,
         MarkerType: templateView,
         itemIndex: startIndexInResult
@@ -729,6 +736,34 @@ export class MapPage implements OnDestroy {
         marker.addListener("click", (markerdetail: any) => {
           this.onMarkerClick(marker);
         });
+      }
+    });
+    return startIndexInResult;
+  }
+
+  addEventToMap(events: SonarEventSearchRespond[], startIndexInResult: number) {
+    events.map(async (eachEvent) => {
+      if (!this.event_markers.some((cres: any) => cres.Id == eachEvent.Id)) {
+
+        let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
+          position: { lat: eachEvent.Latitude, lng: eachEvent.Longitude },
+          icon: icons.EVENT,
+          title: eachEvent.Title
+        };
+
+        // this.event_markers.push(eachEvent);
+        const marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
+        marker.set("markerData", <MarkerInfo<SonarEventSearchRespond>>{
+          data: eachEvent,
+          MarkerType: MarkerType.Event,
+          itemIndex: startIndexInResult
+        });
+        this.event_markers.push(marker);
+        startIndexInResult++;
+        marker.addListener("click", (markerdetail: any) => {
+          this.onMarkerClick(marker);
+        });
+        console.log("event marker", this.event_markers)
       }
     });
     return startIndexInResult;
@@ -997,6 +1032,7 @@ export class MapPage implements OnDestroy {
   }
 
   async onMarkerClick(params: google.maps.Marker) {//Obsolete function to open MapInfoWindow
+    console.log("onMarkerClick....");
     this.onMarkerClickV2(params);//TODO: Manoj remove calling from here replace function call
     const markerData: MarkerInfo<any> = (params as any)?.markerData;
 
@@ -1043,6 +1079,10 @@ export class MapPage implements OnDestroy {
         compRef.instance.savedLocation = markerData.data;
       }
         break;
+      case MarkerType.Event: {
+        compRef.instance.event = markerData.data
+      }
+        break;
     }
 
     let refrence = div.getElementsByClassName(`refrence-${markerData.MarkerType}`)[0];
@@ -1077,7 +1117,7 @@ export class MapPage implements OnDestroy {
     });
     modal.onDidDismiss().then(result => {
       if (result) {
-        this.addUserToMap([result.data as FiniteeUserOnMap], 0);
+        this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
       }
     });
     return await modal.present();
@@ -1251,8 +1291,8 @@ if (screenWidth < 768) {
           if (result.data?.status == 'P') {
             this.setCircle(result.data)
           }
-          if (result.data.oneTimeSearch) {
-            result.data[`location`] = this.location;
+          if (result.data) {
+            // result.data[`location`] = this.location;
             this.searchResultUpdate();
           } else {
             this.clearMap();
@@ -1531,7 +1571,7 @@ if (screenWidth < 768) {
     });
     modal.onDidDismiss().then(result => {
       if (result) {
-        this.addUserToMap([result.data as FiniteeUserOnMap], 0);
+        this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
       }
     });
     return await modal.present();
