@@ -73,6 +73,7 @@ export class MapPage implements OnDestroy {
   viewingMeList: UserOnMap[] = <UserOnMap[]>[];
   totusr_markers: any = [];
   event_markers: any = [];
+  salesListing_markers: any = [];
   searchMarkers: any = [];
   ser_usr_mark: any = [];
   markerCluster?: MarkerClusterer;
@@ -155,18 +156,11 @@ export class MapPage implements OnDestroy {
   ) {
     this.user = this.authService.getUserInfo();
 
-    // this.firestoreService.viewList$.subscribe(updatedData => {
-    //   console.log("map updated data", updatedData);
-    //   this.viewList = updatedData
-    //   this.viewListNumber = this.viewList?.names?.length
-    //   console.log("res -", this.viewListNumber);
-    // })
-
     this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
-      console.log("map updated data", updatedData);
+      // console.log("map updated data", updatedData);
       this.viewList = updatedData;
       this.viewListNumber = this.viewList?.names?.length;
-      console.log("res -", this.viewListNumber);
+      // console.log("res -", this.viewListNumber);
     });
   }
 
@@ -174,7 +168,7 @@ export class MapPage implements OnDestroy {
 
   async ngOnInit() {
     this.currentPageHref = window.location.pathname;
-    console.log("Map: Init: window: ", window.history);
+    // console.log("Map: Init: window: ", window.history);
     await this.platform.ready();
     await this.mapService.getAppSetting(this.user.UserId).subscribe(
       (s: any) => {
@@ -200,22 +194,16 @@ export class MapPage implements OnDestroy {
   }
 
   ionViewWillEnter() {
-    console.log("ionViewWillEnter - maps");
     this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
-      // console.log("map updated data", updatedData);
       this.viewList = updatedData;
       this.viewListNumber = this.viewList?.names?.length;
-      // console.log("res -", this.viewListNumber);
     });
 
   }
 
   ionViewWillLeave() {
-    // this.authService.stopFirebase();
-    console.log("ionViewWillLeave...");
-    console.log(this.user);
-    this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
 
+    this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
 
     if (this.firestoreSubscription) {
       this.firestoreSubscription.unsubscribe();
@@ -242,19 +230,7 @@ export class MapPage implements OnDestroy {
     this.fetchCurrentArea();
   }
 
-  ionTabsWillChange() {
-    console.log("ionTabsWillChange");
-  }
-
   ngOnDestroy() {
-    console.log('destroy tab5');
-    // if (this.firestoreSubscription) {
-    //   this.firestoreSubscription.unsubscribe();
-    // }
-    // this.events.unsubscribe('active:user');
-    // this.events.unsubscribe('greeting:tab5');
-    // this.events.unsubscribe('sonar:tab5');
-    // this.authService.stopFirebase();
     if (this.subscription) {
       this.subscription.unsubscribe();
       this.subscription.remove(this.subscription);
@@ -264,11 +240,11 @@ export class MapPage implements OnDestroy {
   fetchCurrentArea() {
 
     let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
-      console.log("MAP fetchCurrentArea observeReverseGeocodingResult: ", address);
+      // console.log("MAP fetchCurrentArea observeReverseGeocodingResult: ", address);
       
     });
     this.currentArea = this.locationService.getCurrentArea();
-      console.log("MAP fetchCurrentArea Area: ", this.currentArea);
+      // console.log("MAP fetchCurrentArea Area: ", this.currentArea);
 
     this.locationService.requestPermissions();
     this.locationService.fetchCurrentCoordinate(true);
@@ -342,18 +318,6 @@ export class MapPage implements OnDestroy {
           // draggable: true,
           icon: !this.isBackEnabled ? 'assets/markers/curr-invisible.svg' : 'assets/markers/curr.svg',
         });
-
-        // this.currentLocationMarker.addListener('dragend', (event: any) => {
-        //   const newPosition = this.currentLocationMarker.getPosition();
-        //   this.newLat = newPosition.lat();
-        //   this.newLng = newPosition.lng();
-
-        //   // Do something with the new coordinates (newLat, newLng)
-        //   console.log('New Marker Position:', this.newLat, this.newLng );
-        //   const latln = {lat : this.newLat, lng: this.newLng}
-        //   const add = this.locationService.getAddressFromLatLng(latln);
-        //   console.log("new add", add);
-        // });
       }
     } else {
       if (this.location && this.location.lat) {
@@ -527,7 +491,7 @@ export class MapPage implements OnDestroy {
       } else {
         this.searchCriteria = result.data;
         if (result.data?.status == 'P') {
-          this.setCircle(result.data)
+          // this.setCircle(result.data)
         }
         if (result.data.oneTimeSearch) {
           result.data[`location`] = this.location;
@@ -563,12 +527,14 @@ export class MapPage implements OnDestroy {
       const serviceAvailable = results.filter((val: any) => val.entity == 'SA');
       const serviceRequired = results.filter((val: any) => val.entity == 'SR');
       const events = results.filter((val: any) => val.entity == 'E');
+      const saleslisting = results.filter((val: any) => val.entity == 'SL');
       let indexResultItem = 0;
       if (users.length > 0) { indexResultItem = this.addUserToMap(users, indexResultItem); }
       if (totems.length > 0) { indexResultItem = this.addTotemToMap(totems, indexResultItem); }
       if (serviceAvailable.length > 0) { indexResultItem = this.addServiceToMap(serviceAvailable, 'SA', indexResultItem); }
       if (serviceRequired.length > 0) { indexResultItem = this.addServiceToMap(serviceRequired, 'SR', indexResultItem); }
       if (events.length > 0) { indexResultItem = this.addEventToMap(events, indexResultItem); }
+      if (saleslisting.length > 0) { indexResultItem = this.addSalesListingToMap(saleslisting, indexResultItem); }
 
       // this.totemMarkersOnSerach = results;
       this.clearAddCurrentLocationMarker();
@@ -595,15 +561,22 @@ export class MapPage implements OnDestroy {
 
       // add user with new details
       let userData = this.setUserData(res);
-      let icon: string = "";
+      // let icon: string = "";
+      let icon : any;
       let templateView: string = "";
+      let userImg: string = "";
+      if(res.ProfileImage) userImg = AppConstants.mediaPrefix + res.ProfileImage;
 
-      // const { UserTypeId, IsConnected } = res;
+      const { IsConnected } = res;
       const UserTypeId = 1;
-      const IsConnected = true;
+      // const IsConnected = true;
       switch (UserTypeId) {
         case 1:
-          icon = IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER;
+          // icon = IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER;
+          icon = {
+            url: userImg || (IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER),
+            scaledSize: new google.maps.Size(68, 68), // scaled size
+          } 
           templateView = MarkerType.FreeUser;
           break;
         // case 2:
@@ -637,7 +610,8 @@ export class MapPage implements OnDestroy {
       let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
         position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude },
         icon: icon,
-        title: userData.UserName
+        title: userData.UserName,
+        optimized: false,
       };
 
       let marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
@@ -646,8 +620,10 @@ export class MapPage implements OnDestroy {
         MarkerType: templateView,
         itemIndex: startIndexInResult
       });
+
       marker.addListener("click", (markerdetail: any) => {
         this.onMarkerClick(marker);
+        
       });
       if (!isExist) {
         this.userMarkers.push(userData);
@@ -658,26 +634,26 @@ export class MapPage implements OnDestroy {
     return startIndexInResult;
   }
 
-  displayChangedLocation = (data: any) => {
-    if (data?.coords) {
-      this.location.lat = data.coords.latitude;
-      this.location.lng = data.coords.longitude;
-      if (this.currentLocationMarker) {
-        this.currentLocationMarker.setPosition(this.location);
-        this.updateCurrentLocation(this.user.UserId);
-      }
-    }
-  }
+  // displayChangedLocation = (data: any) => {
+  //   if (data?.coords) {
+  //     this.location.lat = data.coords.latitude;
+  //     this.location.lng = data.coords.longitude;
+  //     if (this.currentLocationMarker) {
+  //       this.currentLocationMarker.setPosition(this.location);
+  //       this.updateCurrentLocation(this.user.UserId);
+  //     }
+  //   }
+  // }
 
-  async updateCurrentLocation(user_id: number) {
-    const method = config.UPD_LOC_V1;
-    const params = {
-      UserId: user_id,
-      Latitude: this.location.lat,
-      Longitude: this.location.lng,
-    };
-    await this.http.post(method, params).subscribe(result => { });
-  }
+  // async updateCurrentLocation(user_id: number) {
+  //   const method = config.UPD_LOC_V1;
+  //   const params = {
+  //     UserId: user_id,
+  //     Latitude: this.location.lat,
+  //     Longitude: this.location.lng,
+  //   };
+  //   await this.http.post(method, params).subscribe(result => { });
+  // }
 
   userMarkerCluster: any;
   stopPing() {
@@ -763,7 +739,33 @@ export class MapPage implements OnDestroy {
         marker.addListener("click", (markerdetail: any) => {
           this.onMarkerClick(marker);
         });
-        console.log("event marker", this.event_markers)
+      }
+    });
+    return startIndexInResult;
+  }
+
+  addSalesListingToMap(salesList: SonarEventSearchRespond[], startIndexInResult: number) {
+    salesList.map(async (salesList) => {
+      if (!this.salesListing_markers.some((cres: any) => cres.Id == salesList.Id)) {
+
+        let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
+          position: { lat: salesList.Latitude, lng: salesList.Longitude },
+          icon: icons.BUYSELL,
+          title: salesList.Title
+        };
+
+        // this.event_markers.push(eachEvent);
+        const marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
+        marker.set("markerData", <MarkerInfo<SonarEventSearchRespond>>{
+          data: salesList,
+          MarkerType: MarkerType.Sales,
+          itemIndex: startIndexInResult
+        });
+        this.salesListing_markers.push(marker);
+        startIndexInResult++;
+        marker.addListener("click", (markerdetail: any) => {
+          this.onMarkerClick(marker);
+        });
       }
     });
     return startIndexInResult;
@@ -853,7 +855,7 @@ export class MapPage implements OnDestroy {
       const index = markers.findIndex((o1: any) => {
         // filter out (!) items in result2
         return !myArray.some((o2: any) => {
-          return o1.get('id') === o2.id;          // assumes unique id
+          return o1.get('id') === o2.id;// assumes unique id
         });
       });
       if (index > 0) {
@@ -1093,12 +1095,6 @@ export class MapPage implements OnDestroy {
       let toUserName: number = markerData.data.UserName;
       let fromUserName: number = this.user.name;
       let fromUserId: number = this.user.UserId;
-      // this._signalRService.sendMessage(NotificationEvents.ViewedOnSonar, JSON.stringify({
-      //   "FromUserId": fromUserId,
-      //   "FromUserName": fromUserName,
-      //   "ToUserId": toUserId,
-      //   "ToUserName": toUserName,
-      // }));
     }
 
     // Dynamic rendering
@@ -1248,22 +1244,22 @@ export class MapPage implements OnDestroy {
     };
     const screenWidth = window.innerWidth;
 
-let breakpoints: number[];
-let initialBreakpoint: number;
+    let breakpoints: number[];
+    let initialBreakpoint: number;
 
-if (screenWidth < 768) {
-  // Small screens (e.g., smartphones)
-  breakpoints = [0, 0.8];
-  initialBreakpoint = 0.8;
-} else if (screenWidth >= 768 && screenWidth < 1024) {
-  // Medium screens (e.g., tablets)
-  breakpoints = [0, 0.6];
-  initialBreakpoint = 0.6;
-} else {
-  // Large screens (e.g., desktops)
-  breakpoints = [0, 0.4];
-  initialBreakpoint = 0.4;
-}
+    if (screenWidth < 768) {
+      // Small screens (e.g., smartphones)
+      breakpoints = [0, 0.8];
+      initialBreakpoint = 0.8;
+    } else if (screenWidth >= 768 && screenWidth < 1024) {
+      // Medium screens (e.g., tablets)
+      breakpoints = [0, 0.6];
+      initialBreakpoint = 0.6;
+    } else {
+      // Large screens (e.g., desktops)
+      breakpoints = [0, 0.4];
+      initialBreakpoint = 0.4;
+    }
    
     const modal = await this.modalController.create({
       component: MapSearchComponent,
@@ -1275,7 +1271,6 @@ if (screenWidth < 768) {
     modal.onDidDismiss().then(result => {
       this.markers.splice(0, this.markers.length);
       // this.clearResults();
-      console.log("res", result);
       this.mapSearchResult = result;
       this.removeSearchResultFromMap();
       if (result.data) {
@@ -1289,7 +1284,7 @@ if (screenWidth < 768) {
         } else {
           this.searchCriteria = result.data;
           if (result.data?.status == 'P') {
-            this.setCircle(result.data)
+            // this.setCircle(result.data)
           }
           if (result.data) {
             // result.data[`location`] = this.location;

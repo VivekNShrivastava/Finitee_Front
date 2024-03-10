@@ -32,7 +32,7 @@ export class AppComponent {
       this.setTextZoom();
     //this.placesService.getCountryList();
     this.authService.authState.subscribe((state) => { 
-      console.log("Initialzing app", state);
+      // console.log("Initialzing app", state);
       if (state) {
         this.router.navigate(['tabs/map']); 
         this.locationService.getCurrencyByCountry();
@@ -53,7 +53,7 @@ export class AppComponent {
 
   currentLocationUpdate() {
     this.locationService.observeCurrentPosition().subscribe((position) => {
-      console.log("Current location", position.coords);
+      // console.log("Current location", position.coords);
       if(position) this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
     });
   }

@@ -5,7 +5,7 @@ import { SignalRService } from '../../../core/services/signal-r.service';
 import { environment } from '../../../../environments/environment';
 import * as config from '../../../core/models/config/ApiMethods';
 import { FiniteeService } from '../models/FiniteeService';
-import { TotemSearchResult, FiniteeUserOnMap, SonarEventSearchRespond, SonarFreeUserSearchRespond } from '../models/MapSearchResult';
+import { TotemSearchResult, FiniteeUserOnMap, SonarEventSearchRespond, SonarFreeUserSearchRespond, SonarSalesListingSearchRespond } from '../models/MapSearchResult';
 import { MapSearchTerms } from '../models/MapSearchTerm';
 import { Greeting } from '../models/UserOnMap';
 import { NotificationEvents } from '../../../core/models/notification/NotificationEvents';
@@ -201,7 +201,6 @@ export class MapService {
       serviceReq: true,
       serviceAvailable: false,
     };
-    console.log(obj)
     return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
       map((response: any) => {
         console.log("response", response);
@@ -230,6 +229,9 @@ export class MapService {
         }
         if (responseData.SonarEventSearchRespond) {
           this.addEvents(responseData.SonarEventSearchRespond, false);
+        }
+        if (responseData.SonarSalesListingSearchRespond) {
+          this.addSalesListing(responseData.SonarSalesListingSearchRespond, false);
         }
 
         return response;
@@ -342,7 +344,23 @@ export class MapService {
         });
       }
     });
-    console.log("main", this.mainList);
+  }
+
+  addSalesListing(listOfSalesListing: SonarSalesListingSearchRespond[], isSearch?: boolean) {
+    if (isSearch) {
+      this.mainList = [];
+    }
+    const salesListingId = this.mainList.map((val: any) => val.entity == 'SL' ? val.Id : null).filter((a: any) => a);
+    listOfSalesListing.forEach(val => {
+      if (salesListingId.indexOf(val.Id) > -1) {
+      } else {
+        // val.ttimg = val.ttimg ? val.UserId + '/' + val.ttimg : '';
+        this.mainList.push({
+          entity: 'SL',
+          ...val
+        });
+      }
+    });
   }
 
   sendGreeting(data: Greeting): Observable<Greeting> {

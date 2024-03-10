@@ -50,11 +50,12 @@ export interface SonarFreeUserSearchRespond {
   PopularityScore: number;
   TotalPosts: number;
   TotalConnections: number;
+  IsConnected: boolean;
 }
 
 export interface LatLong {
-  Latitude: any;
-  Longitude: any;
+  Latitude: number;
+  Longitude: number;
 }
 
 export interface SalesItemResponse {
@@ -96,6 +97,23 @@ export interface SonarEventSearchRespond {
   StartDate: string;
   Image: string | null;
   EventTraits: string[]; // You may need to adjust this type based on the actual structure of EventTraits
+  Proximity: number;
+}
+
+export interface SonarSalesListingSearchRespond {
+  Description: string;
+  Latitude: number;
+  Longitude: number;
+  Id: string;
+  Title: string;
+  FirstName: string;
+  LastName: string;
+  ProfileImage: string;
+  Image: string;
+  Price: number;
+  CurrencyCode: string;
+  Condition: string;
+  SalesTraits: string[];
   Proximity: number;
 }
 
