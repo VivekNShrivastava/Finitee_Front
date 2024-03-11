@@ -44,6 +44,9 @@ export class MarkerDetailComponent implements OnInit {
     
     console.log("markerCurrentIndex: ", this.markerCurrentIndex);
     console.log("markerList: ", this.markerList);
+    // this.markerList = this.markerList.filter((v: any) => v.entity !== 'U');//once free user object has proximity field, remove this line
+    this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
+    console.log("markerList: ", this.markerList);
     const temp = this.user.UserName + "_" + this.user.UserId
     if(this.markerList[this.markerCurrentIndex].UserName) this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
     // this.addToViewList();

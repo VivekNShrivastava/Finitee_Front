@@ -569,7 +569,6 @@ export class MapPage implements OnDestroy {
 
       const { IsConnected } = res;
       const UserTypeId = 1;
-      // const IsConnected = true;
       switch (UserTypeId) {
         case 1:
           // icon = IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER;
@@ -1091,7 +1090,7 @@ export class MapPage implements OnDestroy {
     this.mapWindow.setOptions({ content: refrence });
 
     if (markerData.MarkerType == MarkerType.FreeUser || markerData.MarkerType == MarkerType.BusinessNonProfitUser) {
-      let toUserId: number = markerData.data.UserId;
+      let toUserId: number = markerData.data.Id;
       let toUserName: number = markerData.data.UserName;
       let fromUserName: number = this.user.name;
       let fromUserId: number = this.user.UserId;
