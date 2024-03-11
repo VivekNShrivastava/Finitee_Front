@@ -221,8 +221,8 @@ export interface RegularSearchUser {
   FirstName: string;
   LastName: string;
   ProfileImage: string;
-  TotalPosts: Number;
-  TotalConnections: Number;
+  TotalPosts: number;
+  TotalConnections: number;
   PopularityScore: any;
   ShowLocation: boolean;
 }

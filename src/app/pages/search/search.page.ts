@@ -8,7 +8,7 @@ import { User, UserProfile } from 'src/app/core/models/user/UserProfile';
 import { APIService } from 'src/app/core/services/api.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { RegularSearchService } from 'src/app/core/services/regular-search/regular-search.service';
-import { EventItemResponse, FiniteeUserOnMap, PostResponse, SalesItemResponse, ServiceResponse, RegularSearchUser } from '../map/models/MapSearchResult';
+import { EventItemResponse, FiniteeUserOnMap, PostResponse, SalesItemResponse, ServiceResponse, RegularSearchUser, SonarFreeUserSearchRespond } from '../map/models/MapSearchResult';
 import { IonAccordionGroup } from '@ionic/angular';
 import { LocationService } from 'src/app/core/services/location.service';
 import { AddressMap, Area } from 'src/app/core/models/places/Address';
@@ -120,18 +120,18 @@ export class SearchPage extends BasePage implements OnInit {
   // }
 
 
-  openUser(user: FiniteeUserOnMap) {
-    console.log("openUser: ", user);
+  openUser(user: RegularSearchUser) {
 
     const navigationExtras1s: NavigationExtras = {
       state: {
         data: user
       }
     };
-    if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
-      this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
-    else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
-      this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
+    this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
+    // if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
+    //   this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
+    // else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
+    //   this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
   }
 
   openSalesItem(salesItem: SalesItemResponse) {
