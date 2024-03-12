@@ -3,7 +3,7 @@ import { IonPopover } from '@ionic/angular';
 import { PrivacySettingConfig } from 'src/app/core/models/config/PrivacyConfigSetting';
 import { UserPrivacySetting } from 'src/app/core/models/UserPrivacySetting';
 import { PrivacySettingService } from 'src/app/core/services/privacy-setting.service';
-
+import { ModalController } from '@ionic/angular';
 import { UserPrivacyService } from 'src/app/core/services/user-privacy/user-privacy.service';
 import { userSonarPrivacySetting } from 'src/app/core/models/userSonarPrivacySetting'; 
 import { CommonService } from 'src/app/core/services/common.service';
@@ -25,7 +25,7 @@ export class SonarSettingsComponent extends BasePage implements OnInit {
   public getUserSonarPrivacySetting: any = <userSonarPrivacySetting>{};
 
   @ViewChild('popover') popover?: IonPopover = undefined;
-  @Output() onCloseSetting: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onCloseSetting: EventEmitter<any> = new EventEmitter<any>();
 
   key: any;
   selectedPopoverValue: any;
@@ -35,7 +35,8 @@ export class SonarSettingsComponent extends BasePage implements OnInit {
     private privacyService: PrivacySettingService,
     public _userPrivacyServivce: UserPrivacyService,
     public _commonService: CommonService,
-    public authService: AuthService
+    public authService: AuthService,
+    public modalController: ModalController
   ) {
     super(authService)
     this.sonarSetting = privacyService.privacySettings;
@@ -128,10 +129,12 @@ export class SonarSettingsComponent extends BasePage implements OnInit {
   }
 
   public closeSetting(): void {
-    this.onCloseSetting.emit();
+    
   }
 
   async saveUserPrivacy() {
     const res = await this.privacyService.updateSonarPrivacySetting(this.getUserSonarPrivacySetting);
+    // if(res) this.onCloseSetting.emit("asd");
+    if(res) this.modalController.dismiss({res: res, data: this.getUserSonarPrivacySetting});
   }
 }

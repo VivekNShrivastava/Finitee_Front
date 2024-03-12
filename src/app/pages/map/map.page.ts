@@ -31,7 +31,7 @@ import { LocationService } from 'src/app/core/services/location.service';
 import { AddressMap, Area } from 'src/app/core/models/places/Address';
 import { AllSonarSearchRequest } from 'src/app/core/models/mapSonarSearch';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
-
+import { UserPrivacyService } from 'src/app/core/services/user-privacy/user-privacy.service';
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
 const MAP_INIT_ZOOM = 13;
@@ -110,6 +110,7 @@ export class MapPage implements OnDestroy {
   viewList: any = [];
   viewListNumber: number = 0;
   eventListen: any;
+  private locationUpdateSubscription: Subscription = new Subscription();;
 
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
   mapCenter!: google.maps.LatLng;
@@ -133,7 +134,7 @@ export class MapPage implements OnDestroy {
 
   newLat: any;
   newLng: any;
-
+  locationUpdateInterval$: any;
   constructor(
     private platform: Platform,
     private mapService: MapService,
@@ -147,15 +148,15 @@ export class MapPage implements OnDestroy {
     public navController: NavController,
     public router: Router,
     public modalController: ModalController,
-    // private _signalRService: SignalRService,
     public _commonService: CommonService,
     public _chatsService: ChatsService,
     public swipeService: SwipeService,
     private locationService: LocationService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private _userPrivacyServivce: UserPrivacyService,
   ) {
     this.user = this.authService.getUserInfo();
-
+    this.getUserSonarPrivacySettings();
     this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
       // console.log("map updated data", updatedData);
       this.viewList = updatedData;
@@ -237,6 +238,30 @@ export class MapPage implements OnDestroy {
     }
   }
 
+  async getUserSonarPrivacySettings () {
+    const res = await this._userPrivacyServivce.getUserPrivacySetting();
+    if(res?.LocationShowAt === 'L'){
+      this.setupLocationUpdates();
+    }else{
+      console.log("error while getting sonar privacy settings");
+      this.locationUpdateSubscription.unsubscribe();
+    } 
+  }
+
+  setupLocationUpdates() {
+    this.locationUpdateInterval$ = interval(60000); // 60 seconds interval
+    // this.locationUpdateInterval$ = interval(10000); // 10 seconds interval
+    this.locationUpdateSubscription = this.locationUpdateInterval$.subscribe(() => {
+      this.currentLocationUpdate();
+    });
+  }
+
+  currentLocationUpdate() {
+    this.locationService.observeCurrentPosition().subscribe((position) => {
+      if(position) this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
+    });
+  }
+
   fetchCurrentArea() {
 
     let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
@@ -267,6 +292,7 @@ export class MapPage implements OnDestroy {
             fullscreenControl: false,
             streetViewControl: false,
             mapTypeControl: false,
+            // mapId: "DEMO_MAP_ID",
           }
         );
       } else {
@@ -338,7 +364,7 @@ export class MapPage implements OnDestroy {
     let Longitude = this.location?.lng;
     let RangeInKm = 2
     this.getTotemByUserId(Latitude, Longitude, RangeInKm);
-    this.loadSavedLocation();
+    // this.loadSavedLocation();
   }
 
   async loadSavedLocation() {
@@ -403,6 +429,21 @@ export class MapPage implements OnDestroy {
       }
     });
   }
+
+  // async addMarkerToMap(obj: google.maps.MarkerOptions, caller?: string) {
+  //   let marker = new google.maps.Marker({
+  //     position: obj.position,
+  //     map: this.map,
+  //     title: obj.title,
+  //     icon: obj.icon,
+  //   });
+  //   if (caller != 'Sonar') {
+  //     this.markers.push(marker);
+  //   }
+  //   marker.setMap(this.map ?? null);
+  //   this.setClusters(this.markers);
+  //   return marker
+  // }
 
   async addMarkerToMap(obj: google.maps.MarkerOptions, caller?: string) {
     let marker = new google.maps.Marker({
@@ -478,7 +519,7 @@ export class MapPage implements OnDestroy {
 
   async refreshMarker() {
     this.removeSearchResultFromMap();
-    await this.loadSavedLocation();
+    // await this.loadSavedLocation();
     let result = this.mapSearchResult
     if (result?.data) {
       if (result.data?.status == 'L') {
@@ -569,43 +610,20 @@ export class MapPage implements OnDestroy {
 
       const { IsConnected } = res;
       const UserTypeId = 1;
-      switch (UserTypeId) {
-        case 1:
-          // icon = IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER;
-          icon = {
-            url: userImg || (IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER),
-            scaledSize: new google.maps.Size(68, 68), // scaled size
-          } 
-          templateView = MarkerType.FreeUser;
-          break;
-        // case 2:
-        //   icon = IsConnected ? icons.CONNECTED_BUSINESS : icons.UNCONNECTED_BUSINESS;
-        //   templateView = MarkerType.BusinessNonProfitUser;
-        //   break;
-        // case 3:
-        //   icon = IsConnected ? icons.CONNECTED_NONPROFIT : icons.UNCONNECTED_NONPROFIT;
-        //   templateView = MarkerType.BusinessNonProfitUser;
-        //   break;
-        // default:
-        //   break;
-      }
 
-      // if (isViewing) {
-      //   switch (UserTypeId) {
-      //     case 1:
-      //       icon = IsConnected ? icons.CONNECTED_USER_VIEWING : icons.UNCONNECTED_USER_VIEWING;
-      //       break;
-      //     case 2:
-      //       icon = IsConnected ? icons.CONNECTED_BUSINESS_VIEWING : icons.UNCONNECTED_BUSINESS_VIEWING;
-      //       break;
-      //     case 3:
-      //       icon = IsConnected ? icons.CONNECTED_NONPROFIT_VIEWING : icons.UNCONNECTED_NONPROFIT_VIEWING;
-      //       break;
-      //     default:
-      //       break;
-      //   }
-      // }
+      icon = {
+        url: userImg || (IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER),
+        scaledSize: new google.maps.Size(68, 68), // scaled size
+        className: 'map-marker-icon'
+      } 
+      templateView = MarkerType.FreeUser;
 
+      // let marker = new google.maps.Marker({
+      //   position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude },
+      //   map: this.map,
+      //   title: userData.UserName,
+      //   icon: icon,
+      // });
       let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
         position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude },
         icon: icon,
@@ -613,20 +631,35 @@ export class MapPage implements OnDestroy {
         optimized: false,
       };
 
-      let marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
+      const marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
+
       marker.set('markerData', <MarkerInfo<SonarFreeUserSearchRespond>>{
         data: userData,
         MarkerType: templateView,
         itemIndex: startIndexInResult
       });
+      
+
+      // MIGRATING TO ADVANCE MARKER
+      // const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+
+      // const priceTag = document.createElement('div');
+      // // priceTag.className = 'price-tag';
+      // priceTag.textContent = '$2.5M';
+      // // priceTag.classList.add("property");
+
+      // const marker = new AdvancedMarkerElement({
+      //   map: this.map,
+      //   position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude},
+      //   title: userData.UserName,
+      //   content: priceTag
+      // })
 
       marker.addListener("click", (markerdetail: any) => {
         this.onMarkerClick(marker);
-        
       });
       if (!isExist) {
         this.userMarkers.push(userData);
-        // startIndexInResult++;//??
       }
       startIndexInResult++;//??
     });
@@ -1553,6 +1586,13 @@ export class MapPage implements OnDestroy {
     this.sonarSettingModal?.present().then(() => {
 
     });
+    this.sonarSettingModal?.onDidDismiss().then((data) => {
+      // Handle the data received when the modal is closed
+      console.log('Data received:', data.data?.data.LocationShowAt);
+      if(data.data?.data.LocationShowAt === 'H') this.locationUpdateSubscription.unsubscribe();
+      else if(data.data?.data.LocationShowAt === 'L') this.setupLocationUpdates();
+    });
+
   }
 
   public async viewGreetingDetails(): Promise<void> {
@@ -1573,6 +1613,8 @@ export class MapPage implements OnDestroy {
 
   public closeSetting(): void {
     this.sonarSettingModal?.dismiss();
+
+
   }
 
   public closeMarkerDetails(): void {

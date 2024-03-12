@@ -21,7 +21,7 @@ export class PrivacySettingService {
   ) {
     _authService.authState.subscribe(state => {
       if (state) {
-        this.loadPrivacySettings();
+        // this.loadPrivacySettings();
       }
     })
   }
