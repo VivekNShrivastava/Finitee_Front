@@ -44,8 +44,11 @@ export class MarkerDetailComponent implements OnInit {
     
     console.log("markerCurrentIndex: ", this.markerCurrentIndex);
     console.log("markerList: ", this.markerList);
+    // this.markerList = this.markerList.filter((v: any) => v.entity !== 'U');//once free user object has proximity field, remove this line
+    this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
+    console.log("markerList: ", this.markerList);
     const temp = this.user.UserName + "_" + this.user.UserId
-    this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
+    if(this.markerList[this.markerCurrentIndex].UserName) this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
     // this.addToViewList();
     this.subscribeSwipeEvent();
     this.loadCurrentItem();
@@ -167,9 +170,8 @@ export class MarkerDetailComponent implements OnInit {
         this.currentItem = this.markerList[0];// TODO Check for errors
       }
       console.log("loadNextItem: previous: " + previous + " NewIndex: "+ this.markerCurrentIndex);
-      const temp = this.user.UserName + "_" + this.user.UserId
       // await this.mapService.removeNameFromViewList(this.markerList[this.markerCurrentIndex+1].UserName, temp);
-      await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
+      if(this.markerList[this.markerCurrentIndex].UserName) await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
       this.setNextPreviousVisibility();
     }
   }

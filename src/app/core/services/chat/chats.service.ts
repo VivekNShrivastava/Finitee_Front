@@ -81,12 +81,12 @@ export class ChatsService {
   async initializeChatModule(logData: FiniteeUser) {
     return new Promise<any>(async (resolve, reject) => {
       // await this.terminateFireStore();
-      console.log("start intialiize firestore");
+      // console.log("start intialiize firestore");
       // const app = await initializeApp(environment.firebaseConfig);
       // this.firechatdb = this.firestoreService.getFirestoreInstance();
 
       this.auth = await getAuth();
-      console.log("this.auth - ", this.auth);
+      // console.log("this.auth - ", this.auth);
       if (logData != null) {
         this.logInfo = logData;
         //this.attachmentService.user = logData;
@@ -122,7 +122,7 @@ export class ChatsService {
         .then(async (userCredential) => {
           // alert("Signed in pass")
           const user = userCredential.user;
-          console.log("user - authenticateUserFromFCM", user);
+          // console.log("user - authenticateUserFromFCM", user);
           resolve(true);
         })
         .catch((error) => {
@@ -175,10 +175,9 @@ export class ChatsService {
       this.httpService.post(method, params)
         .subscribe(async (result: any) => {
           this.progressBar = false;
-          console.log(config.FCM_TOKEN_API, result);
           if (result != null) {
             this.FCM_TOKEN = result.token;
-            console.log("fcm token recieved", this.FCM_TOKEN);
+            // console.log("fcm token recieved", this.FCM_TOKEN);
             resolve(true);
           }
         },
@@ -265,7 +264,6 @@ export class ChatsService {
   }
 
   addGroupQueryListener(messageCollectionQuery: any, loginInfo: any) {
-    console.log("addGroupQueryListener...");
     // Start listening to the group query.
     onSnapshot(messageCollectionQuery, { includeMetadataChanges: true }, (snapshot: { docChanges: () => any[]; }) => {
 
@@ -317,7 +315,6 @@ export class ChatsService {
   }
 
   addChatQueryListener(chatCollectionQuery: any) {
-    console.log("addChatQueryListener...");
     // Start listening to the group query.
     onSnapshot(chatCollectionQuery, { includeMetadataChanges: true }, (snapshot: { metadata: { hasPendingWrites: any; }; docChanges: (arg0: { includeMetadataChanges: boolean; }) => any[]; }) => {
       // console.log("snapshot", snapshot);

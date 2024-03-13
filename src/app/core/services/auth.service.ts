@@ -47,7 +47,7 @@ export class AuthService {
 
   getNewAccessToken(request: HttpRequest<any>) {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
-    console.log("Getting new refresh token...for...", request, "refresh token...", refreshToken);
+    // console.log("Getting new refresh token...for...", request, "refresh token...", refreshToken);
 
     return of(refreshToken).pipe(
       switchMap(token => {
@@ -109,7 +109,6 @@ export class AuthService {
 
   storeAccessToken(accessToken: string) {
     this.currentAccessToken = accessToken;
-    console.log("new access token", this.currentAccessToken);
     return localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
   }
 

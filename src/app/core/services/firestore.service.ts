@@ -22,7 +22,7 @@ export class FirestoreService extends BasePage {
   }
 
   private async initFirestore(): Promise<void> {
-    console.log("Initialzing firebase from firestore service...")
+    // console.log("Initialzing firebase from firestore service...")
     const firebaseApp = initializeApp(environment.firebaseConfig);
 
     try {
@@ -54,7 +54,7 @@ export class FirestoreService extends BasePage {
     // });
 
     const specificDocumentId = this.logInfo.UserName; // Replace with the actual document ID
-    console.log("fireastore-", specificDocumentId)
+    // console.log("fireastore-", specificDocumentId)
     // Reference to the specific document
     // const specificDocumentRef = viewingListRef.doc(specificDocumentId);
     const specificDocumentRef = doc(viewingListRef, specificDocumentId);
@@ -65,7 +65,7 @@ export class FirestoreService extends BasePage {
         const data = { id: docSnapshot.id, ...docSnapshot.data() };
         this.tempStore = data;
         this.viewListSubject.next(this.tempStore);
-        console.log('Real-time data for specific document:', this.tempStore);
+        // console.log('Real-time data for specific document:', this.tempStore);
         // Do something with the real-time data
       } else {
         console.log('Document not found');
@@ -104,7 +104,7 @@ export class FirestoreService extends BasePage {
   
 
   getFirestoreInstance(): Firestore {
-    console.log("retunring the instance...")
+    // console.log("retunring the instance...")
     return this.firestoreInstance;
   }
 }

@@ -10,5 +10,6 @@ export enum MarkerType {
     Totem = "Totem",
     FreeUser = "FreeUser",
     BusinessNonProfitUser = "BusinessNonProfitUser",
-    Sales = "Sales"
+    Sales = "Sales",
+    Event = "Event"
 }

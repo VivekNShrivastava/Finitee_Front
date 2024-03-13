@@ -2,7 +2,22 @@
 
   <ion-row class="firstrow">
 
-    <img (click)="openUser(currentItem)" class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.UserProfileImage) }}"
+    <img *ngIf="currentItem.entity != 'U' " class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.Image) }}"
+      onError="this.src='assets/icons/business/anonymous.svg'" />
+    <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
+
+  </ion-row>
+
+  <ion-row class="secondrow">
+    <ion-card-header *ngIf="currentItem.entity != 'U' " class="followeruser" style="background-color:  #EAF1F4;">
+      <ion-text class="ion-text-center name">{{currentItem.Title}}</ion-text>
+      <ion-card-subtitle class="fi-multiline-truncate username">@{{currentItem.Description}} | 100 Followers</ion-card-subtitle>
+    </ion-card-header>
+  </ion-row>
+
+  <ion-row class="firstrow">
+
+    <img *ngIf="currentItem.entity=='U' " (click)="openUser(currentItem)" class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfileImage || currentItem.UserProfileImage) }}"
       onError="this.src='assets/icons/business/anonymous.svg'" />
     <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
   </ion-row>
@@ -10,7 +25,7 @@
 
   <ion-row class="secondrow">
 
-    <ion-card (click)="openUser(currentItem)" class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1" style="background-color:  #EAF1F4;">
+    <ion-card (click)="openUser(currentItem)" class="header-card" *ngIf="currentItem.entity=='U' " style="background-color:  #EAF1F4;">
 
       <ion-card-header class="followeruser" style="background-color:  #EAF1F4;">
         <ion-text class="ion-text-center name">{{currentItem.DisplayName}}</ion-text>
@@ -86,7 +101,7 @@
     <ion-text>My Traits</ion-text>
   </div>
 
-  <div class="alltraits">
+  <div  *ngIf="currentItem.entity=='U' " class="alltraits">
     <ion-chip class="person_trait" color="primary">Dance</ion-chip>
     <ion-chip class="person_trait" color="primary">football Play</ion-chip>
     <ion-chip class="person_trait" color="primary">Music</ion-chip>

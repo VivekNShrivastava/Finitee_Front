@@ -67,7 +67,7 @@ export class PlacesService {
 
   /** Get All State List for selected country */
   public async getStateList(countryId: number){
-    console.log("state test: Start: 2")
+    // console.log("state test: Start: 2")
     this.states = [...StateJson];
     this.states = await lodash.filter(this.states, { 'CountryId': countryId });
     return this.states;
@@ -133,7 +133,7 @@ export class PlacesService {
   // }
 
   public async findCountry(queryObj: any) {
-    console.log("findCountry: Start: ", queryObj);
+    // console.log("findCountry: Start: ", queryObj);
     return new Promise<any>(async (resolve, reject) => {
       let country: any;
       this.countries = await this.getCountryList();

@@ -68,4 +68,8 @@ export class ImageCropperComponent {
         this.modalController.dismiss(this.croppedImage.changingThisBreaksApplicationSecurity);
 
     }
+
+    dismiss(){
+        this.modalController.dismiss();
+    }
 }
