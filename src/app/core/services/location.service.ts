@@ -67,7 +67,7 @@ export class LocationService {
         accuracy: data.coords.accuracy
       };
       this.setCurrentPosition(data);
-      console.log('getCurrentCoordinate: ', this.currentCoordinate);
+      // console.log('getCurrentCoordinate: ', this.currentCoordinate);
       if (loadArea) {
         this.currentArea = new Area();
         this.currentArea.Coordinate = {Latitude: this.currentCoordinate.latitude, Longitude: this.currentCoordinate.longitude };
@@ -178,7 +178,7 @@ export class LocationService {
   }
 
   getAddressFromLatLng(latLng: any, loadArea?: boolean) {
-    console.log("getAddressFromLatLng: latLng", latLng);
+    // console.log("getAddressFromLatLng: latLng", latLng);
     var geocoder = new google.maps.Geocoder();
     let self = this;
     geocoder.geocode({ 'location': latLng }, async function (results, status) {

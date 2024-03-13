@@ -166,8 +166,10 @@
 
     <!-- location -->
     <ng-container *ngIf="!isEdit">
+      <ion-button style="margin-left: 10px;" (click)="openMap()">SET LOCATION</ion-button>
+      <p style="margin-left: 10px; color: red;">{{salesListingLocation || "Location not set!!" }}</p>
 
-      <ion-radio-group name="Location" [(ngModel)]="salesItem.Location" (ionChange)="getLatlng()">
+      <!-- <ion-radio-group name="Location" [(ngModel)]="salesItem.Location" (ionChange)="getLatlng()">
         <ion-item lines="none" class="ion-no-margin">
           <ion-label class="locationInput">Location:</ion-label>
           <ion-radio value="current" [disabled]="isEdit"></ion-radio>
@@ -177,7 +179,7 @@
           <ion-label style="font-size: 14px;">&nbsp;Home location</ion-label>
 
         </ion-item>
-      </ion-radio-group>
+      </ion-radio-group> -->
     </ng-container>
 
     <!-- offset -->

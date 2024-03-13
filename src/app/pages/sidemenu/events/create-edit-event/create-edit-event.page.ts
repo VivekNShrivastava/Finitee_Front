@@ -152,11 +152,18 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       lng: data.location.longitude
     }
 
+    console.log("latnln", latLng)
+
     const res = await this.locationService.getAddressFromLatLng(latLng);
 
     let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
-      if(address) this.eventLocation = address.FormattedAddress;      
+      if(address){
+        this.eventLocation = address.FormattedAddress;  
+        this.getLatlng(address);
+      }     
     });
+
+    
 
   }
 
@@ -422,16 +429,23 @@ export class CreateEditEventPage extends BasePage implements OnInit {
 
 
 
-  getLatlng() {
-    var addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
-    this.locationService.getLatLngFromAddressType('home', addrress)
-      .then((latLng) => {
-       this.eventItem.Latitude = latLng.lat
-       this.eventItem.Longitude = latLng.lng
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  getLatlng(add?: any) {
+
+    if(add){
+      this.eventItem.Latitude = add.Latitude;
+      this.eventItem.Longitude = add.Longitude;
+    }else{
+      var addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
+      this.locationService.getLatLngFromAddressType('home', addrress)
+        .then((latLng) => {
+         this.eventItem.Latitude = latLng.lat
+         this.eventItem.Longitude = latLng.lng
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
   }
 
   async onSubmit() {

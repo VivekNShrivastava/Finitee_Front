@@ -183,7 +183,6 @@ export class JwtInterceptor extends BasePage implements HttpInterceptor  {
             take(1),
             switchMap(token => {
               // Perform the request again now that we got a new token!
-              console.log("no refres token")
               return next.handle(this.addToken(request));
             })
           );

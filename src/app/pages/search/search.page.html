@@ -177,9 +177,9 @@
       </ion-item>
       <div slot="content">
         <div *ngFor="let user of regularSearchUser">
-          <ion-item lines="none">
+          <ion-item lines="none" (click)="openUser(user)">
             <!-- *ngIf="user.UserTypeId==1" -->
-            <!-- (click)="openUser(user)" -->
+            
             <ion-thumbnail slot="start">
               <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfileImage}}"
                 onError="this.src='assets/icons/business/anonymous.svg'" />
