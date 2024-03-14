@@ -6,9 +6,9 @@
       <!-- <app-notification-icon></app-notification-icon> -->
     </ion-buttons>
     <ion-title>Events</ion-title>
-    <ion-buttons slot="end" id="main-content">
+    <!-- <ion-buttons slot="end" id="main-content">
       <ion-menu-button ></ion-menu-button>
-    </ion-buttons> 
+    </ion-buttons>  -->
   </ion-toolbar>
 </ion-header>
 
@@ -40,38 +40,43 @@
       <ion-grid value="active">
         <ion-row class="ion-align-items-center" *ngFor="let event of upcomingEventList; let i=index"
           (click)="openEventViewPage(event.Id)">
-          <ion-col size="4">
+          <ion-col style="padding-right: 0px;" size="4">
             <!-- <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img> -->
-            <img src="{{appConstants.mediaPrefix+event.EventImages[0]}}" 
+            <img style="border-radius: 10px; height: 100px;" src="{{appConstants.mediaPrefix+event.EventImages[0]}}" 
             onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
           </ion-col>
-          <ion-col size="8">
-            <ion-card button="true">
+          <ion-col style="padding-left: 0px;" size="8" >
+            <ion-card button="true" style="  width: 222px;
+            background: #EAF1F4 0% 0% no-repeat padding-box;
+            border-radius: 22px;
+            height: auto;">
 
-              <ion-card-content>
-                <ion-text>
-                  <h4>{{event.Title}}</h4>
-                </ion-text>
+              <ion-card-content style="padding: 6px 16px 6px 16px;">
+                
+                  <ion-text>
+                    <h4 style="font-size: 16px; color: #285078;">{{event.Title}}</h4>
+                  </ion-text>
+              
                 <ion-text *ngIf="event.StartDate">
-                  <h4>{{event.StartDate | date}}</h4>
+                  <h4 style="font-size: 16px;">{{event.StartDate | date}}</h4>
                 </ion-text>
               
                 <ion-text>
-                  <h4>{{event.StartDate | date:'shortTime'}} <ng-container
+                  <h4 style="font-size: 16px; color: #285078;">{{event.StartDate | date:'shortTime'}} <ng-container
                       *ngIf="event.StartDate | date  ">to</ng-container> {{event.EndDate | date:'shortTime'}}</h4>
                 </ion-text>
                 <ion-text *ngIf="event.daysLeft >= 0">
-                  <h5>({{event.daysLeft}} days left)</h5>
+                  <h5 style="color: #03A9F5; font-size: 14px;">({{event.daysLeft}} days left)</h5>
                 </ion-text>
                 <ion-buttons>
-                  <ion-button class="fi-delete-btn" shape="round"
+                  <ion-button style="padding-left: 0px;"  class="fi-delete-btn" shape="round"
                     (click)="deleteEvent($event,event,i,'upcoming') ; $event.stopPropagation();">
-                    <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+                    <ion-icon style="font-size: 16px;" name="delete"></ion-icon>
                   </ion-button>
                   &nbsp;
                   <ion-button class="fi-edit-btn" shape="round"
                     (click)="editEvent($event,event,i) ; $event.stopPropagation();">
-                    <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
+                    <ion-icon style="font-size: 16px;" name="edit"></ion-icon>
                   </ion-button>
                 </ion-buttons>
               </ion-card-content>
