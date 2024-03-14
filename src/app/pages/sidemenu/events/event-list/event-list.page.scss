@@ -11,7 +11,7 @@ ion-content {
   //     color: #505050;
   //     margin-left: 20px;
   //   }
-  // }
+  // 
   & > ion-grid {
     & > ion-row {
       & > ion-col {
@@ -29,7 +29,7 @@ ion-content {
           border-radius: 22px;
           margin: 0;
           & > ion-card-content {
-            padding: 4px 13px;
+            padding: 4px 10px;
             & > ion-text {
               h4 {
                 font: normal normal 600 14px/24px SF Pro Display;
@@ -89,9 +89,8 @@ ion-content {
     }
   }
   .ion-align-items-center{
-    ion-col:nth-child(2) {
-    //  padding-left: 13px;
-    }
+  
+    
   }
 }
 
