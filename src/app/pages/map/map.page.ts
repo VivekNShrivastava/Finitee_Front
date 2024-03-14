@@ -14,7 +14,7 @@ import { SignalRService } from '../../core/services/signal-r.service';
 import { MapSearchComponent } from './map-search/map-search.component';
 import { MarkerInfoComponent } from './marker-info/marker-info.component';
 import { MarkerDetailComponent } from './marker-detail/marker-detail.component';
-import { FiniteeService } from "./models/FiniteeService";
+import { FiniteeService, SonarServiceAvailableSearchRespond, SonarServiceRequiredSearchRespond } from "./models/FiniteeService";
 import { UserLocation } from './models/Location';
 import { mapStyle } from './models/MapOptions';
 import { TotemSearchResult, FiniteeUserOnMap, SonarEventSearchRespond, SonarFreeUserSearchRespond } from './models/MapSearchResult';
@@ -68,6 +68,7 @@ export class MapPage implements OnDestroy {
   stopOnTerminate = true;
   commData: any = [];
   markers: google.maps.Marker[] = <google.maps.Marker[]>[];
+  advanceMarkers: google.maps.marker.AdvancedMarkerElement[] = <google.maps.marker.AdvancedMarkerElement[]>[];
   totemMarkers: any = [];
   userMarkers: any[] = [];
   viewingMeList: UserOnMap[] = <UserOnMap[]>[];
@@ -243,7 +244,7 @@ export class MapPage implements OnDestroy {
     if(res?.LocationShowAt === 'L'){
       this.setupLocationUpdates();
     }else{
-      console.log("error while getting sonar privacy settings");
+      // console.log("error while getting sonar privacy settings");
       this.locationUpdateSubscription.unsubscribe();
     } 
   }
@@ -285,14 +286,14 @@ export class MapPage implements OnDestroy {
               lat: this.location.lat,
               lng: this.location.lng
             },
-            styles: this.styles,
+            // styles: this.styles,
             zoom: MAP_INIT_ZOOM,
             zoomControl: false,
             keyboardShortcuts: false,
             fullscreenControl: false,
             streetViewControl: false,
             mapTypeControl: false,
-            // mapId: "DEMO_MAP_ID",
+            mapId: "11514565b652be7e",
           }
         );
       } else {
@@ -406,6 +407,7 @@ export class MapPage implements OnDestroy {
     this.userMarkers = [];
     this.totusr_markers = [];
     this.event_markers = [];
+    // this.advanceMarkers = [];
     this.isZoomOut = false;
     this.currentLocationMarker = null;
     this.totemMarkersOnSerach = [];
@@ -455,9 +457,37 @@ export class MapPage implements OnDestroy {
     if (caller != 'Sonar') {
       this.markers.push(marker);
     }
-    marker.setMap(this.map ?? null);
+    // marker.setMap(this.map ?? null);
     this.setClusters(this.markers);
     return marker
+  }
+
+  generateRandomZIndex(): number {
+    // Assuming you want zIndex within a specific range, for example, 1 to 1000
+    const min = 1;
+    const max = 1000;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  async addAdvanceMarkerToMap(obj: any, caller?: string) {
+
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+    let marker = new AdvancedMarkerElement({
+      position: obj.position,
+      map: this.map,
+      title: obj.title,
+      content: obj?.content,
+      gmpDraggable: false,
+      collisionBehavior: google.maps.CollisionBehavior.REQUIRED,
+      zIndex: this.generateRandomZIndex(),
+    });
+    
+    //  this.advanceMarkers.setMap(this.map);
+    this.advanceMarkers.push(marker);
+    console.log(this.advanceMarkers);
+    // marker.setMap(this.map ?? null);
+    // this.setClusters(this.markers);
+    return marker;
   }
 
   removeCluster() {
@@ -517,8 +547,22 @@ export class MapPage implements OnDestroy {
     forLoop(0);
   }
 
+  removeAdvanceMarkerFromMap() {
+    // this.advanceMarkers[0].map = null
+    const forLoop = async (i: any) => {
+      if (i < this.advanceMarkers.length) {
+        this.advanceMarkers[i].map = null;
+        forLoop(i + 1)
+      } else {
+        this.advanceMarkers = [];
+      }
+    }
+    forLoop(0);
+  }
+
   async refreshMarker() {
     this.removeSearchResultFromMap();
+    this.removeAdvanceMarkerFromMap();
     // await this.loadSavedLocation();
     let result = this.mapSearchResult
     if (result?.data) {
@@ -534,9 +578,10 @@ export class MapPage implements OnDestroy {
         if (result.data?.status == 'P') {
           // this.setCircle(result.data)
         }
-        if (result.data.oneTimeSearch) {
+        if (result.data) {
           result.data[`location`] = this.location;
           this.markers = [];
+          this.advanceMarkers = [];
           this.searchResultUpdate();
         } else {
           this.clearMap();
@@ -572,8 +617,8 @@ export class MapPage implements OnDestroy {
       let indexResultItem = 0;
       if (users.length > 0) { indexResultItem = this.addUserToMap(users, indexResultItem); }
       if (totems.length > 0) { indexResultItem = this.addTotemToMap(totems, indexResultItem); }
-      if (serviceAvailable.length > 0) { indexResultItem = this.addServiceToMap(serviceAvailable, 'SA', indexResultItem); }
-      if (serviceRequired.length > 0) { indexResultItem = this.addServiceToMap(serviceRequired, 'SR', indexResultItem); }
+      if (serviceAvailable.length > 0) { indexResultItem = this.addServiceAvailableToMap(serviceAvailable, 'SA', indexResultItem); }
+      if (serviceRequired.length > 0) { indexResultItem = this.addServiceRequiredToMap(serviceRequired, 'SR', indexResultItem); }
       if (events.length > 0) { indexResultItem = this.addEventToMap(events, indexResultItem); }
       if (saleslisting.length > 0) { indexResultItem = this.addSalesListingToMap(saleslisting, indexResultItem); }
 
@@ -583,6 +628,7 @@ export class MapPage implements OnDestroy {
     } else {
       this.mainResultFromSearch = [];
       this.removeSearchResultFromMap();
+      this.removeAdvanceMarkerFromMap();
       console.log('No Results Found');
       this.clearAddCurrentLocationMarker();
     }
@@ -611,53 +657,72 @@ export class MapPage implements OnDestroy {
       const { IsConnected } = res;
       const UserTypeId = 1;
 
-      icon = {
-        url: userImg || (IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER),
-        scaledSize: new google.maps.Size(68, 68), // scaled size
-        className: 'map-marker-icon'
-      } 
-      templateView = MarkerType.FreeUser;
+      // icon = {
+      //   url: userImg || (IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER),
+      //   scaledSize: new google.maps.Size(68, 68), // scaled size
+      //   className: 'map-marker-icon'
+      // } 
+      // templateView = MarkerType.FreeUser;
 
-      // let marker = new google.maps.Marker({
+      // let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
       //   position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude },
-      //   map: this.map,
-      //   title: userData.UserName,
       //   icon: icon,
+      //   title: userData.UserName,
+      //   optimized: false,
+      // };
+
+      // const marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
+
+      // marker.set('markerData', <MarkerInfo<SonarFreeUserSearchRespond>>{
+      //   data: userData,
+      //   MarkerType: templateView,
+      //   itemIndex: startIndexInResult
       // });
-      let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
-        position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude },
-        icon: icon,
-        title: userData.UserName,
-        optimized: false,
-      };
-
-      const marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
-
-      marker.set('markerData', <MarkerInfo<SonarFreeUserSearchRespond>>{
-        data: userData,
-        MarkerType: templateView,
-        itemIndex: startIndexInResult
-      });
       
 
       // MIGRATING TO ADVANCE MARKER
-      // const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
 
-      // const priceTag = document.createElement('div');
-      // // priceTag.className = 'price-tag';
-      // priceTag.textContent = '$2.5M';
-      // // priceTag.classList.add("property");
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
 
-      // const marker = new AdvancedMarkerElement({
-      //   map: this.map,
-      //   position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude},
-      //   title: userData.UserName,
-      //   content: priceTag
-      // })
-
-      marker.addListener("click", (markerdetail: any) => {
-        this.onMarkerClick(marker);
+      const infowindow = new google.maps.InfoWindow({
+        content: "THis is a free user",
+        ariaLabel: "Uluru",
       });
+
+      const imageTag = document.createElement('img');
+      imageTag.src = userImg || (IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER); // Set the actual path to your image
+      imageTag.className = 'custom-marker-image'; // You can define a CSS class for styling if needed
+      imageTag.style.borderRadius = "50%";
+      imageTag.style.height = "50px";
+      imageTag.style.width = "50px";
+
+      if(IsConnected && userImg) imageTag.style.border = "2px solid green";
+      else if(!IsConnected && userImg) imageTag.style.border = "2px solid black";
+
+      let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
+        position: { lat: userData.LatLong.Latitude, lng: userData.LatLong.Longitude },
+        title: userData.UserName,
+        content: imageTag,
+        optimized: false,
+      };
+
+      const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
+
+      marker.map?.set("markerData", <MarkerInfo<SonarEventSearchRespond>>{
+        data: userData,
+        MarkerType: MarkerType.FreeUser,
+        itemIndex: startIndexInResult
+      });
+
+      marker.addListener("click", () => {
+        console.log("clicked");
+        this.onAdvanceMarkerClick(marker);
+      });
+      
+      // marker.addListener("click", (markerdetail: any) => {
+      //   // this.onMarkerClick(marker);
+      //   console.log("clicked");
+      // });
       if (!isExist) {
         this.userMarkers.push(userData);
       }
@@ -693,18 +758,47 @@ export class MapPage implements OnDestroy {
     this.pingResults = [];
   }
 
-  private addServiceToMap(services: FiniteeService[], serviceType: string, startIndexInResult: number) {
+  private addServiceRequiredToMap(services: SonarServiceRequiredSearchRespond[], serviceType: string, startIndexInResult: number) {
     services.forEach(async each => {
       // remove user if existing
       this.markers.forEach(oldmarker => {
-        if (oldmarker.get('ServiceId') == each.ServiceId) {
+        if (oldmarker.get('ServiceId') == each.Id) {
           oldmarker.setMap(null);
         }
       });
 
       let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
         position: { lat: each.Latitude, lng: each.Longitude },
-        icon: each.ServiceType == "A" ? icons.SERVICE_AVAILABLE : icons.SERVICE_REQUIRED,
+        icon: icons.SERVICE_REQUIRED,
+        title: each.Title
+      };
+
+      let marker = await this.addMarkerToMap(markerOptions);
+      marker.set('markerData', <MarkerInfo<FiniteeService>>{
+        data: each,
+        MarkerType: MarkerType.FiniteeService,
+        itemIndex: startIndexInResult
+      });
+      startIndexInResult++;
+      marker.addListener("click", () => {
+        this.onMarkerClick(marker);
+      });
+    });
+    return startIndexInResult;
+  }
+
+  private addServiceAvailableToMap(services: SonarServiceAvailableSearchRespond[], serviceType: string, startIndexInResult: number) {
+    services.forEach(async each => {
+      // remove user if existing
+      this.markers.forEach(oldmarker => {
+        if (oldmarker.get('ServiceId') == each.Id) {
+          oldmarker.setMap(null);
+        }
+      });
+
+      let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
+        position: { lat: each.Latitude, lng: each.Longitude },
+        icon: icons.SERVICE_AVAILABLE,
         title: each.Title
       };
 
@@ -761,6 +855,7 @@ export class MapPage implements OnDestroy {
 
         // this.event_markers.push(eachEvent);
         const marker: google.maps.Marker = await this.addMarkerToMap(markerOptions);
+        console.log("sada marker", marker);
         marker.set("markerData", <MarkerInfo<SonarEventSearchRespond>>{
           data: eachEvent,
           MarkerType: MarkerType.Event,
@@ -1062,6 +1157,10 @@ export class MapPage implements OnDestroy {
     const markerData: MarkerInfo<any> = (marker as any)?.markerData;
     console.log("onMarkerClickV2: markerData: ", markerData);
     this.markerCurrentIndex = markerData.itemIndex;
+    const res = this.mainResultFromSearch.findIndex((v: any) => {
+      return (v as any)?.Id === markerData.data.Id
+    })
+    this.markerCurrentIndex = res;
     await this.openMarkerDetails();
   }
 
@@ -1069,6 +1168,91 @@ export class MapPage implements OnDestroy {
     console.log("onMarkerClick....");
     this.onMarkerClickV2(params);//TODO: Manoj remove calling from here replace function call
     const markerData: MarkerInfo<any> = (params as any)?.markerData;
+
+    if (this.mapWindow) {
+      this.mapWindow.close();
+    }
+    // Create a component
+    const compFactory = this.resolver.resolveComponentFactory(MarkerInfoComponent);
+    const compRef: ComponentRef<MarkerInfoComponent> = compFactory.create(this.injector);
+
+    compRef.instance.htmlInfoWindow = this.mapWindow;
+    compRef.instance.compRef = compRef;
+    compRef.instance.currentUserLocation = this.location;
+
+
+    this.appRef.attachView(compRef.hostView);
+
+    let div: HTMLDivElement = document.createElement('div');
+    div.appendChild(compRef.location.nativeElement);
+
+    compRef.instance.markerType = markerData.MarkerType;
+    switch (markerData.MarkerType) {
+      case MarkerType.FiniteeService: {
+        compRef.instance.finiteeService = markerData.data;
+      }
+        break;
+      case MarkerType.Sales: {
+        compRef.instance.sales = markerData.data;
+      }
+        break;
+      case MarkerType.Totem: {
+        compRef.instance.totem = markerData.data;
+      }
+        break;
+      case MarkerType.FreeUser: {
+        compRef.instance.freeUser = markerData.data;
+      }
+        break;
+      case MarkerType.BusinessNonProfitUser: {
+        compRef.instance.businessAndNonProfitUser = markerData.data;
+      }
+        break;
+      case MarkerType.SavedLocation: {
+        compRef.instance.savedLocation = markerData.data;
+      }
+        break;
+      case MarkerType.Event: {
+        compRef.instance.event = markerData.data
+      }
+        break;
+    }
+
+    let refrence = div.getElementsByClassName(`refrence-${markerData.MarkerType}`)[0];
+    this.mapWindow.setOptions({ content: refrence });
+
+    if (markerData.MarkerType == MarkerType.FreeUser || markerData.MarkerType == MarkerType.BusinessNonProfitUser) {
+      let toUserId: number = markerData.data.Id;
+      let toUserName: number = markerData.data.UserName;
+      let fromUserName: number = this.user.name;
+      let fromUserId: number = this.user.UserId;
+    }
+
+    // Dynamic rendering
+    this._ngZone.run(() => {
+      this.mapWindow.open(this.map, params);
+    });
+  }
+
+  // advance marker click map
+
+  async onAdvanceMarkerClickV2(marker: google.maps.marker.AdvancedMarkerElement) {
+    //console.log("onMarkerClick: ", marker);
+    const markerData: MarkerInfo<any> = (marker as any)?.Eq.map.markerData;
+    console.log("onMarkerClickV2: markerData: ", markerData);
+    this.markerCurrentIndex = markerData.itemIndex;
+    console.log(markerData.data.Id);
+    const res = this.mainResultFromSearch.findIndex((v: any) => {
+      return (v as any)?.Id === markerData.data.Id
+    })
+    this.markerCurrentIndex = res;
+    await this.openMarkerDetails();
+  }
+
+  async onAdvanceMarkerClick(params: google.maps.marker.AdvancedMarkerElement) {//Obsolete function to open MapInfoWindow
+    console.log("onMarkerClick....", params);
+    this.onAdvanceMarkerClickV2(params);//TODO: Manoj remove calling from here replace function call
+    const markerData: MarkerInfo<any> = (params as any)?.Eq.map.markerData;
 
     if (this.mapWindow) {
       this.mapWindow.close();
@@ -1305,6 +1489,7 @@ export class MapPage implements OnDestroy {
       // this.clearResults();
       this.mapSearchResult = result;
       this.removeSearchResultFromMap();
+      this.removeAdvanceMarkerFromMap();
       if (result.data) {
         if (result.data?.status == 'L') {
 
@@ -1497,6 +1682,7 @@ export class MapPage implements OnDestroy {
     this.mainResultFromSearch = [];
     this.clearMap();
     this.removeSearchResultFromMap();
+    this.removeAdvanceMarkerFromMap();
     if (this.getFlag() != 'P') {
       this.removeCircle();
     }

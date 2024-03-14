@@ -17,3 +17,37 @@ export interface FiniteeService extends google.maps.MarkerOptions{
     timg?:string;
     CreatedOn?:Date;
 }
+
+export interface SonarServiceRequiredSearchRespond {
+    CurrencyCode: string | null;
+    Description: string;
+    FirstName: string;
+    Id: string;
+    Image: string | null;
+    JobTraits: string[];
+    LastName: string;
+    Latitude: number;
+    Longitude: number;
+    Price: number;
+    PriceType: string;
+    ProfileImage: string;
+    Proximity: number;
+    Title: string;
+}
+
+export interface SonarServiceAvailableSearchRespond{
+    CurrencyCode: string | null;
+    Description: string;
+    FirstName: string;
+    Id: string;
+    Image: string | null;
+    JobTraits: string[];
+    LastName: string;
+    Latitude: number;
+    Longitude: number;
+    Price: number;
+    PriceType: string;
+    ProfileImage: string;
+    Proximity: number;
+    Title: string;
+}

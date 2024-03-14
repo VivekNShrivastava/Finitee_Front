@@ -4,7 +4,7 @@ import { map, Observable, of, tap } from 'rxjs';
 import { SignalRService } from '../../../core/services/signal-r.service';
 import { environment } from '../../../../environments/environment';
 import * as config from '../../../core/models/config/ApiMethods';
-import { FiniteeService } from '../models/FiniteeService';
+import { FiniteeService, SonarServiceAvailableSearchRespond, SonarServiceRequiredSearchRespond } from '../models/FiniteeService';
 import { TotemSearchResult, FiniteeUserOnMap, SonarEventSearchRespond, SonarFreeUserSearchRespond, SonarSalesListingSearchRespond } from '../models/MapSearchResult';
 import { MapSearchTerms } from '../models/MapSearchTerm';
 import { Greeting } from '../models/UserOnMap';
@@ -221,11 +221,11 @@ export class MapService {
         if (responseData.Totems) {
           this.addTotems(responseData.Totems, false);
         }
-        if (responseData.ServiceAvailable) {
-          this.addServices(responseData.ServiceAvailable, 'SA', false);
+        if (responseData.SonarServiceAvailableSearchRespond) {
+          this.addServiceAvailable(responseData.SonarServiceAvailableSearchRespond, false);
         }
-        if (responseData.ServiceRequired) {
-          this.addServices(responseData.ServiceRequired, 'SR', false);
+        if (responseData.SonarServiceRequiredSearchRespond) {
+          this.addServiceRequired(responseData.SonarServiceRequiredSearchRespond, false);
         }
         if (responseData.SonarEventSearchRespond) {
           this.addEvents(responseData.SonarEventSearchRespond, false);
@@ -357,6 +357,40 @@ export class MapService {
         // val.ttimg = val.ttimg ? val.UserId + '/' + val.ttimg : '';
         this.mainList.push({
           entity: 'SL',
+          ...val
+        });
+      }
+    });
+  }
+
+  addServiceRequired(listOfServiceRequired: SonarServiceRequiredSearchRespond[], isSearch?: boolean) {
+    if (isSearch) {
+      this.mainList = [];
+    }
+    const serviceRequiredId = this.mainList.map((val: any) => val.entity == 'SR' ? val.Id : null).filter((a: any) => a);
+    listOfServiceRequired.forEach(val => {
+      if (serviceRequiredId.indexOf(val.Id) > -1) {
+      } else {
+        // val.ttimg = val.ttimg ? val.UserId + '/' + val.ttimg : '';
+        this.mainList.push({
+          entity: 'SR',
+          ...val
+        });
+      }
+    });
+  }
+
+  addServiceAvailable(listOfServiceAvailable: SonarServiceAvailableSearchRespond[], isSearch?: boolean) {
+    if (isSearch) {
+      this.mainList = [];
+    }
+    const serviceAvailableId = this.mainList.map((val: any) => val.entity == 'SA' ? val.Id : null).filter((a: any) => a);
+    listOfServiceAvailable.forEach(val => {
+      if (serviceAvailableId.indexOf(val.Id) > -1) {
+      } else {
+        // val.ttimg = val.ttimg ? val.UserId + '/' + val.ttimg : '';
+        this.mainList.push({
+          entity: 'SA',
           ...val
         });
       }
