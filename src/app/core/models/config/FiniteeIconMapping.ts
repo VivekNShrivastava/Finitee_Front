@@ -329,6 +329,9 @@ export const finiteeIconMapper = {
   //events icon
   'heat-map-icon': 'assets/icons/screen-wise-icons/event-icons/Heatmap-icon.svg',
   'location-circle-blue-icon': 'assets/icons/screen-wise-icons/event-icons/Location-icon.svg',
+  'eventdate': 'assets/icons/screen-wise-icons/event-icons/Events-Carousel-Date-icon.svg',
+  'eventclock': 'assets/icons/screen-wise-icons/event-icons/Events-Carousel-Time-icon.svg',
+  
 
   //free user icon
   'free-user-connected-white-icon':'assets/icons/screen-wise-icons/free-user/Free-user-connected-icon-only-white.svg',

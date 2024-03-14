@@ -88,6 +88,7 @@ ion-card {
   box-shadow: none;
   border-radius: 20px !important;
   z-index: 0;
+  transform: translateY(-19px);
 }
 // .text {
 //   font-size: 10px;
@@ -218,6 +219,11 @@ border-radius: 30px;
   // .text-center {
   //   text-align: center;
   // }
+}
+
+.header-card2{
+  height: auto;
+  margin-top: 0px;
 }
 .thumbnail-card {
   display: flex;
@@ -541,6 +547,15 @@ ion-img::part(image){
    
 
 }
+.userimgevent{
+  width: 196px;
+  height: 143px;
+  border-radius:48px;
+  position: absolute;
+  border: 0px solid;
+  z-index: 1;
+  margin-top: -74px;
+}
 .secondrow{
   display: flex;
   justify-content: center;
@@ -556,6 +571,14 @@ ion-img::part(image){
 color: black;
 
 }
+.back2{
+  position: absolute;
+  top:63px ;
+  left: 11px;
+  width: 30px;
+   height: 79px;
+ color: black;
+}
 .front{
   position: absolute;
   right: 11px;
@@ -564,10 +587,25 @@ color: black;
   color: black;
 
 }
+.front2{
+  position: absolute;
+  top:63px ;
+  right: 11px;
+  width: 30px;
+  height: 79px;
+  color: black;
+}
+
 .followeruser{
   margin-top:25px ;
 }
-
+.followeruserevent{
+  display: none;
+  // margin-top: 3px;
+}
+.eventcard{
+  margin-top: 33px;
+}
 .traitshead{
   text-align: center;
   font: var(--unnamed-font-style-normal) normal bold 20px/38px var(--unnamed-font-family-sf-pro-display);
@@ -715,4 +753,13 @@ ion-icon[name="chevron-back-circle-outline"] {
 ion-icon[name="chevron-back-circle-outline"]::part(inner) {
   border: 1px solid black;
   border-radius: 50%;
+}
+
+.userevent_namelogo{
+  width: 44px;
+height: 44px;
+border: 1px solid var(--unnamed-color-707070);
+box-shadow: -1px 3px 6px #000000B8;
+border: 1px solid #707070;
+border-radius: 24px;
 }

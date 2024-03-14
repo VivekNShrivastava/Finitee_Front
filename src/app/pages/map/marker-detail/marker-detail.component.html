@@ -2,18 +2,19 @@
 
   <ion-row class="firstrow">
 
-    <img *ngIf="currentItem.entity != 'U' " class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.Image) }}"
+    <img [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity != 'U'}" class="userimg" src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.Image) }}"
       onError="this.src='assets/icons/business/anonymous.svg'" />
     <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
 
+
   </ion-row>
 
-  <ion-row class="secondrow">
-    <ion-card-header *ngIf="currentItem.entity != 'U' " class="followeruser" style="background-color:  #EAF1F4;">
+  <!-- <ion-row class="secondrow">
+    <ion-card-header [ngClass]="{'followeruser': currentItem.entity !== 'U', 'followeruserevent': currentItem.entity === 'E'}"  style="background-color:  #EAF1F4;">
       <ion-text class="ion-text-center name">{{currentItem.Title}}</ion-text>
       <ion-card-subtitle class="fi-multiline-truncate username">@{{currentItem.Description}} | 100 Followers</ion-card-subtitle>
     </ion-card-header>
-  </ion-row>
+  </ion-row> -->
 
   <ion-row class="firstrow">
 
@@ -23,7 +24,7 @@
   </ion-row>
 
 
-  <ion-row class="secondrow">
+  <ion-row class="secondrow" *ngIf="currentItem.entity == 'U'">
 
     <ion-card (click)="openUser(currentItem)" class="header-card" *ngIf="currentItem.entity=='U' " style="background-color:  #EAF1F4;">
 
@@ -115,3 +116,99 @@
     <ion-text>Products & Services</ion-text>
   </div> -->
 <!-- </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ion-card  *ngIf="currentItem.entity != 'U'">
+  <!-- <ion-card-header>
+    <ion-text>Event Details</ion-text>
+  </ion-card-header>
+  <ion-card-content>
+
+  </ion-card-content> -->
+  <ion-row class="secondrow">
+
+    <ion-card (click)="openUser(currentItem)" class="header-card2" *ngIf="currentItem.entity !='U' " style="background-color:  #EAF1F4;">
+   
+      <ion-card-header class="eventcard" style="background-color:  #EAF1F4;">
+        <div style="display:flex; justify-content: center; align-items: center; width: 300px;">
+          <ion-text style="font-size:26px; color:#285078 ; text-align: center;" class="ion-text-center name">{{currentItem.Title}}</ion-text>
+        </div>
+        
+        <div *ngIf="currentItem.entity =='SL' " style="font-size:27px; color: #1A3253; display: flex; text-align: center; justify-content: center; align-items: center;" >
+          <p style=" margin-bottom: 0px;">$ {{currentItem.Price}}</p>
+         </div>
+       <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <div class="userevent_namelogo">
+
+        </div>
+        <p *ngIf="currentItem.entity =='E' " style="font-size: 24px; color: #1A3253;">Drop NightClub</p>
+        <p *ngIf="currentItem.entity =='SL' " style="font-size: 24px; color: #1A3253;">@{{currentItem.FirstName}}</p>
+       </div>
+
+      
+
+       <div *ngIf="currentItem.entity =='E' " style="display: flex; justify-content: center; align-items: center; gap: 23px;">
+        <div style="display: flex; gap: 5px; align-items: center;">
+          <ion-icon name="eventdate"></ion-icon>
+          <p style="font-size: 18px; color: #1A3253;"> Dec,24 2024</p>
+        </div>
+
+        <div style="display: flex; gap: 5px; align-items: center;" >
+          <ion-icon name="eventclock"></ion-icon>
+          <p style="font-size: 18px; color: #1A3253;">9 pm to 2 pm</p>
+        </div>
+       </div>
+
+       <div>
+        <p  style="font-size: 16px; text-align: center;">{{currentItem.Description}}</p>
+        <!-- <p *ngIf="currentItem.entity =='E' "  style="font-size: 16px; text-align: center;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p> -->
+       </div>
+
+
+       <div>
+        <h1 *ngIf="currentItem.entity =='E' "  style="text-align: center; font-size:20px ; color: #285078;">Address:</h1>
+        <h1 *ngIf="currentItem.entity =='SL' "  style="text-align: center; font-size:20px ; color: #285078;">Condition:</h1> 
+        
+        <p *ngIf="currentItem.entity =='SL' "  style="font-size:17px ; color:#285078 ; text-align: center;">
+
+          {{currentItem.Condition}}
+        </p>
+        <p *ngIf="currentItem.entity =='E' "  style="font-size:17px ; color:#285078 ; text-align: center; margin-bottom: 0px;">
+
+          {{currentItem.AddressLine1}}
+        </p>
+        <p *ngIf="currentItem.entity =='E' "  style="font-size:17px ; color:#285078 ; text-align: center; margin-top: 8px;">
+
+          {{currentItem.AddressLine2}}
+        </p>
+        
+
+       </div>
+
+      </ion-card-header>
+
+     
+
+  
+    </ion-card>
+  
+    <ion-icon *ngIf="showPrevious" name="chevron-back-circle-outline" class="back2"
+    (click)="loadNextItem(true)"></ion-icon>
+
+ 
+    <ion-icon *ngIf="showNext" name="chevron-forward-circle-outline" class="front2"
+      (click)="loadNextItem(false)"></ion-icon>
+  </ion-row>
+</ion-card>
