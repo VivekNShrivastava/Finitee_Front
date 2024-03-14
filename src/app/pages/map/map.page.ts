@@ -1280,10 +1280,18 @@ export class MapPage implements OnDestroy {
     let initialBreakpoint: number;
 
     if (screenWidth < 768) {
+
+      if(screenWidth == 412){
+        breakpoints = [0, 0.8];
+        initialBreakpoint = 0.7;
+      } else{
+        breakpoints = [0, 1];
+        initialBreakpoint = 0.9;
+      }
       // Small screens (e.g., smartphones)
-      breakpoints = [0, 0.8];
-      initialBreakpoint = 0.8;
-    } else if (screenWidth >= 768 && screenWidth < 1024) {
+    
+    }
+    else if (screenWidth >= 768 && screenWidth < 1024) {
       // Medium screens (e.g., tablets)
       breakpoints = [0, 0.6];
       initialBreakpoint = 0.6;

@@ -21,8 +21,8 @@
         <ion-img alt="Logo" src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
       </ion-avatar>
       <ion-label>
-        <h3>{{logInfoDetails.UserName}}</h3>
-        <p>3 mins ago</p>
+        <h3 style="font-size: 17px; color: #1A3253;">{{logInfoDetails.UserName}}</h3>
+        <p style="font-size: 13px; color: #1A3253;">20 mins ago</p>
       </ion-label>
       <ion-label slot="end" class="fd-views-label" *ngIf="event.RequireInvite == true">
         <p>300 views</p>
@@ -32,7 +32,7 @@
  
     <ion-item lines="none">
       <ion-text class="ion-padding-start">
-        <h2>{{event.Title}}</h2>
+        <h2 style="color: #285078; font-size: 24px;">{{event.Title}}</h2>
       </ion-text>
     </ion-item>
 
@@ -50,17 +50,17 @@
     <ion-item *ngIf="event.StartDate | date ">
       <div>
         <ion-text>
-          <h4>{{event.StartDate | date}}</h4>
+          <h4 style="color: #285078; font-size: 17px;">{{event.StartDate | date}}</h4>
         </ion-text>
         <ion-text  *ngIf="event.StartDate | date ">
-          <h4>{{event.StartDate | date:'shortTime'}} to {{event.EndDate | date:'shortTime'}}</h4>
+          <h4 style="color: #285078; font-size: 17px;">{{event.StartDate | date:'shortTime'}} to {{event.EndDate | date:'shortTime'}}</h4>
         </ion-text>
       </div>
     </ion-item>
 
     <ion-item lines="none">
       <ion-text>
-        <p>{{event.Description}}</p>
+        <p style="font-size: 17px; color: #285078;">{{event.Description}}</p>
       </ion-text>
     </ion-item>
 
@@ -70,9 +70,9 @@
           <h4>Address</h4>
         </ion-text>
         <ion-text>
-          <p class="ion-no-margin">{{event.AddressLine1}}  </p>
-          <p class="ion-no-margin">  {{event.AddressLine2}} </p>
-          <p class="ion-no-margin">  {{event.AddressLine3}}</p>
+          <p style="font-size: 17px; color: #285078;" class="ion-no-margin">{{event.AddressLine1}}  </p>
+          <p style="font-size:17px ; color:#285078 ;" class="ion-no-margin">  {{event.AddressLine2}} </p>
+          <p  style="font-size:17px ; color:#285078 ;"  class="ion-no-margin">  {{event.AddressLine3}}</p>
         </ion-text>
       </div>
     </ion-item>
@@ -80,10 +80,10 @@
     <ion-item lines="none" *ngIf="createdById == logInfoDetails.UserId">
       <div>
         <ion-text>
-          <h4>Viewable by</h4>
+          <h4 style="font-size: 17px; color: #285078;">Viewable by</h4>
         </ion-text>
         <ion-text>
-          <p class="ion-no-margin">{{event.VisibleTo}}</p>
+          <p style="font-size: 17px; color: #1A3253;" class="ion-no-margin">{{event.VisibleTo}}</p>
         </ion-text>
       </div>
     </ion-item>
@@ -91,7 +91,7 @@
     <ion-item lines="none">
       <div>
         <ion-text>
-          <h4>Location</h4>
+          <h4 style="font-size: 17px; color: #285078;">Location</h4>
         </ion-text>
         <ion-text>
           <!-- <p class="ion-no-margin">{{event.location}} location</p> -->
@@ -128,10 +128,10 @@
 
   <div class="fi-twoBtns"  *ngIf="createdById == logInfoDetails.UserId">
       <ion-button  *ngIf="event.RequireInvite == true" expand="block" shape="round" class="footer-button" (click)="openRequestRsvpPage(event.Id , 'invite')">
-          <p>View requests ({{requestList.length}})</p>
+          <p style="font-size: 18px;">View requests ({{requestList.length}})</p>
       </ion-button>
-      <ion-button expand="block" shape="round" [class.fi-w100]="event.RequireInvite == false" class="footer-button" (click)="openRequestRsvpPage(event.Id , 'rsvp')">
-        <p>View RSVP ({{inviteAcceptedList.length}})</p>
+      <ion-button style="height: 53px;" expand="block" shape="round" [class.fi-w100]="event.RequireInvite == false" class="footer-button" (click)="openRequestRsvpPage(event.Id , 'rsvp')">
+        <p style="font-size: 18px;">View RSVP ({{inviteAcceptedList.length}})</p>
       </ion-button>
     </div>
 </ion-footer>
