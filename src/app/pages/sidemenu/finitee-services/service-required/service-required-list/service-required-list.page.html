@@ -22,8 +22,8 @@
     <ng-container *ngFor="let i of serviceRequiredService.serviceList; let last = last">
       <ion-row   class="ion-align-items-center" (click)="viewDetails(i.Id)" *ngIf="i.DaysLeft >= 0">
         <ion-col size="4">
-          <ion-img [src]="appConstants.mediaPrefix+i.ImageList[0]">
-          </ion-img>
+          <img src="appConstants.mediaPrefix+i.ImageList[0]"
+          onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'">
         </ion-col>
         <ion-col size="8">
           <ion-card class="ion-no-padding">

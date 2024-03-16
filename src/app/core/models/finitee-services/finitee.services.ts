@@ -8,7 +8,7 @@ export class FiniteeService {
   Price?: number;
   Currency?: string;
   PriceType: string = '';
-  VisibleTo: string = "";
+  VisibleTo: string = "A";
   Location: string = 'current';
   Latitude?: number;
   Longitude?: number;
