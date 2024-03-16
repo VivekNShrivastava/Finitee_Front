@@ -9,6 +9,9 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { FiniteeServicesService } from 'src/app/core/services/finitee-services/finitee.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { PaymentService } from 'src/app/core/services/payment.service';
+import { ModalController } from '@ionic/angular';
+import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component';
+import { AddressMap } from 'src/app/core/models/places/Address';
 declare var Razorpay: any;
 
 @Component({
@@ -30,7 +33,7 @@ export class CreateEditServiceAvailablePage extends BasePage implements OnInit {
   }
   serviceObj: FiniteeService = new FiniteeService();
   isEdit: boolean = false;
-
+  serviceAvailableLocation: any;
   // temp
   GeneralPrivacy: any[] = [
     {
@@ -53,11 +56,26 @@ export class CreateEditServiceAvailablePage extends BasePage implements OnInit {
     }
   ];
 
+  privacyTypes: any = [
+    {
+      title: 'All Individuals/Businesses/Nonprofits'
+    },
+    {
+      title: 'All Finitee users',
+      value: 'A'
+    },
+    {
+      title: 'Connected members',
+      value: 'C'
+    }
+  ]
+
   constructor(
     private router: Router,
     private navCtrl: NavController,
     private finiteeService: FiniteeServicesService,
-    private commonService: CommonService,
+    public commonService: CommonService,
+    public modalController: ModalController,
     private authService: AuthService, private locationService: LocationService,
     private alertCtrl: AlertController, private paymentService: PaymentService
   ) {
@@ -73,7 +91,9 @@ export class CreateEditServiceAvailablePage extends BasePage implements OnInit {
       this.getTodaysDMY();
       this.getLatlng()
 
-      this.serviceObj.VisibleTo = this.GeneralPrivacy[0].value
+      // this.serviceObj.VisibleTo = this.GeneralPrivacy[0].value
+      this.serviceObj.VisibleTo = this.privacyTypes[1].value
+
     }
     
     switch (this.logInfo.UserTypeId) {
@@ -100,6 +120,39 @@ export class CreateEditServiceAvailablePage extends BasePage implements OnInit {
     
   }
 
+  async openMap() {
+    const modal = await this.modalController.create({
+      component: MapLocation,
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data && data.location) {
+      const { latitude, longitude } = data.location;
+    }
+
+    const latLng = {
+      lat: data.location.latitude,
+      lng: data.location.longitude
+    }
+
+    console.log("latnln", latLng)
+
+    const res = await this.locationService.getAddressFromLatLng(latLng);
+
+    let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+      if(address){
+        this.serviceAvailableLocation = address.FormattedAddress;  
+        this.getLatlng(address);
+      }     
+    });
+
+    
+
+  }
+
   getTodaysDMY() {
     const currentDate = new Date();
     this.startDate = {
@@ -119,15 +172,34 @@ export class CreateEditServiceAvailablePage extends BasePage implements OnInit {
     }
   }
 
-  getLatlng() {
-    this.locationService.getLatLngFromAddressType(this.serviceObj.Location)
-      .then((latLng) => {
-       this.serviceObj.Latitude = latLng.lat
-       this.serviceObj.Longitude = latLng.lng
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  // getLatlng() {
+  //   this.locationService.getLatLngFromAddressType(this.serviceObj.Location)
+  //     .then((latLng) => {
+  //      this.serviceObj.Latitude = latLng.lat
+  //      this.serviceObj.Longitude = latLng.lng
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }
+
+  getLatlng(add?: any) {
+
+    if(add){
+      this.serviceObj.Latitude = add.Latitude;
+      this.serviceObj.Longitude = add.Longitude;
+    }else{
+      // var addrress = this.serviceObj.AddressLine1 + this.serviceObj.AddressLine2 + this.eventItem.AddressLine3;
+      // this.locationService.getLatLngFromAddressType('home', addrress)
+      //   .then((latLng) => {
+      //    this.eventItem.Latitude = latLng.lat
+      //    this.eventItem.Longitude = latLng.lng
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error:', error);
+      //   });
+    }
+    // console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
   }
   async onSubmit() {
     if (this.isEdit) {
