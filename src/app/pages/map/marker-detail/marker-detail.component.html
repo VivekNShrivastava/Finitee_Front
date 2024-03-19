@@ -32,11 +32,13 @@
   <ion-card (click)="openUser(currentItem)" class="header-card" *ngIf="currentItem.entity=='U' "
     style="background-color:  #EAF1F4;">
 
+
     <ion-card-header class="followeruser" style="background-color:  #EAF1F4;">
       <ion-text class="ion-text-center name">{{currentItem.DisplayName}}</ion-text>
       <ion-card-subtitle class="fi-multiline-truncate username">@{{currentItem.UserName}} | 100
         Followers</ion-card-subtitle>
     </ion-card-header>
+
 
     <ion-card-content>
 
@@ -71,7 +73,8 @@
         | 100 Followers</ion-card-subtitle>
     </ion-card-header>
 
-    <ion-card-content>
+
+<!--     <ion-card-content>
 
       <ion-row class="header-card-details">
         <ion-button shape="round" size="small" color="light" class="endorsement-btn connectios" (click)="tempClick()">
@@ -115,9 +118,31 @@
   <ion-chip class="person_trait" color="primary">Event creating</ion-chip>
   <ion-chip class="person_trait" color="primary">Reading Books</ion-chip>
   <ion-chip class="person_trait" color="primary">Stiching</ion-chip>
-</div>
+</div> -->
 
 <!-- <div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
+
+  <div class="traitshead" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1">
+    <ion-text>My Traits</ion-text>
+  </div>
+
+  <!-- <div  *ngIf="currentItem.entity=='U' " class="alltraits">
+    <ion-chip class="person_trait" color="primary">Dance</ion-chip>
+    <ion-chip class="person_trait" color="primary">football Play</ion-chip>
+    <ion-chip class="person_trait" color="primary">Music</ion-chip>
+    <ion-chip class="person_trait" color="primary">Cricket</ion-chip>
+    <ion-chip class="person_trait" color="primary">Event creating</ion-chip>
+    <ion-chip class="person_trait" color="primary">Reading Books</ion-chip>
+    <ion-chip class="person_trait" color="primary">Stiching</ion-chip>
+  </div> -->
+  <div *ngIf="currentItem.entity == 'U'" class="alltraits">
+    <ion-chip *ngFor="let trait of currentItem.Traits" class="person_trait" color="primary">
+      {{ trait }}
+    </ion-chip>
+  </div>
+
+  <!-- <div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
+
     <ion-text>Products & Services</ion-text>
   </div> -->
 <!-- </div> -->
@@ -149,6 +174,7 @@
 
       <ion-card-header class="eventcard" style="background-color:  #EAF1F4;">
         <div style="display:flex; justify-content: center; align-items: center; width: 300px;">
+
           <ion-text style="font-size:26px; color:#285078 ; text-align: center;"
             class="ion-text-center name">{{currentItem.Title}}</ion-text>
         </div>
@@ -163,6 +189,7 @@
           </div>
           <p *ngIf="currentItem.entity != 'U' " style="font-size: 24px; color: #1A3253;"> {{currentItem.FirstName}} {{currentItem.LastName}} </p>
           <!-- <p *ngIf="currentItem.entity =='SL' " style="font-size: 24px; color: #1A3253;">@{{currentItem.FirstName}}</p> -->
+
         </div>
 
 
