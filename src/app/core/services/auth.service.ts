@@ -237,6 +237,7 @@ export class AuthService {
 
   // current logout function
   logout() {
+    this.router.navigate([''], { replaceUrl: true });
     var url = LOGOUT_API;
     const RefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
     const accessToken_1 = localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -272,6 +273,7 @@ export class AuthService {
     this.http.post<any>(url, refresh_token, { headers: headers }).pipe(
       switchMap(Response => {
         if(Response === 'Success'){
+          this.router.navigate([''], { replaceUrl: true });
           console.log("switchMap");
           this.currentAccessToken = " ";
           const deleteAccess = localStorage.removeItem(ACCESS_TOKEN_KEY);
@@ -284,8 +286,9 @@ export class AuthService {
 
       }),
       tap(_ => {
-        console.log("Tap");
         this.router.navigate([''], { replaceUrl: true });
+        console.log("Tap");
+        // this.router.navigate([''], { replaceUrl: true });
         this.currentAccessToken = "";
         window.document.title = AppConstants.APP_NAME;
         localStorage.clear();

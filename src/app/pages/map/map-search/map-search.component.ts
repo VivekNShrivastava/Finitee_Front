@@ -366,7 +366,7 @@ export class MapSearchComponent implements OnInit {
         businessUser: this.searchType[5].isChecked,
         nonProfitUser: this.searchType[7].isChecked,
         events: this.searchType[14].isChecked,
-        sales: this.searchType[14].isChecked,
+        sales: this.searchType[15].isChecked,
         serviceReq: this.searchType[4].isChecked,
         serviceAvailable: this.searchType[6].isChecked,
       }
