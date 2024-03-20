@@ -849,7 +849,7 @@ export class MapPage implements OnDestroy {
 
         let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
           position: { lat: eachEvent.Latitude, lng: eachEvent.Longitude },
-          icon: icons.EVENT,
+          icon: icons.Eventnotconnectionicon,
           title: eachEvent.Title
         };
 
