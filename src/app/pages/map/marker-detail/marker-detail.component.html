@@ -2,9 +2,12 @@
 
 <ion-row class="firstrow">
 
-  <img *ngIf="currentItem.entity !='U' " [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity != 'U'}" class="userimg"
-    src="{{appConstants.mediaPrefix + (currentItem.ProfilePhoto || currentItem.Image) }}"
-   />
+
+  <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)" [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}" class="userimg"
+    src="{{appConstants.mediaPrefix + (currentItem.Image) }}"
+    onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"
+     />
+
   <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
 
 
@@ -158,7 +161,7 @@
   <ion-row class="secondrow">
     
 
-    <ion-card (click)="openUser(currentItem)" class="header-card2" *ngIf="currentItem.entity !='U' "
+    <ion-card (click)="open(currentItem)" class="header-card2" *ngIf="currentItem.entity !='U' "
       style="background-color:  #EAF1F4;">
 
       <ion-card-header class="eventcard" style="background-color:  #EAF1F4;">

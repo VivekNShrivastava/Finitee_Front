@@ -28,24 +28,32 @@ export class SalesItemViewPage extends BasePage implements OnInit {
     private commonService: CommonService, private paymentService: PaymentService
   ) {
     super(authService);
-
+    this.route.params.subscribe((params: any) => {
+      this.itemId = params.id;
+    });
   }
   ngOnInit() {
 
   }
 
   ionViewWillEnter() {
-    this.salesItem = this.salesListingService.salesItemList.filter(a => a.Id == this.salesListingService.id)[0];
-    this.currencySymbol = this.commonService.currentCurrency.CurrencySymbol
+    // this.salesItem = this.salesListingService.salesItemList.filter(a => a.Id == this.salesListingService.id)[0];.
+    this.salesItemById().then(() => {
+      this.currencySymbol = this.commonService.currentCurrency.CurrencySymbol
 
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+  
+      const expiryDate = new Date(this.salesItem.ExpireOn);
+      expiryDate.setHours(0, 0, 0, 0);
+      const timeDiff = expiryDate.getTime() - currentDate.getTime();
+      this.salesItem.daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    })
+  }
 
-    const expiryDate = new Date(this.salesItem.ExpireOn);
-    expiryDate.setHours(0, 0, 0, 0);
-    const timeDiff = expiryDate.getTime() - currentDate.getTime();
-    this.salesItem.daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
+  async salesItemById(){
+    var result = await this.salesListingService.getSalesItemBySlId(this.itemId);
+    this.salesItem = result;
   }
 
   edit() {

@@ -12,7 +12,8 @@
   <ion-list >
     <ion-item lines="none">
       <ion-avatar slot="start">
-        <ion-img alt="Logo" src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
+        <!-- <ion-img alt="Logo" src="appConstants.mediaPrefix+ProfileImage"></ion-img> -->
+        <img src="appConstants.mediaPrefix+ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" />
       </ion-avatar>
       <ion-label>
         <h3>{{logInfo.DisplayName}}</h3>
@@ -35,7 +36,8 @@
       <ion-slides pager="true">
         <ion-slide *ngFor="let i of serviceObj.ImageList">
           <ion-card class="ion-no-margin">
-            <ion-img alt="thumbnail-img" [src]="appConstants.mediaPrefix+i"></ion-img>
+            <!-- <ion-img alt="thumbnail-img" [src]="appConstants.mediaPrefix+i"></ion-img> -->
+            <img src="appConstants.mediaPrefix+i" onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
           </ion-card>
         </ion-slide>
       </ion-slides>

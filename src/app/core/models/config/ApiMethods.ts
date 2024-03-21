@@ -140,7 +140,7 @@ export const UPDATE_PRIVACY_SETTING = `${FINITEE_ROUTE}UpdateUserPrivacySetting`
 export const GET_ALL_SL_BY_USR = `${SALES_LISTING_ROUTE}GetAllSalesListingByUser`;
 export const CREATE_SL = `${SALES_LISTING_ROUTE}CreateSalesItem`;
 export const UPD_SL = `${SALES_LISTING_ROUTE}UpdateSalesItem`;
-export const GET_SL_BY_ID = `${SALES_LISTING_ROUTE}getSalesItemById`;
+export const GET_SL_BY_ID = `${SALES_LISTING_ROUTE}GetSalesItemById`;
 export const DEL_SL = `${SALES_LISTING_ROUTE}DeleteSalesItem`;
 
 // Service required
