@@ -412,7 +412,7 @@
                   </div>
                 </ion-item>
                 <!-- replies -->
-                <ion-list class="replies" *ngIf=" comment.showReply === 'true' + (comment?.Id?.toString() || '')">
+                <ion-list class="replies" *ngIf=" comment.showReply === 'true' + (comment?.Id?.toString() || '') && IsReplySectionOpen">
                   <ion-item lines="none" *ngFor="let reply of comment.topThreeReplies">
                     <ion-avatar slot="start">
                       <img (click)="openUser(comment.CreatedBy)"

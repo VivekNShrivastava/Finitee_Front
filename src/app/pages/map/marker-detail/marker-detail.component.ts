@@ -37,13 +37,13 @@ export class MarkerDetailComponent implements OnInit {
     public authService: AuthService,
     public router: Router) { 
       this.user = this.authService.getUserInfo();
-      console.log("marker-user", this.user);
+      // console.log("marker-user", this.user);
     }
 
   ngOnInit() {
     
     console.log("markerCurrentIndex: ", this.markerCurrentIndex);
-    console.log("markerList: ", this.markerList);
+    console.log("markerList: ", this.markerList[this.markerCurrentIndex]);
     // this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
     // console.log("markerList: ", this.markerList);
     if(this.markerList[this.markerCurrentIndex].UserName) this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
