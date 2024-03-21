@@ -99,7 +99,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #markerDetailModal [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]" handle="false">
+  <ion-modal #markerDetailModal [initialBreakpoint]="0.33" [breakpoints]="[0, 0.33, 0.5, 0.75]" handle="false">
     <ng-template>
       <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
         <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="mainResultFromSearch"
