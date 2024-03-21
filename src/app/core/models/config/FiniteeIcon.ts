@@ -21,4 +21,6 @@ export const CONNECTED_BUSINESS_VIEWING = 'assets/markers/vcb.svg';
 export const CONNECTED_NONPROFIT_VIEWING = 'assets/markers/vcn.svg';
 export const UNCONNECTED_NONPROFIT_VIEWING = 'assets/markers/vun.svg';
 export const EVENT = 'assets/icons/sidemenu/events.svg';
+export const Eventnotconnectionicon = 'assets/markers/Eventnotconnectionicon.svg';
+
 export const SALES_LISTING = 'assets/icons/sidemenu/sales-listing.svg';
