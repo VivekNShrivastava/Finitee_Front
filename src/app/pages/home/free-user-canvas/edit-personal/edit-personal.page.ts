@@ -33,7 +33,7 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
   selectedState!: any;
   selectedCity!: any
   loaded: boolean = false
-  uploadingImage: boolean = true;
+  uploadingImage: boolean = false;
   @ViewChild('selectStateModal') selectStateModal!: IonModal;
   @ViewChild('selectCityModal') selectCityModal!: IonModal;
 

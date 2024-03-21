@@ -44,10 +44,8 @@ export class MarkerDetailComponent implements OnInit {
     
     console.log("markerCurrentIndex: ", this.markerCurrentIndex);
     console.log("markerList: ", this.markerList);
-    // this.markerList = this.markerList.filter((v: any) => v.entity !== 'U');//once free user object has proximity field, remove this line
-    this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
-    console.log("markerList: ", this.markerList);
-    const temp = this.user.UserName + "_" + this.user.UserId
+    // this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
+    // console.log("markerList: ", this.markerList);
     if(this.markerList[this.markerCurrentIndex].UserName) this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
     // this.addToViewList();
     this.subscribeSwipeEvent();
@@ -63,10 +61,35 @@ export class MarkerDetailComponent implements OnInit {
         data: user
       }
     };
-    if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
-      this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
-    else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
-      this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
+    // if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
+    //   this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
+    // else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
+    this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
+  }
+
+  open(item: any) {
+    switch(item.entity){
+      case 'E': 
+        this.router.navigateByUrl(`/events/event-view/${item.Id}`) 
+        this.closeDetails();
+        break;
+
+        case 'SL': 
+        this.router.navigateByUrl(`/sales-listing/sales-item-view/${item.Id}`)
+        this.closeDetails();
+        break;
+
+        case 'SA': 
+        this.router.navigateByUrl(`service-available/service-available-view/${item.Id}`);
+        this.closeDetails();
+        break;
+
+        case 'SR': 
+        this.router.navigateByUrl(`service-required/service-required-view/${item.Id}`);
+        this.closeDetails();
+        break;
+      }
+     
   }
 
   // public async addToViewList() {
