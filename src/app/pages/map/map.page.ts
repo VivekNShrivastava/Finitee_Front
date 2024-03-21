@@ -854,9 +854,14 @@ export class MapPage implements OnDestroy {
 
         let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
           position: { lat: eachEvent.Latitude, lng: eachEvent.Longitude },
-          // icon: icons.BUYSELL,
-          title: eachEvent.Title,
-          content: beachFlagImg
+// <<<<<<< develop
+          icon: icons.Eventnotconnectionicon,
+          title: eachEvent.Title
+// =======
+//           // icon: icons.BUYSELL,
+//           title: eachEvent.Title,
+//           content: beachFlagImg
+// >>>>>>> nisarg
         };
 
         const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);

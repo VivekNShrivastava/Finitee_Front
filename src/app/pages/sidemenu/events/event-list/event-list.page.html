@@ -104,27 +104,31 @@
     <ion-grid *ngIf="selectedTab == 'expired' ">
       <ion-row class="ion-align-items-center" *ngFor="let event of completedEventList; let i=index">
         <ion-col size="4">
-          <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
+          <ion-img style="border-radius: 10px; height: 100px;" *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
         </ion-col>
-        <ion-col size="8">
-          <ion-card>
+        <ion-col style="padding-left: 10px;" size="8" >
+          <ion-card button="true" style="  width: 222px;
+          background: #EAF1F4 0% 0% no-repeat padding-box;
+          border-radius: 22px;
+          height: auto;">
 
-            <ion-card-content>
+            <ion-card-content style="padding: 6px 16px 22px 16px; display: flex; flex-direction: column;">
               <ion-text>
-                <h4 class="completed-event">{{event.Title}}</h4>
+                <h4 class="completed-event" style="font-size: 16px; color: #285078;">{{event.Title}}</h4>
               </ion-text>
               <ion-text>
-                <h4 class="completed-event">{{event.StartDate | date}}</h4>
+                <h4 style="font-size: 16px; color: #285078;" class="completed-event">{{event.StartDate | date}}</h4>
               </ion-text>
               <ion-text>
-                <h4 class="completed-event">{{event.StartDate | date:'shortTime'}} <ng-container
+                <h4 style="font-size: 16px; color: #285078;" class="completed-event">{{event.StartDate | date:'shortTime'}} <ng-container
                     *ngIf="event.StartDate != null && event.EndDate != null ">to</ng-container> {{event.EndDate |
                   date:'shortTime'}}</h4>
               </ion-text>
-              <ion-buttons>
-                <ion-button class="fi-delete-btn" shape="round" (click)="deleteEvent($event,event,i,'complete')">
-                  <ion-icon name="delete"></ion-icon>
-                </ion-button>
+              <ion-buttons >
+                <ion-button style="padding-left: 0px;"  class="fi-delete-btn" shape="round"
+                (click)="deleteEvent($event,event,i,'upcoming') ; $event.stopPropagation();">
+                <ion-icon style="font-size: 16px;" name="delete"></ion-icon>
+              </ion-button>
               </ion-buttons>
             </ion-card-content>
           </ion-card>

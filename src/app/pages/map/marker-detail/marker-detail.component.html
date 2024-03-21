@@ -2,10 +2,12 @@
 
 <ion-row class="firstrow">
 
+
   <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)" [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}" class="userimg"
     src="{{appConstants.mediaPrefix + (currentItem.Image) }}"
     onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"
      />
+
   <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
 
 
@@ -34,7 +36,7 @@
 
 
     <ion-card-header class="followeruser" style="background-color:  #EAF1F4;">
-      <ion-text class="ion-text-center name">{{currentItem.DisplayName}}</ion-text>
+      <ion-text class="ion-text-center name">{{currentItem.FirstName}} {{currentItem.LastName}} </ion-text>
       <ion-card-subtitle class="fi-multiline-truncate username">@{{currentItem.UserName}} | 100
         Followers</ion-card-subtitle>
     </ion-card-header>
@@ -100,7 +102,7 @@
           <span> Sonar</span>
         </ion-button>
       </ion-row>
-    </ion-card-content>
+    <!-- </ion-card-content> -->
   </ion-card>
   <ion-icon *ngIf="showNext" name="chevron-forward-circle-outline" class="front"
     (click)="loadNextItem(false)"></ion-icon>
@@ -110,15 +112,7 @@
   <ion-text>My Traits</ion-text>
 </div>
 
-<div *ngIf="currentItem.entity=='U' " class="alltraits">
-  <ion-chip class="person_trait" color="primary">Dance</ion-chip>
-  <ion-chip class="person_trait" color="primary">football Play</ion-chip>
-  <ion-chip class="person_trait" color="primary">Music</ion-chip>
-  <ion-chip class="person_trait" color="primary">Cricket</ion-chip>
-  <ion-chip class="person_trait" color="primary">Event creating</ion-chip>
-  <ion-chip class="person_trait" color="primary">Reading Books</ion-chip>
-  <ion-chip class="person_trait" color="primary">Stiching</ion-chip>
-</div> -->
+
 
 <!-- <div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
 
@@ -126,7 +120,7 @@
     <ion-text>My Traits</ion-text>
   </div>
 
-  <!-- <div  *ngIf="currentItem.entity=='U' " class="alltraits">
+<div  *ngIf="currentItem.entity=='U' " class="alltraits">
     <ion-chip class="person_trait" color="primary">Dance</ion-chip>
     <ion-chip class="person_trait" color="primary">football Play</ion-chip>
     <ion-chip class="person_trait" color="primary">Music</ion-chip>
@@ -159,38 +153,37 @@
 
 
 
+<div style="display: flex; justify-content: center; align-items: center;">
 
-<ion-card *ngIf="currentItem.entity != 'U'">
-  <!-- <ion-card-header>
-    <ion-text>Event Details</ion-text>
-  </ion-card-header>
-  <ion-card-content>
+<ion-card class="jam" style="width: 315px;" *ngIf="currentItem.entity != 'U'">
 
-  </ion-card-content> -->
+
   <ion-row class="secondrow">
+    
 
     <ion-card (click)="open(currentItem)" class="header-card2" *ngIf="currentItem.entity !='U' "
       style="background-color:  #EAF1F4;">
 
       <ion-card-header class="eventcard" style="background-color:  #EAF1F4;">
-        <div style="display:flex; justify-content: center; align-items: center; width: 300px;">
+        <div style="display:flex; justify-content: center; align-items: center; ">
 
-          <ion-text style="font-size:26px; color:#285078 ; text-align: center;"
-            class="ion-text-center name">{{currentItem.Title}}</ion-text>
+          <ion-text style="font-size:23px; color:#285078 ; text-align: center; height: 26px;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+            class="ion-text-center name eventname">{{currentItem.Title}}</ion-text>
         </div>
 
         <div *ngIf="currentItem.entity === 'SA' || currentItem.entity === 'SL' || currentItem.entity === 'SR'"
           style="font-size:27px; color: #1A3253; display: flex; text-align: center; justify-content: center; align-items: center;">
-          <p style=" margin-bottom: 0px;">$ {{currentItem.Price}} {{currentItem.PriceType}}</p>
+          <p style=" margin-bottom: 0px; margin-top: 22px; font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 26px/31px var(--unnamed-font-family-sf-pro-display);">$ {{currentItem.Price}} {{currentItem.PriceType}}</p>
         </div>
         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
           <div >
             <img class="userevent_namelogo" src="{{appConstants.mediaPrefix + (currentItem.ProfileImage || currentItem.Image)}}">
           </div>
-          <p *ngIf="currentItem.entity != 'U' " style="font-size: 24px; color: #1A3253;"> {{currentItem.FirstName}} {{currentItem.LastName}} </p>
+          <p *ngIf="currentItem.entity != 'U'" style="font-size: 21px; color: #1A3253;"> {{currentItem.FirstName}} {{currentItem.LastName}} </p>
           <!-- <p *ngIf="currentItem.entity =='SL' " style="font-size: 24px; color: #1A3253;">@{{currentItem.FirstName}}</p> -->
 
         </div>
+
 
 
 
@@ -198,18 +191,23 @@
           style="display: flex; justify-content: center; align-items: center; gap: 23px;">
           <div style="display: flex; gap: 5px; align-items: center;">
             <ion-icon name="eventdate"></ion-icon>
-            <p style="font-size: 18px; color: #1A3253;"> Dec,24 2024</p>
+            <p class="eventdate" style="font-size: 16px; color: #1A3253; "> Dec,24 2024</p>
           </div>
 
           <div style="display: flex; gap: 5px; align-items: center;">
             <ion-icon name="eventclock"></ion-icon>
-            <p style="font-size: 18px; color: #1A3253;">9 pm to 2 pm</p>
+            <p class="eventtime" style="font-size: 16px; color: #1A3253;">9 pm to 2 pm</p>
           </div>
         </div>
 
         <div>
-          <p style="font-size: 16px; text-align: center;">{{currentItem.Description}}</p>
+          <p  style="font-size: 17px; text-align: center; color: #285078;">{{currentItem.Description}}</p>
           <!-- <p *ngIf="currentItem.entity =='E' "  style="font-size: 16px; text-align: center;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p> -->
+        </div>
+        
+        <div *ngIf="currentItem.entity === 'SR'" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+          <p style="color: #285078; font-size: 22px; margin-bottom: 0px; margin-top:10px;">Start Date:</p>
+          <p style="color: #285078; font-size: 24px; margin-top: 10px;">16/03/24</p>
         </div>
 
 
@@ -243,12 +241,27 @@
 
 
     </ion-card>
-
-    <ion-icon *ngIf="showPrevious" name="chevron-back-circle-outline" class="back2"
-      (click)="loadNextItem(true)"></ion-icon>
+    
 
 
-    <ion-icon *ngIf="showNext" name="chevron-forward-circle-outline" class="front2"
-      (click)="loadNextItem(false)"></ion-icon>
+
+    <!-- <ion-icon *ngIf="showNext" name="chevron-forward-circle-outline" class="front2"
+    (click)="loadNextItem(false)"></ion-icon> -->
+
+    <!-- <ion-icon *ngIf="showPrevious" name="chevron-back-circle-outline" class="back2"
+      (click)="loadNextItem(true)"></ion-icon> -->
+
   </ion-row>
 </ion-card>
+
+
+
+
+
+
+
+    <ion-icon *ngIf="showPrevious && currentItem.entity !='U'" name="chevron-back-circle-outline" class="back2"
+      (click)="loadNextItem(true)"></ion-icon>
+          <ion-icon *ngIf="showNext && currentItem.entity !='U'" name="chevron-forward-circle-outline" class="front2"
+    (click)="loadNextItem(false)"></ion-icon>
+</div>
