@@ -47,8 +47,9 @@ export class InflowsPage extends BasePage implements OnInit {
     this.filter = value;
     this.filterUserTypeId = userTypeId;
     this.loaded = false;
+    console.log(value, userTypeId);
     var postList = await this.inflowsService.getInflows(value, userTypeId);
-    if (postList.length > 0) {
+    if (postList?.length > 0) {
       this.paramsData['postlist'] = postList;
       this.paramsData['selectedPost'] = postList[0];
     }

@@ -236,67 +236,92 @@ export class AuthService {
   
 
   // current logout function
-  logout() {
-    this.router.navigate([''], { replaceUrl: true });
-    var url = LOGOUT_API;
-    const RefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
-    const accessToken_1 = localStorage.getItem(ACCESS_TOKEN_KEY);
-    const accessToken = localStorage.getItem('userData');
-    // const storedObject = JSON.parse(accessToken);
-    var storedObject;
-    if (accessToken !== null) {
-      storedObject = JSON.parse(accessToken);
-
-      // Now, 'storedObject' contains your JavaScript object
-      console.log(storedObject);
-      if (accessToken_1 === "undefined") {
-        localStorage.setItem(ACCESS_TOKEN_KEY, storedObject.AccessToken);
-      }
-    } else {
-      console.log('userData not found in localStorage');
-    }
-
-    var refresh_token = {
-      RefreshToken: RefreshToken
-    }
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json', // Adjust the content type as needed
-      'Authorization': 'Bearer ' + storedObject.AccessToken // Assuming you want to include the refresh token as an authorization header
-    });
-
-    // this.http.post<any>(url, refresh_token, { headers: headers }).subscribe(response => {
-    //   console.log('HTTP Response:', response);
-    // });
-
-
-    this.http.post<any>(url, refresh_token, { headers: headers }).pipe(
-      switchMap(Response => {
-        if(Response === 'Success'){
-          this.router.navigate([''], { replaceUrl: true });
-          console.log("switchMap");
-          this.currentAccessToken = " ";
-          const deleteAccess = localStorage.removeItem(ACCESS_TOKEN_KEY);
-          const deleteRefresh = localStorage.removeItem( REFRESH_TOKEN_KEY );
-          localStorage.clear();
-          return from(Promise.all([deleteAccess, deleteRefresh]));
-        }else {
-          return of(null);
+  logout(tokenExpired?: boolean) {
+    if(tokenExpired){
+      this.showLoader();
+      console.log("logging out bcoz of expired token");
+      this.router.navigate([''], {replaceUrl: true});
+      this.currentAccessToken = "";
+      window.document.title = AppConstants.APP_NAME;
+      localStorage.clear();
+      this.authState.next(false)
+      this.hideLoader();
+    }else{
+      // this.router.navigate([''], { replaceUrl: true });
+      this.showLoader();
+      var url = LOGOUT_API;
+      const RefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+      const accessToken_1 = localStorage.getItem(ACCESS_TOKEN_KEY);
+      const accessToken = localStorage.getItem('userData');
+      // const storedObject = JSON.parse(accessToken);
+      var storedObject;
+      if (accessToken !== null) {
+        storedObject = JSON.parse(accessToken);
+  
+        // Now, 'storedObject' contains your JavaScript object
+        console.log(storedObject);
+        if (accessToken_1 === "undefined") {
+          localStorage.setItem(ACCESS_TOKEN_KEY, storedObject.AccessToken);
         }
+      } else {
+        console.log('userData not found in localStorage');
+      }
+  
+      var refresh_token = {
+        RefreshToken: RefreshToken
+      }
+  
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json', // Adjust the content type as needed
+        'Authorization': 'Bearer ' + storedObject.AccessToken // Assuming you want to include the refresh token as an authorization header
+      });
+  
+      this.http.post<any>(url, refresh_token, { headers: headers }).subscribe(response => {
+        console.log('HTTP Response:', response);
+        if(response.ResponseData === "Success"){
+          this.hideLoader();
+          this.router.navigate([''], { replaceUrl: true });
+          localStorage.clear();
+          this.currentAccessToken = "";
+        }else{
+          this.hideLoader();
+          console.log("Error Occured", response.ResponseData);
+        }
+      });
 
-      }),
-      tap(_ => {
-        this.router.navigate([''], { replaceUrl: true });
-        console.log("Tap");
-        // this.router.navigate([''], { replaceUrl: true });
-        this.currentAccessToken = "";
-        window.document.title = AppConstants.APP_NAME;
-        localStorage.clear();
-        this.authState.next(false);
-        
-        window.location.reload();
-      })
-    ).subscribe();
+      this.hideLoader();
+
+  
+  
+      // this.http.post<any>(url, refresh_token, { headers: headers }).pipe(
+      //   switchMap(Response => {
+      //     if(Response === 'Success'){
+      //       this.router.navigate([''], { replaceUrl: true });
+      //       console.log("switchMap");
+      //       this.currentAccessToken = " ";
+      //       const deleteAccess = localStorage.removeItem(ACCESS_TOKEN_KEY);
+      //       const deleteRefresh = localStorage.removeItem( REFRESH_TOKEN_KEY );
+      //       localStorage.clear();
+      //       return from(Promise.all([deleteAccess, deleteRefresh]));
+      //     }else {
+      //       return of(null);
+      //     }
+  
+      //   }),
+      //   tap(_ => {
+      //     this.router.navigate([''], { replaceUrl: true });
+      //     console.log("Tap");
+      //     // this.router.navigate([''], { replaceUrl: true });
+          // this.currentAccessToken = "";
+          // window.document.title = AppConstants.APP_NAME;
+          // localStorage.clear();
+          // this.authState.next(false);
+          
+      //     window.location.reload();
+      //   })
+      // ).subscribe();
+    }
+    
   }
 
   isAuthenticated() {

@@ -577,6 +577,7 @@ export class MapPage implements OnDestroy {
           this.markers = [];
           // this.mapBoundsToFitMarker(this.advanceMarkers)
           this.advanceMarkers = [];
+          this.markersMap.clear();
           this.searchResultUpdate();
         } else {
           this.clearMap();
@@ -596,6 +597,7 @@ export class MapPage implements OnDestroy {
   //Search Result
   async searchResultUpdate() {
     this.clearMap();
+    this.markersMap.clear();
     let results = this.mapService.mainList;
     this.resultCount = results.length;
     if (results.length > 0) {
@@ -630,9 +632,26 @@ export class MapPage implements OnDestroy {
 
       this.addSameLatLongMarkersToMap(this.markersMap, 0);
 
-      await new Promise(resolve => setTimeout(resolve, 0));
+      // await new Promise(resolve => setTimeout(resolve, 0));
 
-      this.mapBoundsToFitMarker(this.advanceMarkers);
+      if(this.markersMap.size === 1) {
+        // console.log(this.markersMap[0]?.value[0])
+        let latLng;
+        for (const [key, value] of this.markersMap) {
+          console.log(value); // Output: value1
+          latLng = value[0]?.latLng || value[0];
+          break;
+        } 
+        if (latLng) {
+          const lat = latLng ?  latLng.LatLong.Latitude : latLng.Latitude;
+          const lng = latLng ?  latLng.LatLong.Longitude : latLng.Longitude
+  
+          this.map?.panTo({ lat, lng });
+        }      
+      }else {
+        await new Promise(resolve => setTimeout(resolve, 0));
+        this.mapBoundsToFitMarker(this.advanceMarkers);
+      }
      
     } else {
       this.mainResultFromSearch = [];
@@ -686,7 +705,7 @@ export class MapPage implements OnDestroy {
             markerType = MarkerType.Sales;
             break;
           case 'E':
-            markerIcon = icons.EVENT;
+            markerIcon = icons.Eventnotconnectionicon;
             markerType = MarkerType.Event;
             break;
         }
@@ -760,7 +779,7 @@ export class MapPage implements OnDestroy {
         startIndexInResult++;
 
         marker.addListener("click", () => {
-          // this.onAdvanceMarkerClick(marker, markerData);
+          this.onAdvanceMarkerClick(marker, markerData);
           console.log("clicked", value);
         });
       }
@@ -1456,14 +1475,14 @@ export class MapPage implements OnDestroy {
     const markerData = data;
     this.markerCurrentIndex = markerData.itemIndex;
     const res = this.mainResultFromSearch.findIndex((v: any) => {
-      return (v as any)?.Id === markerData.data.Id
+      return (v as any)?.Id === markerData.data[0].Id
     })
     this.markerCurrentIndex = res;
     await this.openMarkerDetails();
   }
 
   async onAdvanceMarkerClick(params: any, data?: any) {//Obsolete function to open MapInfoWindow
-
+    console.log(data);
     const latLng = params?.position;
     if (latLng) {
         const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
@@ -1916,11 +1935,9 @@ export class MapPage implements OnDestroy {
     this.markerCluster = new MarkerClusterer({
       map: this.map,
       markers: setclusters,
-      algorithmOptions: {
-        maxZoom: 12, 
-      },
-      
-      // renderer: renderer
+      // algorithmOptions: {
+      //   maxZoom: 12, 
+      // }
     });
   }
 

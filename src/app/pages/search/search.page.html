@@ -26,7 +26,8 @@
 
 
 <ion-content>
-  <ng-container value="RegSearchUsers" *ngIf="getResultCount()==0">
+  <!-- <ng-container value="RegSearchUsers" *ngIf="getResultCount()==0"> -->
+  <ng-container value="RegSearchUsers" *ngIf="totalResultLength < 2">
     <div class="ion-text-center">
       <img style="margin-top: 20px;" src="assets/imgs/icons/noresults.png">
       <p style="margin: 0px;
