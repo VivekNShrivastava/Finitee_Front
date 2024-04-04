@@ -238,7 +238,7 @@ export class AuthService {
   // current logout function
   logout(tokenExpired?: boolean) {
     if(tokenExpired){
-      this.showLoader();
+      // this.showLoader();
       console.log("logging out bcoz of expired token");
       this.router.navigate([''], {replaceUrl: true});
       this.currentAccessToken = "";

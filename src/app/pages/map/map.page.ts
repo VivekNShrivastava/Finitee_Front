@@ -718,7 +718,15 @@ export class MapPage implements OnDestroy {
           imageTag.style.borderRadius = "50%";
           imageTag.style.height = "50px";
           imageTag.style.width = "50px";
-          
+
+          // imageTag.textContent = "3";
+          // imageTag.innerHTML = "4";
+          // imageTag.style.position = "absolute";
+
+          // imageTag.style.color = "black";
+          // imageTag.style.fontSize = "20px"; 
+          // imageTag.style.fontWeight = "bold"; 
+
           if(value[0].IsConnected && markerIcon) imageTag.style.border = "2px solid green";
           else if(!value[0].IsConnected && markerIcon) imageTag.style.border = "2px solid black";
         }else{
@@ -751,10 +759,23 @@ export class MapPage implements OnDestroy {
           console.log("clicked", value);
         });
       }else{
-        const beachFlagImg = document.createElement('img');
-        beachFlagImg.src =  icons.MULTIPLE_FREEUSER;
-        beachFlagImg.style.height = "52px";
-        beachFlagImg.style.width = "52px";
+        const beachFlagImg = document.createElement('div');
+        const imgCont = document.createElement('img');
+        const para = document.createElement('span');
+        imgCont.src = icons.MULTIPLE_FREEUSER;
+        // beachFlagImg.style.backgroundImage =  icons.MULTIPLE_FREEUSER;
+        // beachFlagImg.style.height = "52px";
+        // beachFlagImg.style.width = "52px";
+
+        para.innerHTML = value.length;
+        para.style.position = "absolute";
+        para.style.left = "50%";
+        para.style.bottom = "40%";
+        para.style.color = "black";
+        para.style.fontSize = "20px"; 
+        para.style.fontWeight = "bold"; 
+        beachFlagImg.appendChild(imgCont)
+        beachFlagImg.appendChild(para);
 
         const lat = value[0] && value[0].LatLong ? value[0].LatLong.Latitude : value[0] && value[0].Latitude;
         const lng = value[0] && value[0].LatLong ? value[0].LatLong.Longitude : value[0] && value[0].Longitude;
@@ -1490,7 +1511,11 @@ export class MapPage implements OnDestroy {
 
         this.map?.panTo({ lat, lng });
     }
-    this.onAdvanceMarkerClickV2(params, data);//TODO: Manoj remove calling from here replace function call
+    if(data.data.length > 1){
+      this.onMapResultsClick(data);
+    }else{
+      this.onAdvanceMarkerClickV2(params, data);//TODO: Manoj remove calling from here replace function call
+    }
 
     if (this.mapWindow) {
       this.mapWindow.close();
@@ -1513,7 +1538,7 @@ export class MapPage implements OnDestroy {
     return await modal.present();
   }
 
-  public async onMapResultsClick(): Promise<void> {
+  public async onMapResultsClick(data: any): Promise<void> {
 
 
     let results = this.mapService.mainList;
@@ -1544,7 +1569,7 @@ export class MapPage implements OnDestroy {
     const modal = await this.modalController.create({
       component: MapResultComponent,
       componentProps: {
-        results: results
+        results: data.data
       }
     });
     modal.onDidDismiss().then(result => {
