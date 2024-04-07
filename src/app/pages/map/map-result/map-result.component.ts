@@ -32,6 +32,9 @@ export class MapResultComponent implements OnInit {
   donations = [];
   totems = [];
   salesListings = [];
+  serviceAvailable = [];
+  serviceRequired = [];
+  events = [];
 
   constructor(
     public _commonService: CommonService,
@@ -50,13 +53,14 @@ export class MapResultComponent implements OnInit {
       // this.snrlst.forEach((val: any) => {
       //   results = results.filter((x: any) => val.FlagId != x.UserId)
       // })
-      this.users = this.results.filter((val: any) => val.entity == 'U' && val.UserTypeId == 1);
+      this.users = this.results.filter((val: any) => val.entity == 'U');
       this.business = this.results.filter((val: any) => val.entity == 'U' && val.UserTypeId == 2);
       this.nonProfits = this.results.filter((val: any) => val.entity == 'U' && val.UserTypeId == 3);
       this.totems = this.results.filter((val: any) => val.entity == 'T');
-      const serviceAvailable = this.results.filter((val: any) => val.entity == 'SA');
-      const serviceRequired = this.results.filter((val: any) => val.entity == 'SR');
-
+      this.salesListings = this.results.filter((val: any) => val.entity == 'SL');
+      this.serviceAvailable = this.results.filter((val: any) => val.entity == 'SA');
+      this.serviceRequired = this.results.filter((val: any) => val.entity == 'SR');
+      this.events = this.results.filter((val: any) => val.entity == 'E');
     }
   }
 

@@ -12,7 +12,7 @@ import { FreeUserCanvasService } from 'src/app/core/services/canvas-home/freeuse
 import { PlacesService } from 'src/app/core/services/places.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
-
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-edit-personal-page',
@@ -45,7 +45,8 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
     private alertController: AlertController,
     private authService: AuthService,
     public placeService: PlacesService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private commonService: CommonService
   ) {
     super(authService);
     this.userCanvasProfile = this.router!.getCurrentNavigation()!.extras.state!['data'];
@@ -87,6 +88,7 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
       //});
     }else {
       this.uploadingImage = false;
+      this.commonService.presentToast("Error occured, Please try again");
       console.log("error while uploading file");
     }
   }

@@ -59,8 +59,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
   topReplies: any = "";
   replyButtonClickedFlags: boolean = false;
   replyToName : string = "";
-
-  
+  IsReplySectionOpen: boolean = false;
 
 
   @ViewChild('videoPlayer') videoPlayer: any;
@@ -150,11 +149,16 @@ export class PostItemsComponent extends BasePage implements OnInit {
   }
 
   async topThreeReplies(comment: any) {
-    comment.showReply = "";
-    comment.showReply = "true" + comment.Id;
-    console.log(comment.showReply, "showReply");
-    // this.topReplies = await this._postService.getTopPostCommentReplies(comment.Id);
-    comment.topThreeReplies = await this._postService.getTopPostCommentReplies(comment.Id);
+    if(this.IsReplySectionOpen) this.IsReplySectionOpen = false;
+    else{
+      comment.showReply = "";
+      comment.showReply = "true" + comment.Id;
+      console.log(comment.showReply, "showReply");
+      // this.topReplies = await this._postService.getTopPostCommentReplies(comment.Id);
+      comment.topThreeReplies = await this._postService.getTopPostCommentReplies(comment.Id);
+      this.IsReplySectionOpen = true;
+    }
+    
   }
 
   openUser(data: any) {
@@ -488,7 +492,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
     var buttons = [
       {
         text: 'Edit',
-        icon: 'privacy',
+        icon: 'edit-product',
         cssClass: 'product-option-action-sheet-button',
         data: 'edit',
       },
@@ -500,7 +504,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
       },
       {
         text: 'Report',
-        icon: 'report',
+        icon: '',
         cssClass: ['product-option-action-sheet-button', 'red-text'],
         data: 'report',
       },
@@ -508,6 +512,10 @@ export class PostItemsComponent extends BasePage implements OnInit {
 
     if (CommentOrReply.CreatedBy.Id != this.logInfo.UserId){
       buttons.splice(0, 2);
+      console.log(CommentOrReply.CreatedBy.Id == this.logInfo.UserId, "splice")
+    }
+    if (CommentOrReply.CreatedBy.Id === this.logInfo.UserId){
+      buttons.splice(2, 2);
       console.log(CommentOrReply.CreatedBy.Id == this.logInfo.UserId, "splice")
     }
       
