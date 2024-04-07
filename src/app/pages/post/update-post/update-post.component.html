@@ -25,6 +25,11 @@
   </ion-segment>
 
   <div class="post">
+    <app-multiple-media-upload 
+   
+      (filePathEvent)="addMedia($event)">
+    </app-multiple-media-upload>
+    
     <!-- <p>{{paramsData.selectedPost.PostDescription}}</p> -->
     <ion-slides *ngIf="paramsData.selectedPost.PostImages && paramsData.selectedPost.PostImages.length>0">
       <ion-slide *ngFor="let postImage of paramsData.selectedPost.PostImages">
