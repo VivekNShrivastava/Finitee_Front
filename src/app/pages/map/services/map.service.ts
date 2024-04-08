@@ -142,6 +142,7 @@ export class MapService {
       }));
 
       this.viewListSubject.next(updatedViewList);
+      console.log("updated viewing list", this.viewListSubject)
     });
   }
 
@@ -397,10 +398,27 @@ export class MapService {
     });
   }
 
-  sendGreeting(data: Greeting): Observable<Greeting> {
-    return this.http.post<Greeting>(environment.baseUrl + "finitee/SendGreenting", data).pipe(tap(() => {
-      //this._signalRService.sendMessage(NotificationEvents.GreetingEvent,JSON.stringify(data));
-    }));
+  sendGreetingToUser(id: any) {
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.GREETING.GET + "/" + id;
+      return this.http.get<any>(url).subscribe((response: any) => {
+        resolve(response);
+      },
+        (error) => {
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+
+  sendGreeting(data: any): Observable<Greeting> {
+
+    return this.http.get<any>(config.API.GREETING.GET + "/" + data.Id);
+    // return this.http.post<Greeting>(environment.baseUrl + "finitee/SendGreenting", data).pipe(tap(() => {
+    //   //this._signalRService.sendMessage(NotificationEvents.GreetingEvent,JSON.stringify(data));
+    // }));
   }
 
   acceptGreeting(data: Greeting): Observable<Greeting> {

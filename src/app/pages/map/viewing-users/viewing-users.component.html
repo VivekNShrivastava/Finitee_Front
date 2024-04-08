@@ -7,10 +7,10 @@
     </ion-buttons>
 
     <ion-title *ngIf="viewTemplate == 'Viewing'">
-      Viewing ({{_commonService.viewingUsers.length}})
+      Viewing ({{viewList.names.length}})
     </ion-title>
     <ion-title *ngIf="viewTemplate == 'Greeting'">
-      Greeting ({{_commonService.greetingWithDetails.length}})
+      Greeting ({{greetList.length}})
     </ion-title>
 
     <ion-buttons slot="end" style="visibility: hidden;">
@@ -35,7 +35,7 @@
     <ion-list style="padding:0px">
       <!-- *ngFor="let user of viewTemplate == 'Viewing'? _commonService.viewingUsers: _commonService.greetingWithDetails ;let i=index"> -->
       <div
-        *ngFor="let user of viewTemplate == 'Viewing'? viewList.names : _commonService.greetingWithDetails ;let i=index">
+        *ngFor="let user of viewTemplate == 'Viewing'? viewList.names : greetList ;let i=index">
         <div class="lines-bottom ion-padding">
           <div (click)="openUser(user)" class="display-flex--row flex-align-center">
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">

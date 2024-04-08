@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, Injector, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, Injector, Inject, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { IonModal, MenuController, ModalController, NavController, Platform } from '@ionic/angular';
@@ -32,8 +32,10 @@ import { AddressMap, Area } from 'src/app/core/models/places/Address';
 import { AllSonarSearchRequest } from 'src/app/core/models/mapSonarSearch';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { UserPrivacyService } from 'src/app/core/services/user-privacy/user-privacy.service';
-import { forEach } from 'lodash';
+import { forEach, template } from 'lodash';
 import { NgSwitchCase } from '@angular/common';
+import { NetworkPlugin } from '@capacitor/network';
+import { Geolocation } from '@capacitor/geolocation';
 
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
@@ -115,7 +117,13 @@ export class MapPage implements OnDestroy {
 
   viewList: any = [];
   viewListNumber: number = 0;
+
+  greetList: any = [];
+  greetListNumber: number = 0;
+
   eventListen: any;
+  userConnectionActive: boolean = false;
+  isUserLocationEnabled: boolean = false;
   private locationUpdateSubscription: Subscription = new Subscription();;
 
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
@@ -160,7 +168,11 @@ export class MapPage implements OnDestroy {
     private locationService: LocationService,
     private firestoreService: FirestoreService,
     private _userPrivacyServivce: UserPrivacyService,
-  ) {
+    @Inject('NetworkPlugin') public network: NetworkPlugin
+    ) {
+    console.log("constructor");
+    const checkUserConnection = this.logCurrentNetworkStatus();  
+    this.printCurrentPosition();
     this.user = this.authService.getUserInfo();
     this.getUserSonarPrivacySettings();
     this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
@@ -169,38 +181,81 @@ export class MapPage implements OnDestroy {
       this.viewListNumber = this.viewList?.names?.length;
       // console.log("res -", this.viewListNumber);
     });
+
+    this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
+      this.greetList = updatedData;
+      console.log(this.greetList);
+      this.greetListNumber = this.greetList?.length;
+      // console.log("res -", this.viewListNumber);
+    });
+
+    this.network.addListener('networkStatusChange', status => {
+      if(status.connected === false){
+        this._commonService.presentToast("User Offline");
+        this.userConnectionActive = true;
+      }else{
+        if(status.connected === true && this.userConnectionActive === true){
+          this._commonService.presentToast("Back Online");
+          this.userConnectionActive = false;
+        }
+      } 
+      console.log('Network status changed', status);
+    });
   }
 
+  printCurrentPosition = async () => {
+    const perm = await Geolocation.checkPermissions();
+    
+    console.log('Current position:', perm);
 
+    if(perm.location === "denied") {
+      const res = await Geolocation.requestPermissions();
+    }
+  };
+
+  async logCurrentNetworkStatus () {
+    const status = await this.network.getStatus();
+    if(status.connected === false){
+      console.log("User is Offline");
+      this.userConnectionActive = true;
+      this._commonService.presentToast("User Offline");
+      this.loadMap();
+    }else this.userConnectionActive = false;
+    console.log('Network status:', status);
+    return status.connected;
+  };
 
   async ngOnInit() {
-    this.currentPageHref = window.location.pathname;
-    // console.log("Map: Init: window: ", window.history);
+    console.log("OnInit");
     await this.platform.ready();
-    await this.mapService.getAppSetting(this.user.UserId).subscribe(
-      (s: any) => {
-        this.radius = s.map.km;
-      }
-    );
-    await this.mapService.getUserSetting('ivsbl').subscribe(
-      (s: any) => {
-        this.isBackEnabled = s;
-      }
-    );
-    this._commonService.loadUserGreetings();
-    let privacyList = localStorage.getItem('privacyList') ? JSON.parse(localStorage.getItem('privacyList') ?? '') : null;
-    if (privacyList?.length) {
-      this.privacySett = privacyList;
-      if (this.privacySett.mst == null) {
-        this.deleteSearch();
-      }
-      if (!!this.location) {
-        this.updatelocation();
-      }
-    }
+    this.currentPageHref = window.location.pathname;
+    
+    // await this.mapService.getAppSetting(this.user.UserId).subscribe(
+    //   (s: any) => {
+    //     this.radius = s.map.km;
+    //   }
+    // );
+    // await this.mapService.getUserSetting('ivsbl').subscribe(
+    //   (s: any) => {
+    //     this.isBackEnabled = s;
+    //   }
+    // );
+    // this._commonService.loadUserGreetings();
+    // let privacyList = localStorage.getItem('privacyList') ? JSON.parse(localStorage.getItem('privacyList') ?? '') : null;
+    // if (privacyList?.length) {
+    //   this.privacySett = privacyList;
+    //   if (this.privacySett.mst == null) {
+    //     this.deleteSearch();
+    //   }
+    //   if (!!this.location) {
+    //     this.updatelocation();
+    //   }
+    // }
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
+    console.log("ionViewWillEnter");
+    await this.printCurrentPosition();
     this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
       this.viewList = updatedData;
       this.viewListNumber = this.viewList?.names?.length;
@@ -233,6 +288,7 @@ export class MapPage implements OnDestroy {
 
   async ngAfterViewInit() {
     await this.platform.ready();
+    if(this.userConnectionActive) await this.printCurrentPosition();
     this.loadMap();
     this.fetchCurrentArea();
   }
@@ -243,7 +299,7 @@ export class MapPage implements OnDestroy {
       this.subscription.remove(this.subscription);
     }
   }
-
+    
   async getUserSonarPrivacySettings () {
     const res = await this._userPrivacyServivce.getUserPrivacySetting();
     if(res?.LocationShowAt === 'L'){
@@ -1528,7 +1584,10 @@ export class MapPage implements OnDestroy {
 
   public async onViewingClick(): Promise<void> {
     const modal = await this.modalController.create({
-      component: ViewingUsersComponent
+      component: ViewingUsersComponent,
+      componentProps: {
+        template: "Viewing",
+      }
     });
     modal.onDidDismiss().then(result => {
       if (result) {
@@ -2001,7 +2060,7 @@ export class MapPage implements OnDestroy {
     const modal = await this.modalController.create({
       component: ViewingUsersComponent,
       componentProps: {
-        viewTemplate: "Greeting"
+        template: "Greeting"
       }
     });
     modal.onDidDismiss().then(result => {
