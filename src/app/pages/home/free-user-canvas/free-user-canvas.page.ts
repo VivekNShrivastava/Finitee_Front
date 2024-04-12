@@ -100,12 +100,14 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     this._postService.postDataSbj.subscribe({
       next: (result: any) => {
         console.log(`observerA: ${result}`);
+        console.log(result.data);
         if (result.event == "ADD"){
           this.postList.unshift(result.data);
           if(result.isTraitPost)
           {
-            this.loaded=false;
-            this.getUserTraitsWithPost();
+            // this.loaded=false;
+            // this.getUserPost();
+            // this.getUserTraitsWithPost();
           }
         }
         else if (result.event == "DELETE") {
@@ -683,6 +685,8 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   }
 
   traitPostsSection(userTrait: UserTraitWithPost) {
+    this.navEx!.state!['value'] = { belongsToId: userTrait.UserTrait.Id, Type: this.appConstants.POST_TYPE.TRAIT, TraitRequest: userTrait.UserTrait };
+
     this.navEx!.state!['data'] = userTrait.UserTrait;
     this.router.navigateByUrl('free-user-canvas/trait-section', this.navEx);
   }

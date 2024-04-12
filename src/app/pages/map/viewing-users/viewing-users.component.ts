@@ -22,8 +22,9 @@ export enum GreetingCode {
 export class ViewingUsersComponent implements OnInit {
   readonly appConstants: any = AppConstants;
   public viewType: number = 1;
-  public viewTemplate: string = "Viewing";
+  public viewTemplate: string = "";
   public viewList: any = [];
+  public greetList: any = [];
   public attachmentURL = environment.attachementUrl;
   constructor(
     public _commonService: CommonService,
@@ -32,12 +33,20 @@ export class ViewingUsersComponent implements OnInit {
     private firestoreService: FirestoreService,
     public router: Router
   ) { 
-    this.viewTemplate = navParams?.data['viewTemplate'] ?? this.viewTemplate;
+    const res = this.navParams.get('template');
+    console.log(res);
+    // this.viewTemplate = navParams?.data['viewTemplate'] ?? this.viewTemplate;
+    this.viewTemplate = res;
     console.log("view", this.viewTemplate)
 
     this.firestoreService.viewList$.subscribe(updatedData => {
       console.log("map updated data", updatedData);
       this.viewList = updatedData;
+    });
+
+    this.firestoreService.greetingList$.subscribe(updatedData => {
+      console.log("map updated data", updatedData);
+      this.greetList = updatedData;
     });
   }
 

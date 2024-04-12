@@ -19,7 +19,7 @@ import { GreetingViewComponent } from './greeting-view/greeting-view.component';
 import { SonarSettingsComponent } from './sonar-settings/sonar-settings.component';
 import { MapResultComponent } from './map-result/map-result.component';
 import { MarkerDetailComponent } from './marker-detail/marker-detail.component';
-
+import { Network } from '@capacitor/network';
 @NgModule({
   imports: [
     CommonModule,
@@ -42,7 +42,8 @@ import { MarkerDetailComponent } from './marker-detail/marker-detail.component';
     MapService,
     AttachmentHelperService,
     // Diagnostic,
-    Camera
+    Camera,
+    { provide: 'NetworkPlugin', useValue: Network }
   ]
 })
 export class MapPageModule {}

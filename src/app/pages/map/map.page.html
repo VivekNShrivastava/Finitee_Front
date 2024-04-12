@@ -1,6 +1,6 @@
 <ion-content style="border-radius: 100px 100px 0 0;">
   <div style="width: 100%;height:100%;" class="whiteblue">
-    <div class="mapclass" style="position: relative;height: 100%;width:100%;">
+    <div class="mapclass" style="position: relative;height: 100%;width:100%; overflow: hidden;">
 
       <div class="top-result-container">
         <div class="c-fab-button" *ngIf="searchCriteria">
@@ -24,9 +24,9 @@
           </div>
         </div>
 
-        <div (click)="viewGreetingDetails()" class="c-fab-button" *ngIf="_commonService?.activeGreetings?.length">
+        <div (click)="viewGreetingDetails()" class="c-fab-button" *ngIf="greetListNumber">
           <ion-icon style="font-size: 26px;" name="greeting-no-circle"></ion-icon>
-          <div> {{_commonService.activeGreetings.length}} </div>
+          <div> {{greetListNumber}} </div>
           <div style="line-height: 5px;">
             <ion-icon style="font-size: 22px;padding-right: 5px;" name="chevron-forward-outline"></ion-icon>
           </div>
@@ -34,7 +34,10 @@
 
 
       </div>
-
+      <div style="height: 100%;" *ngIf="userConnectionActive === true">
+        <img src="../../../assets/icons/screen-wise-icons/Sonar icons/Sonar service not available icon.svg">
+        <p>Sonar Service is not available</p>
+      </div>
       <div id="map_canvas" #map_canvas style="height:100%;"> </div>
 
       <div *ngIf="islocationEnabled == true" class="icons-list" style="display: flex;flex-direction: column;gap: 10px;align-items: center;">
@@ -65,11 +68,11 @@
           <ion-icon style="font-size: 35px;" name="flame-active"></ion-icon>
         </ion-fab-button> -->
 
-        <ion-fab-button (click)="onMapResultsClick()"
+        <!-- <ion-fab-button (click)="onMapResultsClick()"
           *ngIf="userMarkers.length>0||totemMarkers.length>0 && totemMarkersOnSerach.length>0" size="small"
           ng-reflect-size="small" class="md ion-activatable ion-focusable fab-button-small hydrated map-fab-button2">
           <ion-icon name="bluemenu"></ion-icon>
-        </ion-fab-button>
+        </ion-fab-button> -->
 
         <ion-fab-button (click)="onClickGetCurrentPosition()" class="map-fab-button2">
           <ion-icon style="font-size: 35px;" name="bluecur"></ion-icon>

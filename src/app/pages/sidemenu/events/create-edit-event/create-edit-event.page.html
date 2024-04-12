@@ -33,16 +33,16 @@
 
     <!-- Description -->
     <div class="input-container">
-      <ion-label class="input-label">Description</ion-label>
+      <ion-label class="input-label"><ion-note color="danger">*</ion-note>Description</ion-label>
       <ion-item lines="none">
-        <!-- <ion-input autocapitalize="on" class="input" placeholder="desription" type="text" name="Desription"
-          [(ngModel)]="eventItem.Description" minlength="80" maxlength="1200">
+        <!-- <ion-input autocapitalize="on" class="input" placeholder="desription" type="text" #Description="ngModel" name="Desription"
+          [(ngModel)]="eventItem.Description" minlength="80" maxlength="1200" required>
         </ion-input> -->
         <ion-textarea autocapitalize="on" class="input" placeholder="description" type="text" #Description="ngModel" name="Description"
-          [(ngModel)]="eventItem.Description" minlength="40" maxlength="1200">
+          [(ngModel)]="eventItem.Description" minlength="40" maxlength="1200" required>
         </ion-textarea>
       </ion-item>
-    </div>
+    </div>    
     <div *ngIf="Description.invalid && (Description.dirty || Description.touched)" class="error-message">
       <div *ngIf="Description.errors?.['required']">
         Description is required.
@@ -58,7 +58,7 @@
     </div>
     <div *ngIf="commonService.eventTraitError" class="error-message">
       Only 5 traits allowed.
-    </div>
+    </div>    
     <!-- start date -->
     <ion-label class="input-label">Start date</ion-label>
     <ion-grid class="ion-no-padding">
@@ -266,19 +266,29 @@
     <div *ngIf="endTimeError.is_show && !(endhh?.invalid && (endhh.dirty || endhh.touched)) && !(endmm?.invalid && (endmm.dirty || endmm.touched))" class="error-message">
       {{endTimeError.message}}
     </div>
-    
+
+    <!-- location -->
+
+    <ion-button style="margin-left: 10px; display : table" (click)="openMap()">SET LOCATION</ion-button>
+
     <!-- address line 1 -->
-    <ion-label class="input-label"> Address line 1</ion-label>
+    <ion-label class="input-label"><ion-note color="danger">*</ion-note>Address line 1</ion-label>
     <ion-item color="none" class="input" lines="none">
       <ion-input autocapitalize="on" placeholder="address line 1" type="text" #AddressLine1="ngModel"
-        name="AddressLine1" [(ngModel)]="eventItem.AddressLine1" maxlength="30"></ion-input>
+        name="AddressLine1" [(ngModel)]="eventItem.AddressLine1" maxlength="100" required>
+      </ion-input>
     </ion-item>
+    <div *ngIf="AddressLine1.invalid && (AddressLine1.dirty || AddressLine1.touched)" class="error-message">
+      <div *ngIf="AddressLine1.errors?.['required']">
+        Event Location is required.
+      </div>
+    </div>
     <!-- address line 2 -->
-    <ion-label class="input-label"> Address line 2</ion-label>
+    <!-- <ion-label class="input-label"> Address line 2</ion-label>
     <ion-item color="none" class="input" lines="none">
       <ion-input autocapitalize="on" placeholder="address line 2" type="text" #AddressLine2="ngModel"
         name="AddressLine2" [(ngModel)]="eventItem.AddressLine2" maxlength="30"></ion-input>
-    </ion-item>
+    </ion-item> -->
     <!-- address line 3 -->
     <!-- <ion-label class="input-label"> Address line 3</ion-label>
     <ion-item color="none" class="input" lines="none">
@@ -307,8 +317,7 @@
     </ion-item>
 
     <!-- location -->
-    <ion-button style="margin-left: 10px;" (click)="openMap()">SET LOCATION</ion-button>
-    <p style="margin-left: 10px; color: red;">{{eventLocation || "Location not set!!" }}</p>
+
     <!-- <ion-radio-group name="location" [(ngModel)]="eventItem.location" (ionChange)="getLatlng()">
       <ion-item lines="none" class="ion-no-margin">
         <ion-label class="locationInput">Location:</ion-label>
@@ -342,9 +351,7 @@
     </div>
     <br>
     <!-- onSubmit -->
-    <!-- [disabled]="!form.valid" -->
-    <ion-button   style="text-transform: none; font-size: 20px; height: 46px; margin-bottom: 8px;" type="submit" expand="block" shape="round"
-      color="primary">
+    <ion-button [disabled]="!form.valid || startDateError.is_show || startTimeError.is_show || endDateError.is_show || endTimeError.is_show" style="text-transform: none; font-size: 20px; height: 46px; margin-bottom: 8px;" type="submit" expand="block" shape="round" color="primary">
       <span *ngIf="!isEdit">Create</span>
       <span *ngIf="isEdit">Save</span>
     </ion-button>
