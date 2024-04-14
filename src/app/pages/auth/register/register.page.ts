@@ -366,8 +366,10 @@ export class RegisterPage implements OnInit {
 
   async setUserDefaultCountryId() {
     let defaultCountryId = this.placesService.getDefaultCountryId();
+    console.log("reg", defaultCountryId);
     this.phoneForm.setValue({ countryId: defaultCountryId, phoneNo: "" });
-    this.selectedCountry = await this.placesService.findCountry({ CountryId: defaultCountryId });
+    this.selectedCountry = await this.placesService.findCountry({ id: defaultCountryId });
+  
     // if (!this.currentUser.CountryId || this.currentUser.CountryId.length == 0) {
     //   this.currentUser.CountryId = this.placesService.getCountryIdFromPhoneCode(AppConstants.DEFAULT_PHONE_CODE);
     //   this.phoneForm.value.countryId = this.currentUser.CountryId ;

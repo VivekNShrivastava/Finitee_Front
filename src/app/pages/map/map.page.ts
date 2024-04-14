@@ -36,6 +36,7 @@ import { forEach, template } from 'lodash';
 import { NgSwitchCase } from '@angular/common';
 import { NetworkPlugin } from '@capacitor/network';
 import { Geolocation } from '@capacitor/geolocation';
+import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
 
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
@@ -92,6 +93,7 @@ export class MapPage implements OnDestroy {
   userInfo = [];
   totemData: any = [];
   islocationEnabled = true;
+  isLocationTurnedOn = true;
   GRequestLst: any;
   isBackEnabled = true;
   // storage: any;
@@ -204,12 +206,21 @@ export class MapPage implements OnDestroy {
   }
 
   printCurrentPosition = async () => {
+    // NativeSettings.openAndroid({
+    //   option: AndroidSettings.Location,
+    // });
+
+    // const perm = await Geolocation.is
     const perm = await Geolocation.checkPermissions();
     
     console.log('Current position:', perm);
 
-    if(perm.location === "denied") {
+    if(perm.location != "granted") {
+      this.isLocationTurnedOn = false;
       const res = await Geolocation.requestPermissions();
+      console.log("res from requestPerm");
+    }else if(perm.location === "granted" && this.isLocationTurnedOn === false){
+      this.isLocationTurnedOn = true;
     }
   };
 
@@ -769,11 +780,15 @@ export class MapPage implements OnDestroy {
         const imageTag = document.createElement('img');
         if(value[0].entity === 'U'){
           
-          imageTag.src = markerIcon || (value[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER); // Set the actual path to your image
-          imageTag.className = 'custom-marker-image'; // You can define a CSS class for styling if needed
-          imageTag.style.borderRadius = "50%";
-          imageTag.style.height = "50px";
-          imageTag.style.width = "50px";
+          imageTag.src = (value[0].ProfileImage ?  markerIcon : (value[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER)); // Set the actual path to your image
+          
+          if(value[0].ProfileImage){
+            imageTag.className = 'custom-marker-image'; // You can define a CSS class for styling if needed
+            imageTag.style.borderRadius = "50%";
+            imageTag.style.height = "50px";
+            imageTag.style.width = "50px";
+          }
+          
 
           // imageTag.textContent = "3";
           // imageTag.innerHTML = "4";
@@ -783,8 +798,8 @@ export class MapPage implements OnDestroy {
           // imageTag.style.fontSize = "20px"; 
           // imageTag.style.fontWeight = "bold"; 
 
-          if(value[0].IsConnected && markerIcon) imageTag.style.border = "2px solid green";
-          else if(!value[0].IsConnected && markerIcon) imageTag.style.border = "2px solid black";
+          if(value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid green";
+          else if(!value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid black";
         }else{
           imageTag.src =  markerIcon;
         }
@@ -1315,6 +1330,7 @@ export class MapPage implements OnDestroy {
 
   checkGPSPermission() {
     this.islocationEnabled = true;
+    // this.isLocationTurnedOn = true;
     this.platform.ready().then(() => {
       this.loadMap();
     });

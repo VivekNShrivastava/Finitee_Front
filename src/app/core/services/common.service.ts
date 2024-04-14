@@ -265,6 +265,13 @@ export class CommonService {
     };
   }
 
+  getCondition(condition: number){
+    const num = condition.toString();
+    var selectedCondition = _.filter(AppConstants.conditionList, {'key': num});
+    if(selectedCondition) return selectedCondition[0]?.value;
+    else return condition;
+  }
+
   getPrivacyFullValue(privacyFirstChar: string) {
     var selectedPrivacy = _.filter(AppConstants.GeneralPivacy, { 'key': privacyFirstChar });
     if (selectedPrivacy.length > 0) return selectedPrivacy[0].value;

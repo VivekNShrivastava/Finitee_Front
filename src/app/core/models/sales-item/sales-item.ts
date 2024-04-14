@@ -3,7 +3,7 @@ export class SalesItem {
   Title: string = "";
   Description: string = "";
   SalesTraits: Array<string> = [];
-  Condition: string = "New";
+  Condition: number = 1;
   Price: any;
   VisibleTo: string = "A";
   SalesItemImages: Array<string> = [];
