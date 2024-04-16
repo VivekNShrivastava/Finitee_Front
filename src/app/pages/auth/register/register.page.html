@@ -160,8 +160,14 @@
               <span slot="error">{{errorMsgGrp.phone}}</span>
             </ion-item>
           <!-- </ion-list> -->
-          <p class="tc">By tapping "Continue", you agree to our <a
-            [routerLink]="['/terms-conditions']">Privacy Policy</a> and <a
+          <p class="tc" style="margin: 0px 20px 0px 20px; margin-bottom: 15px; font-weight: 300; color:	#282626;">By tapping "Continue", you agree to our <br> <a style="text-decoration: underline;
+            font: normal normal 100 17px/22px SF Pro Display;
+            letter-spacing: 0.22px;
+            color: #282626; font-weight: 300; margin-top: 40px;"
+            [routerLink]="['/terms-conditions']">Privacy Policy</a> and <a style="text-decoration: underline;
+            font: normal normal 100 17px/22px SF Pro Display;
+            letter-spacing: 0.22px;
+            color: 	#282626; font-weight: 300; margin-top: 40px;"
             [routerLink]="['/terms-conditions']">Terms of Service</a>.</p>
           <ion-button class="lgn-class2" expand="block" shape="round" [disabled]="phoneForm.invalid" type="submit">Continue</ion-button>
         </form>
