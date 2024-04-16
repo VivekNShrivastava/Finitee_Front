@@ -142,14 +142,14 @@ export class JwtInterceptor extends BasePage implements HttpInterceptor  {
           // First, get a new access token
           return this.authService.getNewAccessToken(request).pipe(
             switchMap((token: any) => {
-            this.commonService.presentToast("getting new token");
+            // this.commonService.presentToast("getting new token");
               if (token) {
                 // Store the new token
                 // console.log("got the new token", token);
                 let accessToken = "";
                 if(token.Token === "Expired"){
                   console.log("Refresh Token Expired, Logging out")
-                  this.commonService.presentToast("Logging OUt Refresh Token Expired");
+                  // this.commonService.presentToast("Logging OUt Refresh Token Expired");
                   this.authService.logout(true);
                   return EMPTY;
                 }else{

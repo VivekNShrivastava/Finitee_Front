@@ -297,7 +297,7 @@ export class PlacesService {
 
   getFlagIconName(listEntry: any) {
     if (listEntry) {
-      let name: string = listEntry.CountryName;
+      let name: string = listEntry.CountryName || listEntry;
       name = name.toLowerCase();
       let formmattedName = "";
       let nameA = name.split(" ");

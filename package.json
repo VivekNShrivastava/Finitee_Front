@@ -50,6 +50,7 @@
     "@microsoft/signalr": "^7.0.0",
     "angularx-qrcode": "^15.0.1",
     "call-number": "^1.0.1",
+    "capacitor-native-settings": "^5.0.1",
     "cordova-plugin-camera": "^6.0.0",
     "cordova-plugin-file": "^7.0.0",
     "cordova-plugin-filepath": "^1.6.0",
