@@ -184,8 +184,16 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
             "is final before proceeding to payment?",
           buttons: [
             {
+              text: "Cancel",
+              cssClass: "dangers",
+              
+              
+              handler: () => {
+              },
+            },
+            {
               text: "Continue",
-              cssClass: "info",
+              cssClass: "infos",
               handler: async () => {
                 try {
                   this.paymentService.payment.amount = this.commonService.currentCurrency.Amount;
@@ -195,12 +203,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
                 }
               }
             },
-            {
-              text: "Cancel",
-              cssClass: "danger",
-              handler: () => {
-              },
-            },
+         
           ],
         });
         await alert.present();
