@@ -119,7 +119,9 @@ export const API = {
         GET_INFLOWS: `${environment.baseUrl}Inflows/GetInflowsByUserId`,
     },
     GREETING:{
-        GET: `${environment.baseUrl}Greeting/SendGreetingToUser`
+        SEND_GREETING_TO_USER: `${environment.baseUrl}Greeting/SendGreetingToUser`,
+        GET_GREETING_HISTORY: `${environment.baseUrl}Greeting/GetGreetingHistory`,
+        ACTION_GREETING_TO_USER: `${environment.baseUrl}Greeting/ActionGreetingToUser`
     }
 
 }

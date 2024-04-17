@@ -206,22 +206,50 @@ export class MapPage implements OnDestroy {
   }
 
   printCurrentPosition = async () => {
-    // NativeSettings.openAndroid({
-    //   option: AndroidSettings.Location,
-    // });
-
-    // const perm = await Geolocation.is
-    const perm = await Geolocation.checkPermissions();
     
-    console.log('Current position:', perm);
+    try{
+      // const perm = await Geolocation.is
+      console.log("running check permissions...");
+      const perm = await Geolocation.checkPermissions();
+      const locSer = perm;
+      console.log('Current position:', perm);
 
-    if(perm.location != "granted") {
-      this.isLocationTurnedOn = false;
-      const res = await Geolocation.requestPermissions();
-      console.log("res from requestPerm");
-    }else if(perm.location === "granted" && this.isLocationTurnedOn === false){
-      this.isLocationTurnedOn = true;
+      // if(perm.location){
+      //   const loc = await Geolocation.getCurrentPosition();
+      //   console.log("loc", loc.coords)
+      //   this.location.lat = loc.coords.latitude;
+      //   this.location.lng = loc.coords.longitude;
+      // }
+
+      if(perm.location != "granted") {
+        console.log("res from requestPerm");
+
+        this.isLocationTurnedOn = false;
+
+        // const res = await Geolocation.requestPermissions();
+      }else if(perm.location === "granted" && this.isLocationTurnedOn === false){
+        this.isLocationTurnedOn = true;
+      }
+    }catch(error){
+      console.error(error);
+      console.log("catched error", error);
+      console.log(error);
+      // if(error === "Error: Location services are not enabled"){
+      //   console.log("upar wala");
+      //   NativeSettings.openAndroid({
+      //     option: AndroidSettings.Location,
+      //   });
+      // }else if(error === "Location services are not enabled"){
+      //   console.log("niche wala");
+      //   NativeSettings.openAndroid({
+      //     option: AndroidSettings.Location,
+      //   });
+      // }
+      // NativeSettings.openAndroid({
+      //   option: AndroidSettings.Location,
+      // });
     }
+    
   };
 
   async logCurrentNetworkStatus () {
