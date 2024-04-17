@@ -129,7 +129,7 @@ export class JwtInterceptor extends BasePage implements HttpInterceptor  {
 
     public handle401Error(request: HttpRequest < any >, next: HttpHandler): Observable < any > {
         // Check if another call is already using the refresh logic
-        this.commonService.presentToast("getting new token");
+        // this.commonService.presentToast("getting new token");
 
         if(!this.isRefreshingToken) {
             
