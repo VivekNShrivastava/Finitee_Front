@@ -37,6 +37,9 @@ export class LocationService {
 
   private geocoder: google.maps.Geocoder;
 
+  private permResult: any;
+
+
   constructor(private zone: NgZone, private http: HttpClient, private commonService: CommonService, private paymentService: PaymentService, private platform: Platform, private placesService: PlacesService) {
     this.geocoder = new google.maps.Geocoder();
 
@@ -45,13 +48,22 @@ export class LocationService {
   async requestPermissions() {
     if (this.platform.is("android") || this.platform.is("ios")) {
       //  console.log("LocationService: requestPermissions: android or ios")
-      const permResult = await Geolocation.requestPermissions();
-      console.log('Perm request result: ', permResult);
+      const perm_Result = await Geolocation.requestPermissions();
+      console.log('Perm request result: ', perm_Result);
+      this.permResult = perm_Result;
     }
     else {
       // console.log("LocationService: requestPermissions: desktop:" + this.platform.is("desktop") + " pwa:" +
       //   this.platform.is("pwa") + " hybrid:" + this.platform.is("hybrid"));
     }
+  }
+
+  setPermissionResult(result: any) {
+    this.permResult = result;
+  }
+
+  getPermissionResult() {
+    return this.permResult;
   }
 
 

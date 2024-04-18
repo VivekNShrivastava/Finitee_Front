@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SalesListingService } from 'src/app/core/services/sales-listing/sales-listing.service';
-
+import { CommonService } from 'src/app/core/services/common.service';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.page.html',
@@ -9,7 +9,10 @@ import { SalesListingService } from 'src/app/core/services/sales-listing/sales-l
 })
 export class ShoppingListPage implements OnInit {
 
-  constructor(private router: Router, public salesService: SalesListingService) {  }
+  constructor(private router: Router, 
+    public salesService: SalesListingService,
+    public commonService: CommonService
+  ) {  }
 
   ngOnInit() {
 

@@ -30,8 +30,8 @@
 
 
 <ion-row class="secondrow" *ngIf="currentItem.entity == 'U'">
-
-  <ion-card (click)="openUser(currentItem)" class="header-card" *ngIf="currentItem.entity=='U' "
+  <!-- (click)="openUser(currentItem)" -->
+  <ion-card  class="header-card" *ngIf="currentItem.entity=='U' "
     style="background-color:  #EAF1F4;">
 
 
@@ -55,7 +55,7 @@
 
       <ion-row class="header-card-details">
         <div class="action-list">
-          <ion-icon name="greeting" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
+          <ion-icon name="greeting" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon>
           <ion-icon name="onhold" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
           <ion-icon name="user-block" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
 

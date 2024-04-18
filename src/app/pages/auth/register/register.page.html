@@ -145,7 +145,8 @@
           <!-- <ion-list> -->
             <ion-item lines="none">
               <ion-button class="fi-countryCode-btn" fill="outline" type="button" id="selectCountryCode">
-                <ion-img slot="start" class="icon-small" src="{{placesService.getFlagIconPath(selectedCountry)}}" ></ion-img>&nbsp;&nbsp;
+                <img slot="start" class="icon-small" src="{{placesService.getFlagIconPath(selectedCountry)}}"
+                 />&nbsp;&nbsp;
                 +{{selectedCountry?.PhoneCode}}
                 <ion-icon slot="end" name="caret-down-outline" ></ion-icon>
               </ion-button>
