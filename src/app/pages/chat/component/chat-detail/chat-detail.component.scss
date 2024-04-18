@@ -130,3 +130,6 @@ h2 {
   width: 31px;
   height: 31px;
 }
+.header-md::after {
+  background-image: none !important;
+}

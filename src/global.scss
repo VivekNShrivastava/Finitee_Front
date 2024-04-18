@@ -1008,3 +1008,77 @@ textarea.alert-input.sc-ion-alert-md {
   --ion-safe-area-top: 20px;
   --ion-safe-area-bottom: 20px;
 }
+.alert-button.sc-ion-alert-md.dangers{
+  width: 128px;
+  height: 44px;
+  background: #E57676 0% 0% no-repeat padding-box;
+  border-radius: 22px;
+  opacity: 1;
+  text-align: center; /* Center the text */
+  justify-content: center !important;
+  font-weight: bold; 
+}
+.alert-button.sc-ion-alert-md.infos{
+  width: 127px;
+  height: 44px;
+  background: var(--unnamed-color-03a9f5) 0% 0% no-repeat padding-box;
+  background: #03A9F5 0% 0% no-repeat padding-box;
+  border-radius: 22px;
+  opacity: 1;
+
+}
+
+.alert-button.sc-ion-alert-md.dangers{
+  .alert-button-inner.sc-ion-alert-md {
+
+    justify-content: center;
+    font: var(--unnamed-font-style-normal) normal normal var(--unnamed-font-size-13)/16px var(--unnamed-font-family-sf-pro-display);
+    letter-spacing: var(--unnamed-character-spacing-0-21);
+    color: var(--unnamed-color-ffffff);
+    text-align: center;
+    font: normal normal normal 13px/16px SF Pro Display;
+    letter-spacing: 0.21px;
+    color: #FFFFFF;
+    opacity: 1;
+   
+}
+}
+.alert-button.sc-ion-alert-md.infos{
+  .alert-button-inner.sc-ion-alert-md {
+
+    justify-content: center;
+    font: var(--unnamed-font-style-normal) normal normal var(--unnamed-font-size-13)/16px var(--unnamed-font-family-sf-pro-display);
+    letter-spacing: var(--unnamed-character-spacing-0-21);
+    color: var(--unnamed-color-ffffff);
+    text-align: center;
+    font: normal normal normal 13px/16px SF Pro Display;
+    letter-spacing: 0.21px;
+    color: #FFFFFF;
+    opacity: 1;
+   
+}
+}
+
+.alert-button-group.sc-ion-alert-md{
+  flex-wrap: nowrap;
+}
+.alert-wrapper.sc-ion-alert-md {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+ text-align: center;
+  max-width: 310px;
+
+}
+.alert-message.sc-ion-alert-md{
+  padding-left:0px;
+  padding-right: 0px;
+  font: var(--unnamed-font-style-normal) normal normal 14px/19px var(--unnamed-font-family-sf-pro-display);
+text-align: center;
+font: normal normal normal 16px/21px SF Pro Display;
+letter-spacing: 0.22px;
+color: #788692;
+opacity: 1;
+}
+.alert-head.sc-ion-alert-md{
+  text-align: center !important;
+}
