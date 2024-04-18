@@ -269,7 +269,7 @@
 
     <!-- location -->
 
-    <ion-button style="margin-left: 10px; display : table" (click)="openMap()">SET LOCATION</ion-button>
+    <ion-button style="margin-left: 10px; margin-bottom: 20px; display : table" (click)="openMap()">SET LOCATION</ion-button>
 
     <!-- address line 1 -->
     <ion-label class="input-label"><ion-note color="danger">*</ion-note>Address line 1</ion-label>
@@ -297,7 +297,7 @@
     </ion-item> -->
 
     <!-- images files select -->
-    <app-multiple-media-upload [mediaFiles]="eventItem.EventImages"
+    <app-multiple-media-upload style="margin-bottom: 15px;" [mediaFiles]="eventItem.EventImages"
       (filePathEvent)="addMedia($event)"></app-multiple-media-upload>
 
     <!--  Viewable by -->

@@ -126,8 +126,11 @@
   <div *ngIf="salesListingService.salesItemList.length == 0 && !loading" class="ion-text-center nodata"
     style="margin-top: 150px;">
     <img style="margin-top: 20px;" src="assets/imgs/new/NoData.png">
-    <h4>You have no sales listings at this time.</h4>
-    <h4> Create a sales listing to sell items you are no longer using.</h4>
+    <div style="margin: 0px 20px 0px 20px ;">
+      <h4>You have no sales listings at this time.</h4>
+      <h4> Create a sales listing to sell items you are no longer using.</h4>
+    </div>
+   
   </div>
 
   <br>
