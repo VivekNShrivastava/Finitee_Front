@@ -16,6 +16,8 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { BehaviorSubject } from 'rxjs';
 import { AllSonarSearchRequest } from 'src/app/core/models/mapSonarSearch';
+import { CommonService } from 'src/app/core/services/common.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +33,8 @@ export class MapService {
   constructor(
     private http: HttpClient,
     private _signalRService: SignalRService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private commonService: CommonService
   ) { 
     this.firestoreInstance = firestoreService.getFirestoreInstance();
     // this.initializeViewList();.
@@ -142,6 +145,7 @@ export class MapService {
       }));
 
       this.viewListSubject.next(updatedViewList);
+      console.log("updated viewing list", this.viewListSubject)
     });
   }
 
@@ -397,10 +401,66 @@ export class MapService {
     });
   }
 
-  sendGreeting(data: Greeting): Observable<Greeting> {
-    return this.http.post<Greeting>(environment.baseUrl + "finitee/SendGreenting", data).pipe(tap(() => {
-      //this._signalRService.sendMessage(NotificationEvents.GreetingEvent,JSON.stringify(data));
-    }));
+  sendGreetingToUser(id: any) {
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.GREETING.SEND_GREETING_TO_USER + "/" + id;
+      this.commonService.showLoader();
+      return this.http.get<any>(url).subscribe((response: any) => {
+        this.commonService.hideLoader();
+        resolve(response);
+      },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+
+  getGreetingHistory() {
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.GREETING.GET_GREETING_HISTORY;
+      this.commonService.showLoader();
+      return this.http.get<any>(url).subscribe((response: any) => {
+        this.commonService.hideLoader();
+        resolve(response);
+      },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+
+  actionGreetingToUser(user_id: string, action: boolean) {
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.GREETING.ACTION_GREETING_TO_USER + "/" + user_id + "/" + action;
+      this.commonService.showLoader();
+      return this.http.get<any>(url).subscribe((response: any) => {
+        this.commonService.hideLoader();
+        resolve(response);
+      },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+
+  sendGreeting(data: any): Observable<Greeting> {
+
+    return this.http.get<any>(config.API.GREETING.SEND_GREETING_TO_USER + "/" + data.Id);
+    // return this.http.post<Greeting>(environment.baseUrl + "finitee/SendGreenting", data).pipe(tap(() => {
+    //   //this._signalRService.sendMessage(NotificationEvents.GreetingEvent,JSON.stringify(data));
+    // }));
   }
 
   acceptGreeting(data: Greeting): Observable<Greeting> {

@@ -11,6 +11,8 @@ import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FiniteeUserOnMap } from '../models/MapSearchResult';
 import { NavigationExtras, Router } from '@angular/router';
+import { CommonService } from 'src/app/core/services/common.service';
+
 @Component({
   selector: 'app-marker-detail',
   templateUrl: './marker-detail.component.html',
@@ -35,7 +37,8 @@ export class MarkerDetailComponent implements OnInit {
   constructor(public swipeService: SwipeService,
     public mapService: MapService,
     public authService: AuthService,
-    public router: Router) { 
+    public router: Router,
+    public commonService: CommonService) { 
       this.user = this.authService.getUserInfo();
       // console.log("marker-user", this.user);
     }
@@ -201,5 +204,14 @@ export class MarkerDetailComponent implements OnInit {
 
   tempClick() {
 
+  }
+
+  async sendGreeting(user: any){
+    const res = await this.mapService.sendGreetingToUser(user.Id)
+    if(res && res.Success){
+      this.commonService.presentToast("Greeting sent to " + user.UserName)
+    }else{
+      this.commonService.presentToast("Something went wrong")
+    }
   }
 }

@@ -289,6 +289,29 @@ export class AppConstants {
     TIMESTAMP: 'yyyy-MM-ddTHH:mm:ss',
   };
 
+  public static conditionList = [
+    {
+      key : '1',
+      value: 'New',
+    },
+    {
+      key : '2',
+      value: 'Like new',
+    },
+    {
+      key : '3',
+      value: 'Refurbished',
+    },
+    {
+      key : '4',
+      value: 'Used',
+    },
+    {
+      key : '5',
+      value: 'Not working',
+    }
+  ]
+
   public static GeneralPivacy = [
     {
       key: 'A',

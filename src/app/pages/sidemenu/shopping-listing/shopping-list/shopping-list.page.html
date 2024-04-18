@@ -32,7 +32,7 @@
       <ion-row>
         <ion-col style="font-weight: 600;" size="4">{{i.Word}}</ion-col>
         <ion-col size="2">{{i.Price}}</ion-col>
-        <ion-col size="4">{{i.Condition}}</ion-col>
+        <ion-col size="4">{{commonService.getCondition(i.Condition)}}</ion-col>
         <ion-col size="2">{{i.Distance}}</ion-col>
       </ion-row>
     </ion-grid>
