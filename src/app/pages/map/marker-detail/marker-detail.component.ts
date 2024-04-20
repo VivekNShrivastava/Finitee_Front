@@ -206,12 +206,34 @@ export class MarkerDetailComponent implements OnInit {
 
   }
 
+  getGreetingIcon(){
+    var iconName = "greeting";
+    if(this.markerList[this.markerCurrentIndex].Greeting === 4) iconName = "greeting-sent";
+    else if(this.markerList[this.markerCurrentIndex].Greeting === 5) iconName = "greeting-blink";
+    return iconName;
+  }
+
   async sendGreeting(user: any){
-    const res = await this.mapService.sendGreetingToUser(user.Id)
-    if(res && res.Success){
-      this.commonService.presentToast("Greeting sent to " + user.UserName)
-    }else{
-      this.commonService.presentToast("Something went wrong")
+    if(user.Greeting === 1){
+      const res = await this.mapService.sendGreetingToUser(user.Id)
+      if(res && res.Success){
+        this.commonService.presentToast("Greeting sent to " + user.UserName)
+        user.Greeting = 4;
+        this.getGreetingIcon();
+      }else{
+        this.commonService.presentToast("Something went wrong")
+      }
+    }else if(user.Greeting === 4){
+      const res = await this.mapService.cancelGreetingToUser(user.Id)
+      if(res && res.Success){
+        user.Greeting = 1;
+        this.commonService.presentToast("Greeting Cancelled")
+        this.getGreetingIcon();
+      }else{
+        this.commonService.presentToast("Something went wrong")
+      }
     }
+    console.log("tapped", user)
+   
   }
 }

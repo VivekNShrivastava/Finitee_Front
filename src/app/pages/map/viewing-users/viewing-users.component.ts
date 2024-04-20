@@ -40,12 +40,13 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
     private authService: AuthService
   ) { 
     super(authService);
-    this.getUserGreetingHistory();
     const res = this.navParams.get('template');
     console.log(res);
     // this.viewTemplate = navParams?.data['viewTemplate'] ?? this.viewTemplate;
     this.viewTemplate = res;
     console.log("view", this.viewTemplate)
+
+    // if(this.viewTemplate === "Greeting") this.getUserGreetingHistory();
 
     this.firestoreService.viewList$.subscribe(updatedData => {
       console.log("map updated data", updatedData);
@@ -55,6 +56,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
     this.firestoreService.greetingList$.subscribe(updatedData => {
       console.log("map updated data", updatedData);
       this.greetList = updatedData;
+      if(this.viewTemplate === "Greeting") this.getUserGreetingHistory();
     });
   }
 

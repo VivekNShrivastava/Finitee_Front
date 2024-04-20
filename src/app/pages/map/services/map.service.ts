@@ -419,9 +419,9 @@ export class MapService {
     });
   }
 
-  getGreetingHistory() {
+  cancelGreetingToUser(id: any) {
     return new Promise<any>((resolve, reject) => {
-      var url = config.API.GREETING.GET_GREETING_HISTORY;
+      var url = config.API.GREETING.CANCEL_GREETING_TO_USER + "/" + id;
       this.commonService.showLoader();
       return this.http.get<any>(url).subscribe((response: any) => {
         this.commonService.hideLoader();
@@ -437,11 +437,33 @@ export class MapService {
     });
   }
 
+  getGreetingHistory() {
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.GREETING.GET_GREETING_HISTORY;
+      // this.commonService.showLoader();
+      return this.http.get<any>(url).subscribe((response: any) => {
+        // this.commonService.hideLoader();
+        resolve(response);
+      },
+        (error) => {
+          // this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+
   actionGreetingToUser(user_id: string, action: boolean) {
     return new Promise<any>((resolve, reject) => {
-      var url = config.API.GREETING.ACTION_GREETING_TO_USER + "/" + user_id + "/" + action;
+      var url = config.API.GREETING.ACTION_GREETING_TO_USER;
+      const body = {
+        userId: user_id,
+        action: action
+      }
       this.commonService.showLoader();
-      return this.http.get<any>(url).subscribe((response: any) => {
+      return this.http.post<any>(url, body).subscribe((response: any) => {
         this.commonService.hideLoader();
         resolve(response);
       },
