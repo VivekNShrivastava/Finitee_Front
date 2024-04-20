@@ -39,12 +39,12 @@
         <div class="lines-bottom ion-padding">
           <div (click)="openUser(user)" class="display-flex--row flex-align-center">
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
-              <img animation="gradient" src="{{appConstants.mediaPrefix + user.CreatedBy.ProfileImage}}"
+              <img animation="gradient" src="{{appConstants.mediaPrefix + ((user.CreatedBy.ProfileImage) || (user.ProfileImage)) }}"
               onError="this.src='assets/icons/business/anonymous.svg'"
                 alt="User Profile">
             </ion-avatar>
             <div class="font-primary-text" (click)="viewConnection(user)">
-              <span class="font-sz-14">{{user.CreatedBy.UserName}}</span>
+              <span class="font-sz-14">{{(user.CreatedBy.UserName || (user.UserName))}}</span>
             </div>
           </div>
 

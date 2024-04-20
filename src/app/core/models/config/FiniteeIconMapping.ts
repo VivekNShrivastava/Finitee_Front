@@ -191,6 +191,7 @@ export const finiteeIconMapper = {
     'assets/custom-ion-icons/sonar/sonar-make-visible-blue.svg',
   'greeting-accept': 'assets/custom-ion-icons/sonar/greeting-accept.svg',
   'greeting-reject': 'assets/custom-ion-icons/sonar/greeting-reject.svg',
+  'greeting-sent': 'assets/custom-ion-icons/sonar/greeting-sent.svg',
   'close-icon': 'assets/custom-ion-icons/cross-icon.svg',
   //'no-handshake': 'assets/custom-ion-icons/md-no-handshake.svg',
   'greeting': 'assets/custom-ion-icons/md-handshake.svg',
