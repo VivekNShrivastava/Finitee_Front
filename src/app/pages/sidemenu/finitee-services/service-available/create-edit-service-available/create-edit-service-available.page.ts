@@ -229,9 +229,16 @@ export class CreateEditServiceAvailablePage extends BasePage implements OnInit {
             "once it is active. Please ensure that your listing " +
             "is final before proceeding to payment?",
           buttons: [
+       
+            {
+              text: "Cancel",
+              cssClass: "dangers",
+              handler: () => {
+              },
+            },
             {
               text: "Continue",
-              cssClass: "info",
+              cssClass: "infos",
               handler: async () => {
                 try {
                   this.paymentService.payment.amount = this.commonService.currentCurrency.Amount;
@@ -241,12 +248,6 @@ export class CreateEditServiceAvailablePage extends BasePage implements OnInit {
                   
                 }
               }
-            },
-            {
-              text: "Cancel",
-              cssClass: "danger",
-              handler: () => {
-              },
             },
           ],
         });
