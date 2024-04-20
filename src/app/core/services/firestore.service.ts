@@ -75,9 +75,12 @@ export class FirestoreService extends BasePage {
     onSnapshot(specificDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = {...docSnapshot.data()};
+        console.log('data', data)
+        this.tempStoreGreet = [];
         for (let key of Object.keys(data)) {
          this.tempStoreGreet.push(key) 
         }
+        console.log("onSnap", this.tempStoreGreet)
         this.greetingListSubject.next(this.tempStoreGreet);        
       } else {
         console.log('Greeting Document not found');
@@ -95,6 +98,7 @@ export class FirestoreService extends BasePage {
         if (Array.isArray(userData['names'])) {
           const updatedNames = userData['names'].filter((nameObject: any) => {
             // Assuming nameObject is an object with the field to delete
+            console.log(nameObject)
             return !(nameObject.UserId === fieldToDelete);
           });
 

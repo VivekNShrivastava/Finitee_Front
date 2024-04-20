@@ -4,7 +4,7 @@
       <ion-back-button icon="back-button">
       </ion-back-button>
     </ion-buttons>
-    <ion-title>Update Post</ion-title>
+    <ion-title>Edit Post</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -25,10 +25,7 @@
   </ion-segment>
 
   <div class="post">
-    <app-multiple-media-upload 
-   
-      (filePathEvent)="addMedia($event)">
-    </app-multiple-media-upload>
+
     
     <!-- <p>{{paramsData.selectedPost.PostDescription}}</p> -->
     <ion-slides *ngIf="paramsData.selectedPost.PostImages && paramsData.selectedPost.PostImages.length>0">
@@ -36,19 +33,23 @@
         <ion-img src="https://finitee.sgp1.digitaloceanspaces.com/{{postImage}}"></ion-img>
       </ion-slide>
     </ion-slides>
-    <ion-card *ngIf="paramsData.selectedPost.PostImages && paramsData.selectedPost.PostImages.length==0" class="descriptionPost bg5">
+    <!-- <ion-card *ngIf="paramsData.selectedPost.PostImages && paramsData.selectedPost.PostImages.length==0" class="descriptionPost bg5">
       <h3> {{paramsData.selectedPost.PostDescription}}</h3>
-    </ion-card>
+    </ion-card> -->
   </div>
 
-  <ion-item lines="none">
+  <!-- <ion-item lines="none">
     <ion-textarea  autocapitalize="on" class="custom-textarea" [(ngModel)]="paramsData.selectedPost.PostDescription"
       placeholder="Type description here">{{paramsData.selectedPost.PostDescription}}</ion-textarea>
-  </ion-item>
+  </ion-item> -->
 
-  
+  <app-multiple-media-upload 
+   
+(filePathEvent)="addMedia($event)">
+</app-multiple-media-upload>
 
 </ion-content>
+
 
 <ion-footer class="create-btn">
   <ion-button shape="round" expand="block" (click)="edit_post()">Edit Post</ion-button>
