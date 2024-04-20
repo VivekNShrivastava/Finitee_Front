@@ -121,7 +121,8 @@ export const API = {
     GREETING:{
         SEND_GREETING_TO_USER: `${environment.baseUrl}Greeting/SendGreetingToUser`,
         GET_GREETING_HISTORY: `${environment.baseUrl}Greeting/GetGreetingHistory`,
-        ACTION_GREETING_TO_USER: `${environment.baseUrl}Greeting/ActionGreetingToUser`
+        ACTION_GREETING_TO_USER: `${environment.baseUrl}Greeting/ActionGreetingToUser`,
+        CANCEL_GREETING_TO_USER: `${environment.baseUrl}Greeting/CancelGreetingToUser`
     }
 
 }
