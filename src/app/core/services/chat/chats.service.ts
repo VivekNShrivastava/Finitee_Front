@@ -731,7 +731,7 @@ export class ChatsService {
     }
   }
 
-  async openChat(selctedUser: { UserId: any; DisplayName: any; ProfilePhoto: any; groupId: any; }) {
+  async openChat(selctedUser: { UserId: any; DisplayName: any; ProfilePhoto: any; groupId: any; }, isModal?: boolean ) {
     console.log("chatOrUser", selctedUser);
     var groupId: any = "";
     if (selctedUser.groupId)
@@ -746,14 +746,21 @@ export class ChatsService {
           UserId: selctedUser.UserId,
           DisplayName: selctedUser.DisplayName,
           ProfilePhoto: selctedUser.ProfilePhoto
-        }
+        },
+        groupId : groupId
       }
     };
-    if (groupId != "")
-      this.nav.navigateForward([`/chat-detail/${groupId}`], navigationExtras);
-    else
-      this.nav.navigateForward([`/chat-detail/new`], navigationExtras);
-
+    if(isModal){
+      return Promise.resolve(navigationExtras)
+      // return navigationExtras;
+    }else{
+      if (groupId != "")
+        this.nav.navigateForward([`/chat-detail/${groupId}`], navigationExtras);
+      else
+        this.nav.navigateForward([`/chat-detail/new`], navigationExtras);  
+        return Promise.resolve(undefined);
+    }
+    
   }
 
   async getGroupIdIfChatThreadAlreadyStarted(otherPartyUserId: any) {
