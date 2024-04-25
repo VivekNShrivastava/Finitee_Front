@@ -115,6 +115,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
 
   doBack() {
     this.navCtrl.pop();
+    this.modalController.dismiss();
   }
 
   ScrollToBottom() {

@@ -37,7 +37,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
     private firestoreService: FirestoreService,
     public router: Router,
     private mapService: MapService,
-    private authService: AuthService
+    private authService: AuthService,
   ) { 
     super(authService);
     const res = this.navParams.get('template');
@@ -100,7 +100,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
   }
 
   public viewUserOnMap(user: FiniteeUserOnMap): void {
-    this._modalController.dismiss(user);
+    // this._modalController.dismiss(user);
   }
 
   public startChat(user: FiniteeUserOnMap): void {
