@@ -69,7 +69,7 @@ export class FirestoreService extends BasePage {
 
     //listening to firebase changes for greetingList document
     const greetingListRef = collection(this.firestoreInstance, 'greetingList');
-    const specificDocId = this.logInfo.UserId;
+    const specificDocId = "u-" + this.logInfo.UserId;
     const specificDocRef = doc(greetingListRef, specificDocId);
 
     onSnapshot(specificDocRef, (docSnapshot) => {
