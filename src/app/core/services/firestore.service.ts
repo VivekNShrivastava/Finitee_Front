@@ -16,6 +16,10 @@ export class FirestoreService extends BasePage {
   public viewList$ = this.viewListSubject.asObservable();
   tempStore: any = [];
 
+  private greetingListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public greetingList$ = this.greetingListSubject.asObservable();
+  tempStoreGreet: any = [];
+
   constructor(public authService: AuthService) {
     super(authService);
     this.initFirestore();
@@ -46,30 +50,40 @@ export class FirestoreService extends BasePage {
       cacheSizeBytes: CACHE_SIZE_UNLIMITED,
     });
 
+    //listening to firebase changes for viewingList document
     const viewingListRef = collection(this.firestoreInstance, 'viewingList');
-    // onSnapshot(viewingListRef, (snapshot) => {
-    //   const updatedData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    //   this.viewListSubject.next(updatedData);
-    //   console.log("udpated", updatedData);
-    // });
-
-    const specificDocumentId = this.logInfo.UserName; // Replace with the actual document ID
-    // console.log("fireastore-", specificDocumentId)
-    // Reference to the specific document
-    // const specificDocumentRef = viewingListRef.doc(specificDocumentId);
+    const specificDocumentId = this.logInfo.UserName;
     const specificDocumentRef = doc(viewingListRef, specificDocumentId);
 
-    // Fetch the data for the specific document
     onSnapshot(specificDocumentRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = { id: docSnapshot.id, ...docSnapshot.data() };
         this.tempStore = data;
         this.viewListSubject.next(this.tempStore);
-        // console.log('Real-time data for specific document:', this.tempStore);
-        // Do something with the real-time data
       } else {
-        console.log('Document not found');
-        // Handle the case where the document doesn't exist
+        console.log('Viewing Document not found');
+      }
+    }, (error) => {
+      console.error('Error listening for document changes:', error);
+    });
+
+    //listening to firebase changes for greetingList document
+    const greetingListRef = collection(this.firestoreInstance, 'greetingList');
+    const specificDocId = this.logInfo.UserId;
+    const specificDocRef = doc(greetingListRef, specificDocId);
+
+    onSnapshot(specificDocRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = {...docSnapshot.data()};
+        console.log('data', data)
+        this.tempStoreGreet = [];
+        for (let key of Object.keys(data)) {
+         this.tempStoreGreet.push(key) 
+        }
+        console.log("onSnap", this.tempStoreGreet)
+        this.greetingListSubject.next(this.tempStoreGreet);        
+      } else {
+        console.log('Greeting Document not found');
       }
     }, (error) => {
       console.error('Error listening for document changes:', error);
@@ -84,6 +98,7 @@ export class FirestoreService extends BasePage {
         if (Array.isArray(userData['names'])) {
           const updatedNames = userData['names'].filter((nameObject: any) => {
             // Assuming nameObject is an object with the field to delete
+            console.log(nameObject)
             return !(nameObject.UserId === fieldToDelete);
           });
 

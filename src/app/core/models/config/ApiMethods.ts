@@ -56,7 +56,7 @@ export const API = {
         },
         EDIT_USERNAME:{
             POST: `${environment.baseUrl}User/ChangeUserName`
-        }
+        },
     },
     BUSINESS: {
         ANNOUNCEMENT: {
@@ -117,6 +117,12 @@ export const API = {
     INFLOWS: {
         START_STOP_INFLOWS: `${environment.baseUrl}Inflows/StartStopRecievingInflows`,
         GET_INFLOWS: `${environment.baseUrl}Inflows/GetInflowsByUserId`,
+    },
+    GREETING:{
+        SEND_GREETING_TO_USER: `${environment.baseUrl}Greeting/SendGreetingToUser`,
+        GET_GREETING_HISTORY: `${environment.baseUrl}Greeting/GetGreetingHistory`,
+        ACTION_GREETING_TO_USER: `${environment.baseUrl}Greeting/ActionGreetingToUser`,
+        CANCEL_GREETING_TO_USER: `${environment.baseUrl}Greeting/CancelGreetingToUser`
     }
 
 }

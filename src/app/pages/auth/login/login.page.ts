@@ -329,6 +329,7 @@ export class LoginPage implements OnInit {
 
   async setUserDefaultCountryId() {
     let defaultCountryId = this.placesService.getDefaultCountryId();
+    // console.log("log", defaultCountryId);
     // this.phoneForm.setValue({ countryId: defaultCountryId, phoneNo: "" });
     this.selectedCountry = await this.placesService.findCountry({ id: defaultCountryId });
     // }

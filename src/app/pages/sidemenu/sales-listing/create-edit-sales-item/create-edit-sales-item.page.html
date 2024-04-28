@@ -53,10 +53,10 @@
 
     <!--  Condition -->
     <ng-container *ngIf="!isEdit">
-      <ion-label class="input-label">Condition </ion-label>
+      <ion-label class="input-label">Conditioned </ion-label>
       <ion-item color="none" class="input" lines="none" id="pop-condition">
         <ion-label>
-          <h3 *ngIf="salesItem.Condition">{{salesItem.Condition}}</h3>
+          <h3 *ngIf="salesItem.Condition">{{commonService.getCondition(salesItem.Condition)}}</h3>
           <h3 *ngIf="!salesItem.Condition">select</h3>
         </ion-label>
         <ion-buttons>
@@ -85,13 +85,13 @@
         </ion-label>
       </div>
 
-      <div style="margin-bottom: 8px;">
+      <!-- <div style="margin-bottom: 8px;">
         <ion-label class="input-label">Condition</ion-label>
         <br>
         <ion-label class="desc">
           {{salesItem.Condition}}
         </ion-label>
-      </div>
+      </div> -->
     </ng-container>
     <!-- Price -->
     <div class="input-container">
@@ -201,7 +201,7 @@
     </div>
 
     <!-- [disabled]="!form.valid" -->
-    <ion-button style="text-transform: none; height: 47px; margin-bottom: 5px;"  expand="block" shape="round" color="primary"
+    <ion-button  style="text-transform: none; height: 47px; margin-bottom: 5px;"  expand="block" shape="round" color="primary"
       type="submit" >
       <span *ngIf="!isEdit" style="font-size:18px ;">Create</span>
       <span *ngIf="isEdit">Save</span>
@@ -218,8 +218,8 @@
     <ion-list>
       <ion-radio-group [value]="salesItem.Condition" [(ngModel)]="salesItem.Condition" mode="md">
         <ion-item lines="none" *ngFor="let condition of conditionList">
-          <ion-label [ngClass]="{'selected': (salesItem.Condition==condition)}">{{condition}}</ion-label>
-          <ion-radio slot="start" value="{{condition}}"></ion-radio>
+          <ion-label [ngClass]="{'selected': (salesItem.Condition == condition.title)}">{{condition.title}}</ion-label>
+          <ion-radio slot="start" value="{{condition.value}}"></ion-radio>
         </ion-item>
       </ion-radio-group>
     </ion-list>
