@@ -37,23 +37,39 @@
       <div
         *ngFor="let user of viewTemplate == 'Viewing'? viewList.names : greetingListApi ;let i=index">
         <div class="lines-bottom ion-padding">
-          <div (click)="openUser(user)" class="display-flex--row flex-align-center">
+          <div *ngIf="viewTemplate != 'Viewing' " (click)="openUser(user)" class="display-flex--row flex-align-center">
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
-              <img animation="gradient" src="{{appConstants.mediaPrefix + ((user.CreatedBy.ProfileImage) || (user.ProfileImage)) }}"
+              <img animation="gradient" src="{{appConstants.mediaPrefix + ((user.CreatedBy.ProfileImage) || (user.UserProfilePhoto)) }}"
               onError="this.src='assets/icons/business/anonymous.svg'"
                 alt="User Profile">
             </ion-avatar>
             <div class="font-primary-text" (click)="viewConnection(user)">
-              <span class="font-sz-14">{{(user.CreatedBy.UserName || (user.UserName))}}</span>
+              <span class="font-sz-14">{{ (user.CreatedBy.UserName)|| (user.UserName) }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="viewTemplate == 'Viewing' "  (click)="openUser(user)" class="display-flex--row flex-align-center">
+            <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
+              <img animation="gradient" src="{{appConstants.mediaPrefix + user.UserProfilePhoto }}"
+              onError="this.src='assets/icons/business/anonymous.svg'"
+                alt="User Profile">
+            </ion-avatar>
+            <div class="font-primary-text" (click)="viewConnection(user)">
+              <span class="font-sz-14">{{user.UserName}}</span>
             </div>
           </div>
 
           <div class="display-flex--row flex-align-center">
             <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">1 Miles away </div>
             <div class="action-list">
+
               <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
-              <greeting-view [fromUserId]="user.CreatedBy.Id" [fromUserName]="user.CreatedBy.UserName"
-              [fromUserProfile]="user.CreatedBy.Id + '/' + user.CreatedBy.ProfileImage" [userInfo]="user"></greeting-view>
+              <greeting-view *ngIf="viewTemplate != 'Viewing' "  [fromUserId]="user.CreatedBy.Id || user.UserId" [fromUserName]="user.CreatedBy.UserName || user.UserName"
+                [fromUserProfile]="(user.CreatedBy.Id + '/' + user.CreatedBy.ProfileImage) || (user.UserId + '/' + user.UserProfilePhoto)" [userInfo]="user">
+              </greeting-view>
+              <greeting-view *ngIf="viewTemplate == 'Viewing' "  [fromUserId]="user.UserId" [fromUserName]="user.UserName"
+              [fromUserProfile]="user.UserId + '/' + user.UserProfilePhoto" [userInfo]="user">
+            </greeting-view>
               <!-- <ion-icon name="greeting-no-circle" style="font-size: 36px;" (click)="greetingRecieved(user)"></ion-icon> -->
               <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
               <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon>

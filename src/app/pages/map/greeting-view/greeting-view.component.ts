@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonModal } from '@ionic/angular';
 import { kMaxLength } from 'buffer';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { CommonService } from 'src/app/core/services/common.service';
 // import { SignalRService } from 'src/app/core/services/signal-r.service';
@@ -9,7 +9,9 @@ import { Greeting } from 'src/app/pages/map/models/UserOnMap';
 import { MapService } from 'src/app/pages/map/services/map.service';
 import { environment } from 'src/environments/environment';
 import { ChatsService } from 'src/app/core/services/chat/chats.service';
-
+import { ModalController } from '@ionic/angular';
+import { ChatDetailComponent } from '../../chat/component/chat-detail/chat-detail.component';
+import { ChatDetailPage } from '../../chat/chat-detail/chat-detail.page';
 @Component({
   selector: 'greeting-view',
   templateUrl: './greeting-view.component.html',
@@ -27,6 +29,9 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
   public attachmentURL = environment.attachementUrl;
   public openChat?: Subscription;
 
+  public isAcceptRejectModalClosedSubject : BehaviorSubject<any> = new BehaviorSubject<any>('i-closed');
+  public isAcceptRejectModalClosed = this.isAcceptRejectModalClosedSubject.asObservable();
+
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
 
   constructor(
@@ -35,7 +40,8 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     private _commonService: CommonService,
     private _mapService: MapService,
     private alertController:AlertController,
-    private chatService: ChatsService
+    private chatService: ChatsService,
+    public modalController: ModalController
   ) {
     // this.greetingEventObservable = _signalService._onGreetingEventOb.subscribe(this.onGreetingEvent.bind(this));
     
@@ -71,7 +77,7 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     //   });
   }
 
-  startChat(user: any) {
+  async startChat(user: any) {
     console.log("data chat", user)
     var selctedUser: any = {
       UserId: user.Id,
@@ -79,14 +85,36 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
       ProfilePhoto: user.ProfileImage == undefined ? null : user.ProfileImage,
       groupId: ""
     }
-    this.chatService.openChat(selctedUser);
+    const res = await this.chatService.openChat(selctedUser, true);
+    console.log(res);
+
+    this.chatTray(res);
+  }
+
+  public async chatTray(user: any): Promise<void> {
+    const modal = await this.modalController.create({
+      component: ChatDetailPage,
+      componentProps: {
+        otherValue : user
+      }
+    });
+    modal.onDidDismiss().then(result => {
+      if (result) {
+      }
+    });
+    return await modal.present();
   }
 
   public acceptGreeting(user: any): void {
     console.log("accepted", user?.CreatedBy);
     this._mapService.actionGreetingToUser(user.CreatedBy.Id, true);
     this.greetingAcceptRejectModal?.dismiss();
+    this.isAcceptRejectModalClosedSubject.next("isClosed");
+    // this.chatTray(user);
+
     this.startChat(user?.CreatedBy);
+
+
     // let param = <Greeting>{
     //   ToId: this._authService.getUserId(),
     //   FromId: this.fromUserId,
