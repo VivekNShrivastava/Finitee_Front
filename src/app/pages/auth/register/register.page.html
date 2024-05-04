@@ -172,7 +172,7 @@
         </ion-modal>
         <form [formGroup]="phoneForm" (ngSubmit)="submitPhone()">
           <!-- <ion-list> -->
-<<<<<<< HEAD
+
           <ion-item lines="none">
             <ion-button class="fi-countryCode-btn" fill="outline" type="button"
               id="selectCountryCode">
@@ -183,7 +183,7 @@
             </ion-button>
             <!-- <ion-select class="flagselect" formControlName="countryId" placeholder="+91" id="selectCountryCode"> -->
             <!-- <ion-select-option *ngFor="let country of placesService.countries"
-=======
+
             <ion-item lines="none">
               <ion-button class="fi-countryCode-btn" fill="outline" type="button" id="selectCountryCode">
                 <img slot="start" class="icon-small" src="{{placesService.getFlagIconPath(selectedCountry)}}"
@@ -193,7 +193,7 @@
               </ion-button>
               <!-- <ion-select class="flagselect" formControlName="countryId" placeholder="+91" id="selectCountryCode"> -->
                 <!-- <ion-select-option *ngFor="let country of placesService.countries"
->>>>>>> 114fffbe50bbcfa51715632066e6038ec33158c2
+
                   [value]="country.CountryId">+{{country.PhoneCode}}</ion-select-option> -->
             <!-- <ion-select-option value="apples">+91</ion-select-option>
               <ion-select-option value="oranges">+01</ion-select-option>
@@ -430,13 +430,16 @@
                 [value]="city.CityId">{{city.CityName}}</ion-select-option>
             </ion-select>
           </ion-item> -->
-          <ion-item lines="none" class="fi-inputSelect" style="overflow: hidden;">
-            <ion-input [readonly]="true" class="input" type="text"
-              formControlName="state" placeholder="Select State"
-              id="selectState">
-            </ion-input>
-            <ion-icon slot="end" name="caret-down-outline"></ion-icon>
-          </ion-item>
+    
+            <ion-item lines="none" class="fi-inputSelect" style="overflow: hidden;">
+              <ion-input [readonly]="true" class="input" type="text"
+                formControlName="state" placeholder="Select State"
+                id="selectState">
+              </ion-input>
+              <ion-icon slot="end" name="caret-down-outline"></ion-icon>
+            </ion-item>
+        
+
           <ion-item lines="none" class="fi-inputSelect">
             <ion-input [readonly]="true" class="input" type="text"
               formControlName="city" placeholder="Select City" id="selectCity">
