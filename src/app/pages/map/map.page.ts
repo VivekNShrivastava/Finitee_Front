@@ -2109,7 +2109,7 @@ export class MapPage implements OnDestroy {
     });
     modal.onDidDismiss().then(result => {
       if (result) {
-        this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
+        // this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
       }
     });
     return await modal.present();

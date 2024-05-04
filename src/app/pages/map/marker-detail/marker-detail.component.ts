@@ -208,8 +208,8 @@ export class MarkerDetailComponent implements OnInit {
 
   getGreetingIcon(){
     var iconName = "greeting";
-    if(this.markerList[this.markerCurrentIndex].Greeting === 4) iconName = "greeting-sent";
-    else if(this.markerList[this.markerCurrentIndex].Greeting === 5) iconName = "greeting-blink";
+    if(this.markerList[this.markerCurrentIndex].Greeting === 4) iconName = "greeting-blink";
+    else if(this.markerList[this.markerCurrentIndex].Greeting === 5) iconName = "greeting-sent";
     return iconName;
   }
 
@@ -218,12 +218,12 @@ export class MarkerDetailComponent implements OnInit {
       const res = await this.mapService.sendGreetingToUser(user.Id)
       if(res && res.Success){
         this.commonService.presentToast("Greeting sent to " + user.UserName)
-        user.Greeting = 4;
+        user.Greeting = 5;
         this.getGreetingIcon();
       }else{
         this.commonService.presentToast("Something went wrong")
       }
-    }else if(user.Greeting === 4){
+    }else if(user.Greeting === 5){
       const res = await this.mapService.cancelGreetingToUser(user.Id)
       if(res && res.Success){
         user.Greeting = 1;
