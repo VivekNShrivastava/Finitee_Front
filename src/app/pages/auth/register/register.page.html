@@ -2,19 +2,22 @@
   <div class="login-main">
 
     <!-- <ion-icon class="backicon" *ngIf="step!==1" name="chevron-back-outline" (click)="back()"></ion-icon> -->
-    <ion-icon class="backicon" name="chevron-back-outline" (click)="back()"></ion-icon>
+    <ion-icon class="backicon" name="chevron-back-outline"
+      (click)="back()"></ion-icon>
     <ion-icon class="logo-img" src="assets/images/login1.svg"></ion-icon>
 
     <ng-container *ngIf="step==REG_STEP.CHOOSE_ACC">
-      
+
       <!-- <div class="box1" [class.opened]="step==REG_STEP.CHOOSE_ACC"> -->
       <ion-icon class="img2" src="assets/images/register1.svg"></ion-icon>
       <h3>Please choose your account type</h3>
       <p>Your account choice is permanent</p>
-      <ion-radio-group [value]="AppConstants.USER_TYPE.FR_USER" (ionChange)="userType($event)">
+      <ion-radio-group [value]="AppConstants.USER_TYPE.FR_USER"
+        (ionChange)="userType($event)">
         <ion-item>
           <ion-radio [value]="AppConstants.USER_TYPE.FR_USER"></ion-radio>
-          <ion-label [class.selected]="selectedUserType == 1" class="label">Individual registration<span>
+          <ion-label [class.selected]="selectedUserType == 1"
+            class="label">Individual registration<span>
               <p>
                 You are an individual and do not have products and services to
                 promote
@@ -23,18 +26,21 @@
         </ion-item>
         <ion-item>
           <ion-radio [value]="AppConstants.USER_TYPE.BN_USER"></ion-radio>
-          <ion-label [class.selected]="selectedUserType == 2" class="label">Business registration<span>
+          <ion-label [class.selected]="selectedUserType == 2"
+            class="label">Business registration<span>
               <p>You are a business with products and services to promote</p>
             </span></ion-label>
         </ion-item>
         <ion-item>
           <ion-radio [value]="AppConstants.USER_TYPE.NF_USER"></ion-radio>
-          <ion-label [class.selected]="selectedUserType == 3" class="label">Non-profit registration<span>
+          <ion-label [class.selected]="selectedUserType == 3"
+            class="label">Non-profit registration<span>
               <p>You are a registered nonprofit</p>
             </span></ion-label>
         </ion-item>
       </ion-radio-group>
-      <ion-button color="primary" class="lgn-button" (click)="chooseActType()">Choose account type</ion-button>
+      <ion-button color="primary" class="lgn-button"
+        (click)="chooseActType()">Choose account type</ion-button>
       <!-- </div> -->
 
     </ng-container>
@@ -51,18 +57,23 @@
         <p class="subheading">Please enter you name & gender</p>
         <ion-list>
           <ion-item lines="none">
-            <ion-input class="input" autocapitalize="words" placeholder="First Name" formControlName="fname" ></ion-input>
+            <ion-input class="input" autocapitalize="words"
+              placeholder="First Name" formControlName="fname"></ion-input>
           </ion-item>
           <ion-item lines="none">
-            <ion-input class="input" autocapitalize="words" placeholder="Last Name" formControlName="lname"></ion-input>
+            <ion-input class="input" autocapitalize="words"
+              placeholder="Last Name" formControlName="lname"></ion-input>
           </ion-item>
           <ion-item lines="none" id="open-gender-popup" class="item-selection">
-            <ion-input class="input" placeholder="Gender" [value]="genderInputValue"id="selectGender" readonly></ion-input>
+            <ion-input class="input" placeholder="Gender"
+              [value]="genderInputValue" id="selectGender" readonly></ion-input>
           </ion-item>
-          <ion-popover trigger="open-gender-popup" [dismissOnSelect]="true" triggerAction="click" mode="ios" alignment="end">
+          <ion-popover trigger="open-gender-popup" [dismissOnSelect]="true"
+            triggerAction="click" mode="ios" alignment="end">
             <ng-template>
               <ion-list>
-                <ion-radio-group value="{{seletedGender}}" (ionChange)="selectedGender($event)" mode="md">
+                <ion-radio-group value="{{seletedGender}}"
+                  (ionChange)="selectedGender($event)" mode="md">
                   <ion-item lines="none">
                     <ion-label>Male</ion-label>
                     <ion-radio slot="start" value="1"></ion-radio>
@@ -80,30 +91,41 @@
             </ng-template>
           </ion-popover>
         </ion-list>
-        <ion-button class="lgn-class" expand="block" shape="round" [disabled]="nameForm.invalid" type="submit">Continue</ion-button>
+        <ion-button class="lgn-class" expand="block" shape="round"
+          [disabled]="nameForm.invalid" type="submit">Continue</ion-button>
       </form>
     </ng-container>
 
     <ng-container *ngIf="step==REG_STEP.BIRTHDAY">
       <div class="bsname">
-      <!-- <h2 class="heading">Let's get started</h2> -->
-      <p class="subheading">Hi {{currentUser.FirstName}}, when's your birthday?</p>
-      <!-- <ion-list>
+        <!-- <h2 class="heading">Let's get started</h2> -->
+        <p class="subheading">Hi {{currentUser.FirstName}}, when's your
+          birthday?</p>
+        <!-- <ion-list>
         <ion-item lines="none"> -->
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-input #inputDOBDay class="dob-input" type="text" inputmode="numeric" min="1" max="31" maxlength="2" placeholder="DD" [(ngModel)]="inputDOB.day" (ionChange)="onChangeDOB($event,'dd')" ></ion-input>
-              </ion-col>
-              <ion-col>
-                <ion-input #inputDOBMonth class="dob-input" type="text" inputmode="numeric" min="1" max="12" maxlength="2" placeholder="MM" [(ngModel)]="inputDOB.month" (ionChange)="onChangeDOB($event, 'MM')"></ion-input>
-              </ion-col>
-              <ion-col>
-                <ion-input #inputDOBYear class="dob-input" type="text" inputmode="numeric" min="1900" max="maxDate.getFullYear()" maxlength="4" placeholder="YYYY" [(ngModel)]="inputDOB.year" (ionChange)="onChangeDOB($event, 'yyyy')" ></ion-input>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-            <!-- <ion-input #inputDOBDay class="dob-input" type="text" inputmode="numeric" min="1" max="31" maxlength="2" placeholder="DD" [(ngModel)]="inputDOB.day" (ionChange)="onChangeDOB($event,'dd')" ></ion-input>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-input #inputDOBDay class="dob-input" type="text"
+                inputmode="numeric" min="1" max="31" maxlength="2"
+                placeholder="DD" [(ngModel)]="inputDOB.day"
+                (ionChange)="onChangeDOB($event,'dd')"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input #inputDOBMonth class="dob-input" type="text"
+                inputmode="numeric" min="1" max="12" maxlength="2"
+                placeholder="MM" [(ngModel)]="inputDOB.month"
+                (ionChange)="onChangeDOB($event, 'MM')"></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input #inputDOBYear class="dob-input" type="text"
+                inputmode="numeric" min="1900" max="maxDate.getFullYear()"
+                maxlength="4" placeholder="YYYY" [(ngModel)]="inputDOB.year"
+                (ionChange)="onChangeDOB($event, 'yyyy')"></ion-input>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <!-- <ion-input #inputDOBDay class="dob-input" type="text" inputmode="numeric" min="1" max="31" maxlength="2" placeholder="DD" [(ngModel)]="inputDOB.day" (ionChange)="onChangeDOB($event,'dd')" ></ion-input>
             <span slot="error">Please enter a valid birthday</span>
             <ion-input #inputDOBMonth class="dob-input" type="text" inputmode="numeric" min="1" max="12" maxlength="2" placeholder="MM" [(ngModel)]="inputDOB.month" (ionChange)="onChangeDOB($event, 'mm')"></ion-input>
             <ion-input #inputDOBYear class="dob-input" type="text" inputmode="numeric" min="1900" max="maxDate.getFullYear()" maxlength="4" placeholder="YYYY" [(ngModel)]="inputDOB.year" (ionChange)="onChangeDOB($event, 'yy')" ></ion-input>
@@ -111,11 +133,15 @@
 
         <!-- </ion-item>
       </ion-list> -->
-      <span *ngIf="inputDOB.showDOBError>0 && inputDOB.enteredDOBFormatted.length > 0" style="color: red;" slot="error">{{inputDOB.errorMsg}}</span> <!--Manoj TODO Change Style-->
-      <ion-button expand="block" class="lgn-class" shape="round" [disabled]="!(!inputDOB.showDOBError && currentUser.DateOfBirth.length > 0)"
-        (click)="freeUserDob()">Continue</ion-button>
+        <span
+          *ngIf="inputDOB.showDOBError>0 && inputDOB.enteredDOBFormatted.length > 0"
+          style="color: red;" slot="error">{{inputDOB.errorMsg}}</span>
+        <!--Manoj TODO Change Style-->
+        <ion-button expand="block" class="lgn-class" shape="round"
+          [disabled]="!(!inputDOB.showDOBError && currentUser.DateOfBirth.length > 0)"
+          (click)="freeUserDob()">Continue</ion-button>
 
-      <!--<ion-input #inputDOBMonth class="dob-input" type="number" maxlength="2" placeholder="MM" [(ngModel)]="inputDOB.month" (ionChange)="onChangeDOB($event, 'mm')" id="date-picker"></ion-input>
+        <!--<ion-input #inputDOBMonth class="dob-input" type="number" maxlength="2" placeholder="MM" [(ngModel)]="inputDOB.month" (ionChange)="onChangeDOB($event, 'mm')" id="date-picker"></ion-input>
       <ion-modal #modal trigger="date-picker" class="center" [backdropDismiss]="true">
         <ng-template>
           <ion-datetime  [value]="currentUser.DateOfBirth" (ionChange)="changeDOB($event, modal)" presentation="date" [max]="maxDOBDate">
@@ -123,26 +149,41 @@
           </ion-datetime>
         </ng-template>
       </ion-modal>-->
-    </div>
+      </div>
     </ng-container>
-    
+
     <ng-container *ngIf="step==REG_STEP.PHONE_NO">
       <div class="bsname">
         <p class="subheading">Please enter your phone number</p>
-        <ion-modal #selectCountryModal trigger="selectCountryCode" [backdropDismiss]="true" class="search-modal">
+        <ion-modal #selectCountryModal trigger="selectCountryCode"
+          [backdropDismiss]="true" class="search-modal">
           <!-- <ng-template>
             <ion-datetime presentation="date" [showDefaultButtons]="true" color="primary">
               <span slot="title">Start Date</span>
             </ion-datetime>
           </ng-template> -->
           <ng-template>
-            <app-select-searchable [inputData]="countrySearchableInput" (onSelectSearchableCancel)="onSelectCountryModalDismiss($event)" (onSelectSearchableSubmit)="onCountrySelected($event)">
+            <app-select-searchable [inputData]="countrySearchableInput"
+              (onSelectSearchableCancel)="onSelectCountryModalDismiss($event)"
+              (onSelectSearchableSubmit)="onCountrySelected($event)">
             </app-select-searchable>
           </ng-template>
 
         </ion-modal>
         <form [formGroup]="phoneForm" (ngSubmit)="submitPhone()">
           <!-- <ion-list> -->
+
+          <ion-item lines="none">
+            <ion-button class="fi-countryCode-btn" fill="outline" type="button"
+              id="selectCountryCode">
+              <ion-img slot="start" class="icon-small"
+                src="{{placesService.getFlagIconPath(selectedCountry)}}"></ion-img>&nbsp;&nbsp;
+              +{{selectedCountry?.PhoneCode}}
+              <ion-icon slot="end" name="caret-down-outline"></ion-icon>
+            </ion-button>
+            <!-- <ion-select class="flagselect" formControlName="countryId" placeholder="+91" id="selectCountryCode"> -->
+            <!-- <ion-select-option *ngFor="let country of placesService.countries"
+
             <ion-item lines="none">
               <ion-button class="fi-countryCode-btn" fill="outline" type="button" id="selectCountryCode">
                 <img slot="start" class="icon-small" src="{{placesService.getFlagIconPath(selectedCountry)}}"
@@ -152,39 +193,54 @@
               </ion-button>
               <!-- <ion-select class="flagselect" formControlName="countryId" placeholder="+91" id="selectCountryCode"> -->
                 <!-- <ion-select-option *ngFor="let country of placesService.countries"
+
                   [value]="country.CountryId">+{{country.PhoneCode}}</ion-select-option> -->
-                <!-- <ion-select-option value="apples">+91</ion-select-option>
+            <!-- <ion-select-option value="apples">+91</ion-select-option>
               <ion-select-option value="oranges">+01</ion-select-option>
               <ion-select-option value="bananas">+02</ion-select-option> -->
-              <!-- </ion-select> -->
-              <ion-input class="phninpt" type="number" placeholder="Phone Number" formControlName="phoneNo"  (ionChange)="onUserInputChange($event, 'PhoneNumber')"></ion-input>
-              <span slot="error">{{errorMsgGrp.phone}}</span>
-            </ion-item>
+            <!-- </ion-select> -->
+            <ion-input class="phninpt" type="number" placeholder="Phone Number"
+              formControlName="phoneNo"
+              (ionChange)="onUserInputChange($event, 'PhoneNumber')"></ion-input>
+            <span slot="error">{{errorMsgGrp.phone}}</span>
+          </ion-item>
           <!-- </ion-list> -->
-          <p class="tc" style="margin: 0px 20px 0px 20px; margin-bottom: 15px; font-weight: 300; color:	#282626;">By tapping "Continue", you agree to our <br> <a style="text-decoration: underline;
+          <p class="tc"
+            style="margin: 0px 20px 0px 20px; margin-bottom: 15px; font-weight: 300; color:	#282626;">By
+            tapping "Continue", you agree to our <br> <a
+              style="text-decoration: underline;
             font: normal normal 100 17px/22px SF Pro Display;
             letter-spacing: 0.22px;
             color: #282626; font-weight: 300; margin-top: 40px;"
-            [routerLink]="['/terms-conditions']">Privacy Policy</a> and <a style="text-decoration: underline;
+              [routerLink]="['/terms-conditions']">Privacy Policy</a> and <a
+              style="text-decoration: underline;
             font: normal normal 100 17px/22px SF Pro Display;
             letter-spacing: 0.22px;
             color: 	#282626; font-weight: 300; margin-top: 40px;"
-            [routerLink]="['/terms-conditions']">Terms of Service</a>.</p>
-          <ion-button class="lgn-class2" expand="block" shape="round" [disabled]="phoneForm.invalid" type="submit">Continue</ion-button>
+              [routerLink]="['/terms-conditions']">Terms of Service</a>.</p>
+          <ion-button class="lgn-class2" expand="block" shape="round"
+            [disabled]="phoneForm.invalid" type="submit">Continue</ion-button>
         </form>
       </div>
     </ng-container>
 
-    <ng-container *ngIf="step==REG_STEP.PHONE_OTP || step==REG_STEP.EMAIL_VERIFY">
+    <ng-container
+      *ngIf="step==REG_STEP.PHONE_OTP || step==REG_STEP.EMAIL_VERIFY">
       <div class="bsname">
-        <p *ngIf="step==REG_STEP.PHONE_OTP" class="subheading">Please enter the code we sent on your phone. (Valid for 5 mins)</p>
-        <p *ngIf="step==REG_STEP.EMAIL_VERIFY" class="subheading">Please enter the code we sent on your email. (Valid for 10 mins)</p>
+        <p *ngIf="step==REG_STEP.PHONE_OTP" class="subheading">Please enter the
+          code we sent on your phone. (Valid for 5 mins)</p>
+        <p *ngIf="step==REG_STEP.EMAIL_VERIFY" class="subheading">Please enter
+          the code we sent on your email. (Valid for 10 mins)</p>
         <ion-item lines="none">
-          <ng-otp-input #phoneOTPInputComp class="otp-input" [config]="{length:6}" (onInputChange)="otpInputChange($event)"></ng-otp-input>
+          <ng-otp-input #phoneOTPInputComp class="otp-input"
+            [config]="{length:6}"
+            (onInputChange)="otpInputChange($event)"></ng-otp-input>
         </ion-item>
         <!-- <ion-label class="underline-text">Change phone number</ion-label> -->
-        <ion-button expand="block" fill="clear" (click)="back()">{{getChangeNumberEmailButtonLabel()}}</ion-button>
-        <ion-button class="lgn-class"  expand="block" shape="round" (click)="resendOTP()" [disabled]="otpTimer.secs > 0">Resend
+        <ion-button expand="block" fill="clear"
+          (click)="back()">{{getChangeNumberEmailButtonLabel()}}</ion-button>
+        <ion-button class="lgn-class" expand="block" shape="round"
+          (click)="resendOTP()" [disabled]="otpTimer.secs > 0">Resend
           OTP{{otpTimer.msg}}</ion-button>
       </div>
     </ng-container>
@@ -193,10 +249,14 @@
         <p class="subheading">Please enter your email</p>
         <form [formGroup]="emailForm" (ngSubmit)="submitEmail()">
           <ion-item lines="none">
-            <ion-input class="input" placeholder="Email" formControlName="email" type="email" name="email" (ionChange)="onUserInputChange($event, 'Email')"></ion-input>
+            <ion-input class="input" placeholder="Email" formControlName="email"
+              type="email" name="email"
+              (ionChange)="onUserInputChange($event, 'Email')"></ion-input>
             <span slot="error">{{errorMsgGrp.email}}</span>
           </ion-item>
-          <ion-button class="lgn-class2" expand="block" [disabled]="emailForm.invalid" shape="round" type="submit">Continue</ion-button>
+          <ion-button class="lgn-class2" expand="block"
+            [disabled]="emailForm.invalid" shape="round"
+            type="submit">Continue</ion-button>
         </form>
       </div>
 
@@ -205,11 +265,15 @@
       <!-- <div class="bsname"> -->
       <ion-img class="emailsvg" src="assets/images/email.svg"></ion-img>
       <h2 class="heading">E-mail verification</h2>
-      <p class="subheading2">A link has been sent to verify your e-mail address please select the link in your e-mail to
+      <p class="subheading2">A link has been sent to verify your e-mail address
+        please select the link in your e-mail to
         continue</p>
-      <ion-button expand="block" shape="round" (click)="goToLogin()">Sign in with different account</ion-button>
-      <ion-button expand="block" fill="clear" (click)="resendNewLink()">Send a new link</ion-button>
-      <ion-button expand="block" fill="clear" (click)="userVerifiedEmailLink()">Link already verfied?</ion-button>
+      <ion-button expand="block" shape="round" (click)="goToLogin()">Sign in
+        with different account</ion-button>
+      <ion-button expand="block" fill="clear" (click)="resendNewLink()">Send a
+        new link</ion-button>
+      <ion-button expand="block" fill="clear"
+        (click)="userVerifiedEmailLink()">Link already verfied?</ion-button>
 
       <!-- </div> -->
     </ng-container>
@@ -218,15 +282,20 @@
         <form [formGroup]="passwordForm" (ngSubmit)="setPassword()">
           <p class="subheading">Please enter a secure password</p>
           <ion-item lines="none">
-            <ion-input class="input" type="password" placeholder="Password" formControlName="password1"></ion-input>
-            <span slot="error">Password should be min 8 chars with atleast one small letter, capital letter, number & a special character</span>
+            <ion-input class="input" type="password" placeholder="Password"
+              formControlName="password1"></ion-input>
+            <span slot="error">Password should be min 8 chars with atleast one
+              small letter, capital letter, number & a special character</span>
           </ion-item>
           <ion-item lines="none">
-            <ion-input class="input" type="password" placeholder="Confirm Password"
+            <ion-input class="input" type="password"
+              placeholder="Confirm Password"
               formControlName="password2"></ion-input>
             <span slot="error">Passwords do not match</span>
           </ion-item>
-          <ion-button class="lgn-class" expand="block" shape="round" [disabled]="passwordForm.invalid" type="submit">Continue</ion-button>
+          <ion-button class="lgn-class" expand="block" shape="round"
+            [disabled]="passwordForm.invalid"
+            type="submit">Continue</ion-button>
         </form>
 
       </div>
@@ -235,9 +304,11 @@
       <div class="bsname">
         <p class="subheading">Please enter your business’s name</p>
         <ion-item lines="none">
-          <ion-input class="input" placeholder="Business Name" [(ngModel)]="currentUser.DisplayName"></ion-input>
+          <ion-input class="input" placeholder="Business Name"
+            [(ngModel)]="currentUser.DisplayName"></ion-input>
         </ion-item>
-        <ion-button expand="block" [disabled]="currentUser.DisplayName.length < AppConstants.MIN_COMPANY_NAME_LENGTH"
+        <ion-button expand="block"
+          [disabled]="currentUser.DisplayName.length < AppConstants.MIN_COMPANY_NAME_LENGTH"
           shape="round" (click)="setBOName()">Continue</ion-button>
       </div>
     </ng-container>
@@ -245,54 +316,72 @@
       <div class="bsname">
         <p class="subheading">Please enter your nonprofit's name</p>
         <ion-item lines="none">
-          <ion-input class="input" placeholder="Nonprofit Name" [(ngModel)]="currentUser.DisplayName"></ion-input>
+          <ion-input class="input" placeholder="Nonprofit Name"
+            [(ngModel)]="currentUser.DisplayName"></ion-input>
         </ion-item>
-        <ion-button expand="block" [disabled]="currentUser.DisplayName.length < AppConstants.MIN_COMPANY_NAME_LENGTH"
+        <ion-button expand="block"
+          [disabled]="currentUser.DisplayName.length < AppConstants.MIN_COMPANY_NAME_LENGTH"
           shape="round" (click)="setNPName()">Continue</ion-button>
       </div>
     </ng-container>
     <ng-container *ngIf="step==REG_STEP.USERNAME">
       <div class="bsname">
         <form [formGroup]="usernameForm" (ngSubmit)="checkUsernameExist()">
-        <p class="subheading">Please create a Username</p>
-        <ion-item lines="none">
-          <ion-input class="input" placeholder="Username" (ionChange)="onUserInputChange($event, 'Username')" formControlName="username"
-           ></ion-input>
+          <p class="subheading">Please create a Username</p>
+          <ion-item lines="none">
+            <ion-input class="input" placeholder="Username"
+              (ionChange)="onUserInputChange($event, 'Username')"
+              formControlName="username"></ion-input>
             <span slot="error">{{checkedUsername.errorMsg}}</span>
             <!-- <span *ngIf="!checkedUsername.valid" slot="error">{{checkedUsername.errorMsg}}</span> -->
-        </ion-item>
-        <!-- <re-captcha [(ngModel)]="formModel.captcha" name="captcha" required #captchaControl="ngModel"></re-captcha> -->
-        <ion-button class="lgn-class" expand="block" shape="round" [disabled]="usernameForm.invalid" type="submit">Continue</ion-button>
-        <!--<ion-button expand="block" shape="none" (click)="skipUsername()">Do it later</ion-button>
+          </ion-item>
+          <!-- <re-captcha [(ngModel)]="formModel.captcha" name="captcha" required #captchaControl="ngModel"></re-captcha> -->
+          <ion-button class="lgn-class" expand="block" shape="round"
+            [disabled]="usernameForm.invalid"
+            type="submit">Continue</ion-button>
+          <!--<ion-button expand="block" shape="none" (click)="skipUsername()">Do it later</ion-button>
         <ion-label class="underline-text">Do it later</ion-label>-->
-      </form>
+        </form>
       </div>
     </ng-container>
     <ng-container *ngIf="step==REG_STEP.ADDRESS">
       <div>
-        <ion-modal class="search-modal" #pinLocationModal trigger="pinLocation" [backdropDismiss]="true">
+        <ion-modal class="search-modal" #pinLocationModal trigger="pinLocation"
+          [backdropDismiss]="true">
           <ng-template>
-            <app-pin-location [inputLocation]="pinnedLocation" (onPinLocationCancel)="onPinLocationCancel($event)"
-            (onPinLocationSubmit)="onPinLocationSubmit($event)"></app-pin-location>
+            <app-pin-location [inputLocation]="pinnedLocation"
+              (onPinLocationCancel)="onPinLocationCancel($event)"
+              (onPinLocationSubmit)="onPinLocationSubmit($event)"></app-pin-location>
           </ng-template>
         </ion-modal>
-      <ion-modal #selectStateModal trigger="selectState" [backdropDismiss]="true" class="search-modal">
-        <ng-template>
-          <app-select-searchable [inputData]="stateSearchableInput" (onSelectSearchableCancel)="onSelectStateModalDismiss($event)" (onSelectSearchableSubmit)="onStateSelected($event)"></app-select-searchable>
-        </ng-template>
-      </ion-modal>
-      <ion-modal #selectCityModal trigger="selectCity" [backdropDismiss]="true" class="search-modal">
-        <ng-template>
-          <app-select-searchable [inputData]="citySearchableInput" (onSelectSearchableCancel)="onSelectCityModalDismiss($event)" (onSelectSearchableSubmit)="onCitySelected($event)"></app-select-searchable>
-        </ng-template>
-      </ion-modal>
-      <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
+        <ion-modal #selectStateModal trigger="selectState"
+          [backdropDismiss]="true" class="search-modal">
+          <ng-template>
+            <app-select-searchable [inputData]="stateSearchableInput"
+              (onSelectSearchableCancel)="onSelectStateModalDismiss($event)"
+              (onSelectSearchableSubmit)="onStateSelected($event)"></app-select-searchable>
+          </ng-template>
+        </ion-modal>
+        <ion-modal #selectCityModal trigger="selectCity"
+          [backdropDismiss]="true" class="search-modal">
+          <ng-template>
+            <app-select-searchable [inputData]="citySearchableInput"
+              (onSelectSearchableCancel)="onSelectCityModalDismiss($event)"
+              (onSelectSearchableSubmit)="onCitySelected($event)"></app-select-searchable>
+          </ng-template>
+        </ion-modal>
+        <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
 
           <p class="subheading">{{getAddressLabel()}}</p>
-          <p class="tc" *ngIf="selectedUserType == AppConstants.USER_TYPE.FR_USER">You home location details will not be
+          <p class="tc"
+            *ngIf="selectedUserType == AppConstants.USER_TYPE.FR_USER">You home
+            location details will not be
             shared with any other user</p>
-          <p class="tc">You can set it by your current location or you can enter the address below</p>
-          <ion-button class="center-button" shape="round" (click)="fetchCurrentLocation()">Set Location</ion-button>
+          <p class="tc">You can set it by your current location or you can enter
+            the address below</p>
+          <ion-button class="center-button" shape="round" style="width: 264px;
+          height: 53px; font-size: 16px;"
+            (click)="fetchCurrentLocation()">Set Location</ion-button>
           <!-- <ion-button class="center-button" shape="round" id="pinLocation">Pin Location</ion-button> -->
           <!-- <p class="tc"> ---------------- or ----------------</p> -->
           <div class="line-container">
@@ -301,12 +390,11 @@
             <div class="line"></div>
           </div>
 
-
           <!-- <ion-item lines="none">
             <ion-input [readonly]="true" class="input" type="text" formControlName="stateId" placeholder="Select State" id="selectState">
               <ion-icon slot="end" name="caret-down-outline" ></ion-icon>
             </ion-input> -->
-            <!-- <ion-button class="select-style" type="button" id="selectState">
+          <!-- <ion-button class="select-style" type="button" id="selectState">
               <div>
                 <span *ngIf="!selectedState" class="placeholder">Select State</span>
                 <span *ngIf="selectedState">{{selectedState?.StateName}}</span>
@@ -342,45 +430,59 @@
                 [value]="city.CityId">{{city.CityName}}</ion-select-option>
             </ion-select>
           </ion-item> -->
-          <ion-item lines="none" class="fi-inputSelect">
-            <ion-input [readonly]="true" class="input" type="text" formControlName="state" placeholder="Select State" id="selectState">
-            </ion-input>
-            <ion-icon slot="end" name="caret-down-outline" ></ion-icon>
+    
+            <ion-item lines="none" class="fi-inputSelect" style="overflow: hidden;">
+              <ion-input [readonly]="true" class="input" type="text"
+                formControlName="state" placeholder="Select State"
+                id="selectState">
+              </ion-input>
+              <ion-icon slot="end" name="caret-down-outline"></ion-icon>
             </ion-item>
+        
+
           <ion-item lines="none" class="fi-inputSelect">
-            <ion-input [readonly]="true" class="input" type="text" formControlName="city" placeholder="Select City" id="selectCity">
+            <ion-input [readonly]="true" class="input" type="text"
+              formControlName="city" placeholder="Select City" id="selectCity">
             </ion-input>
-            <ion-icon slot="end" name="caret-down-outline" ></ion-icon>
+            <ion-icon slot="end" name="caret-down-outline"></ion-icon>
           </ion-item>
           <ion-item lines="none">
             <span slot="error" class="fi-error-msg">Zip Code is required</span>
-            <ion-input class="input" type="number" formControlName="zipCode" placeholder="Zip Code"></ion-input>
+            <ion-input class="input" type="number" formControlName="zipCode"
+              placeholder="Zip Code"></ion-input>
 
           </ion-item>
           <!-- <ion-item lines="none">
             <ion-input class="input" placeholder="Unit Number" formContorlName="unitNo"></ion-input>
           </ion-item> -->
           <ion-item lines="none">
-            <ion-input class="input" placeholder="Address Line 1" formControlName="addressLine1"></ion-input>
-            <span slot="error" class="fi-error-msg">Address Line 1 is required</span>
+            <ion-input class="input" placeholder="Address Line 1"
+              formControlName="addressLine1"></ion-input>
+            <span slot="error" class="fi-error-msg">Address Line 1 is
+              required</span>
           </ion-item>
           <ion-item lines="none">
-            <ion-input class="input" placeholder="Address Line 2" formControlName="addressLine2"></ion-input>
-            <span slot="error" class="fi-error-msg">Address Line 2 is required</span>
+            <ion-input class="input" placeholder="Address Line 2"
+              formControlName="addressLine2"></ion-input>
+            <span slot="error" class="fi-error-msg">Address Line 2 is
+              required</span>
           </ion-item>
           <!-- <ion-button expand="block" shape="round" type="submit">Continue</ion-button> -->
-          <ion-button expand="block" shape="round" [disabled]="addressForm.invalid" type="submit">Continue</ion-button>
+          <ion-button expand="block" shape="round" style="height: 53px; font-size: 16px;"
+            [disabled]="addressForm.invalid" type="submit">Continue</ion-button>
 
-      </form>
-    </div>
+        </form>
+      </div>
     </ng-container>
     <ng-container *ngIf="step==REG_STEP.FILE_UPLOAD_REQ">
       <div class="bsname">
         <p class="subheading">{{getFileUploadLabel1()}}</p>
         <br />
         <p class="subheading">{{getFileUploadLabel2()}}</p>
-        <ion-button expand="block" shape="round" (click)="uploadFile()" type="submit">
-          <ion-icon src="assets/icon/a6.png"></ion-icon>{{getFileButtonTitle()}}</ion-button>
+        <ion-button expand="block" shape="round" (click)="uploadFile()"
+          type="submit">
+          <ion-icon
+            src="assets/icon/a6.png"></ion-icon>{{getFileButtonTitle()}}</ion-button>
         <p class="tc">.jpg, .png, or pdf format only</p>
       </div>
     </ng-container>
@@ -389,13 +491,15 @@
         <p class="subheading">File uploaded successfully</p>
         <ion-img class="emailsvg" src="assets/images/email.svg"></ion-img>
         <p class="tc">{{getUploadedFilename()}}</p>
-        <ion-button expand="block" shape="round" (click)="continuePostFileUpload()" type="submit">Continue</ion-button>
+        <ion-button expand="block" shape="round"
+          (click)="continuePostFileUpload()" type="submit">Continue</ion-button>
       </div>
     </ng-container>
     <ng-container *ngIf="step==REG_STEP.BUSINESS_NP_WELCOME">
       <div class="bsname">
         <p class="subheading">{{getWelcomePageLabel()}}</p>
-        <ion-button expand="block" shape="round" (click)="goToHome()" type="submit">Continue</ion-button>
+        <ion-button expand="block" shape="round" (click)="goToHome()"
+          type="submit">Continue</ion-button>
       </div>
     </ng-container>
   </div>
