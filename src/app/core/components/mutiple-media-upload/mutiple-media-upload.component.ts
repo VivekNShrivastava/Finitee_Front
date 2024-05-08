@@ -30,12 +30,14 @@ export class MultipleMediaUploadComponent implements OnInit {
   @Input() postLimit: number = 0;
   @Input() videoRecDisable: number = 0;
   @Input() photoLibrary: number = 0;
+  @Input() traitPost: number = 0;
   response: boolean = false;
   constructor(public attachmentService: AttachmentHelperService) {
     this.mediaSaveCallBack();
   }
 
   ngOnInit() {
+    console.log("traitPost", this.traitPost)
   }
 
 

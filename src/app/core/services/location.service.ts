@@ -152,7 +152,7 @@ export class LocationService {
     return new Promise<any>((resolve, reject) => {
       var url = config.API.SEARCH.UPDATE_LIVE_LOCATION;
       return this.http.post<any>(url, body).subscribe((response: any) => {
-        resolve(response.ResponseData);
+        resolve(response);
       },
         (error) => {
           console.log("abc error", error.error.text);

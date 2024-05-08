@@ -37,6 +37,7 @@ import { NgSwitchCase } from '@angular/common';
 import { NetworkPlugin } from '@capacitor/network';
 import { Geolocation } from '@capacitor/geolocation';
 import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
+import { User } from 'src/app/core/models/user/UserProfile';
 
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
@@ -151,6 +152,7 @@ export class MapPage implements OnDestroy {
   newLat: any;
   newLng: any;
   locationUpdateInterval$: any;
+  prevLiveLocation : UserLocation = new UserLocation();
   constructor(
     private platform: Platform,
     private mapService: MapService,
@@ -174,22 +176,33 @@ export class MapPage implements OnDestroy {
     ) {
     console.log("constructor");
     const checkUserConnection = this.logCurrentNetworkStatus();  
-    this.printCurrentPosition();
     this.user = this.authService.getUserInfo();
-    this.getUserSonarPrivacySettings();
-    this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
-      // console.log("map updated data", updatedData);
-      this.viewList = updatedData;
-      this.viewListNumber = this.viewList?.names?.length;
-      // console.log("res -", this.viewListNumber);
-    });
+    
+    this.authService.authState.subscribe((authState: boolean) => {
+      console.log("authState", authState)
+      if (authState == true) {
+        this.printCurrentPosition();
 
-    this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
-      this.greetList = updatedData;
-      console.log(this.greetList);
-      this.greetListNumber = this.greetList?.length;
-      // console.log("res -", this.viewListNumber);
-    });
+        this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
+          // console.log("map updated data", updatedData);
+          this.viewList = updatedData;
+          this.viewListNumber = this.viewList?.names?.length;
+          // console.log("res -", this.viewListNumber);
+        });
+    
+        this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
+          this.greetList = updatedData;
+          console.log(this.greetList);
+          this.greetListNumber = this.greetList?.length;
+          // console.log("res -", this.viewListNumber);
+        });
+
+        this.getUserSonarPrivacySettings();
+
+        this.currentLocationUpdate();
+      }
+  });
+    
 
     this.network.addListener('networkStatusChange', status => {
       if(status.connected === false){
@@ -208,18 +221,18 @@ export class MapPage implements OnDestroy {
   printCurrentPosition = async () => {
     
     try{
-      // const perm = await Geolocation.is
       console.log("running check permissions...");
       const perm = await Geolocation.checkPermissions();
-      const locSer = perm;
       console.log('Current position:', perm);
 
-      // if(perm.location){
-      //   const loc = await Geolocation.getCurrentPosition();
-      //   console.log("loc", loc.coords)
-      //   this.location.lat = loc.coords.latitude;
-      //   this.location.lng = loc.coords.longitude;
-      // }
+      if(perm.location){
+        const loc = await Geolocation.getCurrentPosition();
+        console.log("loc", loc.coords)
+        // this.location.lat = loc.coords.latitude;
+        // this.location.lng = loc.coords.longitude;
+        // this.prevLiveLocation.lat = loc.coords.latitude;
+        // this.prevLiveLocation.lng = loc.coords.longitude;
+      }
 
       if(perm.location != "granted") {
         console.log("res from requestPerm");
@@ -350,17 +363,78 @@ export class MapPage implements OnDestroy {
   }
 
   setupLocationUpdates() {
-    this.locationUpdateInterval$ = interval(60000); // 60 seconds interval
-    // this.locationUpdateInterval$ = interval(10000); // 10 seconds interval
+    // this.locationUpdateInterval$ = interval(60000); // 60 seconds interval
+    this.locationUpdateInterval$ = interval(10000); // 10 seconds interval
     this.locationUpdateSubscription = this.locationUpdateInterval$.subscribe(() => {
       this.currentLocationUpdate();
     });
   }
 
-  currentLocationUpdate() {
-    this.locationService.observeCurrentPosition().subscribe((position) => {
-      if(position) this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
-    });
+  latLng_maha = [
+    {"latitude": 18.5204, "longitude": 73.8567, "city": "Pune"},
+    {"latitude": 19.0760, "longitude": 72.8777, "city": "Mumbai"},
+    {"latitude": 20.2961, "longitude": 85.8245, "city": "Nagpur"},
+    {"latitude": 19.9975, "longitude": 73.7898, "city": "Nashik"},
+    {"latitude": 16.8494, "longitude": 74.4758, "city": "Kolhapur"},
+    {"latitude": 20.3910, "longitude": 78.1306, "city": "Akola"},
+    {"latitude": 20.8565, "longitude": 77.7769, "city": "Jalgaon"},
+    {"latitude": 21.1458, "longitude": 79.0882, "city": "Amravati"},
+    {"latitude": 17.6868, "longitude": 74.0325, "city": "Sangli"},
+    {"latitude": 17.6599, "longitude": 75.9064, "city": "Solapur"}
+  ]
+
+
+  async currentLocationUpdate() {
+    // this.locationService.observeCurrentPosition().subscribe(async (position) => {
+
+      const position = await Geolocation.getCurrentPosition();      
+      if(position){
+        //check if previous corrdinates and current corrdinates are same or different, if corrdinates have changed, then call the api.
+        console.log(this.prevLiveLocation.lat, this.prevLiveLocation.lng)
+        if(this.prevLiveLocation.lat != position.coords.latitude || this.prevLiveLocation.lng != position.coords.longitude){
+          this.prevLiveLocation.lat = position.coords.latitude;
+          this.prevLiveLocation.lng = position.coords.longitude;
+
+          console.log(position);
+          const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
+          if(res){
+            this.location.lat = position.coords.latitude;
+            this.location.lng = position.coords.longitude;
+            this.setCurrentLocationMarker();
+            this.map?.setCenter(this.location)
+            // this._commonService.presentToast("Location Updated");
+          }
+        }
+        // else this._commonService.presentToast("Same Location");
+
+        
+
+        //test addresses
+
+        // for (const coord of this.latLng_maha) {
+        //   // Call the API with each coordinate
+        //   const res = await this.locationService.updateLiveLocation(coord.latitude, coord.longitude);
+          
+        //   if (res) {
+        //     // Update the location properties
+        //     this.location.lat = coord.latitude;
+        //     this.location.lng = coord.longitude;
+            
+        //     // Update the marker and map center
+        //     this.setCurrentLocationMarker();
+        //     // this.map?.setCenter(this.location);
+            
+        //     // Log the city name
+        //     console.log(`Updated location for ${coord.city}`);
+        //   } else {
+        //     console.log(`Failed to update location for ${coord.city}`);
+        //   }
+        //   await new Promise(resolve => setTimeout(resolve, 10000));
+        // }
+
+
+      } 
+    // });
   }
 
   fetchCurrentArea() {

@@ -2,17 +2,18 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { Subscription } from 'rxjs';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { SwipeService } from 'src/app/core/services/swipe.service';
-
+import { IonModal } from '@ionic/angular';
 import 'firebase/firestore';
 import { MapService } from '../services/map.service';
 import { BasePage } from 'src/app/base.page';
-import { App } from '@capacitor/app';
-import { AppComponent } from 'src/app/app.component';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FiniteeUserOnMap } from '../models/MapSearchResult';
 import { NavigationExtras, Router } from '@angular/router';
 import { CommonService } from 'src/app/core/services/common.service';
-
+import { ModalController } from '@ionic/angular';
+import { ChatDetailPage } from '../../chat/chat-detail/chat-detail.page';
+import { ChatsService } from 'src/app/core/services/chat/chats.service';
+import { FirestoreService } from 'src/app/core/services/firestore.service';
 @Component({
   selector: 'app-marker-detail',
   templateUrl: './marker-detail.component.html',
@@ -32,15 +33,42 @@ export class MarkerDetailComponent implements OnInit {
   onView: any;
   basepage: any = BasePage;
   user: any;
+  greetingList: any = [];
 
   swipeSubsciption!: Subscription;
+
+  @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
+
   constructor(public swipeService: SwipeService,
     public mapService: MapService,
     public authService: AuthService,
     public router: Router,
-    public commonService: CommonService) { 
+    public commonService: CommonService,
+    public modalController: ModalController,
+    public chatService: ChatsService,
+    public firestoreService: FirestoreService
+  ) { 
       this.user = this.authService.getUserInfo();
-      // console.log("marker-user", this.user);
+      console.log("marker-user", this.user);
+
+      this.firestoreService.greetingList$.subscribe(updatedData => {
+        this.greetingList = updatedData;
+        if(this.greetingList.length > 0){
+          const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
+          if(this.greetingList[0] === id && this.markerList[this.markerCurrentIndex].Greeting === 1){
+            this.markerList[this.markerCurrentIndex].Greeting = 4;
+            this.getGreetingIcon();
+          }
+        }else{
+          if(this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4){
+            this.markerList[this.markerCurrentIndex].Greeting = 1;
+            this.getGreetingIcon();
+          }
+        }
+        
+        // this.loadCurrentItem();
+        console.log("map updated data", this.greetingList);
+      });
     }
 
   ngOnInit() {
@@ -53,6 +81,18 @@ export class MarkerDetailComponent implements OnInit {
     // this.addToViewList();
     this.subscribeSwipeEvent();
     this.loadCurrentItem();
+  }
+
+  public showGreetingActions(user: any): void {
+    this.greetingAcceptRejectModal?.present().then(() => {
+
+    });
+  }
+
+  public closeShowGreetingActions(): void{
+    this.greetingAcceptRejectModal?.dismiss().then(() => {
+      console.log("closed modal");
+    })
   }
 
   openUser(user: FiniteeUserOnMap) {
@@ -107,7 +147,56 @@ export class MarkerDetailComponent implements OnInit {
   //   }
   // }
 
-  
+  async startChat(user: any) {
+    console.log("data chat", user)
+    var selctedUser: any = {
+      UserId: user.Id,
+      DisplayName: user.UserName,
+      ProfilePhoto: user.ProfileImage == undefined ? null : user.ProfileImage,
+      groupId: ""
+    }
+    const res = await this.chatService.openChat(selctedUser, true);
+    console.log(res);
+
+    this.chatTray(res);
+  }
+
+  public async chatTray(user: any): Promise<void> {
+    const modal = await this.modalController.create({
+      component: ChatDetailPage,
+      componentProps: {
+        otherValue : user
+      }
+    });
+    modal.onDidDismiss().then(result => {
+      if (result) {
+      }
+    });
+    return await modal.present();
+  }
+
+  async acceptGreeting(user: any){
+    this.closeShowGreetingActions();
+    const res = await this.mapService.actionGreetingToUser(user.Id, true);
+    if(res && res.Success === true){
+      user.Greeting = 1;
+      this.getGreetingIcon();
+      this.startChat(user);
+    }else{
+      console.log("error while accepting greeting");
+    }
+  }
+
+  async rejectGreeting(user: any){
+    this.closeShowGreetingActions();
+    const res = await this.mapService.actionGreetingToUser(user.Id, false);
+    if(res && res.Success === true){
+      user.Greeting = 1;
+      this.getGreetingIcon();
+    }else{
+      console.log("error while rejecting greeting");
+    }
+  }
 
 
   public closeDetails(): void {
@@ -142,6 +231,7 @@ export class MarkerDetailComponent implements OnInit {
     if (this.markerList && this.markerList.length > 0) {
       if (this.markerCurrentIndex > -1 && this.markerCurrentIndex < this.markerList.length) {
         this.currentItem = this.markerList[this, this.markerCurrentIndex];
+        console.log("cureent", this.currentItem)
       }
       else {
         this.currentItem = this.markerList[0];// TODO Check for errors
@@ -197,7 +287,19 @@ export class MarkerDetailComponent implements OnInit {
       }
       console.log("loadNextItem: previous: " + previous + " NewIndex: "+ this.markerCurrentIndex);
       // await this.mapService.removeNameFromViewList(this.markerList[this.markerCurrentIndex+1].UserName, temp);
-      if(this.markerList[this.markerCurrentIndex].UserName) await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
+      if(this.markerList[this.markerCurrentIndex].UserName){
+        console.log("c", this.markerList[this.markerCurrentIndex])
+        if(this.markerList[this.markerCurrentIndex].Greeting === 1){
+          const id =  'u-' + this.markerList[this.markerCurrentIndex].Id;
+          const res = this.greetingList.includes(id);
+          if(res == true) this.markerList[this.markerCurrentIndex].Greeting = 4;
+        }else if(this.markerList[this.markerCurrentIndex].Greeting === 4){
+          const id =  'u-' + this.markerList[this.markerCurrentIndex].Id;
+          const res = this.greetingList.includes(id);
+          if(res == false) this.markerList[this.markerCurrentIndex].Greeting = 1;
+        }
+        await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
+      } 
       this.setNextPreviousVisibility();
     }
   }
@@ -232,8 +334,8 @@ export class MarkerDetailComponent implements OnInit {
       }else{
         this.commonService.presentToast("Something went wrong")
       }
-    }
-    console.log("tapped", user)
-   
+    }else if(user.Greeting === 4){
+      this.showGreetingActions(user);
+    }   
   }
 }

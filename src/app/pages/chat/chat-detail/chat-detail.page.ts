@@ -23,7 +23,8 @@ export class ChatDetailPage implements OnInit, OnDestroy {
 
     // }
     console.log("a", this.otherValue)
-       
+    this.otherPartyUser = this.router!.getCurrentNavigation()!.extras!.state!['data'];
+    console.log(this.otherPartyUser);
 
     
   }
@@ -35,7 +36,7 @@ export class ChatDetailPage implements OnInit, OnDestroy {
         if(this.otherValue?.state?.groupId === "") this.chatsService.selectedGroupId = 'new';
         else if(this.otherValue?.state?.groupId != "") this.chatsService.selectedGroupId = this.otherValue?.groupId;
       }else this.chatsService.selectedGroupId = params.id;
-      if(params?.Id) this.otherPartyUser = (this.router!.getCurrentNavigation()!.extras!.state!['data']) || (this.otherValue?.state?.data);
+      if(params?.Id) this.otherPartyUser = this.router!.getCurrentNavigation()!.extras!.state!['data'];
       if(this.otherValue?.state){
         if(this.otherValue?.state?.data) this.otherPartyUser = this.otherValue?.state?.data;
       }

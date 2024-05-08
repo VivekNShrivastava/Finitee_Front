@@ -24,9 +24,9 @@
           </div>
         </div>
 
-        <div (click)="viewGreetingDetails()" class="c-fab-button" *ngIf="greetListNumber">
+        <div (click)="viewGreetingDetails()" class="c-fab-button">
           <ion-icon style="font-size: 26px;" name="greeting-no-circle"></ion-icon>
-          <div> {{greetListNumber}} </div>
+          <!-- <div> {{greetListNumber}} </div> -->
           <div style="line-height: 5px;">
             <ion-icon style="font-size: 22px;padding-right: 5px;" name="chevron-forward-outline"></ion-icon>
           </div>
@@ -58,9 +58,11 @@
         </ion-fab-button>
         <!-- Visibe Icon -->
 
-        <ion-fab-button (click)="gotocreatetotem()" class="map-fab-button2">
+        <!-- Create Totem Icon -->
+        <!-- <ion-fab-button (click)="gotocreatetotem()" class="map-fab-button2">
           <ion-icon style="font-size: 28px;" name="create-totem"></ion-icon>
-        </ion-fab-button>
+        </ion-fab-button> -->
+
         <!-- <ion-fab-button (click)="makeFlameActive()" *ngIf="!flameActive" class="user-flam-icon">
           <ion-icon style="font-size: 35px;" name="flame"></ion-icon>
         </ion-fab-button>

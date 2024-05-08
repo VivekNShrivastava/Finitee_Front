@@ -69,7 +69,8 @@
       [mediaFiles]="post.PostImages"
       [videoRecDisable]="11"
       [photoLibrary]="11"
-      (filePathEvent)="addMedia($event)">
+      (filePathEvent)="addMedia($event)"
+      [traitPost]="post.PostImages.length">
     </app-multiple-media-upload>
 
     <div class="error-message" *ngIf="saveClicked && post.PostDescription=='' ">
