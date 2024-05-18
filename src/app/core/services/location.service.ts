@@ -456,9 +456,11 @@ const geocoder = new google.maps.Geocoder();
             this.commonService.currentCurrency = res;
             this.paymentService.payment.currencyCode = this.commonService.currentCurrency.CurrencyCode
           }
+          return country;
         })
         .catch((error) => {
           console.error('Error:', error.message);
+          return error;
         });
     } catch (error) {
       console.log(error)

@@ -51,24 +51,26 @@ export class MarkerDetailComponent implements OnInit {
       this.user = this.authService.getUserInfo();
       console.log("marker-user", this.user);
 
-      this.firestoreService.greetingList$.subscribe(updatedData => {
-        this.greetingList = updatedData;
-        if(this.greetingList.length > 0){
-          const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
-          if(this.greetingList[0] === id && this.markerList[this.markerCurrentIndex].Greeting === 1){
-            this.markerList[this.markerCurrentIndex].Greeting = 4;
-            this.getGreetingIcon();
-          }
-        }else{
-          if(this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4){
-            this.markerList[this.markerCurrentIndex].Greeting = 1;
-            this.getGreetingIcon();
-          }
-        }
+      //removed viewing functionality
+
+      // this.firestoreService.greetingList$.subscribe(updatedData => {
+      //   this.greetingList = updatedData;
+      //   if(this.greetingList.length > 0){
+      //     const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
+      //     if(this.greetingList[0] === id && this.markerList[this.markerCurrentIndex].Greeting === 1){
+      //       this.markerList[this.markerCurrentIndex].Greeting = 4;
+      //       this.getGreetingIcon();
+      //     }
+      //   }else{
+      //     if(this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4){
+      //       this.markerList[this.markerCurrentIndex].Greeting = 1;
+      //       this.getGreetingIcon();
+      //     }
+      //   }
         
-        // this.loadCurrentItem();
-        console.log("map updated data", this.greetingList);
-      });
+      //   // this.loadCurrentItem();
+      //   console.log("map updated data", this.greetingList);
+      // });
     }
 
   ngOnInit() {
@@ -76,9 +78,11 @@ export class MarkerDetailComponent implements OnInit {
     console.log("markerCurrentIndex: ", this.markerCurrentIndex);
     console.log("markerList: ", this.markerList[this.markerCurrentIndex]);
     // this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
-    // console.log("markerList: ", this.markerList);
-    if(this.markerList[this.markerCurrentIndex].UserName) this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
-    // this.addToViewList();
+
+    //removed viewing functionality
+
+    // if(this.markerList[this.markerCurrentIndex].UserName) this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
+
     this.subscribeSwipeEvent();
     this.loadCurrentItem();
   }
@@ -298,7 +302,9 @@ export class MarkerDetailComponent implements OnInit {
           const res = this.greetingList.includes(id);
           if(res == false) this.markerList[this.markerCurrentIndex].Greeting = 1;
         }
-        await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
+        //removed viewing functionality
+
+        // await this.mapService.addToViewList(this.markerList[this.markerCurrentIndex].UserName, this.user)
       } 
       this.setNextPreviousVisibility();
     }

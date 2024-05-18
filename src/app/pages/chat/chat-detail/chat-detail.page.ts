@@ -22,9 +22,9 @@ export class ChatDetailPage implements OnInit, OnDestroy {
     // }else{
 
     // }
-    console.log("a", this.otherValue)
-    this.otherPartyUser = this.router!.getCurrentNavigation()!.extras!.state!['data'];
-    console.log(this.otherPartyUser);
+    // console.log("a", this.otherValue)
+    // this.otherPartyUser = this.router!.getCurrentNavigation()!.extras!.state!['data'];
+    // console.log(this.otherPartyUser);
 
     
   }

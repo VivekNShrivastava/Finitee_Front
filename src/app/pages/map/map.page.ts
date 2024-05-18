@@ -38,6 +38,7 @@ import { NetworkPlugin } from '@capacitor/network';
 import { Geolocation } from '@capacitor/geolocation';
 import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
 import { User } from 'src/app/core/models/user/UserProfile';
+import { BasePage } from 'src/app/base.page';
 
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
@@ -52,7 +53,7 @@ export enum MapFlag {
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage implements OnDestroy {
+export class MapPage extends BasePage implements OnDestroy {
   @ViewChild('map_canvas') mapRef?: ElementRef<HTMLElement>;
   @ViewChild('sonarSettingModal') sonarSettingModal?: IonModal;
   @ViewChild('markerDetailModal') markerDetailModal?: IonModal;
@@ -61,6 +62,8 @@ export class MapPage implements OnDestroy {
   public mapWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
   public map?: google.maps.Map = undefined;
   public location: UserLocation = new UserLocation();
+  public homeLocation : UserLocation = new UserLocation();
+
   currentPageHref!: any;
 
   currentLocationMarker: any;
@@ -174,6 +177,7 @@ export class MapPage implements OnDestroy {
     private _userPrivacyServivce: UserPrivacyService,
     @Inject('NetworkPlugin') public network: NetworkPlugin
     ) {
+    super(authService);
     console.log("constructor");
     const checkUserConnection = this.logCurrentNetworkStatus();  
     this.user = this.authService.getUserInfo();
@@ -181,14 +185,13 @@ export class MapPage implements OnDestroy {
     this.authService.authState.subscribe((authState: boolean) => {
       console.log("authState", authState)
       if (authState == true) {
-        this.printCurrentPosition();
 
-        this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
-          // console.log("map updated data", updatedData);
-          this.viewList = updatedData;
-          this.viewListNumber = this.viewList?.names?.length;
-          // console.log("res -", this.viewListNumber);
-        });
+        //removed viewing functionality
+
+        // this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
+        //   this.viewList = updatedData;
+        //   this.viewListNumber = this.viewList?.names?.length;
+        // });
     
         this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
           this.greetList = updatedData;
@@ -201,7 +204,7 @@ export class MapPage implements OnDestroy {
 
         this.currentLocationUpdate();
       }
-  });
+    });
     
 
     this.network.addListener('networkStatusChange', status => {
@@ -308,16 +311,21 @@ export class MapPage implements OnDestroy {
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
     await this.printCurrentPosition();
-    this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
-      this.viewList = updatedData;
-      this.viewListNumber = this.viewList?.names?.length;
-    });
+
+    //removed viewing functionality
+
+    // this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
+    //   this.viewList = updatedData;
+    //   this.viewListNumber = this.viewList?.names?.length;
+    // });
 
   }
 
   ionViewWillLeave() {
 
-    this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
+    //removed viewing functionality
+
+    // this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
 
     if (this.firestoreSubscription) {
       this.firestoreSubscription.unsubscribe();
@@ -390,23 +398,33 @@ export class MapPage implements OnDestroy {
       const position = await Geolocation.getCurrentPosition();      
       if(position){
         //check if previous corrdinates and current corrdinates are same or different, if corrdinates have changed, then call the api.
-        console.log(this.prevLiveLocation.lat, this.prevLiveLocation.lng)
-        if(this.prevLiveLocation.lat != position.coords.latitude || this.prevLiveLocation.lng != position.coords.longitude){
-          this.prevLiveLocation.lat = position.coords.latitude;
-          this.prevLiveLocation.lng = position.coords.longitude;
 
-          console.log(position);
+        // console.log(position.coords.latitude, position.coords.longitude)
+        // if(this.prevLiveLocation.lat != position.coords.latitude || this.prevLiveLocation.lng != position.coords.longitude){
+        //   this.prevLiveLocation.lat = position.coords.latitude;
+        //   this.prevLiveLocation.lng = position.coords.longitude;
+
+        //   console.log(position);
+        //   const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
+        //   if(res){
+        //     this.location.lat = position.coords.latitude;
+        //     this.location.lng = position.coords.longitude;
+        //     this.setCurrentLocationMarker();
+        //     this.map?.setCenter(this.location)
+        //     this._commonService.presentToast("Location Updated");
+        //   }
+        // } else this._commonService.presentToast("Same Location");
+
+        // testing
+        console.log(position.coords.latitude, position.coords.longitude);
           const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
           if(res){
             this.location.lat = position.coords.latitude;
             this.location.lng = position.coords.longitude;
             this.setCurrentLocationMarker();
             this.map?.setCenter(this.location)
-            // this._commonService.presentToast("Location Updated");
+            // this._commonService.presentToast( `LU - ${position.coords.longitude, position.coords.latitude}`);
           }
-        }
-        // else this._commonService.presentToast("Same Location");
-
         
 
         //test addresses
@@ -543,7 +561,7 @@ export class MapPage implements OnDestroy {
     let Latitude = this.location?.lat;
     let Longitude = this.location?.lng;
     let RangeInKm = 2
-    this.getTotemByUserId(Latitude, Longitude, RangeInKm);
+    // this.getTotemByUserId(Latitude, Longitude, RangeInKm);
     // this.loadSavedLocation();
   }
 
@@ -767,7 +785,10 @@ export class MapPage implements OnDestroy {
   async searchResultUpdate() {
     this.clearMap();
     this.markersMap.clear();
-    let results = this.mapService.mainList;
+    
+    let sonarResults = this.mapService.mainList;
+    const userId = this.logInfo.UserId 
+    let results = sonarResults.filter((x: any) => x.Id !==  userId)
     this.resultCount = results.length;
     if (results.length > 0) {
       this.mainResultFromSearch = results;
@@ -1676,7 +1697,7 @@ export class MapPage implements OnDestroy {
     await this.openMarkerDetails();
   }
 
-  async onAdvanceMarkerClick(params: any, data?: any) {//Obsolete function to open MapInfoWindow
+  async onAdvanceMarkerClick(params: any, data?: any) {
     console.log(data);
     const latLng = params?.position;
     if (latLng) {
@@ -1688,7 +1709,7 @@ export class MapPage implements OnDestroy {
     if(data.data.length > 1){
       this.onMapResultsClick(data);
     }else{
-      this.onAdvanceMarkerClickV2(params, data);//TODO: Manoj remove calling from here replace function call
+      this.onAdvanceMarkerClickV2(params, data);
     }
 
     if (this.mapWindow) {
@@ -1715,10 +1736,14 @@ export class MapPage implements OnDestroy {
     return await modal.present();
   }
 
+  showSonarSearchResultInListView(){
+    this.onMapResultsClick(this.mainResultFromSearch);
+  }
+
   public async onMapResultsClick(data: any): Promise<void> {
 
 
-    let results = this.mapService.mainList;
+    // let results = this.mapService.mainList;
     // this.resultCount = results.length;
     // if (results.length > 0) {
     //   this.mainResultFromSearch = results;
@@ -1743,10 +1768,11 @@ export class MapPage implements OnDestroy {
     //   this.clearAddCurrentLocationMarker();
     // }
 
+    const sonarResult = data?.data || data
     const modal = await this.modalController.create({
       component: MapResultComponent,
       componentProps: {
-        results: data.data
+        results: sonarResult
       }
     });
     modal.onDidDismiss().then(result => {
@@ -1873,10 +1899,11 @@ export class MapPage implements OnDestroy {
     });
     modal.onDidDismiss().then(result => {
       this.markers.splice(0, this.markers.length);
+      this.locationUpdateSubscription.unsubscribe();
       // this.clearResults();
       this.mapSearchResult = result;
-      this.removeSearchResultFromMap();
-      this.removeAdvanceMarkerFromMap();
+      // this.removeSearchResultFromMap();obsolete
+      // this.removeAdvanceMarkerFromMap();
       if (result.data) {
         if (result.data?.status == 'L') {
 
@@ -2066,6 +2093,7 @@ export class MapPage implements OnDestroy {
   /* Clearing the results of the previous search. */
   clearResults() {
     //this._signalRService.onMapSearchClear(this.user_markers.filter(marker => marker.UserTypeId == 1).map(x => x.id));
+    this.getUserSonarPrivacySettings();
     this.mainResultFromSearch = [];
     this.markersMap.clear();
     this.clearMap();
@@ -2076,7 +2104,7 @@ export class MapPage implements OnDestroy {
     }
     this.searchCriteria = null;
     this.removeCluster();
-    this.refreshMap()
+    // this.refreshMap()
   }
   calcBoundsForCenter(bounds: any[], center: any): any[] {
     let result: any = [];
@@ -2167,10 +2195,19 @@ export class MapPage implements OnDestroy {
     this.sonarSettingModal?.onDidDismiss().then((data) => {
       // Handle the data received when the modal is closed
       console.log('Data received:', data.data?.data.LocationShowAt);
-      if(data.data?.data.LocationShowAt === 'H') this.locationUpdateSubscription.unsubscribe();
+      if(data.data?.data.LocationShowAt === 'H') {
+        this.locationUpdateSubscription.unsubscribe();
+
+      } 
       else if(data.data?.data.LocationShowAt === 'L') this.setupLocationUpdates();
     });
 
+  }
+
+  public async setHomeLocation() {
+    const home_Location = localStorage.getItem('location');
+    // if(home_Location != null) this.homeLocation = home_Location;
+    // this.location.lat = homeLocation?.latitude;
   }
 
   public async viewGreetingDetails(): Promise<void> {
