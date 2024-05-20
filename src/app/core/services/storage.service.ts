@@ -48,19 +48,19 @@ export class StorageService {
      return data ? JSON.parse(data) : data;
    } */
 
-  storeTempUser(user: any, step: number) {
-    let dataSet = { timestamp: new Date(), data: user, step: step }
-    localStorage.setItem(KEY_TEMP_USER, JSON.stringify(dataSet));
-  }
+  // storeTempUser(user: any, step: number) {
+  //   let dataSet = { timestamp: new Date(), data: user, step: step }
+  //   localStorage.setItem(KEY_TEMP_USER, JSON.stringify(dataSet));
+  // }
 
-  getTempUser() {
-    let data: any = localStorage.getItem(KEY_TEMP_USER);
-    return data ? JSON.parse(data) : data;
-  }
+  // getTempUser() {
+  //   let data: any = localStorage.getItem(KEY_TEMP_USER);
+  //   return data ? JSON.parse(data) : data;
+  // }
 
-  clearTempUser() {
-    localStorage.removeItem(KEY_TEMP_USER);
-  }
+  // clearTempUser() {
+  //   localStorage.removeItem(KEY_TEMP_USER);
+  // }
 
 
   saveNotification(notificationData: any, date: string) {

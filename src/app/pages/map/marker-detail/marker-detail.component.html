@@ -55,6 +55,9 @@
 
       <ion-row class="header-card-details">
         <div class="action-list">
+          <!-- <greeting-view *ngIf="currentItem.Greeting === 1"  [fromUserId]="user.UserId" [fromUserName]="currentItem.UserName"
+          [fromUserProfile]="user.UserId + '/' + user.UserProfilePhoto" [userInfo]="user">
+          </greeting-view> -->
           <ion-icon [name]="getGreetingIcon()" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon>
           <!-- <ion-icon *ngIf="currentItem.Greeting === 2 " name="greeting" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon>
           <ion-icon *ngIf="currentItem.Greeting === 3 " name="greeting" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon>
@@ -267,15 +270,44 @@
 
   </ion-row>
 </ion-card>
-
-
-
-
-
-
-
     <ion-icon *ngIf="showPrevious && currentItem.entity !='U'" name="chevron-back-circle-outline" class="back2"
       (click)="loadNextItem(true)"></ion-icon>
           <ion-icon *ngIf="showNext && currentItem.entity !='U'" name="chevron-forward-circle-outline" class="front2"
     (click)="loadNextItem(false)"></ion-icon>
 </div>
+
+<ion-modal #greetingAcceptRejectModal [initialBreakpoint]="0.31" [showBackdrop]="true" [breakpoints]="[0.25]">
+  <ng-template>
+      <div class="font-weight-600 font-primary-text" style="padding: 20px 20px 0px 20px;">
+          <div class="display-flex--row flex-align-center" style="margin-bottom: 10px;">
+              <div>
+                  <ng-container *ngTemplateOutlet="userAvatarSmallView;"></ng-container>
+              </div>
+              <div>
+                  {{currentItem.UserName}} is greeting you
+              </div>
+          </div>
+          <ion-list class="custom-class-list">
+              <ion-item (click)="acceptGreeting(currentItem)" style="margin-bottom: 0px">
+                  <ion-icon name="greeting-accept" style="margin-right: 10px;"></ion-icon>
+                  <ion-label>
+                      Accept
+                  </ion-label>
+              </ion-item>
+              <ion-item (click)="rejectGreeting(currentItem)" style="margin-bottom: 0px">
+                  <ion-icon name="greeting-reject" style="margin-right: 10px;"></ion-icon>
+                  <ion-label>
+                      Reject
+                  </ion-label>
+              </ion-item>
+          </ion-list>
+      </div>
+  </ng-template>
+</ion-modal>
+
+<ng-template #userAvatarSmallView>
+  <ion-avatar style="width: 35px;height: 35px;overflow: hidden;">
+      <img [src]="appConstants.mediaPrefix + currentItem.ProfileImage" style="width:100%;"
+          onerror="this.onerror=null;this.src='assets/imgs/male.png';">
+  </ion-avatar>
+</ng-template>

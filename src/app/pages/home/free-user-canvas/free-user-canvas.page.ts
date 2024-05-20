@@ -63,7 +63,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     super(authService);
     // console.log(this.router!.getCurrentNavigation()!.extras.state, "constructor"); // should log out 'bar'
 
-    // console.log("routed to free-user-canvas", this.router!.getCurrentNavigation()!.extras.state)
+    console.log("routed to free-user-canvas", this.router!.getCurrentNavigation()!.extras.state)
     if (this.router!.getCurrentNavigation()!.extras.state) {
       this.navParams = this.router!.getCurrentNavigation()!.extras.state!['data'];
 
@@ -211,6 +211,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     this.userTraitPostList = await this._postService.getUserTraitWithPost(this.userId);
     console.log("userTrait", this.userTraitPostList);
     this.loaded = true;
+    this.openTraitList();
   }
 
   async getUserBeams() {
@@ -438,6 +439,12 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     else {
       // this.addPost();S
     }
+  }
+
+  async openTraitList(){
+    this.traitInput = "";
+    this.isTraitModalOpen = true;
+    this.userTraitList = await this._postService.getUserTrait(this.userId);
   }
 
   openPostScreen(post: any) {

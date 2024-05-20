@@ -4,7 +4,7 @@
 
       <div class="top-result-container">
         <div class="c-fab-button" *ngIf="searchCriteria">
-          <div> {{resultCount}} results </div>
+          <div (click)="showSonarSearchResultInListView()" > {{resultCount}} results </div>
           <div style="line-height: 11px;">
             <ion-icon style="font-size: 24px;" name="refresh-outline" (click)="refreshMarker()"></ion-icon>
           </div>
@@ -15,18 +15,18 @@
 
         <!-- *ngIf="_commonService?.viewingUsers?.length" -->
         
-        <div (click)="onViewingClick()" class="c-fab-button" *ngIf="viewListNumber">
+        <!--removed viewing functionality  -->
+        <!-- <div (click)="onViewingClick()" class="c-fab-button" *ngIf="viewListNumber">
           <ion-icon style="width: 25px;height: 19px;" name="viewing-binoculars"></ion-icon>
-          <!-- <div> {{_commonService.viewingUsers.length}} </div> -->
           <div>{{viewListNumber}}</div>
           <div style="line-height: 5px;">
             <ion-icon style="font-size: 22px;padding-right: 5px;" name="chevron-forward-outline"></ion-icon>
           </div>
-        </div>
+        </div> -->
 
-        <div (click)="viewGreetingDetails()" class="c-fab-button" *ngIf="greetListNumber">
+        <div (click)="viewGreetingDetails()" class="c-fab-button">
           <ion-icon style="font-size: 26px;" name="greeting-no-circle"></ion-icon>
-          <div> {{greetListNumber}} </div>
+          <div *ngIf="greetListNumber > 0"> {{greetListNumber}} </div>
           <div style="line-height: 5px;">
             <ion-icon style="font-size: 22px;padding-right: 5px;" name="chevron-forward-outline"></ion-icon>
           </div>
@@ -58,9 +58,11 @@
         </ion-fab-button>
         <!-- Visibe Icon -->
 
-        <ion-fab-button (click)="gotocreatetotem()" class="map-fab-button2">
+        <!-- Create Totem Icon -->
+        <!-- <ion-fab-button (click)="gotocreatetotem()" class="map-fab-button2">
           <ion-icon style="font-size: 28px;" name="create-totem"></ion-icon>
-        </ion-fab-button>
+        </ion-fab-button> -->
+
         <!-- <ion-fab-button (click)="makeFlameActive()" *ngIf="!flameActive" class="user-flam-icon">
           <ion-icon style="font-size: 35px;" name="flame"></ion-icon>
         </ion-fab-button>
@@ -68,7 +70,7 @@
           <ion-icon style="font-size: 35px;" name="flame-active"></ion-icon>
         </ion-fab-button> -->
 
-        <!-- <ion-fab-button (click)="onMapResultsClick()"
+        <!-- <ion-fab-button (click)="onMapResultsClick(userMarkers)"
           *ngIf="userMarkers.length>0||totemMarkers.length>0 && totemMarkersOnSerach.length>0" size="small"
           ng-reflect-size="small" class="md ion-activatable ion-focusable fab-button-small hydrated map-fab-button2">
           <ion-icon name="bluemenu"></ion-icon>
@@ -96,7 +98,7 @@
     </div>
   </div>
 
-  <ion-modal id="sonarSettingModal" #sonarSettingModal [initialBreakpoint]="0.62" [breakpoints]="[0, 0.62]" >
+  <ion-modal id="sonarSettingModal" #sonarSettingModal [initialBreakpoint]="0.26" [breakpoints]="[0, 0.26]" >
     <ng-template>
       <sonar-settings (onCloseSetting)="closeSetting()"></sonar-settings>
     </ng-template>

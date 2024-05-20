@@ -51,21 +51,24 @@ export class FirestoreService extends BasePage {
     });
 
     //listening to firebase changes for viewingList document
-    const viewingListRef = collection(this.firestoreInstance, 'viewingList');
-    const specificDocumentId = this.logInfo.UserName;
-    const specificDocumentRef = doc(viewingListRef, specificDocumentId);
 
-    onSnapshot(specificDocumentRef, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const data = { id: docSnapshot.id, ...docSnapshot.data() };
-        this.tempStore = data;
-        this.viewListSubject.next(this.tempStore);
-      } else {
-        console.log('Viewing Document not found');
-      }
-    }, (error) => {
-      console.error('Error listening for document changes:', error);
-    });
+    //removed viewing functionality
+
+    // const viewingListRef = collection(this.firestoreInstance, 'viewingList');
+    // const specificDocumentId = this.logInfo.UserName;
+    // const specificDocumentRef = doc(viewingListRef, specificDocumentId);
+
+    // onSnapshot(specificDocumentRef, (docSnapshot) => {
+    //   if (docSnapshot.exists()) {
+    //     const data = { id: docSnapshot.id, ...docSnapshot.data() };
+    //     this.tempStore = data;
+    //     this.viewListSubject.next(this.tempStore);
+    //   } else {
+    //     console.log('Viewing Document not found');
+    //   }
+    // }, (error) => {
+    //   console.error('Error listening for document changes:', error);
+    // });
 
     //listening to firebase changes for greetingList document
     const greetingListRef = collection(this.firestoreInstance, 'greetingList');
@@ -90,31 +93,33 @@ export class FirestoreService extends BasePage {
     });
   }
 
-  deleteFieldFromDocuments(fieldToDelete: string): void {
-    const viewingListRef = collection(this.firestoreInstance, 'viewingList');
-    getDocs(viewingListRef).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const userData = doc.data();
-        if (Array.isArray(userData['names'])) {
-          const updatedNames = userData['names'].filter((nameObject: any) => {
-            // Assuming nameObject is an object with the field to delete
-            console.log(nameObject)
-            return !(nameObject.UserId === fieldToDelete);
-          });
+  //removed viewing functionality 
 
-          const updatedData = { ...userData, names: updatedNames };
+  // deleteFieldFromDocuments(fieldToDelete: string): void {
+  //   const viewingListRef = collection(this.firestoreInstance, 'viewingList');
+  //   getDocs(viewingListRef).then((querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       const userData = doc.data();
+  //       if (Array.isArray(userData['names'])) {
+  //         const updatedNames = userData['names'].filter((nameObject: any) => {
+  //           // Assuming nameObject is an object with the field to delete
+  //           console.log(nameObject)
+  //           return !(nameObject.UserId === fieldToDelete);
+  //         });
 
-          updateDoc(doc.ref, updatedData).then(() => {
-            // console.log(`Field '${fieldToDelete}' deleted from document with ID ${doc.id}`);
-          }).catch((error) => {
-            console.error(`Error updating document with ID ${doc.id}:`, error);
-          });
-        }
-      });
-    }).catch((error) => {
-      console.error('Error deleting field from documents:', error);
-    });
-  }
+  //         const updatedData = { ...userData, names: updatedNames };
+
+  //         updateDoc(doc.ref, updatedData).then(() => {
+  //           // console.log(`Field '${fieldToDelete}' deleted from document with ID ${doc.id}`);
+  //         }).catch((error) => {
+  //           console.error(`Error updating document with ID ${doc.id}:`, error);
+  //         });
+  //       }
+  //     });
+  //   }).catch((error) => {
+  //     console.error('Error deleting field from documents:', error);
+  //   });
+  // }
 
   
 
