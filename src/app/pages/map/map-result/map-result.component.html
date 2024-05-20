@@ -62,7 +62,7 @@
               <div class="action-list">
                 <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
                 <greeting-view [fromUserId]="user['UserId']" [fromUserName]="user['DisplayName']"
-                [fromUserProfile]="'/' + user['ProfilePhoto']"></greeting-view>
+                [fromUserProfile]="'/' + user['ProfilePhoto']" [userInfo]="user"></greeting-view>
                 <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
                 <!-- <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
               </div>

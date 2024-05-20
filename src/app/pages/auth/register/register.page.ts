@@ -189,7 +189,7 @@ export class RegisterPage implements OnInit {
     this.initForms();
     this.setUserDefaultCountryId();
     if (this.tempUser) {
-      this.currentUser = await this.regService.getTempUser();
+      // this.currentUser = await this.regService.getTempUser();
       this.setUpFormWithTempUser();
     }
     else {
@@ -737,7 +737,7 @@ export class RegisterPage implements OnInit {
     if (!avoidStack) {
       this.screenStack.push(this.step);
     }
-    this.regService.updateTempUser(this.currentUser, stepNo);
+    // this.regService.updateTempUser(this.currentUser, stepNo);
   }
 
 
@@ -1014,7 +1014,7 @@ export class RegisterPage implements OnInit {
       .subscribe(async response => {
         this.regService.commonService.hideLoader('registerUser')
         if (response.ResponseData && response.ResponseData.Success) {
-          this.regService.deleteTempUser();
+          // this.regService.deleteTempUser();
           if (nextStep == this.REG_STEP.HOME) {
             // if (this.currentUser.UserTypeId == AppConstants.USER_TYPE.FR_USER) {
             //   // this.router.navigateByUrl('/free-user-canvas-own');
