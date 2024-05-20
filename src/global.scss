@@ -104,7 +104,7 @@ ion-footer {
 } */
 
 ion-item {
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
   --padding-start: 0;
   --inner-padding-end: 0;
 }
@@ -1081,4 +1081,10 @@ opacity: 1;
 }
 .alert-head.sc-ion-alert-md{
   text-align: center !important;
+}
+
+.item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
+
+  margin-left: 10px;
+
 }

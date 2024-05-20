@@ -5,39 +5,203 @@
       </ion-back-button>
     </ion-buttons>
     <ion-title>Shopping List</ion-title>
-    <ion-buttons  slot="end">
+    <!-- <ion-buttons  slot="end">
       <ion-button (click)="edit()">
         <ion-icon name="pencil-outline"></ion-icon>
       </ion-button>
-      <!-- <ion-button>
-        <ion-icon style="font-size: 26px;" name="menu-outline"></ion-icon>
-      </ion-button> -->
-    </ion-buttons>
+
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content >
 
-  <ion-grid  *ngIf="salesService.shoppingListWords.length > 0" class="box-shadow">
-    <ion-row>
-      <ion-col size="4" style="font-size: 14px;">Shopping word</ion-col>
-      <ion-col size="2" style="font-size: 14px;">Price</ion-col>
-      <ion-col size="3" style="font-size: 14px; text-align: end;">Condition</ion-col>
-      <ion-col size="3" style="font-size: 14px; text-align: end;">Distance</ion-col>
+  <!-- <div>
+    <ion-row style="gap: 5px;" *ngFor="let i of salesService.shoppingListWords">
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 20px; padding:10px 2px 10px 10px; ">
+      <li style="text-align: center; " class="words">Shopping <br> Word</li>
+      <li style="text-align: center;" class="words">{{i.Word}}</li>
+   
+      
+    </ul>
+    
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 40px; padding:10px 2px 10px 5px;">
+      <li style="text-align: center;" class="words">Price</li>
+      <li style="text-align: center;" class="words">{{i.Price}}</li>
+   
+      
+    </ul>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 40px; padding:10px 2px 10px 5px;">
+      <li style="text-align: center;" class="words">Condition</li>
+      <li style="text-align: center;" class="words">{{commonService.getCondition(i.Condition)}}</li>
+    
+      
+    </ul>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 40px; padding:10px 2px 10px 5px;">
+      <li style="text-align: center;" class="words">Distance</li>
+      <li style="text-align: center;" class="words">{{i.Distance}}</li>
+  
+      
+    </ul>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 40px; padding:10px 2px 10px 5px;">
+      <li style="visibility: hidden;">D</li>
+      <li> <ion-icon (click)="edit()" name="pencil-outline"></ion-icon></li>
+    
+      
+    </ul>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 40px; padding:10px 2px 10px 5px;">
+      <li style="visibility: hidden;">D</li>
+      <li> <ion-icon (click)="edit()" name="pencil-outline"></ion-icon></li>
+    
+      
+    </ul>
+  </ion-row>
+  </div> -->
+  <ion-content>
+    <div class="table-box">
+      <div  style="gap: 8px;"  class="table-row header">
+        <div class="table-cell">
+          <p>Shopping Words</p>
+        </div>
+        <div class="table-cell">
+          <p>Price</p>
+        </div>
+        <div class="table-cell">
+          <p>Condition</p>
+        </div>
+        <div class="table-cell">
+          <p>Distance</p>
+        </div>
+        <div class="table-cell">
+          <p style="visibility: hidden;">p</p>
+        </div>
+        <div class="table-cell">
+          <p style="visibility: hidden;">p</p>
+        </div>
+      </div>
+  
+      <ng-container *ngFor="let i of salesService.shoppingListWords">
+        <div class="table-row">
+          <div class="table-cell">
+            <p class="words">{{i.Word}}</p>
+          </div>
+          <div class="table-cell">
+            <p class="words">{{i.Price}}</p>
+          </div>
+          <div style="text-align: end;" class="table-cell">
+            <p class="words">{{commonService.getCondition(i.Condition)}}</p>
+          </div>
+          <div style="text-align: end;" class="table-cell">
+            <p class="words">{{i.Distance}}</p>
+          </div>
+          <div style="text-align: end;" class="table-cell">
+            <ion-icon style="font-size: 15px;"
+            src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Menu delete icon.svg"></ion-icon>
+          </div>
+          <div class="table-cell">
+            <ion-icon style="text-align: end;" (click)="edit()" name="pencil-outline"></ion-icon>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ion-content>
+  
+  
+  
+
+  <!-- <ion-content style="display: flex; flex-direction: column;">
+    <div class="row header" style="display: flex; gap: 5px;">
+      <div class="col">shopping word</div>
+      <div class="col">price</div>
+      <div class="col">Distance</div>
+      <div class="col">Condition</div>
+      <div class="col"></div>
+    </div>
+    <ion-row style="gap: 5px;" *ngFor="let i of salesService.shoppingListWords">
+      <div class="row" style="display: flex;">
+        <div class="col">{{i.Word}}</div>
+        <div class="col">{{i.Price}}</div>
+        <div class="col">{{i.Distance}}</div>
+        <div class="col">{{commonService.getCondition(i.Condition)}}</div>
+        <div class="col"><button class="button" ng-click="ctrl.add($index)">Add</button></div>
+      </div>
     </ion-row>
-  </ion-grid>
+  </ion-content> -->
+  
+  
+  <!-- <div>
+    <ion-row *ngFor="let i of salesService.shoppingListWords">
+    <ul  style="list-style: none; display: flex; gap: 10px; padding: 10px;">
+      <li>{{i.Word}}</li>
+      <li>{{i.Price}}</li>
+      <li>{{commonService.getCondition(i.Condition)}}</li>
+      <li>{{i.Distance}}</li>
+      <li><ion-icon (click)="edit()" name="pencil-outline"></ion-icon></li>
+      <li><ion-icon (click)="edit()" name="pencil-outline"></ion-icon></li>
+      
+    </ul>
+  </ion-row>
+  </div> -->
 
-  <ion-item style="margin-top: 10px;" *ngFor="let i of salesService.shoppingListWords" class="ion-no-padding ion-no-margin">
-    <ion-grid style="text-align: center; font-size: 13px; font-weight: 500;">
-      <ion-row>
-        <ion-col style="font-weight: 600;" size="4">{{i.Word}}</ion-col>
-        <ion-col size="2">{{i.Price}}</ion-col>
-        <ion-col size="4">{{commonService.getCondition(i.Condition)}}</ion-col>
-        <ion-col size="2">{{i.Distance}}</ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-item>
+  <!-- <ion-row>
+    <ion-col  size="3">Shopping word</ion-col>
+    <ion-col size="2">Price</ion-col>
+    <ion-col size="3">Condition</ion-col>
+    <ion-col size="2" style="white-space: nowrap;">Distance</ion-col>
+    <ion-col size="1"></ion-col> 
+    <ion-col size="1"></ion-col> 
+  </ion-row>
+  
+  <ion-row *ngFor="let i of salesService.shoppingListWords">
+    <ion-col size="3">{{i.Word}}</ion-col>
+    <ion-col size="2">{{i.Price}}</ion-col>
+    <ion-col size="3">{{commonService.getCondition(i.Condition)}}</ion-col>
+    <ion-col size="2" style="white-space: nowrap;">{{i.Distance}}</ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="edit()" name="pencil-outline"></ion-icon>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="edit()" name="pencil-outline"></ion-icon>
+    </ion-col>
+  </ion-row> -->
+  
+  
+  
+  
 
+
+  <!-- <ion-grid *ngIf="salesService.shoppingListWords.length ">
+    <ion-row>
+      <ion-col>{{i.Word}}</ion-col>
+      <ion-col>{{i.Price}}</ion-col>
+      <ion-col >{{commonService.getCondition(i.Condition)}}</ion-col>
+      <ion-col>{{i.Distance}}</ion-col>
+      <ion-col>   <ion-buttons  slot="end">
+        <ion-button (click)="edit()">
+          <ion-icon name="pencil-outline"></ion-icon>
+        </ion-button>
+  
+      </ion-buttons></ion-col>
+      <ion-col>   <ion-buttons  slot="end">
+        <ion-button (click)="edit()">
+          <ion-icon name="pencil-outline"></ion-icon>
+        </ion-button>
+  
+      </ion-buttons></ion-col>
+    </ion-row>
+  </ion-grid> -->
+  
+
+  <!-- <ion-grid *ngIf="salesService.shoppingListWords.length > 0" class="box-shadow">
+    <ion-row>
+      <ion-col class="janvi2" size="3" style="font-size: 14px;">Shopping word</ion-col>
+      <ion-col class="janvi2" size="2" style="font-size: 14px;">Price</ion-col>
+      <ion-col class="janvi2" size="3" style="font-size: 14px; text-align: end;">Condition</ion-col>
+      <ion-col class="janvi2" size="3" style="font-size: 14px; text-align: end;">Distance</ion-col>
+    </ion-row>
+  </ion-grid> -->
+  
+ 
 
   <ng-container *ngIf="salesService.shoppingListWords.length == 0">
     <div class="nodata">
@@ -46,7 +210,29 @@
       <!-- <h3> Create a shopping words listing to attract the correct talent for your requirements.</h3> -->
     </div>
   </ng-container>
+
+  <!-- <ion-buttons  slot="end">
+    <ion-button (click)="edit()">
+      <ion-icon name="pencil-outline"></ion-icon>
+    </ion-button>
+
+  </ion-buttons> -->
 </ion-content>
+<!-- 
+<ion-fab style="margin-bottom:60px " slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button color="primary" (click)="openCreateShoppingPage()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab> -->
+
+
+<ion-fab style="margin-bottom:70px; margin-right: 20px; " slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button style="transform: rotate(45deg); --border-radius: 6px; "  color="primary" (click)="openCreateShoppingPage()">
+    <ion-icon style="transform: rotate(45deg);" name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+
 <div style="display: flex; justify-content: center; align-items: center;">
   <ion-button (click)="viewMatchedResult()" style="text-transform: none; font-size: 20px; height: 46px; width: 336px; margin-bottom: 10px;" shape="round" expand="full" class="save-button">
     View all matches</ion-button>
