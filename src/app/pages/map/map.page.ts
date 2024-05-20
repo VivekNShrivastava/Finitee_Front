@@ -202,7 +202,7 @@ export class MapPage extends BasePage implements OnDestroy {
 
         this.getUserSonarPrivacySettings();
 
-        this.currentLocationUpdate();
+        // this.currentLocationUpdate();
       }
     });
     
@@ -1900,7 +1900,7 @@ export class MapPage extends BasePage implements OnDestroy {
     modal.onDidDismiss().then(result => {
       this.markers.splice(0, this.markers.length);
       this.locationUpdateSubscription.unsubscribe();
-      // this.clearResults();
+      this.clearResults();
       this.mapSearchResult = result;
       // this.removeSearchResultFromMap();obsolete
       // this.removeAdvanceMarkerFromMap();
