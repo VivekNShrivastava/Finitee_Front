@@ -17,4 +17,4 @@ import { CreateEditShoppingListPage } from './create-edit-shopping-list.page';
   ],
   declarations: [CreateEditShoppingListPage]
 })
-export class CreateEditShoppingListPageModule {}
+export class CreateEditShoppingListPageModule{}
