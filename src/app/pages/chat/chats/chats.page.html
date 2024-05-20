@@ -74,6 +74,7 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- chat list -->
 <ion-content class="fi-chat-container" overflow-scroll="true">
   <ion-list *ngFor="let chatGroup of chatsList" [hidden]="chatGroup.deleted"
     [ngClass]="{'message-item-background': chatsService.selctedChatGroupsJSONString.indexOf(chatGroup.groupId) > -1}">

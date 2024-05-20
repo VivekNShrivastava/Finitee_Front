@@ -20,7 +20,7 @@
       </div>
     </ng-template>
   
-    <ng-template #checkboxView let-setting="setting">
+    <!-- <ng-template #checkboxView let-setting="setting">
       <div class="display-flex--row">
         <div class="flex-grow-1">
           <div style="margin-top: 11px">
@@ -30,7 +30,6 @@
         <div *ngIf="setting.SettingField === 'LocationShowOnlyWhenLoggedIn' ">
           <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.LocationShowOnlyWhenLoggedIn"
             (ngModelChange)="toggleChanged($event, 'LocationShowOnlyWhenLoggedIn')" slot="end"></ion-toggle>
-          <!-- <ion-toggle [(ngModel)]="sonarSetting[setting.SettingField]" slot="end"></ion-toggle> -->
         </div>
   
         <div *ngIf="setting.SettingField === 'AvailableForGreetingWhenLoggedIn' ">
@@ -53,19 +52,17 @@
             (ngModelChange)="toggleChanged($event, 'IsMobileBusiness')" slot="end"></ion-toggle>
         </div>
       </div>
-  
-    </ng-template>
+    </ng-template>   -->
   
     <ion-list class="custom-class-list">
-      <!-- <ion-icon name="close-icon" (click)="closeSetting()"
-        style="position: absolute;right: 12px;top: 5px;font-size: 12px;"></ion-icon> -->
+      
       <ion-item *ngFor="let setting of privacySettings" style="margin-bottom: 0;">
         <ion-label *ngIf="setting.Type =='Select'">
           <ng-container *ngTemplateOutlet="selectionView; context: {setting : setting}"></ng-container>
         </ion-label>
-        <ion-label *ngIf="setting.Type =='Checkbox'">
+        <!-- <ion-label *ngIf="setting.Type =='Checkbox'">
           <ng-container *ngTemplateOutlet="checkboxView; context: {setting : setting}"></ng-container>
-        </ion-label>
+        </ion-label> -->
       </ion-item>
     </ion-list>
   

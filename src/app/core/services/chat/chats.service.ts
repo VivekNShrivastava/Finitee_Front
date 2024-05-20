@@ -758,7 +758,7 @@ export class ChatsService {
         this.nav.navigateForward([`/chat-detail/${groupId}`], navigationExtras);
       else
         this.nav.navigateForward([`/chat-detail/new`], navigationExtras);  
-        return Promise.resolve(undefined);
+        return Promise.resolve(navigationExtras);
     }
     
   }

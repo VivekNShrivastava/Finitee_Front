@@ -9,6 +9,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { MapService } from '../services/map.service';
 import { BasePage } from 'src/app/base.page';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { GreetingViewComponent } from '../greeting-view/greeting-view.component';
 
 export enum GreetingCode {
   GreetingSend = 'Send',
@@ -25,11 +26,13 @@ export enum GreetingCode {
 export class ViewingUsersComponent extends BasePage implements OnInit {
   // readonly appConstants: any = AppConstants;
   public viewType: number = 1;
+  public activeOrExpired: number = 1;
   public viewTemplate: string = "";
   public viewList: any = [];
   public greetList: any = [];
   public attachmentURL = environment.attachementUrl;
   public greetingListApi: any = [];
+  public filteredGreetingList: any = [];
   constructor(
     public _commonService: CommonService,
     public navParams: NavParams,
@@ -69,6 +72,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
   async getUserGreetingHistory(){
     const res = await this.mapService.getGreetingHistory();
     if(res) this.greetingListApi = res?.ResponseData?.greetings;
+    this.activeExpiredGreeting(1);
     console.log("user history", this.greetingListApi);
   }
 
@@ -87,12 +91,42 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
       this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
   }
 
-  public greetingRecieved (user: any) {
+  public async greetingRecieved(user: any): Promise<void> {
+    const modal = await this._modalController.create({
+      component: GreetingViewComponent,
+      componentProps: {
+        fromUserId : this.greetingListApi.user
+      }
+    });
+    modal.onDidDismiss().then(result => {
+      if (result) {
+      }
+    });
     console.log("greeting taped", user)
+
+    return await modal.present();
   }
+
+
 
   public onViewTypeChange(viewType: number): void {
     this.viewType = viewType;
+  }
+
+  public activeExpiredGreeting(viewType: number): void {
+    console.log(viewType)
+    this.activeOrExpired = viewType;
+
+    if(viewType === 1){
+      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
+       return x.Status === null
+      })
+    }else if(viewType === 2){
+      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
+        return x.Status != null 
+      })
+    }
+    console.log(this.filteredGreetingList);
   }
 
   public viewConnection(user: FiniteeUserOnMap): void {

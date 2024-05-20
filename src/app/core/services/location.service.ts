@@ -152,7 +152,7 @@ export class LocationService {
     return new Promise<any>((resolve, reject) => {
       var url = config.API.SEARCH.UPDATE_LIVE_LOCATION;
       return this.http.post<any>(url, body).subscribe((response: any) => {
-        resolve(response.ResponseData);
+        resolve(response);
       },
         (error) => {
           console.log("abc error", error.error.text);
@@ -456,9 +456,11 @@ const geocoder = new google.maps.Geocoder();
             this.commonService.currentCurrency = res;
             this.paymentService.payment.currencyCode = this.commonService.currentCurrency.CurrencyCode
           }
+          return country;
         })
         .catch((error) => {
           console.error('Error:', error.message);
+          return error;
         });
     } catch (error) {
       console.log(error)
