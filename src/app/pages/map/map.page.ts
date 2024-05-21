@@ -62,7 +62,7 @@ export class MapPage extends BasePage implements OnDestroy {
   public mapWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
   public map?: google.maps.Map = undefined;
   public location: UserLocation = new UserLocation();
-  public homeLocation : UserLocation = new UserLocation();
+  public homeLocation: UserLocation = new UserLocation();
 
   currentPageHref!: any;
 
@@ -130,7 +130,12 @@ export class MapPage extends BasePage implements OnDestroy {
   eventListen: any;
   userConnectionActive: boolean = false;
   isUserLocationEnabled: boolean = false;
-  private locationUpdateSubscription: Subscription = new Subscription();;
+  private locationUpdateSubscription: Subscription = new Subscription();
+
+  isLiveLocationActive: boolean = false;
+
+  mixedArray: any = [];
+  changedArray: any = [];
 
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
   mapCenter!: google.maps.LatLng;
@@ -155,7 +160,7 @@ export class MapPage extends BasePage implements OnDestroy {
   newLat: any;
   newLng: any;
   locationUpdateInterval$: any;
-  prevLiveLocation : UserLocation = new UserLocation();
+  prevLiveLocation: UserLocation = new UserLocation();
   constructor(
     private platform: Platform,
     private mapService: MapService,
@@ -176,12 +181,12 @@ export class MapPage extends BasePage implements OnDestroy {
     private firestoreService: FirestoreService,
     private _userPrivacyServivce: UserPrivacyService,
     @Inject('NetworkPlugin') public network: NetworkPlugin
-    ) {
+  ) {
     super(authService);
     console.log("constructor");
-    const checkUserConnection = this.logCurrentNetworkStatus();  
+    const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
-    
+
     this.authService.authState.subscribe((authState: boolean) => {
       console.log("authState", authState)
       if (authState == true) {
@@ -192,12 +197,12 @@ export class MapPage extends BasePage implements OnDestroy {
         //   this.viewList = updatedData;
         //   this.viewListNumber = this.viewList?.names?.length;
         // });
-    
+
         this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
           this.greetList = updatedData;
           console.log(this.greetList);
           this.greetListNumber = this.greetList?.length;
-          // console.log("res -", this.viewListNumber);
+          console.log("res -", this.greetListNumber);
         });
 
         this.getUserSonarPrivacySettings();
@@ -205,30 +210,30 @@ export class MapPage extends BasePage implements OnDestroy {
         // this.currentLocationUpdate();
       }
     });
-    
+
 
     this.network.addListener('networkStatusChange', status => {
-      if(status.connected === false){
+      if (status.connected === false) {
         this._commonService.presentToast("User Offline");
         this.userConnectionActive = true;
-      }else{
-        if(status.connected === true && this.userConnectionActive === true){
+      } else {
+        if (status.connected === true && this.userConnectionActive === true) {
           this._commonService.presentToast("Back Online");
           this.userConnectionActive = false;
         }
-      } 
+      }
       console.log('Network status changed', status);
     });
   }
 
   printCurrentPosition = async () => {
-    
-    try{
+
+    try {
       console.log("running check permissions...");
       const perm = await Geolocation.checkPermissions();
       console.log('Current position:', perm);
 
-      if(perm.location){
+      if (perm.location) {
         const loc = await Geolocation.getCurrentPosition();
         console.log("loc", loc.coords)
         // this.location.lat = loc.coords.latitude;
@@ -237,16 +242,16 @@ export class MapPage extends BasePage implements OnDestroy {
         // this.prevLiveLocation.lng = loc.coords.longitude;
       }
 
-      if(perm.location != "granted") {
+      if (perm.location != "granted") {
         console.log("res from requestPerm");
 
         this.isLocationTurnedOn = false;
 
         // const res = await Geolocation.requestPermissions();
-      }else if(perm.location === "granted" && this.isLocationTurnedOn === false){
+      } else if (perm.location === "granted" && this.isLocationTurnedOn === false) {
         this.isLocationTurnedOn = true;
       }
-    }catch(error){
+    } catch (error) {
       console.error(error);
       console.log("catched error", error);
       console.log(error);
@@ -265,17 +270,17 @@ export class MapPage extends BasePage implements OnDestroy {
       //   option: AndroidSettings.Location,
       // });
     }
-    
+
   };
 
-  async logCurrentNetworkStatus () {
+  async logCurrentNetworkStatus() {
     const status = await this.network.getStatus();
-    if(status.connected === false){
+    if (status.connected === false) {
       console.log("User is Offline");
       this.userConnectionActive = true;
       this._commonService.presentToast("User Offline");
       this.loadMap();
-    }else this.userConnectionActive = false;
+    } else this.userConnectionActive = false;
     console.log('Network status:', status);
     return status.connected;
   };
@@ -284,7 +289,7 @@ export class MapPage extends BasePage implements OnDestroy {
     console.log("OnInit");
     await this.platform.ready();
     this.currentPageHref = window.location.pathname;
-    
+
     // await this.mapService.getAppSetting(this.user.UserId).subscribe(
     //   (s: any) => {
     //     this.radius = s.map.km;
@@ -348,7 +353,7 @@ export class MapPage extends BasePage implements OnDestroy {
 
   async ngAfterViewInit() {
     await this.platform.ready();
-    if(this.userConnectionActive) await this.printCurrentPosition();
+    if (this.userConnectionActive) await this.printCurrentPosition();
     this.loadMap();
     this.fetchCurrentArea();
   }
@@ -359,15 +364,19 @@ export class MapPage extends BasePage implements OnDestroy {
       this.subscription.remove(this.subscription);
     }
   }
-    
-  async getUserSonarPrivacySettings () {
-    const res = await this._userPrivacyServivce.getUserPrivacySetting();
-    if(res?.LocationShowAt === 'L'){
+
+  async getUserSonarPrivacySettings() {
+    let res = null;
+    if (!this.isLiveLocationActive) res = await this._userPrivacyServivce.getUserPrivacySetting();
+
+    if (res?.LocationShowAt === 'L' || this.isLiveLocationActive) {
+      this.isLiveLocationActive = true;
       this.setupLocationUpdates();
-    }else{
+    } else {
+      this.isLiveLocationActive = false;
       // console.log("error while getting sonar privacy settings");
       this.locationUpdateSubscription.unsubscribe();
-    } 
+    }
   }
 
   setupLocationUpdates() {
@@ -379,79 +388,80 @@ export class MapPage extends BasePage implements OnDestroy {
   }
 
   latLng_maha = [
-    {"latitude": 18.5204, "longitude": 73.8567, "city": "Pune"},
-    {"latitude": 19.0760, "longitude": 72.8777, "city": "Mumbai"},
-    {"latitude": 20.2961, "longitude": 85.8245, "city": "Nagpur"},
-    {"latitude": 19.9975, "longitude": 73.7898, "city": "Nashik"},
-    {"latitude": 16.8494, "longitude": 74.4758, "city": "Kolhapur"},
-    {"latitude": 20.3910, "longitude": 78.1306, "city": "Akola"},
-    {"latitude": 20.8565, "longitude": 77.7769, "city": "Jalgaon"},
-    {"latitude": 21.1458, "longitude": 79.0882, "city": "Amravati"},
-    {"latitude": 17.6868, "longitude": 74.0325, "city": "Sangli"},
-    {"latitude": 17.6599, "longitude": 75.9064, "city": "Solapur"}
+    { "latitude": 18.5204, "longitude": 73.8567, "city": "Pune" },
+    { "latitude": 19.0760, "longitude": 72.8777, "city": "Mumbai" },
+    { "latitude": 20.2961, "longitude": 85.8245, "city": "Nagpur" },
+    { "latitude": 19.9975, "longitude": 73.7898, "city": "Nashik" },
+    { "latitude": 16.8494, "longitude": 74.4758, "city": "Kolhapur" },
+    { "latitude": 20.3910, "longitude": 78.1306, "city": "Akola" },
+    { "latitude": 20.8565, "longitude": 77.7769, "city": "Jalgaon" },
+    { "latitude": 21.1458, "longitude": 79.0882, "city": "Amravati" },
+    { "latitude": 17.6868, "longitude": 74.0325, "city": "Sangli" },
+    { "latitude": 17.6599, "longitude": 75.9064, "city": "Solapur" }
   ]
 
 
   async currentLocationUpdate() {
     // this.locationService.observeCurrentPosition().subscribe(async (position) => {
 
-      const position = await Geolocation.getCurrentPosition();      
-      if(position){
-        //check if previous corrdinates and current corrdinates are same or different, if corrdinates have changed, then call the api.
+    const position = await Geolocation.getCurrentPosition();
+    if (position) {
+      //check if previous corrdinates and current corrdinates are same or different, if corrdinates have changed, then call the api.
 
-        // console.log(position.coords.latitude, position.coords.longitude)
-        // if(this.prevLiveLocation.lat != position.coords.latitude || this.prevLiveLocation.lng != position.coords.longitude){
-        //   this.prevLiveLocation.lat = position.coords.latitude;
-        //   this.prevLiveLocation.lng = position.coords.longitude;
+      // console.log(position.coords.latitude, position.coords.longitude)
+      // if(this.prevLiveLocation.lat != position.coords.latitude || this.prevLiveLocation.lng != position.coords.longitude){
+      //   this.prevLiveLocation.lat = position.coords.latitude;
+      //   this.prevLiveLocation.lng = position.coords.longitude;
 
-        //   console.log(position);
-        //   const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
-        //   if(res){
-        //     this.location.lat = position.coords.latitude;
-        //     this.location.lng = position.coords.longitude;
-        //     this.setCurrentLocationMarker();
-        //     this.map?.setCenter(this.location)
-        //     this._commonService.presentToast("Location Updated");
-        //   }
-        // } else this._commonService.presentToast("Same Location");
+      //   console.log(position);
+      //   const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
+      //   if(res){
+      //     this.location.lat = position.coords.latitude;
+      //     this.location.lng = position.coords.longitude;
+      //     this.setCurrentLocationMarker();
+      //     this.map?.setCenter(this.location)
+      //     this._commonService.presentToast("Location Updated");
+      //   }
+      // } else this._commonService.presentToast("Same Location");
 
-        // testing
-        console.log(position.coords.latitude, position.coords.longitude);
-          const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
-          if(res){
-            this.location.lat = position.coords.latitude;
-            this.location.lng = position.coords.longitude;
-            this.setCurrentLocationMarker();
-            this.map?.setCenter(this.location)
-            // this._commonService.presentToast( `LU - ${position.coords.longitude, position.coords.latitude}`);
-          }
-        
-
-        //test addresses
-
-        // for (const coord of this.latLng_maha) {
-        //   // Call the API with each coordinate
-        //   const res = await this.locationService.updateLiveLocation(coord.latitude, coord.longitude);
-          
-        //   if (res) {
-        //     // Update the location properties
-        //     this.location.lat = coord.latitude;
-        //     this.location.lng = coord.longitude;
-            
-        //     // Update the marker and map center
-        //     this.setCurrentLocationMarker();
-        //     // this.map?.setCenter(this.location);
-            
-        //     // Log the city name
-        //     console.log(`Updated location for ${coord.city}`);
-        //   } else {
-        //     console.log(`Failed to update location for ${coord.city}`);
-        //   }
-        //   await new Promise(resolve => setTimeout(resolve, 10000));
-        // }
+      // testing
+      console.log(position.coords.latitude, position.coords.longitude);
+      const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
+      if (res) {
+        this.location.lat = position.coords.latitude;
+        this.location.lng = position.coords.longitude;
+        // this.setCurrentLocationMarker();
+        // this.currentLocationMarker.position = this.location;
+        this.map?.setCenter(this.location)
+        // this._commonService.presentToast( `LU - ${position.coords.longitude, position.coords.latitude}`);
+      }
 
 
-      } 
+      //test addresses
+
+      // for (const coord of this.latLng_maha) {
+      //   // Call the API with each coordinate
+      //   const res = await this.locationService.updateLiveLocation(coord.latitude, coord.longitude);
+
+      //   if (res) {
+      //     // Update the location properties
+      //     this.location.lat = coord.latitude;
+      //     this.location.lng = coord.longitude;
+
+      //     // Update the marker and map center
+      //     this.setCurrentLocationMarker();
+      //     // this.map?.setCenter(this.location);
+
+      //     // Log the city name
+      //     console.log(`Updated location for ${coord.city}`);
+      //   } else {
+      //     console.log(`Failed to update location for ${coord.city}`);
+      //   }
+      //   await new Promise(resolve => setTimeout(resolve, 10000));
+      // }
+
+
+    }
     // });
   }
 
@@ -459,10 +469,10 @@ export class MapPage extends BasePage implements OnDestroy {
 
     let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
       // console.log("MAP fetchCurrentArea observeReverseGeocodingResult: ", address);
-      
+
     });
     this.currentArea = this.locationService.getCurrentArea();
-      // console.log("MAP fetchCurrentArea Area: ", this.currentArea);
+    // console.log("MAP fetchCurrentArea Area: ", this.currentArea);
 
     this.locationService.requestPermissions();
     this.locationService.fetchCurrentCoordinate(true);
@@ -489,7 +499,8 @@ export class MapPage extends BasePage implements OnDestroy {
             styles: [{
               "featureType": "poi",
               "stylers": [{
-                 "visibility": "off" }]
+                "visibility": "off"
+              }]
             }]
           }
         );
@@ -529,7 +540,7 @@ export class MapPage extends BasePage implements OnDestroy {
       this.setCurrentLocationMarker();
     }
   }
- 
+
 
   async setCurrentLocationMarker() {
     if (this.user?.UserTypeId != '2') {
@@ -542,6 +553,15 @@ export class MapPage extends BasePage implements OnDestroy {
           // draggable: true,
           icon: !this.isBackEnabled ? 'assets/markers/curr-invisible.svg' : 'assets/markers/curr.svg',
         });
+        // this.homeLocation.lat = this.location.lat + 0.0000002;
+        // this.homeLocation.lng = this.location.lng + 0.0000002;
+        // this.currentLocationMarker = new google.maps.Marker({
+        //   position: this.homeLocation,
+        //   map: this.map,
+        //   title: "You are here man",
+        //   // draggable: true,
+        //   icon: !this.isBackEnabled ? 'assets/markers/curr-invisible.svg' : 'assets/markers/curr.svg',
+        // });
       }
     } else {
       if (this.location && this.location.lat) {
@@ -604,6 +624,8 @@ export class MapPage extends BasePage implements OnDestroy {
     this.userMarkers = [];
     this.totusr_markers = [];
     this.event_markers = [];
+    this.mixedArray = [];
+    this.changedArray = [];
     // this.advanceMarkers = [];
     this.isZoomOut = false;
     this.currentLocationMarker = null;
@@ -652,7 +674,6 @@ export class MapPage extends BasePage implements OnDestroy {
   }
 
   async addAdvanceMarkerToMap(obj: any, caller?: string) {
-
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
     let marker = new AdvancedMarkerElement({
       position: obj.position,
@@ -662,13 +683,13 @@ export class MapPage extends BasePage implements OnDestroy {
       gmpDraggable: false,
       collisionBehavior: google.maps.CollisionBehavior.REQUIRED,
       // zIndex: this.generateRandomZIndex(),
-      
+
     });
     this.advanceMarkers.push(marker);
     this.setClusters(this.advanceMarkers);
-    
+
     // console.log(marker.map)
-    
+
     return marker;
   }
 
@@ -742,7 +763,7 @@ export class MapPage extends BasePage implements OnDestroy {
   }
 
   async refreshMarker() {
-    this.removeSearchResultFromMap();
+    // this.removeSearchResultFromMap();
     this.removeAdvanceMarkerFromMap();
     // await this.loadSavedLocation();
     let result = this.mapSearchResult
@@ -785,10 +806,10 @@ export class MapPage extends BasePage implements OnDestroy {
   async searchResultUpdate() {
     this.clearMap();
     this.markersMap.clear();
-    
+    this.clusterMap.clear();
     let sonarResults = this.mapService.mainList;
-    const userId = this.logInfo.UserId 
-    let results = sonarResults.filter((x: any) => x.Id !==  userId)
+    const userId = this.logInfo.UserId
+    let results = sonarResults.filter((x: any) => x.Id !== userId)
     this.resultCount = results.length;
     if (results.length > 0) {
       this.mainResultFromSearch = results;
@@ -809,40 +830,33 @@ export class MapPage extends BasePage implements OnDestroy {
       if (serviceRequired.length > 0) { indexResultItem = this.addServiceRequiredToMap(serviceRequired, 'SR', indexResultItem); }
       if (events.length > 0) { indexResultItem = this.addEventToMap(events, indexResultItem); }
       if (saleslisting.length > 0) { indexResultItem = this.addSalesListingToMap(saleslisting, indexResultItem); }
-     
+
       this.totemMarkersOnSerach = results;
       this.clearAddCurrentLocationMarker();
-      
-      // await new Promise(resolve => setTimeout(resolve, 0)); // Ensuring all microtasks are flushed
-      // for (const [key, value] of this.markersMap.entries()) {
-      //   if (value.length === 1) {
-      //     this.markersMap.delete(key);
-      //   }
-      // }
+      this.addSameLatLngUserMarkersToMap(this.markersMap, 0);
+      this.clusteringFunction();
+      // this.addClusterElementsToMap(this.clusterMap, 0);
+      this.addSameLatLongMarkersToMap(this.clusterMap, 0);
 
-      this.addSameLatLongMarkersToMap(this.markersMap, 0);
 
-      // await new Promise(resolve => setTimeout(resolve, 0));
-
-      if(this.markersMap.size === 1) {
-        // console.log(this.markersMap[0]?.value[0])
+      if (this.markersMap.size === 1) {
         let latLng;
         for (const [key, value] of this.markersMap) {
           console.log(value); // Output: value1
           latLng = value[0]?.latLng || value[0];
           break;
-        } 
+        }
         if (latLng) {
-          const lat = latLng ?  latLng.LatLong.Latitude : latLng.Latitude;
-          const lng = latLng ?  latLng.LatLong.Longitude : latLng.Longitude
-  
+          const lat = latLng ? latLng.LatLong.Latitude : latLng.Latitude;
+          const lng = latLng ? latLng.LatLong.Longitude : latLng.Longitude
+
           this.map?.panTo({ lat, lng });
-        }      
-      }else {
+        }
+      } else {
         await new Promise(resolve => setTimeout(resolve, 0));
         this.mapBoundsToFitMarker(this.advanceMarkers);
       }
-     
+
     } else {
       this.mainResultFromSearch = [];
       this.removeSearchResultFromMap();
@@ -852,6 +866,40 @@ export class MapPage extends BasePage implements OnDestroy {
     }
   }
 
+  clusterMap: Map<any[], any[]> = new Map();
+
+  clusteringFunction() {
+    this.mixedArray.forEach((el: any, index: any) => {
+      if (!this.changedArray.includes(el?.Id)) {
+        this.mixedArray.slice(index + 1).forEach((element: any) => {
+          const key = el;
+
+          let latDiff = el.Latitude - element.Latitude;
+          let lngDiff = el.Longitude - element.Longitude;
+
+          if (latDiff < 0) latDiff = latDiff * -1;
+          if (lngDiff < 0) lngDiff = lngDiff * -1;
+
+          if (latDiff <= 0.0027 && lngDiff <= 0.0027) {
+            element.Latitude = el.Latitude;
+            element.Longitude = el.Longitude;
+            this.changedArray.push(element.Id);
+
+            if (this.clusterMap.has(key)) {
+              // If the key exists, push the marker to the existing array
+              this.clusterMap.get(key)?.push(element);
+            } else {
+              // If the key doesn't exist, create a new array with the marker
+              this.clusterMap.set(key, [element]);
+            }
+          }
+        });
+      }
+    });
+  }
+
+
+
   markersMap: Map<any, any[]> = new Map();
 
   addMultipleUserToMap(marker: any) {
@@ -859,29 +907,190 @@ export class MapPage extends BasePage implements OnDestroy {
     const lng = marker && marker.LatLong ? marker.LatLong.Longitude : marker && marker.Longitude;
     const key = `${lat},${lng}`;
     if (this.markersMap.has(key)) {
-        // If the key exists, push the marker to the existing array
-        this.markersMap.get(key)?.push(marker);
+      // If the key exists, push the marker to the existing array
+      this.markersMap.get(key)?.push(marker);
     } else {
-        // If the key doesn't exist, create a new array with the marker
-        this.markersMap.set(key, [marker]);
+      // If the key doesn't exist, create a new array with the marker
+      this.markersMap.set(key, [marker]);
     }
   }
 
-  addSingleMarker(){
-    
+  addSingleMarker() {
+
   }
 
-  addSameLatLongMarkersToMap(markersMap: Map<any, any> ,startIndexInResult: number){
-    markersMap.forEach(async(value) => {
+  // addClusterElementsToMap(clusterMap: Map<any[], any[]>, startIndexInResult: number) {
+  //   clusterMap.forEach(async(value: any, key: any) => {
+  //     console.log('key', key);
+  //     const beachFlagImg = document.createElement('div');
+  //     const imgCont = document.createElement('img');
+  //     const para = document.createElement('span');
+  //     imgCont.src = icons.MULTIPLE_FREEUSER;
 
-      if(value.length < 2){
+  //     para.innerHTML = value.length;
+  //     para.style.position = "absolute";
+  //     para.style.left = "50%";
+  //     para.style.bottom = "40%";
+  //     para.style.color = "black";
+  //     para.style.fontSize = "20px";
+  //     para.style.fontWeight = "bold";
+  //     beachFlagImg.appendChild(imgCont)
+  //     beachFlagImg.appendChild(para);
+
+  //     const lat = value[0] && value[0].LatLong ? value[0].LatLong.Latitude : value[0] && value[0].Latitude;
+  //     const lng = value[0] && value[0].LatLong ? value[0].LatLong.Longitude : value[0] && value[0].Longitude;
+
+
+  //     let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
+  //       position: { lat: lat, lng: lng },
+  //       title: 'Multiple Icon',
+  //       content: beachFlagImg,
+  //     };
+
+
+
+  //     const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
+
+  //     const markerData: MultipleMarkerInfo<SonarEventSearchRespond> = {
+  //       data: value,
+  //       MarkerType: MarkerType.Multiple,
+  //       itemIndex: startIndexInResult
+  //     };
+
+  //     startIndexInResult++;
+
+  //     marker.addListener("click", () => {
+  //       this.onAdvanceMarkerClick(marker, markerData);
+  //       console.log("clicked", value);
+  //     });
+  //   })
+  // }
+
+  addSameLatLngUserMarkersToMap(clusterMap: Map<any, any[]>, startIndexInResult: number) {
+    this.markersMap.forEach(async(value: any, key:any) => {
+      if (value.length < 2) {
         let markerIcon = "";
         let markerType: MarkerType;
-        switch(value[0].entity){
-          case 'U': 
-            markerIcon =  AppConstants.mediaPrefix + value[0].ProfileImage;
+        switch (value[0].entity) {
+          case 'U':
+            markerIcon = AppConstants.mediaPrefix + value[0].ProfileImage;
             markerType = MarkerType.FreeUser
             break;
+        }
+        const imageTag = document.createElement('img');
+        if (value[0].entity === 'U') {
+
+          // imageTag.src = (value[0].ProfileImage ? markerIcon : (value[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER));
+          imageTag.src = icons.NEW_FREEUSER;
+
+          imageTag.style.height = '100px';
+          imageTag.style.width = '100px';
+          if (value[0].ProfileImage) {
+            imageTag.className = 'custom-marker-image'; 
+            imageTag.style.borderRadius = "50%";
+            imageTag.style.height = "50px";
+            imageTag.style.width = "50px";
+          }
+
+          if (value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid green";
+          else if (!value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid black";
+        } else {
+          imageTag.src = markerIcon;
+        }
+
+        const lat = value[0] && value[0].LatLong ? value[0].LatLong.Latitude : value[0] && value[0].Latitude;
+        const lng = value[0] && value[0].LatLong ? value[0].LatLong.Longitude : value[0] && value[0].Longitude;
+
+        let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
+          position: { lat: lat, lng: lng },
+          title: value[0].title,
+          content: imageTag
+        };
+
+        console.log(lat, lng);
+        if(lat != undefined && lng != undefined){
+          console.log(lat, lng);
+          const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
+
+          const markerData: MarkerInfo<any> = {
+            data: value,
+            MarkerType: MarkerType.Multiple,
+            itemIndex: startIndexInResult
+          };
+  
+          startIndexInResult++;
+  
+          marker.addListener("click", () => {
+            this.onAdvanceMarkerClick(marker, markerData);
+            console.log("clicked", value);
+          });
+        } 
+        
+      } else {
+        const beachFlagImg = document.createElement('div');
+        const imgCont = document.createElement('img');
+        const para = document.createElement('span');
+        imgCont.src = icons.NEW_MULTIPLE_FREEUSER;
+        // beachFlagImg.style.backgroundImage =  icons.MULTIPLE_FREEUSER;
+        // beachFlagImg.style.height = "52px";
+        // beachFlagImg.style.width = "52px";
+
+        imgCont.style.height = '100px';
+        imgCont.style.width = '100px';
+
+
+        // para.innerHTML = value.length + 1;
+        para.style.position = "absolute";
+        para.style.left = "50%";
+        para.style.bottom = "40%";
+        para.style.color = "black";
+        para.style.fontSize = "20px";
+        para.style.fontWeight = "bold";
+        beachFlagImg.appendChild(imgCont)
+        beachFlagImg.appendChild(para);
+
+        const lat = value[0] && value[0].LatLong ? value[0].LatLong.Latitude : value[0] && value[0].Latitude;
+        const lng = value[0] && value[0].LatLong ? value[0].LatLong.Longitude : value[0] && value[0].Longitude;
+
+
+        let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
+          position: { lat: lat, lng: lng },
+          title: 'Multiple Icon',
+          content: beachFlagImg,
+        };
+
+        let nearElementsData: any[] = [];
+        nearElementsData.push(...value);
+        nearElementsData.push(key)
+
+        if(lat && lng){
+          const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
+
+          const markerData: MultipleMarkerInfo<SonarEventSearchRespond> = {
+            data: nearElementsData,
+            MarkerType: MarkerType.Multiple,
+            itemIndex: startIndexInResult
+          };
+  
+          startIndexInResult++;
+  
+          marker.addListener("click", () => {
+            this.onAdvanceMarkerClick(marker, markerData);
+            console.log("clicked", nearElementsData);
+          });
+        }
+       
+      }
+    })
+  }
+
+  addSameLatLongMarkersToMap(clusterMap: Map<any[], any[]>, startIndexInResult: number) {
+    clusterMap.forEach(async (value: any, key: any) => {
+
+      if (value.length < 1) {
+        let markerIcon = "";
+        let markerType: MarkerType;
+        switch (key[0].entity) {
           case 'SR':
             markerIcon = icons.SERVICE_REQUIRED;
             markerType = MarkerType.FiniteeService
@@ -899,60 +1108,49 @@ export class MapPage extends BasePage implements OnDestroy {
             markerType = MarkerType.Event;
             break;
         }
-          
+
         const imageTag = document.createElement('img');
-        if(value[0].entity === 'U'){
-          
-          imageTag.src = (value[0].ProfileImage ?  markerIcon : (value[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER)); // Set the actual path to your image
-          
-          if(value[0].ProfileImage){
+        if (key[0].entity === 'U') {
+
+          imageTag.src = (key[0].ProfileImage ? markerIcon : (key[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER)); // Set the actual path to your image
+
+          if (key[0].ProfileImage) {
             imageTag.className = 'custom-marker-image'; // You can define a CSS class for styling if needed
             imageTag.style.borderRadius = "50%";
             imageTag.style.height = "50px";
             imageTag.style.width = "50px";
           }
-          
 
-          // imageTag.textContent = "3";
-          // imageTag.innerHTML = "4";
-          // imageTag.style.position = "absolute";
-
-          // imageTag.style.color = "black";
-          // imageTag.style.fontSize = "20px"; 
-          // imageTag.style.fontWeight = "bold"; 
-
-          if(value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid green";
-          else if(!value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid black";
-        }else{
-          imageTag.src =  markerIcon;
+          if (key[0].IsConnected && key[0].ProfileImage) imageTag.style.border = "2px solid green";
+          else if (!key[0].IsConnected && key[0].ProfileImage) imageTag.style.border = "2px solid black";
+        } else {
+          imageTag.src = markerIcon;
         }
-        
-        
-    
-        const lat = value[0] && value[0].LatLong ? value[0].LatLong.Latitude : value[0] && value[0].Latitude;
-        const lng = value[0] && value[0].LatLong ? value[0].LatLong.Longitude : value[0] && value[0].Longitude;
-    
+
+        const lat = key[0] && key[0].LatLong ? key[0].LatLong.Latitude : key[0] && key[0].Latitude;
+        const lng = key[0] && key[0].LatLong ? key[0].LatLong.Longitude : key[0] && value[0].Longitude;
+
         let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
           position: { lat: lat, lng: lng },
-          title: value[0].title,
+          title: key[0].title,
           content: imageTag
         };
-    
+
         const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
-    
+
         const markerData: MarkerInfo<any> = {
-          data: value, 
+          data: key,
           MarkerType: MarkerType.Sales,
           itemIndex: startIndexInResult
         };
-    
+
         startIndexInResult++;
-    
+
         marker.addListener("click", () => {
           this.onAdvanceMarkerClick(marker, markerData);
-          console.log("clicked", value);
+          console.log("clicked", key);
         });
-      }else{
+      } else {
         const beachFlagImg = document.createElement('div');
         const imgCont = document.createElement('img');
         const para = document.createElement('span');
@@ -960,14 +1158,16 @@ export class MapPage extends BasePage implements OnDestroy {
         // beachFlagImg.style.backgroundImage =  icons.MULTIPLE_FREEUSER;
         // beachFlagImg.style.height = "52px";
         // beachFlagImg.style.width = "52px";
+        imgCont.style.height = '80px';
+        imgCont.style.width = '80px';
 
-        para.innerHTML = value.length;
+        para.innerHTML = value.length + 1;
         para.style.position = "absolute";
         para.style.left = "50%";
         para.style.bottom = "40%";
         para.style.color = "black";
-        para.style.fontSize = "20px"; 
-        para.style.fontWeight = "bold"; 
+        para.style.fontSize = "20px";
+        para.style.fontWeight = "bold";
         beachFlagImg.appendChild(imgCont)
         beachFlagImg.appendChild(para);
 
@@ -981,12 +1181,14 @@ export class MapPage extends BasePage implements OnDestroy {
           content: beachFlagImg,
         };
 
-        
+        let nearElementsData: any[] = [];
+        nearElementsData.push(...value);
+        nearElementsData.push(key)
 
         const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
 
         const markerData: MultipleMarkerInfo<SonarEventSearchRespond> = {
-          data: value, 
+          data: nearElementsData,
           MarkerType: MarkerType.Multiple,
           itemIndex: startIndexInResult
         };
@@ -995,11 +1197,11 @@ export class MapPage extends BasePage implements OnDestroy {
 
         marker.addListener("click", () => {
           this.onAdvanceMarkerClick(marker, markerData);
-          console.log("clicked", value);
+          console.log("clicked", nearElementsData);
         });
       }
     })
-    
+
   }
 
   addUserToMap(users: SonarFreeUserSearchRespond[], startIndexInResult: number, isViewing: boolean = false) {
@@ -1010,15 +1212,15 @@ export class MapPage extends BasePage implements OnDestroy {
 
     Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
       if (markers.length === 1) {
-        if(markers[0].entity === 'U') keysWithSingleValue.push(markers[0]);
+        if (markers[0].entity === 'U') keysWithSingleValue.push(markers[0]);
       }
     });
-  
+
     // keysWithSingleValue.forEach((key: any) => {
     //   this.markersMap.delete(key.LatLong.Latitude+','+key.LatLong.Longitude);
     // })
-   
-    
+
+
     // keysWithSingleValue.forEach(async (res: SonarFreeUserSearchRespond) => {
     //   let isExist = false;
     //   this.userMarkers.forEach((oldmarker: any) => {
@@ -1032,7 +1234,7 @@ export class MapPage extends BasePage implements OnDestroy {
     //   // add user with new details
     //   let userData = this.setUserData(res);
     //   // let icon: string = "";
-     
+
     //   let userImg: string = "";
     //   if(res.ProfileImage) userImg = AppConstants.mediaPrefix + res.ProfileImage;
 
@@ -1059,7 +1261,7 @@ export class MapPage extends BasePage implements OnDestroy {
     //   //   MarkerType: templateView,
     //   //   itemIndex: startIndexInResult
     //   // });
-      
+
 
     //   // MIGRATING TO ADVANCE MARKER
 
@@ -1135,21 +1337,23 @@ export class MapPage extends BasePage implements OnDestroy {
 
   addServiceRequiredToMap(services: SonarServiceRequiredSearchRespond[], serviceType: string, startIndexInResult: number) {
 
-    services.forEach(service => this.addMultipleUserToMap(service));
+    this.mixedArray.push(...services);
 
-    let keysWithSingleValue: any = [];
+    // services.forEach(service => this.addMultipleUserToMap(service));
 
-    Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
-      if (markers.length === 1) {
-        if(markers[0].entity === 'SR') keysWithSingleValue.push(markers[0]);
-      }
-    });
-  
+    // let keysWithSingleValue: any = [];
+
+    // Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
+    //   if (markers.length === 1) {
+    //     if (markers[0].entity === 'SR') keysWithSingleValue.push(markers[0]);
+    //   }
+    // });
+
     // keysWithSingleValue.forEach((key: any) => {
     //   this.markersMap.delete(key.Latitude+','+key.Longitude);
     // })
-   
-    
+
+
 
     // keysWithSingleValue.forEach(async (each: any) => {
 
@@ -1162,7 +1366,7 @@ export class MapPage extends BasePage implements OnDestroy {
     //     title: each.Title,
     //     content: beachFlagImg
     //   };
-      
+
     //   const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
 
     //   const markerData: MarkerInfo<SonarServiceRequiredSearchRespond> = {
@@ -1181,16 +1385,18 @@ export class MapPage extends BasePage implements OnDestroy {
 
   addServiceAvailableToMap(services: SonarServiceAvailableSearchRespond[], serviceType: string, startIndexInResult: number) {
 
-    services.forEach(service => this.addMultipleUserToMap(service));
+    this.mixedArray.push(...services);
 
-    let keysWithSingleValue: any = [];
-    console.log("map at SA", this.markersMap);
-    Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
-      if (markers.length === 1) {
-        if(markers[0].entity === 'SA') keysWithSingleValue.push(markers[0]);
-      }
-    });
-  
+    // services.forEach(service => this.addMultipleUserToMap(service));
+
+    // let keysWithSingleValue: any = [];
+    // console.log("map at SA", this.markersMap);
+    // Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
+    //   if (markers.length === 1) {
+    //     if (markers[0].entity === 'SA') keysWithSingleValue.push(markers[0]);
+    //   }
+    // });
+
     // keysWithSingleValue.forEach(async (each: any) => {
 
     //   this.markers.forEach(oldmarker => {
@@ -1256,22 +1462,22 @@ export class MapPage extends BasePage implements OnDestroy {
   }
 
   addEventToMap(events: SonarEventSearchRespond[], startIndexInResult: number) {
+    this.mixedArray.push(...events);
+    // events.forEach(events => this.addMultipleUserToMap(events));
 
-    events.forEach(events => this.addMultipleUserToMap(events));
+    // let keysWithSingleValue: any = [];
 
-    let keysWithSingleValue: any = [];
+    // Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
+    //   if (markers.length === 1) {
+    //     if(markers[0].entity === 'E') keysWithSingleValue.push(markers[0]);
+    //   }
+    // });
 
-    Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
-      if (markers.length === 1) {
-        if(markers[0].entity === 'E') keysWithSingleValue.push(markers[0]);
-      }
-    });
-  
     // events.map(async (eachEvent) => {
     //   if (!this.event_markers.some((cres: any) => cres.Id == eachEvent.Id)) {
 
     //     const beachFlagImg = document.createElement('img');
-    //     beachFlagImg.src =  icons.EVENT;
+    //     beachFlagImg.src = icons.EVENT;
 
     //     let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
     //       position: { lat: eachEvent.Latitude, lng: eachEvent.Longitude },
@@ -1283,7 +1489,7 @@ export class MapPage extends BasePage implements OnDestroy {
     //     const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
 
     //     const markerData: MarkerInfo<SonarEventSearchRespond> = {
-    //       data: eachEvent, 
+    //       data: eachEvent,
     //       MarkerType: MarkerType.Event,
     //       itemIndex: startIndexInResult
     //     };
@@ -1299,20 +1505,23 @@ export class MapPage extends BasePage implements OnDestroy {
   }
 
   addSalesListingToMap(salesList: SonarSalesListingSearchRespond[], startIndexInResult: number) {
-    salesList.forEach(salesList => this.addMultipleUserToMap(salesList));
 
-    let keysWithSingleValue: any = [];
+    this.mixedArray.push(...salesList);
+    // salesList.forEach(salesList => this.addMultipleUserToMap(salesList));
 
-    Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
-      if (markers.length === 1) {
-        if(markers[0].entity === 'SL') keysWithSingleValue.push(markers[0]);
-      }
-    });
+    // let keysWithSingleValue: any = [];
+
+    // Array.from(this.markersMap.entries()).forEach(([key, markers]) => {
+    //   if (markers.length === 1) {
+    //     if(markers[0].entity === 'SL') keysWithSingleValue.push(markers[0]);
+    //   }
+    // });
+
     // salesList.map(async (salesList) => {
     //   if (!this.salesListing_markers.some((cres: any) => cres.Id == salesList.Id)) {
 
     //     const beachFlagImg = document.createElement('img');
-    //     beachFlagImg.src =  icons.BUYSELL;
+    //     beachFlagImg.src = icons.BUYSELL;
 
     //     let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
     //       position: { lat: salesList.Latitude, lng: salesList.Longitude },
@@ -1330,7 +1539,7 @@ export class MapPage extends BasePage implements OnDestroy {
     //     // });
 
     //     const markerData: MarkerInfo<SonarSalesListingSearchRespond> = {
-    //       data: salesList, 
+    //       data: salesList,
     //       MarkerType: MarkerType.FiniteeService,
     //       itemIndex: startIndexInResult
     //     };
@@ -1685,7 +1894,7 @@ export class MapPage extends BasePage implements OnDestroy {
   // advance marker click map
 
   async onAdvanceMarkerClickV2(marker: any, data?: any) {
-    this.mainResultFromSearch = this.mainResultFromSearch.sort((a : any, b : any) => a.Proximity - b.Proximity);
+    this.mainResultFromSearch = this.mainResultFromSearch.sort((a: any, b: any) => a.Proximity - b.Proximity);
 
     // const markerData: MarkerInfo<any> = (marker as any)?.markerData;
     const markerData = data;
@@ -1701,14 +1910,14 @@ export class MapPage extends BasePage implements OnDestroy {
     console.log(data);
     const latLng = params?.position;
     if (latLng) {
-        const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
-        const lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
+      const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
+      const lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
 
-        this.map?.panTo({ lat, lng });
+      this.map?.panTo({ lat, lng });
     }
-    if(data.data.length > 1){
+    if (data.data.length > 1) {
       this.onMapResultsClick(data);
-    }else{
+    } else {
       this.onAdvanceMarkerClickV2(params, data);
     }
 
@@ -1736,7 +1945,7 @@ export class MapPage extends BasePage implements OnDestroy {
     return await modal.present();
   }
 
-  showSonarSearchResultInListView(){
+  showSonarSearchResultInListView() {
     this.onMapResultsClick(this.mainResultFromSearch);
   }
 
@@ -1851,7 +2060,7 @@ export class MapPage extends BasePage implements OnDestroy {
     // };
 
     const obj: AllSonarSearchRequest = {
-      geolocation: { latitude: this.location.lat, longitude: this.location.lng},
+      geolocation: { latitude: this.location.lat, longitude: this.location.lng },
       searchKey: 'nisa',
       scope: 1,
       freeUser: true,
@@ -1870,15 +2079,15 @@ export class MapPage extends BasePage implements OnDestroy {
 
     if (screenWidth < 768) {
 
-      if(screenWidth == 412){
+      if (screenWidth == 412) {
         breakpoints = [0, 0.8];
         initialBreakpoint = 0.7;
-      } else{
+      } else {
         breakpoints = [0, 1];
         initialBreakpoint = 0.9;
       }
       // Small screens (e.g., smartphones)
-    
+
     }
     else if (screenWidth >= 768 && screenWidth < 1024) {
       // Medium screens (e.g., tablets)
@@ -1889,17 +2098,16 @@ export class MapPage extends BasePage implements OnDestroy {
       breakpoints = [0, 0.4];
       initialBreakpoint = 0.4;
     }
-   
+
     const modal = await this.modalController.create({
       component: MapSearchComponent,
       breakpoints: breakpoints,
-      initialBreakpoint:initialBreakpoint,
-      handle:false,
+      initialBreakpoint: initialBreakpoint,
+      handle: false,
       componentProps: { values: obj }
     });
     modal.onDidDismiss().then(result => {
       this.markers.splice(0, this.markers.length);
-      this.locationUpdateSubscription.unsubscribe();
       this.clearResults();
       this.mapSearchResult = result;
       // this.removeSearchResultFromMap();obsolete
@@ -2091,10 +2299,13 @@ export class MapPage extends BasePage implements OnDestroy {
     });
   }
   /* Clearing the results of the previous search. */
-  clearResults() {
+  clearResults(onMapSearchDismiss?: any) {
     //this._signalRService.onMapSearchClear(this.user_markers.filter(marker => marker.UserTypeId == 1).map(x => x.id));
-    this.getUserSonarPrivacySettings();
+    if (onMapSearchDismiss) this.getUserSonarPrivacySettings();
     this.mainResultFromSearch = [];
+    this.mixedArray = [];
+    this.changedArray = [];
+    this.clusterMap.clear();
     this.markersMap.clear();
     this.clearMap();
     this.removeSearchResultFromMap();
@@ -2171,7 +2382,7 @@ export class MapPage extends BasePage implements OnDestroy {
     });
   }
 
-  
+
 
   getAllConn(flag: any) {
     const params = {
@@ -2195,11 +2406,11 @@ export class MapPage extends BasePage implements OnDestroy {
     this.sonarSettingModal?.onDidDismiss().then((data) => {
       // Handle the data received when the modal is closed
       console.log('Data received:', data.data?.data.LocationShowAt);
-      if(data.data?.data.LocationShowAt === 'H') {
+      if (data.data?.data.LocationShowAt === 'H') {
         this.locationUpdateSubscription.unsubscribe();
 
-      } 
-      else if(data.data?.data.LocationShowAt === 'L') this.setupLocationUpdates();
+      }
+      else if (data.data?.data.LocationShowAt === 'L') this.setupLocationUpdates();
     });
 
   }
