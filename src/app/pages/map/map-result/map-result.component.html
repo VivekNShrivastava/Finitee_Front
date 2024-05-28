@@ -47,7 +47,7 @@
                 <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
                   onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
                   alt="User Profile"> -->
-                <img class="user-logo-main"
+                <img    class="user-logo-main circular-image"
                   src="{{appConstants.mediaPrefix + user['ProfileImage']}}"
                   onError="this.src='assets/icons/business/anonymous.svg'" />
               </ion-avatar>
@@ -104,7 +104,7 @@
     </ion-accordion>
 
     <!-- BUSINESSES -->
-    <ion-accordion value="business" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="business.length > 0" value="business" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="bluebusiness"></ion-icon>
         <ion-label>Businesses ({{business.length}})</ion-label>
@@ -117,7 +117,7 @@
                 <!-- <img animation="gradient" src="attachmentURL + '/' + user['ProfilePhoto']"
                   onerror="this.onerror=null;this.src='https://ionicframework.com/docs/img/demos/avatar.svg';"
                   alt="User Profile"> -->
-                <img class="user-logo-main"
+                <img class="user-logo-main circular-image"
                   src="{{appConstants.mediaPrefix + user['ProfilePhoto']}}"
                   onError="this.src='assets/icons/business/anonymous.svg'" />
               </ion-avatar>
@@ -148,7 +148,7 @@
     </ion-accordion>
 
     <!-- NON PROFITS -->
-    <ion-accordion value="nonprofit" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="nonProfits.length > 0" value="nonprofit" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="nonprofit"></ion-icon>
         <ion-label>Nonprofits ({{nonProfits.length}})</ion-label>
@@ -192,7 +192,7 @@
     </ion-accordion>
 
     <!-- DONATIONS -->
-    <ion-accordion value="donation" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="donations.length > 0" value="donation" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="donation"></ion-icon>
         <ion-label>Donations ({{donations.length}})</ion-label>
@@ -236,7 +236,7 @@
     </ion-accordion>
 
     <!-- TOTEMS -->
-    <ion-accordion value="totems" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="totems.length> 0" value="totems" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="bluetotem"></ion-icon>
         <ion-label>Totems ({{totems.length}})</ion-label>
@@ -280,7 +280,7 @@
     </ion-accordion>
 
     <!-- SALES LISTING -->
-    <ion-accordion value="salesListings" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="salesListings.length> 0" value="salesListings" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="sales_listing"></ion-icon>
         <ion-label>Sales listings ({{salesListings.length}})</ion-label>
@@ -324,7 +324,7 @@
     </ion-accordion>
 
     <!-- SERVICE AVAILABLE -->
-    <ion-accordion value="serviceAvailable" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="serviceAvailable.length> 0"  value="serviceAvailable" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="sales_listing"></ion-icon>
         <ion-label>Service Available ({{serviceAvailable.length}})</ion-label>
@@ -368,7 +368,7 @@
     </ion-accordion>
 
     <!-- SERVICE REQUIRED -->
-    <ion-accordion value="serviceRequired" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="serviceRequired.length> 0"  value="serviceRequired" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="sales_listing"></ion-icon>
         <ion-label>Service Required ({{serviceRequired.length}})</ion-label>
@@ -412,7 +412,7 @@
     </ion-accordion>
 
     <!-- EVENTS -->
-    <ion-accordion value="events" toggleIcon="accordion-icon">
+    <ion-accordion *ngIf="events.length> 0"  value="events" toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="sales_listing"></ion-icon>
         <ion-label>Events ({{events.length}})</ion-label>

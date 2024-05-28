@@ -57,3 +57,10 @@ ion-accordion-group {
     }
   }
 }
+.circular-image {
+  width: 100%;
+  max-width: 59px;
+  height: 59px;
+  border-radius: 50%;
+  object-fit: cover; /* This ensures the image covers the element completely without distortion */
+}
