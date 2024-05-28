@@ -87,29 +87,31 @@ export class MapService {
   //   }
   // }
 
-  public async addToViewList(customDocumentId: string, name: any) {
-    try {
-      const docRef = doc(this.firestore, 'viewingList', customDocumentId);
+  //removed viewing functionality
+
+  // public async addToViewList(customDocumentId: string, name: any) {
+  //   try {
+  //     const docRef = doc(this.firestore, 'viewingList', customDocumentId);
       
-      const docSnapshot = await getDoc(docRef);
+  //     const docSnapshot = await getDoc(docRef);
     
-      if (docSnapshot.exists()) {
-        // Document exists, update the array by adding the new name
-        await setDoc(docRef, {
-          names: arrayUnion(name) // Assuming 'names' is the array field in your document
-        }, { merge: true });
-      } else {
-        // Document doesn't exist, create a new document
-        await setDoc(docRef, {
-          names: [name] // Create an array with the new name
-        });
-      }
+  //     if (docSnapshot.exists()) {
+  //       // Document exists, update the array by adding the new name
+  //       await setDoc(docRef, {
+  //         names: arrayUnion(name) // Assuming 'names' is the array field in your document
+  //       }, { merge: true });
+  //     } else {
+  //       // Document doesn't exist, create a new document
+  //       await setDoc(docRef, {
+  //         names: [name] // Create an array with the new name
+  //       });
+  //     }
   
-      console.log('Document written with ID: ', customDocumentId);
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
-  }
+  //     console.log('Document written with ID: ', customDocumentId);
+  //   } catch (e) {
+  //     console.error('Error adding document: ', e);
+  //   }
+  // }
 
   public async removeNameFromViewList(customDocumentId: string, name: string) {
     try {

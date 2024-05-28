@@ -124,10 +124,18 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
     userTrait.Thumbnail = this.post.PostImages[0];
     // userTrait.Id = null;
     var res = await this._postService.saveUserTrait(userTrait);
+    const openTraitPost = true;
     if(res){
       // this.navEx!.state!['data'] = true;
+      const navigationExtras: NavigationExtras = {
+        state: {
+          data: {
+            openTraitPost
+          },
+        }
+      };
       this.postService.traitList.next({ event: "ADD", data: userTrait});
-      this.router.navigateByUrl('tabs/free-user-canvas');
+      this.navCtrl.navigateForward(['tabs/free-user-canvas'], navigationExtras);
     }
     // console.log(userTrait);
   }

@@ -41,6 +41,7 @@ export class AuthService {
     // private commonService: CommonService,
     private _signalRService: SignalRService) {
     this.platform.ready().then(() => {
+      console.log("service checkin..", this.authState.getValue());
       this.ifLoggedIn();
     });
   }
@@ -108,6 +109,7 @@ export class AuthService {
   }
 
   storeAccessToken(accessToken: string) {
+    console.log("store accedd token", this.storeAccessToken),
     this.currentAccessToken = accessToken;
     return localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
   }
@@ -123,15 +125,17 @@ export class AuthService {
   }
 
   ifLoggedIn() {
+    console.log("checking if logged in");
     // let response = this.storageService.getToken()
     let response = localStorage.getItem(ACCESS_TOKEN_KEY)
+    console.log("response", response);
     if (response === "undefined") {
       if (this.storageService.getUserData()) {
         response = this.storageService.getUserData().AccessToken;
         localStorage.setItem("ACCESS_TOKEN_KEY", this.storageService.getUserData().AccessToken);
       }
     }
-    // console.log("if Logged In -", response);
+    console.log("response re check", response);
     if (response) {
       this.authState.next(true);
       window.document.title = this.storageService.getUserData().DisplayName;
@@ -234,62 +238,112 @@ export class AuthService {
   //   }));
   // }
   
+  getLocalObjects () {
+    const RefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+    const accessToken_1 = localStorage.getItem(ACCESS_TOKEN_KEY);
+    const accessToken = localStorage.getItem('userData');
+    // const storedObject = JSON.parse(accessToken);
+    var storedObject;
+    if (accessToken !== null) {
+      storedObject = JSON.parse(accessToken);
+
+      // Now, 'storedObject' contains your JavaScript object
+      if (accessToken_1 === "undefined") {
+        localStorage.setItem(ACCESS_TOKEN_KEY, storedObject.AccessToken);
+      }
+    } else {
+      console.log('userData not found in localStorage');
+    }
+
+    var refresh_token = {
+      RefreshToken: RefreshToken
+    }
+
+    return {refresh_token, storedObject}
+  }
 
   // current logout function
   logout(tokenExpired?: boolean) {
-    if(tokenExpired){
-      // this.showLoader();
-      console.log("logging out bcoz of expired token");
-      this.router.navigate([''], {replaceUrl: true});
-      this.currentAccessToken = "";
-      window.document.title = AppConstants.APP_NAME;
-      localStorage.clear();
-      this.authState.next(false)
-      this.hideLoader();
-    }else{
-      // this.router.navigate([''], { replaceUrl: true });
-      this.showLoader();
-      var url = LOGOUT_API;
-      const RefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
-      const accessToken_1 = localStorage.getItem(ACCESS_TOKEN_KEY);
-      const accessToken = localStorage.getItem('userData');
-      // const storedObject = JSON.parse(accessToken);
-      var storedObject;
-      if (accessToken !== null) {
-        storedObject = JSON.parse(accessToken);
-  
-        // Now, 'storedObject' contains your JavaScript object
-        console.log(storedObject);
-        if (accessToken_1 === "undefined") {
-          localStorage.setItem(ACCESS_TOKEN_KEY, storedObject.AccessToken);
-        }
-      } else {
-        console.log('userData not found in localStorage');
-      }
-  
-      var refresh_token = {
-        RefreshToken: RefreshToken
-      }
-  
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json', // Adjust the content type as needed
-        'Authorization': 'Bearer ' + storedObject.AccessToken // Assuming you want to include the refresh token as an authorization header
-      });
-  
-      this.http.post<any>(url, refresh_token, { headers: headers }).subscribe(response => {
-        console.log('HTTP Response:', response);
-        if(response.ResponseData === "Success"){
-          this.hideLoader();
-          this.router.navigate([''], { replaceUrl: true });
-          localStorage.clear();
-          this.currentAccessToken = "";
-        }else{
-          this.hideLoader();
-          console.log("Error Occured", response.ResponseData);
-        }
-      });
 
-      this.hideLoader();
+    console.log("logged out");
+    this.authState.next(false);
+    const res = this.getLocalObjects();
+
+    localStorage.clear();
+    this.router.navigate([''], {replaceUrl: true})
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json', // Adjust the content type as needed
+      'Authorization': 'Bearer ' + res.storedObject.AccessToken // Assuming you want to include the refresh token as an authorization header
+    });
+
+    this.http.post<any>(LOGOUT_API, res.refresh_token, { headers: headers }).subscribe(response => {
+      // this.showLoader();
+      console.log('HTTP Response:', response);
+      if(response.ResponseData === "Success"){
+        // this.hideLoader();
+        // this.router.navigate([''], { replaceUrl: true });
+        // localStorage.clear();
+        this.currentAccessToken = "";
+      }else{
+        // this.hideLoader();
+        console.log("Error Occured", response.ResponseData);
+      }
+    });
+    
+    // if(tokenExpired){
+    //   // this.showLoader();
+    //   console.log("logging out bcoz of expired token");
+    //   this.router.navigate([''], {replaceUrl: true});
+    //   this.currentAccessToken = "";
+    //   window.document.title = AppConstants.APP_NAME;
+    //   localStorage.clear();
+    //   this.authState.next(false)
+    //   this.hideLoader();
+    // }else{
+    //   // this.router.navigate([''], { replaceUrl: true });
+    //   this.showLoader();
+    //   var url = LOGOUT_API;
+      // const RefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+      // const accessToken_1 = localStorage.getItem(ACCESS_TOKEN_KEY);
+      // const accessToken = localStorage.getItem('userData');
+      // // const storedObject = JSON.parse(accessToken);
+      // var storedObject;
+      // if (accessToken !== null) {
+      //   storedObject = JSON.parse(accessToken);
+  
+      //   // Now, 'storedObject' contains your JavaScript object
+      //   console.log(storedObject);
+      //   if (accessToken_1 === "undefined") {
+      //     localStorage.setItem(ACCESS_TOKEN_KEY, storedObject.AccessToken);
+      //   }
+      // } else {
+      //   console.log('userData not found in localStorage');
+      // }
+  
+      // var refresh_token = {
+      //   RefreshToken: RefreshToken
+      // }
+  
+      // const headers = new HttpHeaders({
+      //   'Content-Type': 'application/json', // Adjust the content type as needed
+      //   'Authorization': 'Bearer ' + storedObject.AccessToken // Assuming you want to include the refresh token as an authorization header
+      // });
+  
+      // this.http.post<any>(url, refresh_token, { headers: headers }).subscribe(response => {
+      //   console.log('HTTP Response:', response);
+      //   if(response.ResponseData === "Success"){
+      //     this.hideLoader();
+      //     this.router.navigate([''], { replaceUrl: true });
+      //     localStorage.clear();
+      //     this.currentAccessToken = "";
+      //   }else{
+      //     this.hideLoader();
+      //     console.log("Error Occured", response.ResponseData);
+      //   }
+      // });
+
+    //   this.hideLoader();
 
   
   
@@ -320,7 +374,7 @@ export class AuthService {
       //     window.location.reload();
       //   })
       // ).subscribe();
-    }
+    // }
     
   }
 
@@ -337,7 +391,10 @@ export class AuthService {
   }
 
   proceedWithLogin(response: any) {
+    console.log("proceed w login", response)
     localStorage.setItem("token", response.AccessToken);
+    // response.DisplayName = 'nisarg';
+    // response.NewDevice = true;
     localStorage.setItem("userData", JSON.stringify(response));
     // this.router.navigateByUrl('tabs/map');
     // this.router.navigate(['tabs/map'], {replaceUrl: true});

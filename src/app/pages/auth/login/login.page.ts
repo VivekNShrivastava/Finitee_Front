@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
-import { AnimationController, IonModal, Platform } from '@ionic/angular';
+import { AnimationController, IonModal, Platform, IonRouterOutlet } from '@ionic/angular';
 import { NgOtpInputComponent } from 'ng-otp-input';
 import { interval, map, Observable, Subscription, take } from 'rxjs';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
@@ -13,7 +13,7 @@ import { App } from '@capacitor/app';
 import { LocationService } from 'src/app/core/services/location.service';
 import { Device } from '@capacitor/device';
 
-
+import { Location } from '@angular/common';
 
 
 const secTimer = interval(1000);
@@ -80,6 +80,8 @@ export class LoginPage implements OnInit {
     public regService: RegistrationService,
     public placesService: PlacesService,
     private platform: Platform,
+    public ionRouterOutlet: IonRouterOutlet,
+    public location: Location
   ) { }
 
   ngOnInit() {
@@ -89,13 +91,16 @@ export class LoginPage implements OnInit {
     this.initForms();
     this.nextStep(this.LOGIN_STEP.LOGIN);
     this.setUpCountry();
+    this.initAppBackButton();
+    // this.ionBackButton();
 
     // this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
     //   console.log("Login: Platform Back Pressed");
     //   this.back();//TODO check for more conditions
     // });
 
-    this.initAppBackButton();
+    
+
     // this.forgotPasswordEmailForm = this.formBuilder.group({
     //   email: new FormControl('', Validators.compose([
     //     Validators.required,
@@ -131,6 +136,21 @@ export class LoginPage implements OnInit {
     // }
   }
 
+  ionBackButton () {
+    console.log(this.ionRouterOutlet.canGoBack());
+    console.log("Screen stack", this.screenStack);
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      console.log("Screen stack", this.screenStack);
+      if(this.ionRouterOutlet.canGoBack() === false){
+        console.log("cannot go back, or exit the app");
+        // navigator['app'].exitApp();
+      }else{
+        console.log("can go back");
+        this.location.back();
+      }
+    })
+  }
+
   initAppBackButton() {
 
     // this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
@@ -141,27 +161,17 @@ export class LoginPage implements OnInit {
     this.pluginBackListener = App.addListener('backButton', ({ canGoBack }) => {
       console.log("Login: Platform Back Pressed B ", canGoBack);
       let result = this.back();//TODO check for more conditions
-      console.log("Login: Platform Back Pressed B result ", result);
-      if (!result) {
-        // if(canGoBack){
-        //   window.history.back();
-        // } else {
-        //   App.exitApp();
-        // }
-        // if(canGoBack){
-        // window.history.back();
-        // } else {
-        let currentTime = new Date();
-        if (this.backPressTimeStamp && currentTime.getTime() - this.backPressTimeStamp.getTime() < AppConstants.PRE_APP_EXIT_DURATION) {
-          App.exitApp();
+        console.log("Login: Platform Back Pressed B result ", result);
+        if (!result) {
+          let currentTime = new Date();
+          if (this.backPressTimeStamp && ((currentTime.getTime() - this.backPressTimeStamp.getTime()) < AppConstants.PRE_APP_EXIT_DURATION)) {
+            App.exitApp();
+          }
+          else {
+            this.backPressTimeStamp = new Date();
+            this.regService.commonService.presentToast("Press back again to exit -- Login");
+          }
         }
-        else {
-          this.backPressTimeStamp = new Date();
-          this.regService.commonService.presentToast("Press back again to exit -- Login");
-        }
-        // }
-        // App.exitApp();
-      }
     });
 
   }
@@ -515,6 +525,7 @@ export class LoginPage implements OnInit {
     let actionDone = false;
     console.log("Login: Go Back: A: " + this.step, this.screenStack);
     if (this.step == this.LOGIN_STEP.LOGIN) {
+      console.log("navigate", this.LOGIN_STEP.LOGIN);
       this.router.navigateByUrl('/');
       // actionDone = true;
       // LocationStrategy.back(); //TODO Manoj check

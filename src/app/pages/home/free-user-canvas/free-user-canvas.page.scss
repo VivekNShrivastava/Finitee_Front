@@ -50,11 +50,13 @@ ion-content {
      
 
       .fi-user-img {
-        width: 116px;
-        height: 116px;
+        // width: 116px;
+        width: 140px;
+        // height: 116px;
+        height: 140px;
         border: 4px solid #fff;
         border-radius: 50%;
-        // object-fit: cover;
+        object-fit: cover;
       }
 
       &>ion-img {
