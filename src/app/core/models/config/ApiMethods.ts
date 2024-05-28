@@ -122,7 +122,8 @@ export const API = {
         SEND_GREETING_TO_USER: `${environment.baseUrl}Greeting/SendGreetingToUser`,
         GET_GREETING_HISTORY: `${environment.baseUrl}Greeting/GetGreetingHistory`,
         ACTION_GREETING_TO_USER: `${environment.baseUrl}Greeting/ActionGreetingToUser`,
-        CANCEL_GREETING_TO_USER: `${environment.baseUrl}Greeting/CancelGreetingToUser`
+        CANCEL_GREETING_TO_USER: `${environment.baseUrl}Greeting/CancelGreetingToUser`,
+        UPDATE_FIREBASE_GREETING : `${environment.baseUrl}Greeting/UpdateFirebaseGreeting`
     }
 
 }
