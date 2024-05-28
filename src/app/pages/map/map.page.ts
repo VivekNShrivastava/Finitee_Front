@@ -1919,8 +1919,9 @@ export class MapPage extends BasePage implements OnDestroy {
     // const markerData: MarkerInfo<any> = (marker as any)?.markerData;
     const markerData = data;
     this.markerCurrentIndex = markerData.itemIndex;
+    const id = markerData.data[0] ? markerData.data[0].Id : markerData.data.Id;
     const res = this.mainResultFromSearch.findIndex((v: any) => {
-      return (v as any)?.Id === markerData.data[0].Id
+      return (v as any)?.Id === id;
     })
     this.markerCurrentIndex = res;
     await this.openMarkerDetails();
@@ -2396,9 +2397,9 @@ export class MapPage extends BasePage implements OnDestroy {
     this.markerCluster = new MarkerClusterer({
       map: this.map,
       markers: setclusters,
-      // algorithmOptions: {
-      //   maxZoom: 12, 
-      // }
+      algorithmOptions: {
+        maxZoom: 12, 
+      }
     });
   }
 

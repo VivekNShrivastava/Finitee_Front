@@ -48,13 +48,15 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
     // this.viewTemplate = navParams?.data['viewTemplate'] ?? this.viewTemplate;
     this.viewTemplate = res;
     console.log("view", this.viewTemplate)
-
+    
     // if(this.viewTemplate === "Greeting") this.getUserGreetingHistory();
 
-    this.firestoreService.viewList$.subscribe(updatedData => {
-      console.log("map updated data", updatedData);
-      this.viewList = updatedData;
-    });
+    // this.firestoreService.viewList$.subscribe(updatedData => {
+    //   console.log("map updated data", updatedData);
+    //   this.viewList = updatedData;
+    // });
+
+
 
     this.firestoreService.greetingList$.subscribe(updatedData => {
       console.log("map updated data", updatedData);
@@ -65,8 +67,18 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
 
   ngOnInit() { }
 
+  ngOnDestroy(){
+    console.log("ngOnDestroy");
+    this.updateFirebaseGreeting();
+  }
+
   goBack() {
     this._modalController.dismiss();
+  }
+
+  async updateFirebaseGreeting() {
+    const res = await this.mapService.updateFirebaseGreeting();
+    console.log('update-firebase-greet', res);
   }
 
   async getUserGreetingHistory(){

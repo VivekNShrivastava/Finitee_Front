@@ -457,6 +457,24 @@ export class MapService {
     });
   }
 
+  updateFirebaseGreeting() {
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.GREETING.UPDATE_FIREBASE_GREETING;
+      // this.commonService.showLoader();
+      return this.http.get<any>(url).subscribe((response: any) => {
+        // this.commonService.hideLoader();
+        resolve(response);
+      },
+        (error) => {
+          // this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+
   actionGreetingToUser(user_id: string, action: boolean) {
     return new Promise<any>((resolve, reject) => {
       var url = config.API.GREETING.ACTION_GREETING_TO_USER;
