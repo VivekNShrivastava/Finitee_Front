@@ -80,11 +80,9 @@ ion-list-header.sc-ion-select-popover-md, ion-label.sc-ion-select-popover-md {
 
   
   }
+  ion-item.sc-ion-select-popover-md {
+    --inner-border-width: 0;
+    margin-bottom: 0px !important;
+}
 
-  // .janvi {
-  //   background: #ffffff;
-  //   border: 1px solid #70707078;
-  //   border-radius: 11px;
-  //   opacity: 1;
-  // }
   
