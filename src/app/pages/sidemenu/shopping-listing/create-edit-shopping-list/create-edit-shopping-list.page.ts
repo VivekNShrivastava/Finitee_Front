@@ -53,7 +53,9 @@ export class CreateEditShoppingListPage implements OnInit {
   }
 
   ngOnInit() {
+    
   }
+  
 
   ionViewWillEnter() {
     this.shoppingListWords = this.salesService.shoppingListWords
