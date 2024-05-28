@@ -160,10 +160,15 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       if(address){
         this.eventLocation = address.FormattedAddress;
         const location: string = this.eventLocation;
-        
-        this.form.controls['AddressLine1'].setValue(location);
+        const add1 = location.slice(0,69);
+        const add2 = location.slice(70, location.length);
+        this.form.controls['AddressLine1'].setValue(add1);
         this.form.controls['AddressLine1'].markAsTouched(); // Optionally, mark the control as touched to trigger any associated validation messages
         this.form.controls['AddressLine1'].setErrors(null); // Clear any validation errors
+
+        this.form.controls['AddressLine2'].setValue(add2);
+        this.form.controls['AddressLine2'].markAsTouched();
+        this.form.controls['AddressLine2'].setErrors(null);
 
         this.getLatlng(address);
       }     
