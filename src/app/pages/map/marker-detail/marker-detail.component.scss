@@ -12,6 +12,16 @@
   opacity: 1;
 }
 
+.chat{
+  border: 2px solid;
+  width: 150px;
+  border-radius: 43px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightskyblue;
+}
+
 .mainuserview{
   position: absolute;
   display: contents;
@@ -536,7 +546,6 @@ ion-img::part(image){
 }
 
 .userimg {
-
   height: 120px;
   width: 120px;
   border-radius: 50%;
@@ -544,8 +553,7 @@ ion-img::part(image){
   border: 6px solid white;
   z-index: 1;
   margin-top: -74px;
-   
-
+  object-fit: cover;
 }
 .userimgevent{
   width: 196px;
