@@ -28,6 +28,24 @@ export class AppComponent {
     this.initializeApp();
   }
 
+  //old
+  // initializeApp() {
+  //   if (Capacitor.isNativePlatform())
+  //     this.setTextZoom();
+  //   //this.placesService.getCountryList();
+  //   this.authService.authState.subscribe((state) => { 
+  //     console.log("Initialzing app", state);
+  //     if (state) {
+  //       this.router.navigate(['tabs/map']); 
+  //       // this.locationService.getCurrencyByCountry();
+  //     } else if (!state) {
+  //       this.router.navigate(['']);
+  //     }
+  //   });
+
+  // }
+
+  //new
   async initializeApp() {
     // await SplashScreen.show({
     //   autoHide: false,
@@ -39,41 +57,28 @@ export class AppComponent {
     if (Capacitor.isNativePlatform())
       this.setTextZoom();
 
+    const temp = localStorage.getItem('firstLaunch');
+    console.log('ls', temp);
     if (localStorage.getItem('firstLaunch') === null) {
       localStorage.clear();
       localStorage.setItem('firstLaunch', 'true');
       this.router.navigate([''], {replaceUrl: true});
-    }
-    
-    //this.placesService.getCountryList();
-
-
-    // const res = await this._userPrivacyServivce.getUserPrivacySetting();
-    // console.log(res)
-    // if(res){
-    //   console.log("state - coming...");
-    //   this.router.navigate(['tabs/map'], {replaceUrl: true}); 
-    // }else{
-    //   console.log("auth false");
-    //   this.router.navigate([''], {replaceUrl: true});
-    // }
-
-    this.authService.authState.subscribe(async (state) => { 
-      console.log("Initialzing app", state);
-      if (state) {
-        console.log("state");
-        this.locationService.getCurrencyByCountry();
-        // const res = await this._userPrivacyServivce.getUserPrivacySetting();
-        // if(res){
+    }else{
+      this.authService.authState.subscribe(async (state) => { 
+        console.log("Initialzing app", state);
+        if (state) {
+          console.log("state");
+          this.locationService.getCurrencyByCountry();
           console.log("state - coming...");
           this.router.navigate(['tabs/map'], {replaceUrl: true}); 
-        // }
-      } else{
-        // localStorage.clear();
-        console.log("auth false");
-        this.router.navigate([''], {replaceUrl: true});
-      }
-    });
+        } else if(!state){
+          console.log("auth false");
+          this.router.navigate([''], {replaceUrl: true});
+        }
+      });
+    }
+
+    
 
   }
  

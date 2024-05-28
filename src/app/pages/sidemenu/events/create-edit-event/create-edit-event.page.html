@@ -275,7 +275,7 @@
     <ion-label class="input-label"><ion-note color="danger">*</ion-note>Address line 1</ion-label>
     <ion-item color="none" class="input" lines="none">
       <ion-input autocapitalize="on" placeholder="address line 1" type="text" #AddressLine1="ngModel"
-        name="AddressLine1" [(ngModel)]="eventItem.AddressLine1" maxlength="100" required>
+        name="AddressLine1" [(ngModel)]="eventItem.AddressLine1" maxlength="70" required>
       </ion-input>
     </ion-item>
     <div *ngIf="AddressLine1.invalid && (AddressLine1.dirty || AddressLine1.touched)" class="error-message">
@@ -284,11 +284,11 @@
       </div>
     </div>
     <!-- address line 2 -->
-    <!-- <ion-label class="input-label"> Address line 2</ion-label>
+    <ion-label class="input-label"> Address line 2</ion-label>
     <ion-item color="none" class="input" lines="none">
       <ion-input autocapitalize="on" placeholder="address line 2" type="text" #AddressLine2="ngModel"
-        name="AddressLine2" [(ngModel)]="eventItem.AddressLine2" maxlength="30"></ion-input>
-    </ion-item> -->
+        name="AddressLine2" [(ngModel)]="eventItem.AddressLine2" maxlength="70"></ion-input>
+    </ion-item>
     <!-- address line 3 -->
     <!-- <ion-label class="input-label"> Address line 3</ion-label>
     <ion-item color="none" class="input" lines="none">

@@ -16,9 +16,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content >
 
-  <img src="{{image}}" onError="this.src='assets/icons/business/anonymous.svg'" />
+  <div class="image_container">
+    <img class="fi-user-img" src="{{image}}" onError="this.src='assets/icons/business/anonymous.svg'" />
+  </div>
+
+  <!-- <img src="{{image}}" onError="this.src='assets/icons/business/anonymous.svg'" /> -->
  <!--  <ion-slides [options]="slideOpts">
     <ion-slide *ngFor="let video of videoList">
       <video autoplay loop playsinline src="{{video.url}}" [muted]="true"></video>
