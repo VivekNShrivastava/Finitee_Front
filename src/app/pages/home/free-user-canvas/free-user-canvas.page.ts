@@ -802,6 +802,11 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       this._postService.postDataSbj.unsubscribe();
     }
   }
+
+  openImage(imagePath: any) {
+    this.navEx!.state!['data'] = imagePath;
+    this.router.navigateByUrl('media-viewer', this.navEx);
+  }
 }
 
 

@@ -315,7 +315,7 @@ export class MapPage extends BasePage implements OnDestroy {
 
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
-    await this.printCurrentPosition();
+    // await this.printCurrentPosition();
 
     //removed viewing functionality
 
@@ -425,7 +425,6 @@ export class MapPage extends BasePage implements OnDestroy {
       // } else this._commonService.presentToast("Same Location");
 
       // testing
-      console.log(position.coords.latitude, position.coords.longitude);
       const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
       if (res) {
         this.location.lat = position.coords.latitude;
@@ -835,11 +834,12 @@ export class MapPage extends BasePage implements OnDestroy {
       this.clearAddCurrentLocationMarker();
       this.addSameLatLngUserMarkersToMap(this.markersMap, 0);
       this.clusteringFunction();
+      console.log(this.clusterMap)
       // this.addClusterElementsToMap(this.clusterMap, 0);
       this.addSameLatLongMarkersToMap(this.clusterMap, 0);
 
 
-      if (this.markersMap.size === 1) {
+      if (this.markersMap.size + this.clusterMap.size === 1) {
         let latLng;
         for (const [key, value] of this.markersMap) {
           console.log(value); // Output: value1
@@ -871,6 +871,7 @@ export class MapPage extends BasePage implements OnDestroy {
   clusteringFunction() {
     this.mixedArray.forEach((el: any, index: any) => {
       if (!this.changedArray.includes(el?.Id)) {
+        this.clusterMap.set(el, [el]);
         this.mixedArray.slice(index + 1).forEach((element: any) => {
           const key = el;
 
@@ -894,11 +895,24 @@ export class MapPage extends BasePage implements OnDestroy {
             }
           }
         });
+        // this.set(el, el);
       }
     });
   }
 
-
+  set(key: any, value: any) {
+    if (this.clusterMap.has(key)) {
+      if (this.clusterMap.get(key) !== value) {
+        this.clusterMap.set(key, value);
+        console.log(`Updated key "${key}" to new value "${value}"`);
+      } else {
+        console.log(`Key "${key}" already has the value "${value}", no update needed`);
+      }
+    } else {
+      this.clusterMap.set(key, value);
+      console.log(`Added key "${key}" with value "${value}"`);
+    }
+  }
 
   markersMap: Map<any, any[]> = new Map();
 
@@ -968,6 +982,7 @@ export class MapPage extends BasePage implements OnDestroy {
 
   addSameLatLngUserMarkersToMap(clusterMap: Map<any, any[]>, startIndexInResult: number) {
     this.markersMap.forEach(async(value: any, key:any) => {
+      //for single user 
       if (value.length < 2) {
         let markerIcon = "";
         let markerType: MarkerType;
@@ -981,19 +996,21 @@ export class MapPage extends BasePage implements OnDestroy {
         if (value[0].entity === 'U') {
 
           // imageTag.src = (value[0].ProfileImage ? markerIcon : (value[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER));
+          // imageTag.src = value[0].ProfileImage ? markerIcon : icons.NEW_FREEUSER;
           imageTag.src = icons.NEW_FREEUSER;
 
-          imageTag.style.height = '100px';
-          imageTag.style.width = '100px';
-          if (value[0].ProfileImage) {
-            imageTag.className = 'custom-marker-image'; 
-            imageTag.style.borderRadius = "50%";
-            imageTag.style.height = "50px";
-            imageTag.style.width = "50px";
-          }
+          imageTag.style.height = '130px';
+          imageTag.style.width = '130px';
+          // if (value[0].ProfileImage) {
+          //   imageTag.className = 'custom-marker-image'; 
+          //   imageTag.style.borderRadius = "50%";
+          //   imageTag.style.height = "1300px";
+          //   imageTag.style.width = "130px";
+          //   imageTag.style.objectFit = 'cover';
+          // }
 
-          if (value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid green";
-          else if (!value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid black";
+          // if (value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid green";
+          // else if (!value[0].IsConnected && value[0].ProfileImage) imageTag.style.border = "2px solid black";
         } else {
           imageTag.src = markerIcon;
         }
@@ -1007,9 +1024,7 @@ export class MapPage extends BasePage implements OnDestroy {
           content: imageTag
         };
 
-        console.log(lat, lng);
         if(lat != undefined && lng != undefined){
-          console.log(lat, lng);
           const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
 
           const markerData: MarkerInfo<any> = {
@@ -1027,24 +1042,25 @@ export class MapPage extends BasePage implements OnDestroy {
         } 
         
       } else {
+        //for multiple users at same location
         const beachFlagImg = document.createElement('div');
         const imgCont = document.createElement('img');
         const para = document.createElement('span');
-        imgCont.src = icons.NEW_MULTIPLE_FREEUSER;
+        imgCont.src = icons.NEW_MULTIPLE_FREEUSER_WNE;
         // beachFlagImg.style.backgroundImage =  icons.MULTIPLE_FREEUSER;
         // beachFlagImg.style.height = "52px";
         // beachFlagImg.style.width = "52px";
 
-        imgCont.style.height = '100px';
-        imgCont.style.width = '100px';
+        imgCont.style.height = '130px';
+        imgCont.style.width = '130px';
 
 
-        // para.innerHTML = value.length + 1;
+        para.innerHTML = value.length ;
         para.style.position = "absolute";
-        para.style.left = "50%";
-        para.style.bottom = "40%";
+        para.style.left = "61%";
+        para.style.bottom = "59%";
         para.style.color = "black";
-        para.style.fontSize = "20px";
+        para.style.fontSize = "11px";
         para.style.fontWeight = "bold";
         beachFlagImg.appendChild(imgCont)
         beachFlagImg.appendChild(para);
@@ -1061,7 +1077,7 @@ export class MapPage extends BasePage implements OnDestroy {
 
         let nearElementsData: any[] = [];
         nearElementsData.push(...value);
-        nearElementsData.push(key)
+        // nearElementsData.push(key)
 
         if(lat && lng){
           const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
@@ -1086,11 +1102,14 @@ export class MapPage extends BasePage implements OnDestroy {
 
   addSameLatLongMarkersToMap(clusterMap: Map<any[], any[]>, startIndexInResult: number) {
     clusterMap.forEach(async (value: any, key: any) => {
-
-      if (value.length < 1) {
+      console.log(clusterMap);
+      console.log(value);
+      console.log(key);
+      //for a single event, sales listing, service requirement, service available
+      if (value.length < 2) {
         let markerIcon = "";
         let markerType: MarkerType;
-        switch (key[0].entity) {
+        switch (key.entity) {
           case 'SR':
             markerIcon = icons.SERVICE_REQUIRED;
             markerType = MarkerType.FiniteeService
@@ -1110,29 +1129,29 @@ export class MapPage extends BasePage implements OnDestroy {
         }
 
         const imageTag = document.createElement('img');
-        if (key[0].entity === 'U') {
+        if (key.entity === 'U') {
 
-          imageTag.src = (key[0].ProfileImage ? markerIcon : (key[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER)); // Set the actual path to your image
+          // imageTag.src = (key[0].ProfileImage ? markerIcon : (key[0].IsConnected ? icons.CONNECTED_USER : icons.UNCONNECTED_USER)); // Set the actual path to your image
+          imageTag.src = markerIcon
+          // if (key[0].ProfileImage) {
+          //   imageTag.className = 'custom-marker-image'; 
+          //   imageTag.style.borderRadius = "50%";
+          //   imageTag.style.height = "50px";
+          //   imageTag.style.width = "50px";
+          // }
 
-          if (key[0].ProfileImage) {
-            imageTag.className = 'custom-marker-image'; // You can define a CSS class for styling if needed
-            imageTag.style.borderRadius = "50%";
-            imageTag.style.height = "50px";
-            imageTag.style.width = "50px";
-          }
-
-          if (key[0].IsConnected && key[0].ProfileImage) imageTag.style.border = "2px solid green";
-          else if (!key[0].IsConnected && key[0].ProfileImage) imageTag.style.border = "2px solid black";
+          // if (key[0].IsConnected && key[0].ProfileImage) imageTag.style.border = "2px solid green";
+          // else if (!key[0].IsConnected && key[0].ProfileImage) imageTag.style.border = "2px solid black";
         } else {
           imageTag.src = markerIcon;
         }
 
-        const lat = key[0] && key[0].LatLong ? key[0].LatLong.Latitude : key[0] && key[0].Latitude;
-        const lng = key[0] && key[0].LatLong ? key[0].LatLong.Longitude : key[0] && value[0].Longitude;
+        const lat = key && key.LatLong ? key.LatLong.Latitude : key && key.Latitude;
+        const lng = key && key.LatLong ? key.LatLong.Longitude : key && key.Longitude;
 
         let markerOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{
           position: { lat: lat, lng: lng },
-          title: key[0].title,
+          title: key.title,
           content: imageTag
         };
 
@@ -1151,21 +1170,22 @@ export class MapPage extends BasePage implements OnDestroy {
           console.log("clicked", key);
         });
       } else {
+        //for multiple events, sales listings, etc at near location
         const beachFlagImg = document.createElement('div');
         const imgCont = document.createElement('img');
         const para = document.createElement('span');
-        imgCont.src = icons.MULTIPLE_FREEUSER;
+        imgCont.src = icons.NEW_MULTIPLE_ICON;
         // beachFlagImg.style.backgroundImage =  icons.MULTIPLE_FREEUSER;
         // beachFlagImg.style.height = "52px";
         // beachFlagImg.style.width = "52px";
         imgCont.style.height = '80px';
         imgCont.style.width = '80px';
 
-        para.innerHTML = value.length + 1;
+        para.innerHTML = value.length;
         para.style.position = "absolute";
-        para.style.left = "50%";
-        para.style.bottom = "40%";
-        para.style.color = "black";
+        para.style.left = "48%";
+        para.style.bottom = "35%";
+        para.style.color = "white";
         para.style.fontSize = "20px";
         para.style.fontWeight = "bold";
         beachFlagImg.appendChild(imgCont)
@@ -1183,7 +1203,7 @@ export class MapPage extends BasePage implements OnDestroy {
 
         let nearElementsData: any[] = [];
         nearElementsData.push(...value);
-        nearElementsData.push(key)
+        // nearElementsData.push(key)
 
         const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
 
