@@ -10,6 +10,7 @@ import { MapService } from '../services/map.service';
 import { BasePage } from 'src/app/base.page';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GreetingViewComponent } from '../greeting-view/greeting-view.component';
+import { stat } from 'fs';
 
 export enum GreetingCode {
   GreetingSend = 'Send',
@@ -33,6 +34,8 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
   public attachmentURL = environment.attachementUrl;
   public greetingListApi: any = [];
   public filteredGreetingList: any = [];
+  textColor: string = '#43E63C';
+  greetStatus: string = 'Accepted';
   constructor(
     public _commonService: CommonService,
     public navParams: NavParams,
@@ -74,6 +77,21 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
 
   goBack() {
     this._modalController.dismiss();
+  }
+
+  changeIcon(status: any){
+    let iconName = 'acceptedgreendot';
+    if(status === 'E'){
+      iconName = 'timeouticon';
+      this.textColor = 'darkviolet';
+      this.greetStatus = 'Timed Out';
+    } else if(status === 'R') {
+      iconName = 'reddoticongreeting';
+      this.textColor = 'red';
+      this.greetStatus = 'Rejected';
+    }
+
+    return iconName;
   }
 
   async updateFirebaseGreeting() {
