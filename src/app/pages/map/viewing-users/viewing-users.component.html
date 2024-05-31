@@ -101,8 +101,8 @@
             <div style="display: flex; flex-direction: column; ">
               <p style="margin-bottom: 0px !important;">200 Posts - 5.2k Connections</p>
               <div style="display: flex; gap: 10px;">
-                <p>1/12/2020</p>
-                <p>11:45 PM</p>
+                <p > {{getDateAndTime(user.ModifiedOn, true, false)}}</p>
+                <p>{{getDateAndTime(user.ModifiedOn, false, true)}}</p>
               </div>
             </div>
           
