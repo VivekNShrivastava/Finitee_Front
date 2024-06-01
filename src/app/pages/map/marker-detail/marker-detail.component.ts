@@ -325,10 +325,13 @@ export class MarkerDetailComponent implements OnInit {
     if(user.Greeting === 1){
       const res = await this.mapService.sendGreetingToUser(user.Id)
       if(res && res.Success){
-        this.commonService.presentToast("Greeting sent to " + user.UserName)
-        user.Greeting = 5;
-        this.getGreetingIcon();
-      }else{
+          this.commonService.presentToast("Greeting sent to " + user.UserName)
+          user.Greeting = 5;
+          this.getGreetingIcon();
+        
+      }
+      else{
+        console.log(res.Success)
         this.commonService.presentToast("Something went wrong")
       }
     }else if(user.Greeting === 5){
@@ -337,7 +340,8 @@ export class MarkerDetailComponent implements OnInit {
         user.Greeting = 1;
         this.commonService.presentToast("Greeting Cancelled")
         this.getGreetingIcon();
-      }else{
+      }else if(res && !res.Success) this.commonService.presentToast("Cannot sent greeting " + user.UserName + " until One Hour") 
+      else{
         this.commonService.presentToast("Something went wrong")
       }
     }else if(user.Greeting === 4){

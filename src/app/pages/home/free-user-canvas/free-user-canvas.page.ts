@@ -179,7 +179,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
         this.getUserPost();
         break;
       case 'traits':
-        this.getUserTraitsWithPost();
+        this.getUserTraitsWithPost(true);
         break;
       case 'beams':
         this.getUserBeams();
@@ -207,11 +207,11 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     this.loaded = true;
   }
 
-  async getUserTraitsWithPost() {
+  async getUserTraitsWithPost(traitSection?: boolean) {
     this.userTraitPostList = await this._postService.getUserTraitWithPost(this.userId);
     console.log("userTrait", this.userTraitPostList);
     this.loaded = true;
-    this.openTraitList();
+    if(!traitSection) this.openTraitList();
   }
 
   async getUserBeams() {

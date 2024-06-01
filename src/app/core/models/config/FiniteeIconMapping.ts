@@ -136,6 +136,8 @@ export const finiteeIconMapper = {
   sales_listing: 'assets/custom-ion-icons/sales_listing.svg',
   unconnected:'assets/markers/uu.svg',
   acceptedgreendot:'assets/markers/greendoticon.svg',
+  reddoticongreeting:'assets/markers/reddoticongreeting.svg',
+  timeouticon:'assets/markers/timeouticon.svg',
   human:'assets/custom-ion-icons/human.png',
   rejectedreddot:'assets/markers/reddoticon.svg',
   searchi: 'assets/custom-ion-icons/md-searchi.svg',
