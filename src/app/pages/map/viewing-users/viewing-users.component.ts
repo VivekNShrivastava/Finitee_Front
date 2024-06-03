@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { CommonService } from 'src/app/core/services/common.service';
 import { FiniteeUserOnMap } from 'src/app/pages/map/models/MapSearchResult';
@@ -23,8 +23,7 @@ export enum GreetingCode {
   templateUrl: './viewing-users.component.html',
   styleUrls: ['./viewing-users.component.scss'],
 })
-export class ViewingUsersComponent extends BasePage implements OnInit {
-  // readonly appConstants: any = AppConstants;
+export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy {
   public viewType: number = 1;
   public activeOrExpired: number = 1;
   public viewTemplate: string = "";
@@ -33,8 +32,10 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
   public attachmentURL = environment.attachementUrl;
   public greetingListApi: any = [];
   public filteredGreetingList: any = [];
-  textColor: string = '#43E63C';
-  greetStatus: string = 'Accepted';
+  textColor: string | undefined;
+ 
+  greetStatus: string | undefined;
+
   constructor(
     public _commonService: CommonService,
     public navParams: NavParams,
@@ -46,12 +47,10 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
   ) {
     super(authService);
     const res = this.navParams.get('template');
-    console.log(res);
-    // this.viewTemplate = navParams?.data['viewTemplate'] ?? this.viewTemplate;
     this.viewTemplate = res;
     console.log("view", this.viewTemplate)
-
-    if (this.viewTemplate === "Greeting") this.getUserGreetingHistory();
+    
+    // if(this.viewTemplate === "Greeting") this.getUserGreetingHistory();
 
     // this.firestoreService.viewList$.subscribe(updatedData => {
     //   console.log("map updated data", updatedData);
@@ -62,15 +61,14 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
 
     this.firestoreService.greetingList$.subscribe(updatedData => {
       console.log("map updated data", updatedData);
-      console.log(this.viewTemplate);
       this.greetList = updatedData;
       if (this.viewTemplate === "Greeting") this.getUserGreetingHistory();
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  ngOnDestroy() {
+  ngOnDestroy(){
     console.log("ngOnDestroy");
     this.updateFirebaseGreeting();
   }
@@ -96,14 +94,12 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
 
   async updateFirebaseGreeting() {
     const res = await this.mapService.updateFirebaseGreeting();
-    console.log('update-firebase-greet', res);
   }
 
   async getUserGreetingHistory() {
     const res = await this.mapService.getGreetingHistory();
     if (res) this.greetingListApi = res?.ResponseData?.greetings;
     this.activeExpiredGreeting(1);
-    console.log("user history", this.greetingListApi);
   }
 
   getDateAndTime(dateNtime: any, date?: boolean, time?: boolean) {
@@ -133,17 +129,15 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
 
   openUser(user: FiniteeUserOnMap) {
     this.goBack();
-    console.log("openUser: ", user);
-
-    const navigationExtras1s: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       state: {
         data: user
       }
     };
     if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
-      this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
+      this.router.navigateByUrl('business-user-canvas-other', navigationExtras);
     else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
-      this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
+      this.router.navigateByUrl('free-user-canvas', navigationExtras);
   }
 
   public async greetingRecieved(user: any): Promise<void> {
@@ -153,54 +147,35 @@ export class ViewingUsersComponent extends BasePage implements OnInit {
         fromUserId: this.greetingListApi.user
       }
     });
-    modal.onDidDismiss().then(result => {
-      if (result) {
-      }
-    });
-    console.log("greeting taped", user)
 
     return await modal.present();
   }
-
-
 
   public onViewTypeChange(viewType: number): void {
     this.viewType = viewType;
   }
 
   public activeExpiredGreeting(viewType: number): void {
-    console.log(viewType)
     this.activeOrExpired = viewType;
 
-    if (viewType === 1) {
-      this.filteredGreetingList = this.greetingListApi.filter((x: any) => {
-        return x.Status === null
+    if(viewType === 1){
+      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
+       return x.Status === null
       })
-    } else if (viewType === 2) {
-      this.filteredGreetingList = this.greetingListApi.filter((x: any) => {
-        return x.Status != null
+    }else if(viewType === 2){
+      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
+        return x.Status != null 
       })
     }
-    console.log(this.filteredGreetingList);
   }
 
-  public viewConnection(user: FiniteeUserOnMap): void {
+  public viewConnection(user: FiniteeUserOnMap): void {}
 
-  }
+  public viewUserOnMap(user: FiniteeUserOnMap): void {}
 
-  public viewUserOnMap(user: FiniteeUserOnMap): void {
-    // this._modalController.dismiss(user);
-  }
+  public startChat(user: FiniteeUserOnMap): void {}
 
-  public startChat(user: FiniteeUserOnMap): void {
+  public greetingUpdate(user: FiniteeUserOnMap, greetingStatus: string): void {}
 
-  }
-
-  public greetingUpdate(user: FiniteeUserOnMap, greetingStatus: string): void {
-
-  }
-
-  public blockUser(): void {
-
-  }
+  public blockUser(): void {}
 }
