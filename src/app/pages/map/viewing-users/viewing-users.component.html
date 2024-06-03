@@ -30,8 +30,21 @@
       Ignored
     </ion-button>
   </div>
-
-  <div style="justify-content: center; align-items: center;" class="maptab"
+  <div style="display: flex; justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired === 1}"
+      (click)="activeExpiredGreeting(1)">
+      Active
+    </ion-button>
+  
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired === 2}"
+      (click)="activeExpiredGreeting(2)">
+      Expired
+    </ion-button>
+  </div>
+  
+  <!-- <div style="justify-content: center; align-items: center;" class="maptab"
     *ngIf="viewTemplate != 'Viewing'">
     <ion-button style="width: 152px;
     height: 34px;
@@ -52,7 +65,23 @@
       (click)="activeExpiredGreeting(2)">
       Expired
     </ion-button>
-  </div>
+  </div> -->
+
+
+  <!-- <div style="justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired == 1}"
+      (click)="activeExpiredGreeting(1)">
+      Active
+    </ion-button>
+  
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired == 2}"
+      (click)="activeExpiredGreeting(2)">
+      Expired
+    </ion-button>
+  </div> -->
+  
 </ion-header>
 <ion-content>
 
