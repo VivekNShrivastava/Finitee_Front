@@ -4,7 +4,7 @@
 
       <div class="top-result-container">
         <div class="c-fab-button" *ngIf="searchCriteria">
-          <div (click)="showSonarSearchResultInListView()" > {{resultCount}} results </div>
+          <div (click)="showSonarSearchResultInListView(true)" > {{resultCount}} results </div>
           <div style="line-height: 11px;">
             <ion-icon style="font-size: 24px;" name="refresh-outline" (click)="refreshMarker()"></ion-icon>
           </div>
@@ -98,7 +98,7 @@
     </div>
   </div>
 
-  <ion-modal id="sonarSettingModal" #sonarSettingModal [initialBreakpoint]="0.26" [breakpoints]="[0, 0.26]" >
+  <ion-modal id="sonarSettingModal" #sonarSettingModal [initialBreakpoint]="0.36" [breakpoints]="[0]" >
     <ng-template>
       <sonar-settings (onCloseSetting)="closeSetting()"></sonar-settings>
     </ng-template>

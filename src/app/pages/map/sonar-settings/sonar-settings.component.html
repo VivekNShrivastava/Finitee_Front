@@ -20,24 +20,24 @@
       </div>
     </ng-template>
   
-    <!-- <ng-template #checkboxView let-setting="setting">
+    <ng-template #checkboxView let-setting="setting">
       <div class="display-flex--row">
         <div class="flex-grow-1">
           <div style="margin-top: 11px">
             {{setting.SettingName}}
           </div>
         </div>
-        <div *ngIf="setting.SettingField === 'LocationShowOnlyWhenLoggedIn' ">
+        <!-- <div *ngIf="setting.SettingField === 'LocationShowOnlyWhenLoggedIn' ">
           <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.LocationShowOnlyWhenLoggedIn"
             (ngModelChange)="toggleChanged($event, 'LocationShowOnlyWhenLoggedIn')" slot="end"></ion-toggle>
+        </div> -->
+  
+        <div *ngIf="setting.SettingField === 'AvailableForGreeting' ">
+          <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.AvailableForGreeting"
+            (ngModelChange)="toggleChanged($event, 'AvailableForGreeting')" slot="end"></ion-toggle>
         </div>
   
-        <div *ngIf="setting.SettingField === 'AvailableForGreetingWhenLoggedIn' ">
-          <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.AvailableForGreetingWhenLoggedIn"
-            (ngModelChange)="toggleChanged($event, 'AvailableForGreetingWhenLoggedIn')" slot="end"></ion-toggle>
-        </div>
-  
-        <div *ngIf="setting.SettingField === 'OffSetLocation' ">
+        <!-- <div *ngIf="setting.SettingField === 'OffSetLocation' ">
           <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.OffSetLocation"
             (ngModelChange)="toggleChanged($event, 'OffSetLocation')" slot="end"></ion-toggle>
         </div>
@@ -50,9 +50,9 @@
         <div *ngIf=" (logInfo.UserTypeId != 1) && ( setting.SettingField === 'IsMobileBusiness' ) ">
           <ion-toggle [(ngModel)]="getUserProfileAsPerPrivacy.IsMobileBusiness"
             (ngModelChange)="toggleChanged($event, 'IsMobileBusiness')" slot="end"></ion-toggle>
-        </div>
+        </div> -->
       </div>
-    </ng-template>   -->
+    </ng-template>  
   
     <ion-list class="custom-class-list">
       
@@ -60,9 +60,9 @@
         <ion-label *ngIf="setting.Type =='Select'">
           <ng-container *ngTemplateOutlet="selectionView; context: {setting : setting}"></ng-container>
         </ion-label>
-        <!-- <ion-label *ngIf="setting.Type =='Checkbox'">
+        <ion-label *ngIf="setting.Type =='Checkbox'">
           <ng-container *ngTemplateOutlet="checkboxView; context: {setting : setting}"></ng-container>
-        </ion-label> -->
+        </ion-label>
       </ion-item>
     </ion-list>
   
