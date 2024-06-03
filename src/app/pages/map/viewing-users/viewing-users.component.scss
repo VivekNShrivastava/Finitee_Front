@@ -56,3 +56,19 @@ text-align: center;
 font-weight: 600;
 }
 
+.activeclass {
+    width: 152px;
+    height: 34px;
+    background: #F0F5F7; /* Default background color */
+    border-radius: 17px;
+    opacity: 1;
+    color: black; /* Default text color */
+    border: none; /* Remove any border */
+    margin: 0 5px; /* Add some margin between buttons */
+  }
+  
+  .activeclass.active {
+    --background: #03A9F5 !important; 
+    color: white !important;
+  }
+  
