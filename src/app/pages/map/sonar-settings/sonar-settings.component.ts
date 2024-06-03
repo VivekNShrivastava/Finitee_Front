@@ -101,9 +101,9 @@ export class SonarSettingsComponent extends BasePage implements OnInit {
         this.getUserSonarPrivacySetting.LocationShowOnlyWhenLoggedIn = newValue;
         this.saveUserPrivacy();
         break;
-      case "AvailableForGreetingWhenLoggedIn":
+      case "AvailableForGreeting":
         this.getUserSonarPrivacySetting = {};
-        this.getUserSonarPrivacySetting.AvailableForGreetingWhenLoggedIn = newValue;
+        this.getUserSonarPrivacySetting.AvailableForGreeting = newValue;
         this.saveUserPrivacy();
         break;
       case "OffSetLocation":
