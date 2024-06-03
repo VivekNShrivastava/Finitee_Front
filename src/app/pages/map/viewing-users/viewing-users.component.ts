@@ -32,6 +32,9 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   public attachmentURL = environment.attachementUrl;
   public greetingListApi: any = [];
   public filteredGreetingList: any = [];
+  textColor: string | undefined;
+ 
+  greetStatus: string | undefined;
 
   constructor(
     public _commonService: CommonService,
@@ -45,8 +48,19 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     super(authService);
     const res = this.navParams.get('template');
     this.viewTemplate = res;
+    console.log("view", this.viewTemplate)
+    
+    // if(this.viewTemplate === "Greeting") this.getUserGreetingHistory();
+
+    // this.firestoreService.viewList$.subscribe(updatedData => {
+    //   console.log("map updated data", updatedData);
+    //   this.viewList = updatedData;
+    // });
+
+
 
     this.firestoreService.greetingList$.subscribe(updatedData => {
+      console.log("map updated data", updatedData);
       this.greetList = updatedData;
       if (this.viewTemplate === "Greeting") this.getUserGreetingHistory();
     });
@@ -54,12 +68,28 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
 
   ngOnInit() {}
 
-  ngOnDestroy() {
+  ngOnDestroy(){
+    console.log("ngOnDestroy");
     this.updateFirebaseGreeting();
   }
 
   goBack() {
     this._modalController.dismiss();
+  }
+
+  changeIcon(status: any) {
+    let iconName = 'acceptedgreendot';
+    if (status === 'E') {
+      iconName = 'timeouticon';
+      this.textColor = 'darkviolet';
+      this.greetStatus = 'Timed Out';
+    } else if (status === 'R') {
+      iconName = 'reddoticongreeting';
+      this.textColor = 'red';
+      this.greetStatus = 'Rejected';
+    }
+
+    return iconName;
   }
 
   async updateFirebaseGreeting() {
@@ -70,6 +100,31 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     const res = await this.mapService.getGreetingHistory();
     if (res) this.greetingListApi = res?.ResponseData?.greetings;
     this.activeExpiredGreeting(1);
+  }
+
+  getDateAndTime(dateNtime: any, date?: boolean, time?: boolean) {
+    const dateFromat = new Date(dateNtime);
+
+    const istOffset = 5.5 * 60 * 60 * 1000;
+
+    let istDate = new Date(dateFromat.getTime() + istOffset);
+
+    if(date){
+      let day = istDate.getDate();
+      let month = istDate.getMonth() + 1;
+      let year = istDate.getFullYear();
+      let istDateString = `${day}/${month}/${year}`;
+      return istDateString;
+    }else if(time){
+      let hours = istDate.getHours();
+      let minutes = istDate.getMinutes();
+      let period = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      let istTime12String = `${hours}:${minutes} ${period}`;
+      return istTime12String;
+    }
+    return;
   }
 
   openUser(user: FiniteeUserOnMap) {
@@ -103,10 +158,14 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   public activeExpiredGreeting(viewType: number): void {
     this.activeOrExpired = viewType;
 
-    if (viewType === 1) {
-      this.filteredGreetingList = this.greetingListApi.filter((x: any) => x.Status === null);
-    } else if (viewType === 2) {
-      this.filteredGreetingList = this.greetingListApi.filter((x: any) => x.Status != null);
+    if(viewType === 1){
+      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
+       return x.Status === null
+      })
+    }else if(viewType === 2){
+      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
+        return x.Status != null 
+      })
     }
   }
 
