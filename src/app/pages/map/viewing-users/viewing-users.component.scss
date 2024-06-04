@@ -21,7 +21,7 @@ ion-title{
         --background: #f0f5f7;
         --box-shadow: none;
         color: #285078;
-        font-size: 13px;
+        font-size: 15px;
         text-transform: none;
         margin: 0px 10px;
         --padding-end: 25px;
@@ -71,4 +71,59 @@ font-weight: 600;
     --background: #03A9F5 !important; 
     color: white !important;
   }
-  
+  .mapreslist{
+    position: relative;
+  }
+
+
+  .no-active-greeting{
+ 
+ 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+  }
+
+  .noactive{
+    font: var(--unnamed-font-style-normal) normal medium 25px/25px var(--unnamed-font-family-sf-pro-display);
+text-align: left;
+font: normal normal medium 27px/27px SF Pro Display;
+letter-spacing: 0.4px;
+color: #6F8BA5;
+font-weight: 600;
+  }
+
+  img{
+    max-width: fit-content;
+  }
+
+  @media only screen and (min-device-width: 390px) and (max-device-width: 390px){
+
+    .greetingnum{
+        width: auto;
+        left: calc(100vw - 100%) !important;
+    }
+  .noactive{
+    font-size: 20px;
+  }
+  .maptab {
+    ion-button {
+
+        font-size: 19px;
+
+    }
+}
+
+.activeclass{
+    height: 38px;
+}
+
+.postcount{
+    font-size: 17px;
+}
+.datetime{
+    font-size: 15px;
+}
+}
