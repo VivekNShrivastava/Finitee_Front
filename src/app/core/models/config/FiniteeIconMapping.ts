@@ -350,5 +350,7 @@ export const finiteeIconMapper = {
   'user-block': 'assets/custom-ion-icons/user-block.svg',
   'user-report':'assets/icons/screen-wise-icons/free-user/Menu-report-user-icon.svg',
   'user-inflows-color':'assets/icons/screen-wise-icons/free-user/Menu-Inflows-Icon-color.svg',
+  'send-connection-sonar-icon':'assets/icons/screen-wise-icons/free-user/send_conn_sonar.svg',
+
 };
 

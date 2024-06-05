@@ -7,13 +7,10 @@ import * as moment from 'moment';
 import { interval, Subscription } from 'rxjs';
 import * as config from '../../core/models/config/ApiMethods';
 import * as icons from '../../core/models/config/FiniteeIcon';
-import { NotificationEvents } from '../../core/models/notification/NotificationEvents';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonService } from '../../core/services/common.service';
-import { SignalRService } from '../../core/services/signal-r.service';
 import { MapSearchComponent } from './map-search/map-search.component';
 import { MarkerInfoComponent } from './marker-info/marker-info.component';
-import { MarkerDetailComponent } from './marker-detail/marker-detail.component';
 import { FiniteeService, SonarServiceAvailableSearchRespond, SonarServiceRequiredSearchRespond } from "./models/FiniteeService";
 import { UserLocation } from './models/Location';
 import { mapStyle } from './models/MapOptions';
@@ -22,7 +19,6 @@ import { MarkerInfo, MarkerType, MultipleMarkerInfo } from './models/MarkerInfo'
 import { UserOnMap } from './models/UserOnMap';
 import { MapService } from './services/map.service';
 import { ViewingUsersComponent } from './viewing-users/viewing-users.component';
-import { App } from '@capacitor/app';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { MapResultComponent } from './map-result/map-result.component';
 import { ChatsService } from 'src/app/core/services/chat/chats.service';
@@ -32,13 +28,10 @@ import { AddressMap, Area } from 'src/app/core/models/places/Address';
 import { AllSonarSearchRequest } from 'src/app/core/models/mapSonarSearch';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { UserPrivacyService } from 'src/app/core/services/user-privacy/user-privacy.service';
-import { forEach, template } from 'lodash';
-import { NgSwitchCase } from '@angular/common';
 import { NetworkPlugin } from '@capacitor/network';
 import { Geolocation } from '@capacitor/geolocation';
-import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings';
-import { User } from 'src/app/core/models/user/UserProfile';
 import { BasePage } from 'src/app/base.page';
+import { PrivacySettingService } from 'src/app/core/services/privacy-setting.service';
 
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
@@ -180,6 +173,7 @@ export class MapPage extends BasePage implements OnDestroy {
     private locationService: LocationService,
     private firestoreService: FirestoreService,
     private _userPrivacyServivce: UserPrivacyService,
+    private privacySetting : PrivacySettingService,
     @Inject('NetworkPlugin') public network: NetworkPlugin
   ) {
     super(authService);
@@ -362,6 +356,21 @@ export class MapPage extends BasePage implements OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
       this.subscription.remove(this.subscription);
+    }
+  }
+
+  makeUserInvisible (activeOrNot: boolean){
+    let data = {
+      LocationVisibleTo : 'N'
+    }
+    if(activeOrNot){
+      data.LocationVisibleTo = 'A';
+      this.privacySetting.updateSonarPrivacySetting(data);
+      console.log("User invisible");
+    } else {
+      data.LocationVisibleTo = 'N';
+      this.privacySetting.updateSonarPrivacySetting(data);
+      console.log("user visible");
     }
   }
 
@@ -1681,10 +1690,12 @@ export class MapPage extends BasePage implements OnDestroy {
     this.stopOnTerminate = this.isBackEnabled == false ? false : true;
     this.isBackEnabled = !this.isBackEnabled;
     if (this.isBackEnabled == true) {
-      this.updateVisibleMode(1);
+      // this.updateVisibleMode(1);
+      this.makeUserInvisible(true);
       this.setCurrentLocationMarker();
     } else {
-      this.updateVisibleMode(0);
+      // this.updateVisibleMode(0);
+      this.makeUserInvisible(false);
       this.currentLocationMarker = new google.maps.Marker({
         position: this.location,
         map: this.map,
@@ -1941,11 +1952,11 @@ export class MapPage extends BasePage implements OnDestroy {
     return await modal.present();
   }
 
-  showSonarSearchResultInListView() {
-    this.onMapResultsClick(this.mainResultFromSearch);
+  showSonarSearchResultInListView(checkSonarResult?: boolean) {
+    this.onMapResultsClick(this.mainResultFromSearch, checkSonarResult);
   }
 
-  public async onMapResultsClick(data: any): Promise<void> {
+  public async onMapResultsClick(data: any, checkSonarResult?: boolean): Promise<void> {
 
 
     // let results = this.mapService.mainList;
@@ -1973,14 +1984,27 @@ export class MapPage extends BasePage implements OnDestroy {
     //   this.clearAddCurrentLocationMarker();
     // }
 
-    const sonarResult = data?.data || data
-    const modal = await this.modalController.create({
-      component: MapResultComponent,
-      componentProps: {
-        results: sonarResult
-      }
-    });
-    modal.onDidDismiss().then(result => {
+    const sonarResult = data?.data || data;
+    let modal : any = [];
+    console.log('checkSonarResult', checkSonarResult)
+    if(checkSonarResult){
+      modal = await this.modalController.create({
+        component: MapResultComponent,
+        componentProps: {
+          results: sonarResult
+        },
+      });
+    }else{
+      modal = await this.modalController.create({
+        component: MapResultComponent,
+        componentProps: {
+          results: sonarResult
+        },
+        initialBreakpoint: 0.75 
+      });
+    }
+    
+    modal.onDidDismiss().then((result: any) => {
       console.log("onMapResults Dismiss result:", result);
       if (result && result.data) {
         if (result.data.action == "VIEW_MAP") {

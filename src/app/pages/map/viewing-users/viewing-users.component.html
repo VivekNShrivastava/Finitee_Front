@@ -9,7 +9,7 @@
     <ion-title *ngIf="viewTemplate == 'Viewing'">
       Viewing ({{viewList.names.length}})
     </ion-title>
-    <ion-title *ngIf="viewTemplate == 'Greeting'">
+    <ion-title class="greetingnum" *ngIf="viewTemplate == 'Greeting'">
       Greeting ({{greetList.length}})
     </ion-title>
 
@@ -30,8 +30,21 @@
       Ignored
     </ion-button>
   </div>
-
-  <div style="justify-content: center; align-items: center;" class="maptab"
+  <div style="display: flex; justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired === 1}"
+      (click)="activeExpiredGreeting(1)">
+      Active
+    </ion-button>
+  
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired === 2}"
+      (click)="activeExpiredGreeting(2)">
+      Expired
+    </ion-button>
+  </div>
+  
+  <!-- <div style="justify-content: center; align-items: center;" class="maptab"
     *ngIf="viewTemplate != 'Viewing'">
     <ion-button style="width: 152px;
     height: 34px;
@@ -52,7 +65,23 @@
       (click)="activeExpiredGreeting(2)">
       Previous
     </ion-button>
-  </div>
+  </div> -->
+
+
+  <!-- <div style="justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired == 1}"
+      (click)="activeExpiredGreeting(1)">
+      Active
+    </ion-button>
+  
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired == 2}"
+      (click)="activeExpiredGreeting(2)">
+      Expired
+    </ion-button>
+  </div> -->
+  
 </ion-header>
 <ion-content>
 
@@ -99,10 +128,10 @@
 
           <div style="display: flex;  justify-content: space-between; align-items: center; ">
             <div style="display: flex; flex-direction: column; ">
-              <p style="margin-bottom: 0px !important;">200 Posts - 5.2k Connections</p>
+              <p class="postcount" style="margin-bottom: 0px !important;">200 Posts - 5.2k Connections</p>
               <div style="display: flex; gap: 10px;">
-                <p > {{getDateAndTime(user.ModifiedOn, true, false)}}</p>
-                <p>{{getDateAndTime(user.ModifiedOn, false, true)}}</p>
+                <p class="datetime" > {{getDateAndTime(user.ModifiedOn, true, false)}}</p>
+                <p class="datetime">{{getDateAndTime(user.ModifiedOn, false, true)}}</p>
               </div>
             </div>
           
@@ -153,13 +182,17 @@
           </div>
         </div>
       </div>
-      <div
-        *ngIf="viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 1">
-        <p>Currently No Active Greeting Requests!</p>
+      <div class="no-active-greeting"
+      style=" margin-top: 150px;"
+        *ngIf="viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 1" >
+        <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
+        <p class="noactive">No Active Greetings!</p>
       </div>
-      <div
+      <div class="no-active-greeting"
+      style=" margin-top: 150px;"
         *ngIf="viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 2">
-        <p>Currently No Previous Greeting Requests!</p>
+        <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
+        <p class="noactive">No Previous Greeting !</p>
       </div>
     </ion-list>
   </div>

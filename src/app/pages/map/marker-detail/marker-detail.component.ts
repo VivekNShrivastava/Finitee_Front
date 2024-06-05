@@ -53,24 +53,24 @@ export class MarkerDetailComponent implements OnInit {
 
       //removed viewing functionality
 
-      // this.firestoreService.greetingList$.subscribe(updatedData => {
-      //   this.greetingList = updatedData;
-      //   if(this.greetingList.length > 0){
-      //     const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
-      //     if(this.greetingList[0] === id && this.markerList[this.markerCurrentIndex].Greeting === 1){
-      //       this.markerList[this.markerCurrentIndex].Greeting = 4;
-      //       this.getGreetingIcon();
-      //     }
-      //   }else{
-      //     if(this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4){
-      //       this.markerList[this.markerCurrentIndex].Greeting = 1;
-      //       this.getGreetingIcon();
-      //     }
-      //   }
+      this.firestoreService.greetingList$.subscribe(updatedData => {
+        this.greetingList = updatedData;
+        if(this.greetingList.length > 0){
+          const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
+          if(this.greetingList[0] === id && this.markerList[this.markerCurrentIndex].Greeting === 1){
+            this.markerList[this.markerCurrentIndex].Greeting = 4;
+            this.getGreetingIcon();
+          }
+        }else{
+          if(this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4){
+            this.markerList[this.markerCurrentIndex].Greeting = 1;
+            this.getGreetingIcon();
+          }
+        }
         
-      //   // this.loadCurrentItem();
-      //   console.log("map updated data", this.greetingList);
-      // });
+        // this.loadCurrentItem();
+        console.log("map updated data", this.greetingList);
+      });
     }
 
   ngOnInit() {

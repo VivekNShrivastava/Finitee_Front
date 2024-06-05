@@ -64,3 +64,51 @@ ion-accordion-group {
   border-radius: 50%;
   object-fit: cover; /* This ensures the image covers the element completely without distortion */
 }
+
+.itemforsale{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+text-align: left;
+font: normal normal 600 16px/24px SF Pro Display;
+letter-spacing: 0.22px;
+color: #285078;
+margin-bottom: 0px;
+}
+.salesqownername{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-1a3253);
+text-align: left;
+font: normal normal 600 17px/26px SF Pro Display;
+letter-spacing: 0.22px;
+color: #1A3253;
+opacity: 1;
+}
+
+.miles{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 15px/24px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-03a9f5);
+text-align: left;
+font: normal normal 600 17px/26px SF Pro Display;
+letter-spacing: 0.24px;
+color: #03A9F5;
+opacity: 1;
+}
+
+.posteddate{
+  margin-top: 10px; font: var(--unnamed-font-style-normal) normal normal 11px/21px var(--unnamed-font-family-sf-pro-display);
+                  color: var(--unnamed-color-1a3253);
+                  text-align: center;
+                  font: normal normal normal 14px/21px SF Pro Display;
+                  letter-spacing: 0.18px;
+                  color: #1A3253;
+}
+.postcount{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+text-align: left;
+font: normal normal 600 14px/24px SF Pro Display;
+letter-spacing: 0.22px;
+color: #285078;
+opacity: 1;
+font-weight: 900;
+}

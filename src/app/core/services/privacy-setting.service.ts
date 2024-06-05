@@ -52,6 +52,7 @@ export class PrivacySettingService {
   }
 
   updateSonarPrivacySetting(traitOrProductId: any) {
+    console.log(traitOrProductId);
     return new Promise<any>((resolve, reject) => {
       this.commonService.showLoader();
       var url = config.API.USER_PROFILE.PRIVACY_SETTING.UPDATE_SONAR_SETTING;
