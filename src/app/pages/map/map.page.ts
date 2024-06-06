@@ -2000,7 +2000,7 @@ export class MapPage extends BasePage implements OnDestroy {
         componentProps: {
           results: sonarResult
         },
-        initialBreakpoint: 0.75 
+        // initialBreakpoint: 0.75 
       });
     }
     
