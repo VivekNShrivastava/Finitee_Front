@@ -219,19 +219,16 @@ ion-content {
 
   h3.fi-traitName {
     position: absolute;
-    top: 117px;
+    top: 111px;
     background: rgba(0, 0, 0, 0.4);
     height: 50px;
     color: white;
     display: flex;
-    // width: 100%;
+     width: 100%;
     justify-content: center;
     align-items: center;
-    // border-bottom-left-radius: 22px;
-    // border-bottom-right-radius: 22px;
     font: normal normal medium 16px/38px SF Pro Display;
     letter-spacing: 0.25px;
-    width: 177px;
     border-bottom-left-radius: 22px;
     border-bottom-right-radius: 22px;
   }
@@ -374,6 +371,7 @@ ion-modal {
 }
 
 .whiteBg{
+  position: relative;
   background-color: #ffffff !important;
   width: 177px;
   height: 177px;
