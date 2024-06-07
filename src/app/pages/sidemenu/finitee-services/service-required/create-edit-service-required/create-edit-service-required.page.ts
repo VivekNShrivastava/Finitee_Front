@@ -260,7 +260,7 @@ export class CreateEditServiceRequiredPage extends BasePage implements OnInit {
         buttons: [
           {
             text: "Dismiss",
-            cssClass: "danger",
+            cssClass: "dismiss",
             handler: async () => {
               // Any additional actions you want to perform when the alert is dismissed
             },

@@ -272,7 +272,7 @@ ion-icon.ion-accordion-toggle-icon {
 .block-user-alert {
   &>div.alert-wrapper {
     box-shadow: 0px 3px 6px #00000021;
-    border-radius: 11px;
+    border-radius: 13px;
     text-align: center;
     min-width: 321px;
 
@@ -336,6 +336,13 @@ ion-icon.ion-accordion-toggle-icon {
   font-size: 22px;
  
   padding-right: 8px;
+  font: var(--unnamed-font-style-normal) normal normal 16px/26px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+
+font: normal normal normal 20px/26px SF Pro Display;
+letter-spacing: 0.25px;
+color: #285078;
+opacity: 1;
 
 }
 
@@ -344,7 +351,7 @@ ion-icon.ion-accordion-toggle-icon {
 .add-user-alert {
   &>div.alert-wrapper {
     box-shadow: 0px 3px 6px #00000021;
-    border-radius: 11px;
+    border-radius: 13px;
     text-align: center;
     min-width: 330px;
 
@@ -416,7 +423,7 @@ ion-icon.ion-accordion-toggle-icon {
 .report-user-alert {
   &>div.alert-wrapper {
     box-shadow: 0px 3px 6px #00000021;
-    border-radius: 11px;
+    border-radius: 13px;
     text-align: center;
     min-width: 321px;
 
@@ -641,7 +648,7 @@ button.action-sheet-button.product-option-action-sheet-button {
     height: 242px;
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000021;
-    border-radius: 11px;
+    border-radius: 13px;
     opacity: 1;
 
     & .alert-head {
@@ -718,7 +725,7 @@ button.action-sheet-button.product-option-action-sheet-button {
     height: 181px;
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000021;
-    border-radius: 11px;
+    border-radius: 13px;
     opacity: 1;
 
     .alert-head {
@@ -1017,6 +1024,7 @@ textarea.alert-input.sc-ion-alert-md {
   text-align: center; /* Center the text */
   justify-content: center !important;
   font-weight: bold; 
+  font-size:18px ;
 }
 .alert-button.sc-ion-alert-md.infos{
   width: 127px;
@@ -1026,7 +1034,27 @@ textarea.alert-input.sc-ion-alert-md {
   border-radius: 22px;
   opacity: 1;
 
+
+
 }
+
+.alert-button.sc-ion-alert-md.dismiss{
+
+  width: 127px !important;
+  height: 44px !important;
+  background: var(--unnamed-color-03a9f5) 0% 0% no-repeat padding-box !important;
+  background: #03A9F5 0% 0% no-repeat padding-box !important;
+  border-radius: 22px !important;
+  color: white;
+  
+}
+.alert-button-inner.sc-ion-alert-md{
+  justify-content: center;
+}
+.alert-button-group.sc-ion-alert-md{
+  justify-content: center;
+}
+
 
 .alert-button.sc-ion-alert-md.dangers{
   .alert-button-inner.sc-ion-alert-md {

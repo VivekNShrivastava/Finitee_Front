@@ -90,7 +90,7 @@ export class ServiceRequiredViewPage extends BasePage implements OnInit {
           buttons: [
             {
               text: "Dismiss",
-              cssClass: "danger",
+              cssClass: "dismiss",
               handler: async () => {
               },
             },

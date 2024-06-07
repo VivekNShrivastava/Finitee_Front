@@ -86,7 +86,7 @@ export class SalesItemViewPage extends BasePage implements OnInit {
           buttons: [
             {
               text: "Dismiss",
-              cssClass: "danger",
+              cssClass: "dismiss",
               handler: async () => {
               },
             },
