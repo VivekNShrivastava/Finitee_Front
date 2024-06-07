@@ -92,13 +92,15 @@
             <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
               {{post.BelongsToNodeName}}
             </span>
-            <div *ngIf="post.PostImages && post.PostImages.length>0" class="whiteBg">
+            <div  *ngIf="post.PostImages && post.PostImages.length>0" class="whiteBg">
               <ion-buttons *ngIf="post.PostImages.length>1">
                 <ion-button shape="round">
                   <ion-icon name="posting-multiple-picture"></ion-icon>
                 </ion-button>
               </ion-buttons>
+              <!-- <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]" [ngStyle]="{'width': '177px', 'height': '177px', 'top':'508px', 'left':'23px','object-fit': 'cover', 'overflow': 'hidden'}" ></ion-img> -->
               <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]"></ion-img>
+              <!-- [ngStyle]="{'width': '100%', 'height': '100%', 'object-fit': 'cover' ,'margin':'0px','padding':'0px'}" -->
             </div>
             <div class="ion-text-center postBg"
               *ngIf="post.PostImages && (post.PostImages.length==0 || post.PostImages.length>0 && post.PostImages[0]=='')">
@@ -132,7 +134,7 @@
            
               <!-- *ngIf="userTrait.LastPostData.PostImages && userTrait.LastPostData.PostImages.length>0" -->
               <!-- [src]="appConstants.mediaPrefix + userTrait.LastPostData.PostImages[0]"> -->
-              <img src="{{appConstants.mediaPrefix + userTrait.UserTrait.Thumbnail}}"
+              <img class="fi-border-img" src="{{appConstants.mediaPrefix + userTrait.UserTrait.Thumbnail}}"
               onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
               <!-- <ion-img  class="fi-img fi-border"
                 [src]="assets/custom-ion-icons/trait_thumnail.svg">
@@ -140,8 +142,8 @@
               <!-- <h3 *ngIf="userTrait.LastPostData.PostImages && userTrait.LastPostData.PostImages.length==0">
                 {{userTrait.LastPostData.PostDescription}}
               </h3> -->
+              <h3 class="fi-traitName">{{userTrait.UserTrait.Trait}}</h3>
             </div>
-            <h3 class="fi-traitName">{{userTrait.UserTrait.Trait}}</h3>
           </ion-col>
         </ion-row>
       </ion-grid>

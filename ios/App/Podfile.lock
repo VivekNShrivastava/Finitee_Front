@@ -1,0 +1,111 @@
+PODS:
+  - Capacitor (5.0.5):
+    - CapacitorCordova
+  - CapacitorApp (5.0.3):
+    - Capacitor
+  - CapacitorCamera (5.0.6):
+    - Capacitor
+  - CapacitorClipboard (5.0.4):
+    - Capacitor
+  - CapacitorCommunityBarcodeScanner (4.0.1):
+    - Capacitor
+  - CapacitorCordova (5.0.5)
+  - CapacitorDevice (5.0.6):
+    - Capacitor
+  - CapacitorGeolocation (5.0.4):
+    - Capacitor
+  - CapacitorHaptics (5.0.4):
+    - Capacitor
+  - CapacitorKeyboard (5.0.4):
+    - Capacitor
+  - CapacitorPushNotifications (5.0.5):
+    - Capacitor
+  - CapacitorSplashScreen (5.0.5):
+    - Capacitor
+  - CapacitorStatusBar (5.0.4):
+    - Capacitor
+  - CapacitorTextZoom (5.0.4):
+    - Capacitor
+  - CapawesomeCapacitorFilePicker (5.0.0):
+    - Capacitor
+  - CordovaPlugins (5.0.5):
+    - CapacitorCordova
+  - CordovaPluginsResources (0.0.105)
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
+  - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
+  - "CapacitorClipboard (from `../../node_modules/@capacitor/clipboard`)"
+  - "CapacitorCommunityBarcodeScanner (from `../../node_modules/@capacitor-community/barcode-scanner`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
+  - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
+  - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
+  - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
+  - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
+  - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - "CapacitorTextZoom (from `../../node_modules/@capacitor/text-zoom`)"
+  - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
+  - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
+  - CordovaPluginsResources (from `../capacitor-cordova-ios-plugins`)
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorApp:
+    :path: "../../node_modules/@capacitor/app"
+  CapacitorCamera:
+    :path: "../../node_modules/@capacitor/camera"
+  CapacitorClipboard:
+    :path: "../../node_modules/@capacitor/clipboard"
+  CapacitorCommunityBarcodeScanner:
+    :path: "../../node_modules/@capacitor-community/barcode-scanner"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorDevice:
+    :path: "../../node_modules/@capacitor/device"
+  CapacitorGeolocation:
+    :path: "../../node_modules/@capacitor/geolocation"
+  CapacitorHaptics:
+    :path: "../../node_modules/@capacitor/haptics"
+  CapacitorKeyboard:
+    :path: "../../node_modules/@capacitor/keyboard"
+  CapacitorPushNotifications:
+    :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
+  CapacitorStatusBar:
+    :path: "../../node_modules/@capacitor/status-bar"
+  CapacitorTextZoom:
+    :path: "../../node_modules/@capacitor/text-zoom"
+  CapawesomeCapacitorFilePicker:
+    :path: "../../node_modules/@capawesome/capacitor-file-picker"
+  CordovaPlugins:
+    :path: "../capacitor-cordova-ios-plugins"
+  CordovaPluginsResources:
+    :path: "../capacitor-cordova-ios-plugins"
+
+SPEC CHECKSUMS:
+  Capacitor: b1248915663add1bd6567e2b67c1c1fa3abcf5e8
+  CapacitorApp: 7a5dec8b33573707164b293475d5c89ba684364a
+  CapacitorCamera: 4a95204d13a05b0b726bf9086b44124349ab1952
+  CapacitorClipboard: 46f3959735fa0d96b9989dafcc4aed52e624d163
+  CapacitorCommunityBarcodeScanner: 7feb206489c8555a8ca0c74c57ddf49ead774eb8
+  CapacitorCordova: f8c06b897c74ee8f7701fe10e6443b40822bc83a
+  CapacitorDevice: 2c968f98a1ec4d22357418c1521e7ddc46c675e6
+  CapacitorGeolocation: 33015be1ef496585a60da9efa1c5642ff8624db3
+  CapacitorHaptics: e36653b37326d71bb35ae42b944124037dbc3d97
+  CapacitorKeyboard: d1b25fde6f19744ad09c890862aefc6e2a7ded3d
+  CapacitorPushNotifications: 6ec1a5d0dff2e8b2456bce633996d15fc9de92ac
+  CapacitorSplashScreen: e563abf6d590bfe0269515ccc9d8bc03c41f32e9
+  CapacitorStatusBar: 190e0321b8734f4244d0c81baa183a00d5806ddf
+  CapacitorTextZoom: b1fb624a67d3a487a4b5783d18aaa7b2898bab77
+  CapawesomeCapacitorFilePicker: ec211560d209c2efa0e47dad3308bf497e6ce388
+  CordovaPlugins: 5544814d3a685e3d1bef7fc4292ad7662ddcefad
+  CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
+
+PODFILE CHECKSUM: 9da06a509cc43836b911ef3c2a72dcc86ac0fbf9
+
+COCOAPODS: 1.15.2
