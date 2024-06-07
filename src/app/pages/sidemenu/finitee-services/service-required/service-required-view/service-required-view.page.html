@@ -16,7 +16,7 @@
         <img src="appConstants.mediaPrefix+ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" />
       </ion-avatar>
       <ion-label>
-        <h3>{{logInfo.DisplayName}}</h3>
+        <h3>{{serviceObj.FirstName}} {{serviceObj.LastName}}</h3>
         <p>3 mins ago</p>
       </ion-label>
       <ion-label style="display: flex; text-align: center; justify-content: center; align-items: center; background-color: #F0F5F7;  width: 130px;
@@ -68,7 +68,7 @@
       <ion-label class="input-label">Viewable by</ion-label>
       <br>
       <ion-label class="desc">
-        {{serviceObj.VisibleTo}}
+        {{commonService.getPrivacyFullValue(serviceObj.VisibleTo)}}
       </ion-label>
     </div>
 

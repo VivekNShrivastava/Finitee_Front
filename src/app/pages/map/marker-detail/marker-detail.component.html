@@ -245,7 +245,7 @@
 
           <p *ngIf="currentItem.entity =='SL' " style="font-size:17px ; color:#285078 ; text-align: center;">
 
-            {{currentItem.Condition}}
+            {{commonService.getCondition(currentItem.Condition)}}
           </p>
           <p *ngIf="currentItem.entity =='E' "
             style="font-size:17px ; color:#285078 ; text-align: center; margin-bottom: 0px;">
