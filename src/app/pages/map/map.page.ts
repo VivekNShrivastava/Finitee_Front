@@ -32,6 +32,11 @@ import { NetworkPlugin } from '@capacitor/network';
 import { Geolocation } from '@capacitor/geolocation';
 import { BasePage } from 'src/app/base.page';
 import { PrivacySettingService } from 'src/app/core/services/privacy-setting.service';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { TabsPage } from '../tabs/tabs.page';
+import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
+// import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
+import { Capacitor } from '@capacitor/core';
 
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
@@ -130,6 +135,9 @@ export class MapPage extends BasePage implements OnDestroy {
   mixedArray: any = [];
   changedArray: any = [];
 
+  receivedData: any;
+
+
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
   mapCenter!: google.maps.LatLng;
   markerCurrentIndex = -1;
@@ -174,13 +182,14 @@ export class MapPage extends BasePage implements OnDestroy {
     private firestoreService: FirestoreService,
     private _userPrivacyServivce: UserPrivacyService,
     private privacySetting : PrivacySettingService,
+    public tabsPage: TabsPage,
+    // private locationAccuracy: LocationAccuracy,
+    
     @Inject('NetworkPlugin') public network: NetworkPlugin
   ) {
     super(authService);
-    console.log("constructor");
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
-
     this.authService.authState.subscribe((authState: boolean) => {
       console.log("authState", authState)
       if (authState == true) {
@@ -202,9 +211,10 @@ export class MapPage extends BasePage implements OnDestroy {
         this.getUserSonarPrivacySettings();
 
         // this.currentLocationUpdate();
+
+        // this.getCurrentLocation();
       }
     });
-
 
     this.network.addListener('networkStatusChange', status => {
       if (status.connected === false) {
@@ -260,12 +270,59 @@ export class MapPage extends BasePage implements OnDestroy {
       //     option: AndroidSettings.Location,
       //   });
       // }
-      // NativeSettings.openAndroid({
-      //   option: AndroidSettings.Location,
-      // });
+      NativeSettings.openAndroid({
+        option: AndroidSettings.Location,
+      });
     }
 
   };
+
+  async getCurrentLocation() {
+    try {
+      const permissionStatus = await Geolocation.checkPermissions();
+      console.log('Permission status: ', permissionStatus.location);
+      if(permissionStatus?.location != 'granted') {
+        const requestStatus = await Geolocation.requestPermissions();
+        if(requestStatus.location != 'granted') {
+          // go to location settings
+          await this.openSettings(true);
+          return;
+        }
+      }
+
+      if(Capacitor.getPlatform() == 'android') {
+        // this.enableGps();
+      }
+
+      let options: PositionOptions = {
+        maximumAge: 3000,
+        timeout: 10000,
+        enableHighAccuracy: true
+      };
+      const position = await Geolocation.getCurrentPosition(options);
+      console.log(position);
+    } catch(e: any) {
+      if(e?.message == 'Location services are not enabled') {
+        await this.openSettings();
+      }
+      console.log(e);
+    }
+  }
+
+  openSettings(app = false) {
+    console.log('open settings...');
+    return NativeSettings.open({
+      optionAndroid: app ? AndroidSettings.ApplicationDetails : AndroidSettings.Location, 
+      optionIOS: app ? IOSSettings.App : IOSSettings.LocationServices
+    });
+  }
+
+  // async enableGps() {
+  //   const canRequest = await this.locationAccuracy.canRequest();
+  //   if(canRequest) {
+  //     await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
+  //   }
+  // }
 
   async logCurrentNetworkStatus() {
     const status = await this.network.getStatus();
@@ -309,15 +366,33 @@ export class MapPage extends BasePage implements OnDestroy {
 
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
-    // await this.printCurrentPosition();
+   
+    await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+      console.log("performing the action...", notification);
+      if(notification.actionId === 'tap') console.log('tapped');
+      console.log('notii', notification.notification.data.title);
 
-    //removed viewing functionality
+      if(notification.notification.data.title === "Post Favor"){
+        this.router.navigateByUrl('post/view-post', this.navEx);//have to add a route which routes to a single post
+      }
 
-    // this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
-    //   this.viewList = updatedData;
-    //   this.viewListNumber = this.viewList?.names?.length;
-    // });
+      if(notification.notification.data.title === "Greeting"){
+        this.greetingNotification(notification.notification.data);
+      }
+    });
+  }
 
+  greetingNotification(notificationData: any){
+    console.log(notificationData);
+    console.log(notificationData.body.includes('sent'))
+    console.log(notificationData.body.includes('accepted'))
+    if(notificationData.body.includes('sent')){
+      console.log("sent noti");
+      this.viewGreetingDetails();
+    }else if(notificationData.body.includes('accepted')){
+      console.log("noti accepted");
+      this.router.navigateByUrl('/notifications');
+    }
   }
 
   ionViewWillLeave() {
@@ -864,7 +939,12 @@ export class MapPage extends BasePage implements OnDestroy {
           const lat = latLng && latLng.LatLong ? latLng.LatLong.Latitude : latLng.Latitude;
           const lng = latLng && latLng.LatLong ? latLng.LatLong.Longitude : latLng.Longitude
 
-          this.map?.panTo({ lat, lng });
+          // this.map?.panTo({ lat, lng });
+          const position = {
+            lat,
+            lng
+          }
+          this.mapBoundsToFitMarker(position, 'singleMarker')
         }
       } else {
         await new Promise(resolve => setTimeout(resolve, 0));
@@ -2036,13 +2116,21 @@ export class MapPage extends BasePage implements OnDestroy {
     this.map?.panTo(point);
   }
 
-  mapBoundsToFitMarker(markers: any) {
-    // console.log(markers);
+  mapBoundsToFitMarker(markers: any, num?: any) {
     var bounds = new google.maps.LatLngBounds();
-    for (var i in markers) {// your marker list here
-      bounds.extend(markers[i].position) // your marker position, must be a LatLng instance
+    if(num === 'singleMarker'){
+      bounds.extend(markers);
+      const position = {
+        lat: this.location.lat,
+        lng: this.location.lng
+      }
+      bounds.extend(position);
+    }else{
+      for (var i in markers) {
+        bounds.extend(markers[i].position) 
+      }
     }
-    this.map?.fitBounds(bounds); // map should be your map class
+    this.map?.fitBounds(bounds);     
   }
 
   viewBusiness(dataItem: any) {
@@ -2446,10 +2534,11 @@ export class MapPage extends BasePage implements OnDestroy {
     const modal = await this.modalController.create({
       component: ViewingUsersComponent,
       componentProps: {
-        template: "Greeting"
+        template: "Greeting",
       }
     });
-    modal.onDidDismiss().then(result => {
+    modal.onDidDismiss()
+    .then(result => {
       if (result) {
         // this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
       }

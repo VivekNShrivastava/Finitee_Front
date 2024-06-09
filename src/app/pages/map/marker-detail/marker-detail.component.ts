@@ -159,10 +159,11 @@ export class MarkerDetailComponent implements OnInit {
       ProfilePhoto: user.ProfileImage == undefined ? null : user.ProfileImage,
       groupId: ""
     }
+    this.closeDetails();
     const res = await this.chatService.openChat(selctedUser, true);
     console.log(res);
 
-    this.chatTray(res);
+    // this.chatTray(res);
   }
 
   public async chatTray(user: any): Promise<void> {

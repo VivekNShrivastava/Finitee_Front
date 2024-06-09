@@ -63,20 +63,22 @@ export class StorageService {
   // }
 
 
-  saveNotification(notificationData: any, date: string) {
+  saveNotification(notificationData: any, date: string, time: Date) {
     var key = "NOTIFICATION_" + date;
 
     let data_1: any = localStorage.getItem(key);
-    console.log("data", data_1);
-    console.log("data false or true", !data_1);
+    
     if (!data_1){
       this.data_noti = [];
     }
-    this.data_noti.push(notificationData);
+    const uniId = notificationData.id;
+    let notiData_time = {
+      notificationData,
+      time,
+      uniId
+    }
+    this.data_noti.push(notiData_time);
     
-    
-    console.log("notification", notificationData)
-    console.log("data array", this.data_noti);
     localStorage.setItem(key, JSON.stringify(this.data_noti));
   }
 
