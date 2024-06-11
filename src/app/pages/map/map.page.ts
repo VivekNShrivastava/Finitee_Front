@@ -37,6 +37,7 @@ import { TabsPage } from '../tabs/tabs.page';
 import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
 // import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import { Capacitor } from '@capacitor/core';
+import { domainToASCII } from 'url';
 
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
@@ -102,6 +103,7 @@ export class MapPage extends BasePage implements OnDestroy {
   privacySett: any = {};
   compRef?: ComponentRef<MarkerInfoComponent>;
   mainResultFromSearch = [];
+  markerListMainResult = [];
   searchCriteria = null;
   isPingActive = false;
   pingResults = [];
@@ -181,10 +183,10 @@ export class MapPage extends BasePage implements OnDestroy {
     private locationService: LocationService,
     private firestoreService: FirestoreService,
     private _userPrivacyServivce: UserPrivacyService,
-    private privacySetting : PrivacySettingService,
+    private privacySetting: PrivacySettingService,
     public tabsPage: TabsPage,
     // private locationAccuracy: LocationAccuracy,
-    
+
     @Inject('NetworkPlugin') public network: NetworkPlugin
   ) {
     super(authService);
@@ -281,16 +283,16 @@ export class MapPage extends BasePage implements OnDestroy {
     try {
       const permissionStatus = await Geolocation.checkPermissions();
       console.log('Permission status: ', permissionStatus.location);
-      if(permissionStatus?.location != 'granted') {
+      if (permissionStatus?.location != 'granted') {
         const requestStatus = await Geolocation.requestPermissions();
-        if(requestStatus.location != 'granted') {
+        if (requestStatus.location != 'granted') {
           // go to location settings
           await this.openSettings(true);
           return;
         }
       }
 
-      if(Capacitor.getPlatform() == 'android') {
+      if (Capacitor.getPlatform() == 'android') {
         // this.enableGps();
       }
 
@@ -301,8 +303,8 @@ export class MapPage extends BasePage implements OnDestroy {
       };
       const position = await Geolocation.getCurrentPosition(options);
       console.log(position);
-    } catch(e: any) {
-      if(e?.message == 'Location services are not enabled') {
+    } catch (e: any) {
+      if (e?.message == 'Location services are not enabled') {
         await this.openSettings();
       }
       console.log(e);
@@ -312,7 +314,7 @@ export class MapPage extends BasePage implements OnDestroy {
   openSettings(app = false) {
     console.log('open settings...');
     return NativeSettings.open({
-      optionAndroid: app ? AndroidSettings.ApplicationDetails : AndroidSettings.Location, 
+      optionAndroid: app ? AndroidSettings.ApplicationDetails : AndroidSettings.Location,
       optionIOS: app ? IOSSettings.App : IOSSettings.LocationServices
     });
   }
@@ -366,30 +368,30 @@ export class MapPage extends BasePage implements OnDestroy {
 
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
-   
+
     await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log("performing the action...", notification);
-      if(notification.actionId === 'tap') console.log('tapped');
+      if (notification.actionId === 'tap') console.log('tapped');
       console.log('notii', notification.notification.data.title);
 
-      if(notification.notification.data.title === "Post Favor"){
+      if (notification.notification.data.title === "Post Favor") {
         this.router.navigateByUrl('post/view-post', this.navEx);//have to add a route which routes to a single post
       }
 
-      if(notification.notification.data.title === "Greeting"){
+      if (notification.notification.data.title === "Greeting") {
         this.greetingNotification(notification.notification.data);
       }
     });
   }
 
-  greetingNotification(notificationData: any){
+  greetingNotification(notificationData: any) {
     console.log(notificationData);
     console.log(notificationData.body.includes('sent'))
     console.log(notificationData.body.includes('accepted'))
-    if(notificationData.body.includes('sent')){
+    if (notificationData.body.includes('sent')) {
       console.log("sent noti");
       this.viewGreetingDetails();
-    }else if(notificationData.body.includes('accepted')){
+    } else if (notificationData.body.includes('accepted')) {
       console.log("noti accepted");
       this.router.navigateByUrl('/notifications');
     }
@@ -434,11 +436,11 @@ export class MapPage extends BasePage implements OnDestroy {
     }
   }
 
-  makeUserInvisible (activeOrNot: boolean){
+  makeUserInvisible(activeOrNot: boolean) {
     let data = {
-      LocationVisibleTo : 'N'
+      LocationVisibleTo: 'N'
     }
-    if(activeOrNot){
+    if (activeOrNot) {
       data.LocationVisibleTo = 'A';
       this.privacySetting.updateSonarPrivacySetting(data);
       console.log("User invisible");
@@ -511,11 +513,12 @@ export class MapPage extends BasePage implements OnDestroy {
       // testing
       const res = await this.locationService.updateLiveLocation(position.coords.latitude, position.coords.longitude);
       if (res) {
+        console.log("updated location");
         this.location.lat = position.coords.latitude;
         this.location.lng = position.coords.longitude;
         // this.setCurrentLocationMarker();
         // this.currentLocationMarker.position = this.location;
-        this.map?.setCenter(this.location)
+        // this.map?.setCenter(this.location)
         // this._commonService.presentToast( `LU - ${position.coords.longitude, position.coords.latitude}`);
       }
 
@@ -1060,10 +1063,10 @@ export class MapPage extends BasePage implements OnDestroy {
   // }
 
   addSameLatLngUserMarkersToMap(clusterMap: Map<any, any[]>, startIndexInResult: number) {
-    this.markersMap.forEach(async(value: any, key:any) => {
+    this.markersMap.forEach(async (value: any, key: any) => {
       //for single user 
       if (value.length < 2) {
-        
+
         const beachFlagImgSingleUser = document.createElement('div');
         const imageTag = document.createElement('img');
         const paraSingleUser = document.createElement('span');
@@ -1092,7 +1095,7 @@ export class MapPage extends BasePage implements OnDestroy {
           content: beachFlagImgSingleUser
         };
 
-        if(lat != undefined && lng != undefined){
+        if (lat != undefined && lng != undefined) {
           const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
 
           const markerData: MarkerInfo<any> = {
@@ -1100,15 +1103,15 @@ export class MapPage extends BasePage implements OnDestroy {
             MarkerType: MarkerType.Multiple,
             itemIndex: startIndexInResult
           };
-  
+
           startIndexInResult++;
-  
+
           marker.addListener("click", () => {
             this.onAdvanceMarkerClick(marker, markerData);
             console.log("clicked", value);
           });
-        } 
-        
+        }
+
       } else {
         //for multiple users at same location
         const beachFlagImg = document.createElement('div');
@@ -1143,7 +1146,7 @@ export class MapPage extends BasePage implements OnDestroy {
         nearElementsData.push(...value);
         // nearElementsData.push(key)
 
-        if(lat && lng){
+        if (lat && lng) {
           const marker: google.maps.marker.AdvancedMarkerElement = await this.addAdvanceMarkerToMap(markerOptions);
 
           const markerData: MultipleMarkerInfo<SonarEventSearchRespond> = {
@@ -1151,24 +1154,21 @@ export class MapPage extends BasePage implements OnDestroy {
             MarkerType: MarkerType.Multiple,
             itemIndex: startIndexInResult
           };
-  
+
           startIndexInResult++;
-  
+
           marker.addListener("click", () => {
             this.onAdvanceMarkerClick(marker, markerData);
             console.log("clicked", nearElementsData);
           });
         }
-       
+
       }
     })
   }
 
   addSameLatLongMarkersToMap(clusterMap: Map<any[], any[]>, startIndexInResult: number) {
     clusterMap.forEach(async (value: any, key: any) => {
-      console.log(clusterMap);
-      console.log(value);
-      console.log(key);
       //for a single event, sales listing, service requirement, service available
       if (value.length < 2) {
         let markerIcon = "";
@@ -1980,21 +1980,29 @@ export class MapPage extends BasePage implements OnDestroy {
   // advance marker click map
 
   async onAdvanceMarkerClickV2(marker: any, data?: any) {
-    this.mainResultFromSearch = this.mainResultFromSearch.sort((a: any, b: any) => a.Proximity - b.Proximity);
-
-    // const markerData: MarkerInfo<any> = (marker as any)?.markerData;
+    if (data?.data?.length > 1 && data?.data[0]?.entity === 'U') {
+      this.markerListMainResult = data?.data;
+    }
+    else {
+      this.mainResultFromSearch = this.mainResultFromSearch.sort((a: any, b: any) => a.Proximity - b.Proximity);
+      this.markerListMainResult = this.mainResultFromSearch;
+    }
     const markerData = data;
+    let id = '';
     this.markerCurrentIndex = markerData.itemIndex;
-    const id = markerData.data[0] ? markerData.data[0].Id : markerData.data.Id;
-    const res = this.mainResultFromSearch.findIndex((v: any) => {
+    if(markerData?.Id) id = markerData?.Id;
+    else id = markerData?.data[0] ? markerData?.data[0].Id : markerData.data.Id ;
+    const res = this.markerListMainResult?.findIndex((v: any) => {
       return (v as any)?.Id === id;
     })
     this.markerCurrentIndex = res;
+
+    // const markerData: MarkerInfo<any> = (marker as any)?.markerData;
+
     await this.openMarkerDetails();
   }
 
   async onAdvanceMarkerClick(params: any, data?: any) {
-    console.log(data);
     const latLng = params?.position;
     if (latLng) {
       const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
@@ -2002,7 +2010,8 @@ export class MapPage extends BasePage implements OnDestroy {
 
       this.map?.panTo({ lat, lng });
     }
-    if (data.data.length > 1) {
+    console.log(data);
+    if (data?.data?.length > 1 && data?.data[0]?.entity !== 'U') {
       this.onMapResultsClick(data);
     } else {
       this.onAdvanceMarkerClickV2(params, data);
@@ -2065,16 +2074,16 @@ export class MapPage extends BasePage implements OnDestroy {
     // }
 
     const sonarResult = data?.data || data;
-    let modal : any = [];
+    let modal: any = [];
     console.log('checkSonarResult', checkSonarResult)
-    if(checkSonarResult){
+    if (checkSonarResult) {
       modal = await this.modalController.create({
         component: MapResultComponent,
         componentProps: {
           results: sonarResult
         },
       });
-    }else{
+    } else {
       modal = await this.modalController.create({
         component: MapResultComponent,
         componentProps: {
@@ -2083,7 +2092,7 @@ export class MapPage extends BasePage implements OnDestroy {
         // initialBreakpoint: 0.75 
       });
     }
-    
+
     modal.onDidDismiss().then((result: any) => {
       console.log("onMapResults Dismiss result:", result);
       if (result && result.data) {
@@ -2099,7 +2108,14 @@ export class MapPage extends BasePage implements OnDestroy {
           this._chatsService.openChat(result.data.data);
         }
         else if (result.data.action == "VIEW_CONNECTION") {
-          this.openUser(result.data.data);
+          // this.openUser(result.data.data);
+          const params = {
+            position : {
+              lat : result?.data?.data?.LatLong ? result?.data?.data?.LatLong.Latitude : result?.data?.data?.Latitude,
+              lng : result?.data?.data?.LatLong ? result?.data?.data?.LatLong.Longitude : result?.data?.data?.Longitude,
+            }
+          }
+          this.onAdvanceMarkerClick( params, result.data.data);
         }
       }
     });
@@ -2118,19 +2134,19 @@ export class MapPage extends BasePage implements OnDestroy {
 
   mapBoundsToFitMarker(markers: any, num?: any) {
     var bounds = new google.maps.LatLngBounds();
-    if(num === 'singleMarker'){
+    if (num === 'singleMarker') {
       bounds.extend(markers);
       const position = {
         lat: this.location.lat,
         lng: this.location.lng
       }
       bounds.extend(position);
-    }else{
+    } else {
       for (var i in markers) {
-        bounds.extend(markers[i].position) 
+        bounds.extend(markers[i].position)
       }
     }
-    this.map?.fitBounds(bounds);     
+    this.map?.fitBounds(bounds);
   }
 
   viewBusiness(dataItem: any) {
@@ -2485,7 +2501,7 @@ export class MapPage extends BasePage implements OnDestroy {
       map: this.map,
       markers: setclusters,
       algorithmOptions: {
-        maxZoom: 12, 
+        maxZoom: 12,
       }
     });
   }
@@ -2538,11 +2554,11 @@ export class MapPage extends BasePage implements OnDestroy {
       }
     });
     modal.onDidDismiss()
-    .then(result => {
-      if (result) {
-        // this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
-      }
-    });
+      .then(result => {
+        if (result) {
+          // this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
+        }
+      });
     return await modal.present();
   }
 

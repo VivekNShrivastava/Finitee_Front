@@ -69,7 +69,6 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   ngOnInit() {}
 
   ngOnDestroy(){
-    console.log("ngOnDestroy");
     this.updateFirebaseGreeting();
   }
 
@@ -78,12 +77,9 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   }
 
   public handleClose(data: any): void {
-    console.log('Data received from child component:', typeof(data));
-    // Handle the data as needed
     this.goBack();
     this.dismissModal();
     if(data === 'accepted'){
-      console.log('closing');
       setTimeout(() => {
         this.goBack();
       }, 1500)
@@ -173,7 +169,6 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     });
     modal.onDidDismiss()
     .then(result => {
-      if (result) console.log("viewing", result);
     });
 
     return await modal.present();
