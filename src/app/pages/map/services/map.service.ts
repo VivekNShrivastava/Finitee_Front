@@ -4,6 +4,8 @@ import { map, Observable, of, tap } from 'rxjs';
 import { SignalRService } from '../../../core/services/signal-r.service';
 import { environment } from '../../../../environments/environment';
 import * as config from '../../../core/models/config/ApiMethods';
+
+
 import { FiniteeService, SonarServiceAvailableSearchRespond, SonarServiceRequiredSearchRespond } from '../models/FiniteeService';
 import { TotemSearchResult, FiniteeUserOnMap, SonarEventSearchRespond, SonarFreeUserSearchRespond, SonarSalesListingSearchRespond } from '../models/MapSearchResult';
 import { MapSearchTerms } from '../models/MapSearchTerm';
@@ -17,6 +19,7 @@ import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { BehaviorSubject } from 'rxjs';
 import { AllSonarSearchRequest } from 'src/app/core/models/mapSonarSearch';
 import { CommonService } from 'src/app/core/services/common.service';
+import { AppConstants } from 'src/app/core/models/config/AppConstants';
 
 @Injectable({
   providedIn: 'root'
@@ -402,6 +405,73 @@ export class MapService {
       }
     });
   }
+  // sendConnectionTOuser(userId: string, note: any) {
+  //   return new Promise<any>((resolve, reject) => {
+  //     this.commonService.showLoader();
+  //     var reqParams = {
+  //       ToUserId: userId,
+  //       RequestNote: note
+  //     }
+  //     this.http.post<any>(config.SEND_CONN_REQ, reqParams).subscribe((response: any) => {
+  //       this.commonService.hideLoader();
+  //       this.commonService.presentToast(AppConstants.TOAST_MESSAGES.CON_REQ_SENT);
+  //       resolve(true);
+  //     },
+  //       (error) => {
+  //         this.commonService.hideLoader();
+  //         console.log("abc error", error.error.text);
+  //         this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+  //         reject(false);
+  //       }
+  //     );
+  //   });
+  // }
+
+  sendConnectionTOuser(userId: string){
+    return new Promise<any>((resolve, reject) => {
+      var reqParams = {
+        ToUserId: userId,
+      
+      }
+      var url = config.SEND_CONN_REQ;
+      console.log("my url",url);
+      this.commonService.showLoader();
+      return this.http.post<any>(url,reqParams).subscribe((response: any) => {
+        this.commonService.hideLoader();
+        resolve(response);
+      },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+  cancelConnectionToUser(userId: string) {
+    return new Promise<any>((resolve, reject) => {
+      var reqParams = {
+        ToUserId: userId,
+        RequestNote: false
+      }
+      console.log(reqParams);
+      var url = config.CANCEL_CONN_REQ + "/" + userId;
+      this.commonService.showLoader();
+      return this.http.post<any>(url,"etc").subscribe((response: any) => {
+        this.commonService.hideLoader();
+        resolve(response);
+      },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
+  
 
   sendGreetingToUser(id: any) {
     return new Promise<any>((resolve, reject) => {
