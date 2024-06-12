@@ -56,17 +56,18 @@ export class BuySellItemComponent implements OnInit {
       message: "Are you sure you want to delete this sales listing?",
       buttons: [
         {
-          text: "Keep",
-          cssClass: "info",
-        },
-        {
           text: "Delete",
-          cssClass: "danger",
+          cssClass: "dangers",
           handler: () => {
             this._buysell.deleteSalesPost(this.data.id);
             this.refreshList.emit(true);
           },
         },
+        {
+          text: "Keep",
+          cssClass: "infos",
+        }
+        
       ],
     });
     await alert.present();
