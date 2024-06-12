@@ -17,20 +17,25 @@
   <ion-list>
     <ion-item lines="none" *ngFor="let not of notifiactions">
       <ion-avatar slot="start">
-        <img src="assets/imgs/male.png" onError="this.src='assets/imgs/male.png'" />
+        <img (click)="navigateToChat(not.notificationData)" src="assets/imgs/male.png" onError="this.src='assets/imgs/male.png'" />
       </ion-avatar>
       <ion-label>
-        <ion-card-title>{{not.title}}</ion-card-title>
-        <ion-card-subtitle>{{not.body}}</ion-card-subtitle>
-        <ion-text>JAN-1-2021 6:13 PM</ion-text>
-        <ion-icon class="fi-notification-delete" name="delete" slot="end"></ion-icon>
+        <div (click)="navigateToChat(not.notificationData)">
+          <!-- <ion-card-title>Greeting</ion-card-title> -->
+          <ion-card-title>{{not.notificationData.title}}</ion-card-title>
+          <!-- <ion-card-subtitle><p>john_22 sent you a greeting request</p></ion-card-subtitle> -->
+          <ion-card-subtitle>{{not.notificationData.body}}</ion-card-subtitle>
+          <!-- <ion-text>JAN-1-2021 6:13 PM</ion-text> -->
+          <ion-text>{{commonService.formatDateToIST(not.time)}}</ion-text> 
+        </div>
+        <ion-icon (click)="deleteNotificationById(not.notificationData.id)" class="fi-notification-delete" name="delete" slot="end"></ion-icon>
         <span class="fi-viewNot-span">
-          <span>View note </span>&nbsp;&nbsp;
-          <ion-icon name="document-text-outline"></ion-icon>
+          <span *ngIf="not.notificationData.title !== 'Greeting' ">View note </span>&nbsp;&nbsp;
+          <ion-icon *ngIf="not.notificationData.title !== 'Greeting' " name="document-text-outline"></ion-icon>
         </span>
       </ion-label>
     </ion-item>
-   <!--  <ion-item lines="none">
+    <ion-item lines="none">
       <ion-avatar slot="start">
         <img src="assets/imgs/male.png" onError="this.src='assets/imgs/male.png'" />
       </ion-avatar>
@@ -38,13 +43,13 @@
         <ion-card-title>Maggie Luther</ion-card-title>
         <ion-card-subtitle>Maggie Luther posted in her canvas</ion-card-subtitle>
         <ion-text>JAN-1-2021 6:13 PM</ion-text>
-        <ion-icon class="fi-notification-delete" name="delete" slot="end"></ion-icon>
+        <ion-icon (click)="delete()" class="fi-notification-delete" name="delete" slot="end"></ion-icon>
         <span class="fi-viewNot-span">
           <span>View note </span>&nbsp;&nbsp;
           <ion-icon name="document-text-outline"></ion-icon>
         </span>
       </ion-label>
-    </ion-item> -->
+    </ion-item>
   </ion-list>
 
 </ion-content>
