@@ -899,6 +899,8 @@ export class MapPage extends BasePage implements OnDestroy {
     this.resultCount = results.length;
     if (results.length > 0) {
       this.mainResultFromSearch = results;
+      //remove tl
+      console.log( "tl" ,results);
       this._commonService.savedSonarLocations.forEach((val: any) => {
         results = results.filter((x: any) => val.FlagId != x.UserId)
       })
