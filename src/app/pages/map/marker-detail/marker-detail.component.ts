@@ -257,11 +257,14 @@ async sendConnection(user: any) {
       DisplayName: user.UserName,
       ProfilePhoto: user.ProfileImage == undefined ? null : user.ProfileImage,
       groupId: ""
-    };
-    const res = await this.chatService.openChat(selectedUser, true);
+
+    }
+    this.closeDetails();
+    const res = await this.chatService.openChat(selctedUser, true);
+
     console.log(res);
 
-    this.chatTray(res);
+    // this.chatTray(res);
   }
 
   public async chatTray(user: any): Promise<void> {

@@ -87,7 +87,7 @@
 
       </div>
     </div>
-    <div *ngIf="isLocationTurnedOn==false">
+    <div *ngIf="isLocationTurnedOn == false">
       <div class="permission-message">
         <p class="darkbf" style="margin-bottom: 0px;">To see places near you, turn on location services.</p>
         <p class="darkbf" style="margin-top: 9px;">You can also search friends with greetings.</p>
@@ -107,7 +107,7 @@
   <ion-modal #markerDetailModal [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75]" handle="false">
     <ng-template>
       <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
-        <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="mainResultFromSearch"
+        <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="markerListMainResult"
           (onCloseDetails)="closeMarkerDetails()" (onShowPrevious)="onShowPreviousMarker()" (onShowNext)="onShowNextMarker()">
         </app-marker-detail>
       </div>
