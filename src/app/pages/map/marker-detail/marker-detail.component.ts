@@ -37,8 +37,11 @@ export class MarkerDetailComponent implements OnInit {
   greetingList: any = [];
   swipeSubsciption!: Subscription;
   greetingIcon: string = 'greeting';
+  connectionIcon:string='send-connection-sonar-icon';
+  
 
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
+ 
 
   constructor(public swipeService: SwipeService,
     public mapService: MapService,
@@ -76,7 +79,9 @@ export class MarkerDetailComponent implements OnInit {
 
   ngOnInit() {
     console.log("markerCurrentIndex: ", this.markerCurrentIndex);
+    console.log("markerList tl", this.markerList);
     console.log("markerList: ", this.markerList[this.markerCurrentIndex]);
+    console.log('Current Item on Init issssssssssssf:', this.currentItem);
     // this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
 
     //removed viewing functionality
@@ -88,6 +93,9 @@ export class MarkerDetailComponent implements OnInit {
     this.updateGreetingIcon();
   }
 
+
+  
+
   updateGreetingIcon() {
     var iconName = 'greeting';
     if (this.markerList[this.markerCurrentIndex]?.Greeting === 4) {
@@ -97,6 +105,60 @@ export class MarkerDetailComponent implements OnInit {
     }
     this.greetingIcon = iconName;
   }
+
+
+  //   getConnectionIcon() {
+  //   var iconName = 'free-user-request-white-icon';
+  //   if (this.userCanvasProfile.IsConnected)
+  //     return iconName = 'free-user-connected-white-icon';
+  //   else if (this.userCanvasProfile.IsRequestTo === true)
+  //     iconName = 'free-user-recieved-white-icon';
+  //   else if (this.userCanvasProfile.IsRequestExits)
+  //     iconName = 'free-user-pending-white-icon';
+    
+  //   return iconName
+  // }
+
+  // send-connection-sonar-icon
+ updateConnectionIcon() {
+  var iconName2 = 'send-connection-sonar-icon';
+  if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
+    iconName2 = 'dots';
+  } else if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
+    iconName2 = 'dots';
+  }
+  this.connectionIcon = iconName2; // Update component property
+  console.log('Updated icon:', this.connectionIcon); // Log the updated icon
+}
+
+async sendConnection(user: any) {
+  if (user.IsConnected === 0) {
+    console.log("Sending connection request...");
+    const res = await this.mapService.sendConnectionTOuser(user.Id);
+    if (res && res.ResponseData && res.ResponseData.Success) {
+      this.commonService.presentToast('Connection Sent To ' + user.UserName);
+      user.IsConnected = 2;
+      this.markerList[this.markerCurrentIndex].IsConnected = 2; // Update the marker list item
+      this.updateConnectionIcon(); // Update the icon after successful connection
+    }
+  } else if (user.IsConnected === 2) {
+    console.log("Cancelling connection request...");
+    const res = await this.mapService.cancelConnectionToUser(user.Id);
+    if (res && res.ResponseData && res.ResponseData.Success) {
+      user.IsConnected = 0;
+      this.markerList[this.markerCurrentIndex].IsConnected = 0; // Update the marker list item
+      this.commonService.presentToast("Connection Cancelled");
+      this.updateConnectionIcon(); // Update the icon after cancelling connection
+    } else if (res && !res.ResponseData.Success) {
+      this.commonService.presentToast("Cannot cancel connection to " + user.UserName);
+    } else {
+      this.commonService.presentToast("Something went wrong");
+    }
+  }
+}
+
+
+
 
   async sendGreeting(user: any) {
     if (user.Greeting === 1) {
@@ -126,13 +188,21 @@ export class MarkerDetailComponent implements OnInit {
   getButtonClass() {
     return {
       'green-background': this.greetingIcon === 'greeting',
-      'orange-background': this.greetingIcon === 'orange-carousel'
+      'orange-background': this.greetingIcon === 'orange-carousel',
+      'greenbg':this.greetingIcon === 'Greeting-icon-white-green-carousel'
     };
   }
 
   getButtonText() {
-    return this.greetingIcon === 'greeting' ? 'Send Greeting' : 'Greeting Sent';
-  }
+    if (this.greetingIcon === 'greeting') {
+        return 'Send Greeting';
+    } else if (this.greetingIcon === 'orange-greeting') {
+        return 'Greeting Sent';
+    } else {
+        return 'Greeting Received';
+    }
+}
+
 
   public showGreetingActions(user: any): void {
     this.greetingAcceptRejectModal?.present().then(() => {});
@@ -263,6 +333,7 @@ export class MarkerDetailComponent implements OnInit {
         this.currentItem = this.markerList[this.markerCurrentIndex];
         console.log("current", this.currentItem);
         console.log("Greeting Icon:", this.greetingIcon);
+        console.log("Connection Icon",this.connectionIcon);
       } else {
         this.currentItem = this.markerList[0];
       }

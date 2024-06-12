@@ -24,6 +24,19 @@ letter-spacing: 0.29px;
 color: #FFFFFF;
 }
 
+.greenbg{
+  --background: #30B712 !important;
+  background: #1A96D4CC 0% 0% no-repeat padding-box;
+box-shadow: 3px 4px 6px #00000059;
+border-radius: 22px;
+font: var(--unnamed-font-style-normal) normal medium 18px/20px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-ffffff);
+text-align: left;
+font: normal normal medium 18px/20px SF Pro Display;
+letter-spacing: 0.29px;
+color: #FFFFFF;
+}
+
 .orange-background {
   --background:#F26435CC !important;
   background: #F26435CC 0% 0% no-repeat padding-box;

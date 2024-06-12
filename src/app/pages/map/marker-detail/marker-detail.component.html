@@ -35,8 +35,8 @@
   <ion-card class="header-card" *ngIf="currentItem.entity=='U' "
     style="background-color:  #EAF1F4;">
 
-    <ion-card-header class="followeruser" style="background-color:  #EAF1F4;">
-      <ion-text class="ion-text-center name">{{currentItem.FirstName}}
+    <ion-card-header class="followeruser" style="background-color:  #EAF1F4; margin-bottom: 5px;">
+      <ion-text class="ion-text-center name" style="margin-bottom: 5px;">{{currentItem.FirstName}}
         {{currentItem.LastName}} </ion-text>
       <ion-card-subtitle
         class="fi-multiline-truncate username">@{{currentItem.UserName}} |
@@ -45,7 +45,13 @@
 
     <ion-card-content>
 
-      <ion-row class="header-card-details">
+      <ion-row class="header-card-details" style="display: flex; margin-bottom: 5px;">
+
+        <ion-button style="width: 107px !important;
+        height: 32px;" shape="round" size="small" color="light"
+        class="endorsement-btn" >
+        {{currentItem.TotalPosts}} Posts
+      </ion-button>
 
         <ion-button shape="round" size="small" color="light"
           class="endorsement-btn" (click)="tempClick()">
@@ -64,15 +70,19 @@
               [name]="getGreetingIcon()" style="font-size: 36px;"
               (click)="sendGreeting(currentItem)"></ion-icon>
           </div> -->
-
+          <!-- send-connection-sonar-icon -->
           <div>
-            <ion-icon *ngIf="currentItem.IsConnected === 0"
-              name="send-connection-sonar-icon" style="font-size: 36px;"
-              (click)="tempClick()"></ion-icon>
+            <ion-icon *ngIf="currentItem.IsConnected === 0 || currentItem.IsConnected === 2 || currentItem.IsConnected === 3" 
+                      [name]="connectionIcon" style="font-size: 36px;"
+                      (click)="sendConnection(currentItem)"></ion-icon>
           </div>
           
+          
           <button 
-          *ngIf="currentItem.IsConnected === 0" 
+          *ngIf="currentItem.Greeting === 0 || currentItem.Greeting === 1 || currentItem.Greeting === 4 || currentItem.Greeting === 5 "
+          
+
+
           (click)="sendGreeting(currentItem)" 
           shape="round" 
           [ngClass]="getButtonClass()"

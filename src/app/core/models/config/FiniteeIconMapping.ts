@@ -272,6 +272,7 @@ export const finiteeIconMapper = {
   'announcement': 'assets/icons/business/announcement.svg',
   'announcement-blue': 'assets/icons/business/Business Annoucnement icon blue.svg',
   'dots': 'assets/icons/business/3dot.svg',
+  'ConnectionsentCarousel':'assets/custom-ion-icons/ConnectionsentCarousel.svg',
   'chaticoninchat':'assets/custom-ion-icons/chaticoninchat.svg',
   "connected-members-chat": 'assets/icons/business/connected-members-chat.svg',
   "edit": 'assets/icons/business/edit.svg',
