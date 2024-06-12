@@ -31,7 +31,7 @@ export class ConnectionsService {
     });
   }
 
-  sendConnectionRequest(userId: string, note: any) {
+  sendConnectionRequest(userId: string, note ?: any) {
     return new Promise<any>((resolve, reject) => {
       this.commonService.showLoader();
       var reqParams = {

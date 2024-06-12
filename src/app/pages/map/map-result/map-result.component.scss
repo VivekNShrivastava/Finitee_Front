@@ -1,5 +1,7 @@
 .lines-bottom {
     border-bottom: 1px solid #d3e8ef;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 ion-title{
@@ -111,4 +113,32 @@ letter-spacing: 0.22px;
 color: #285078;
 opacity: 1;
 font-weight: 900;
+}
+
+.salesownername{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 16px/26px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-1a3253);
+text-align: left;
+font: normal normal 600 14px/24px SF Pro Display;
+letter-spacing: 0.22px;
+color: #1A3253;
+}
+
+.businessdiscription{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/16px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+text-align: left;
+font: normal normal 600 14px/16px SF Pro Display;
+letter-spacing: 0.22px;
+color: #285078;
+}
+
+.businessname{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 17px/24px var(--unnamed-font-family-sf-pro-display);
+  color: var(--unnamed-color-285078);
+  text-align: left;
+  font: normal normal 600 17px/24px SF Pro Display;
+  letter-spacing: 0.27px;
+  color: #285078;
+  margin-top: 7px;
 }

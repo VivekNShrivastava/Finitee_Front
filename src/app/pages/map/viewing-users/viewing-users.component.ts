@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { CommonService } from 'src/app/core/services/common.service';
 import { FiniteeUserOnMap } from 'src/app/pages/map/models/MapSearchResult';
@@ -33,8 +33,8 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   public greetingListApi: any = [];
   public filteredGreetingList: any = [];
   textColor: string | undefined;
- 
-  greetStatus: string | undefined;
+  loaded: boolean = false;
+  greetStatus: string | undefined ;
 
   constructor(
     public _commonService: CommonService,
@@ -69,7 +69,6 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   ngOnInit() {}
 
   ngOnDestroy(){
-    console.log("ngOnDestroy");
     this.updateFirebaseGreeting();
   }
 
@@ -77,16 +76,30 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     this._modalController.dismiss();
   }
 
+  public handleClose(data: any): void {
+    this.goBack();
+    this.dismissModal();
+    if(data === 'accepted'){
+      setTimeout(() => {
+        this.goBack();
+      }, 1500)
+    } 
+  }
+
   changeIcon(status: any) {
     let iconName = 'acceptedgreendot';
+    this.greetStatus = 'Accepted';
+    this.textColor = 'green';
     if (status === 'E') {
       iconName = 'timeouticon';
       this.textColor = 'darkviolet';
       this.greetStatus = 'Timed Out';
+      return iconName;
     } else if (status === 'R') {
       iconName = 'reddoticongreeting';
       this.textColor = 'red';
       this.greetStatus = 'Rejected';
+      return iconName;
     }
 
     return iconName;
@@ -97,9 +110,16 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   }
 
   async getUserGreetingHistory() {
+    this.loaded = true;
     const res = await this.mapService.getGreetingHistory();
     if (res) this.greetingListApi = res?.ResponseData?.greetings;
+    this.loaded = false;
     this.activeExpiredGreeting(1);
+    
+  }
+
+  public dismissModal(data?: any): void {
+    this._modalController.dismiss(data);
   }
 
   getDateAndTime(dateNtime: any, date?: boolean, time?: boolean) {
@@ -146,6 +166,9 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
       componentProps: {
         fromUserId: this.greetingListApi.user
       }
+    });
+    modal.onDidDismiss()
+    .then(result => {
     });
 
     return await modal.present();

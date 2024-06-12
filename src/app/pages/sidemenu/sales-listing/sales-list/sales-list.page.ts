@@ -87,13 +87,10 @@ export class SalesListPage extends BasePage implements OnInit {
       header: "Delete",
       message: "Are you sure you want to delete this sales listing?",
       buttons: [
-        {
-          text: "Keep",
-          cssClass: "info",
-        },
+        
         {
           text: "Delete",
-          cssClass: "danger",
+          cssClass: "dangers",
           handler: async () => {
             try {
               const res = await this.salesListingService.deleteSLItem(obj.Id);
@@ -106,6 +103,10 @@ export class SalesListPage extends BasePage implements OnInit {
               // Handle errors if needed
             }
           },
+        },
+        {
+          text: "Keep",
+          cssClass: "infos",
         },
       ],
     });

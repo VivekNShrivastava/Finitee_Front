@@ -750,16 +750,17 @@ export class ChatsService {
         groupId : groupId
       }
     };
-    if(isModal){
-      return Promise.resolve(navigationExtras)
-      // return navigationExtras;
-    }else{
-      if (groupId != "")
-        this.nav.navigateForward([`/chat-detail/${groupId}`], navigationExtras);
-      else
-        this.nav.navigateForward([`/chat-detail/new`], navigationExtras);  
-        return Promise.resolve(navigationExtras);
-    }
+    if (groupId != "")
+      this.nav.navigateForward([`/chat-detail/${groupId}`], navigationExtras);
+    else
+      this.nav.navigateForward([`/chat-detail/new`], navigationExtras);  
+      return Promise.resolve(navigationExtras);
+    // if(isModal){
+    //   return Promise.resolve(navigationExtras)
+    //   // return navigationExtras;
+    // }else{
+      
+    // }
     
   }
 
