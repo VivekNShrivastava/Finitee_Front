@@ -125,17 +125,17 @@ export class AuthService {
   }
 
   ifLoggedIn() {
-    console.log("checking if logged in");
+    // console.log("checking if logged in");
     // let response = this.storageService.getToken()
     let response = localStorage.getItem(ACCESS_TOKEN_KEY)
-    console.log("response", response);
+    // console.log("response", response);
     if (response === "undefined") {
       if (this.storageService.getUserData()) {
         response = this.storageService.getUserData().AccessToken;
         localStorage.setItem("ACCESS_TOKEN_KEY", this.storageService.getUserData().AccessToken);
       }
     }
-    console.log("response re check", response);
+    // console.log("response re check", response);
     if (response) {
       this.authState.next(true);
       window.document.title = this.storageService.getUserData().DisplayName;

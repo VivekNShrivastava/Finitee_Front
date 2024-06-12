@@ -58,21 +58,21 @@ export class AppComponent {
       this.setTextZoom();
 
     const temp = localStorage.getItem('firstLaunch');
-    console.log('ls', temp);
+    // console.log('ls', temp);
     if (localStorage.getItem('firstLaunch') === null) {
       localStorage.clear();
       localStorage.setItem('firstLaunch', 'true');
       this.router.navigate([''], {replaceUrl: true});
     }else{
       this.authService.authState.subscribe(async (state) => { 
-        console.log("Initialzing app", state);
+        // console.log("Initialzing app", state);
         if (state) {
-          console.log("state");
-          this.locationService.getCurrencyByCountry();
-          console.log("state - coming...");
+          // console.log("state");
+          // this.locationService.getCurrencyByCountry();
+          // console.log("state - coming...");
           this.router.navigate(['tabs/map'], {replaceUrl: true}); 
         } else if(!state){
-          console.log("auth false");
+          // console.log("auth false");
           this.router.navigate([''], {replaceUrl: true});
         }
       });

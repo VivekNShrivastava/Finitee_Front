@@ -37,8 +37,7 @@ import { TabsPage } from '../tabs/tabs.page';
 import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
 // import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import { Capacitor } from '@capacitor/core';
-import { domainToASCII } from 'url';
-
+import { AlertController } from '@ionic/angular';
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
 const MAP_INIT_ZOOM = 13;
@@ -164,6 +163,8 @@ export class MapPage extends BasePage implements OnDestroy {
   newLng: any;
   locationUpdateInterval$: any;
   prevLiveLocation: UserLocation = new UserLocation();
+  isNativeLocationOn : boolean = true;
+
   constructor(
     private platform: Platform,
     private mapService: MapService,
@@ -186,6 +187,7 @@ export class MapPage extends BasePage implements OnDestroy {
     private privacySetting: PrivacySettingService,
     public tabsPage: TabsPage,
     // private locationAccuracy: LocationAccuracy,
+    public alertController: AlertController,
 
     @Inject('NetworkPlugin') public network: NetworkPlugin
   ) {
@@ -215,6 +217,7 @@ export class MapPage extends BasePage implements OnDestroy {
         // this.currentLocationUpdate();
 
         // this.getCurrentLocation();
+
       }
     });
 
@@ -228,56 +231,50 @@ export class MapPage extends BasePage implements OnDestroy {
           this.userConnectionActive = false;
         }
       }
-      console.log('Network status changed', status);
+      // console.log('Network status changed', status);
     });
   }
 
   printCurrentPosition = async () => {
 
     try {
-      console.log("running check permissions...");
+      this.isNativeLocationOn = true;
       const perm = await Geolocation.checkPermissions();
-      console.log('Current position:', perm);
-
-      if (perm.location) {
-        const loc = await Geolocation.getCurrentPosition();
-        console.log("loc", loc.coords)
-        // this.location.lat = loc.coords.latitude;
-        // this.location.lng = loc.coords.longitude;
-        // this.prevLiveLocation.lat = loc.coords.latitude;
-        // this.prevLiveLocation.lng = loc.coords.longitude;
-      }
-
-      if (perm.location != "granted") {
-        console.log("res from requestPerm");
-
+      console.log('check perm', perm?.location);
+      if (perm?.location !== "granted") {
         this.isLocationTurnedOn = false;
-
-        // const res = await Geolocation.requestPermissions();
-      } else if (perm.location === "granted" && this.isLocationTurnedOn === false) {
+        const permReq = await Geolocation.requestPermissions();
+        console.log('req perm', permReq?.location);
+        if(permReq?.location !== 'granted'){
+          this.locationPermission();
+        }else{
+          this.isLocationTurnedOn = true;
+          this.loadMap();
+        }
+      } else if (perm.location === "granted") {
         this.isLocationTurnedOn = true;
+        this.loadMap();
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
       console.log("catched error", error);
-      console.log(error);
-      // if(error === "Error: Location services are not enabled"){
-      //   console.log("upar wala");
-      //   NativeSettings.openAndroid({
-      //     option: AndroidSettings.Location,
-      //   });
-      // }else if(error === "Location services are not enabled"){
-      //   console.log("niche wala");
-      //   NativeSettings.openAndroid({
-      //     option: AndroidSettings.Location,
-      //   });
-      // }
-      NativeSettings.openAndroid({
-        option: AndroidSettings.Location,
-      });
+      // this.openNativeLocation();
+      if(error?.message === "Location services are not enabled"){
+        console.log("upar wala");
+        this.isNativeLocationOn = false;
+        // this.openNativeLocation();
+      }
     }
-
   };
+
+  async openNativeLocation(){
+    const nativeLocation = await NativeSettings.openAndroid({
+      option: AndroidSettings.Location,
+    });
+    console.log('nativeLocation', nativeLocation);
+    if(nativeLocation?.status === true){
+      this.printCurrentPosition();
+    }
+  }
 
   async getCurrentLocation() {
     try {
@@ -319,6 +316,14 @@ export class MapPage extends BasePage implements OnDestroy {
     });
   }
 
+  checkGPSPermission() {
+    this.islocationEnabled = true;
+    this.isLocationTurnedOn = true;
+    this.platform.ready().then(() => {
+      // this.loadMap();
+    });
+  }
+
   // async enableGps() {
   //   const canRequest = await this.locationAccuracy.canRequest();
   //   if(canRequest) {
@@ -342,33 +347,11 @@ export class MapPage extends BasePage implements OnDestroy {
     console.log("OnInit");
     await this.platform.ready();
     this.currentPageHref = window.location.pathname;
-
-    // await this.mapService.getAppSetting(this.user.UserId).subscribe(
-    //   (s: any) => {
-    //     this.radius = s.map.km;
-    //   }
-    // );
-    // await this.mapService.getUserSetting('ivsbl').subscribe(
-    //   (s: any) => {
-    //     this.isBackEnabled = s;
-    //   }
-    // );
-    // this._commonService.loadUserGreetings();
-    // let privacyList = localStorage.getItem('privacyList') ? JSON.parse(localStorage.getItem('privacyList') ?? '') : null;
-    // if (privacyList?.length) {
-    //   this.privacySett = privacyList;
-    //   if (this.privacySett.mst == null) {
-    //     this.deleteSearch();
-    //   }
-    //   if (!!this.location) {
-    //     this.updatelocation();
-    //   }
-    // }
   }
 
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
-
+    await this.printCurrentPosition();
     await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log("performing the action...", notification);
       if (notification.actionId === 'tap') console.log('tapped');
@@ -423,10 +406,14 @@ export class MapPage extends BasePage implements OnDestroy {
   }
 
   async ngAfterViewInit() {
+    console.log('ngAfterViewInit');
     await this.platform.ready();
-    if (this.userConnectionActive) await this.printCurrentPosition();
-    this.loadMap();
-    this.fetchCurrentArea();
+    console.log('conn', this.userConnectionActive);
+    // if (this.userConnectionActive) await this.printCurrentPosition();
+    // await this.printCurrentPosition();
+    // this.loadMap();
+    // this.fetchCurrentArea();
+    // this.locationService.getCurrencyByCountry();
   }
 
   ngOnDestroy() {
@@ -451,6 +438,39 @@ export class MapPage extends BasePage implements OnDestroy {
     }
   }
 
+  async locationPermission() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Enable location services for sonar to work',
+      buttons: [
+        {
+          text: 'Dismiss',
+          cssClass: 'alert-button-cancel',
+          role: 'cancel',
+          handler: async () => {
+
+          },
+        },
+        {
+          text: 'Settings',
+          cssClass: 'alert-button-confirm',
+          role: 'confirm',
+          handler: async () => {
+            console.log('map req location');
+            const dialogueReq = await Geolocation.requestPermissions();
+            if(dialogueReq?.location !== 'granted'){
+              console.log('not granted after snackbar', dialogueReq?.location); 
+            }else{
+              console.log('granted after snackbar', dialogueReq?.location);
+              this.isLocationTurnedOn = true;
+              this.loadMap();
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
   async getUserSonarPrivacySettings() {
     let res = null;
     if (!this.isLiveLocationActive) res = await this._userPrivacyServivce.getUserPrivacySetting();
@@ -560,7 +580,7 @@ export class MapPage extends BasePage implements OnDestroy {
     this.currentArea = this.locationService.getCurrentArea();
     // console.log("MAP fetchCurrentArea Area: ", this.currentArea);
 
-    this.locationService.requestPermissions();
+    // this.locationService.requestPermissions();
     this.locationService.fetchCurrentCoordinate(true);
   }
 
@@ -603,7 +623,7 @@ export class MapPage extends BasePage implements OnDestroy {
           };
           this.loadMap();
         }, function (error) {
-          //  console.log(error);
+           console.log('load map', error.message);
         }, options);
         setTimeout(() => {
           this.loadMap();
@@ -1742,14 +1762,6 @@ export class MapPage extends BasePage implements OnDestroy {
       }
     });
     return new Promise(resolve => resolve(true));
-  }
-
-  checkGPSPermission() {
-    this.islocationEnabled = true;
-    // this.isLocationTurnedOn = true;
-    this.platform.ready().then(() => {
-      this.loadMap();
-    });
   }
 
   deleteSearch() {
