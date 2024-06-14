@@ -219,19 +219,16 @@ ion-content {
 
   h3.fi-traitName {
     position: absolute;
-    top: 117px;
+    top: 111px;
     background: rgba(0, 0, 0, 0.4);
     height: 50px;
     color: white;
     display: flex;
-    // width: 100%;
+     width: 100%;
     justify-content: center;
     align-items: center;
-    // border-bottom-left-radius: 22px;
-    // border-bottom-right-radius: 22px;
     font: normal normal medium 16px/38px SF Pro Display;
     letter-spacing: 0.25px;
-    width: 177px;
     border-bottom-left-radius: 22px;
     border-bottom-right-radius: 22px;
   }
@@ -371,9 +368,11 @@ ion-modal {
 .postBg {
   background-color: #1976D2 !important;
   color: #ffffff;
+  z-index: 1;
 }
 
 .whiteBg{
+  position: relative;
   background-color: #ffffff !important;
   width: 177px;
   height: 177px;
@@ -383,4 +382,8 @@ ion-modal {
   font: normal normal 600 18px/24px SF Pro Display;
   letter-spacing: 0.22px;
   color: #285078;
+}
+
+.traitBg {
+z-index: 1;
 }

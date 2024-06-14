@@ -397,10 +397,11 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     //var existingChatGroupId = this.chatService.getGroupIdIfChatThreadAlreadyStarted(this.userId);
     var selctedUser: any = {
       UserId: this.userId,
-      DisplayName: this.navParams.DisplayName,
-      ProfilePhoto: this.navParams.ProfilePhoto == undefined ? null : this.navParams.ProfilePhoto,
+      DisplayName: this.navParams.UserName,
+      ProfilePhoto: this.navParams.ProfileImage == undefined ? null : this.navParams.ProfileImage,
       groupId: ""
     }
+    console.log('start-chatting...', selctedUser);
     this.chatService.openChat(selctedUser);
   }
 

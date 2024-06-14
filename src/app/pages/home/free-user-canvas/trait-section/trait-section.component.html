@@ -12,7 +12,9 @@
   <ion-row class="gridBg">
     <ion-col>
       <div class="thumbnailBg">
-        <ion-img class ="thumbnail-img" [src] = "appConstants.mediaPrefix + userTraitWithPost.UserTrait.Thumbnail "></ion-img>
+        <img class ="thumbnail-img" src="{{appConstants.mediaPrefix + userTraitWithPost.UserTrait.Thumbnail}}"
+              onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
+        <!-- <ion-img class ="thumbnail-img" [src] = "appConstants.mediaPrefix + userTraitWithPost.UserTrait.Thumbnail "></ion-img> -->
       </div>
     </ion-col>
   </ion-row>

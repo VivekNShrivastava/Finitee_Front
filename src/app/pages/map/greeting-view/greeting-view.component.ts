@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AlertController, IonModal } from '@ionic/angular';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -30,6 +30,8 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
   public isAcceptRejectModalClosed = this.isAcceptRejectModalClosedSubject.asObservable();
 
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
+  @Output() close: EventEmitter<any> = new EventEmitter();
+  // @ViewChild('markerDetailModal') markerDetailModal?: IonModal;
 
   constructor(
     // private _signalService: SignalRService,
@@ -77,6 +79,12 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     }else if(user.Greeting === 4){
       this.showGreetingActions();
     }   
+  }
+
+  closeModal(){
+    console.log('gretting modal closed')
+    this.close.emit('accepted');
+    this.modalController.dismiss('gretting modal closed dismissed');
   }
 
   public showGreetingActions(): void {
@@ -149,7 +157,7 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     const res = await this.chatService.openChat(selctedUser, true);
     console.log(res);
 
-    this.chatTray(res);
+    // this.chatTray(res);
   }
 
   public async chatTray(user: any): Promise<void> {
@@ -170,8 +178,9 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     console.log("accepted", user);
     const id = user?.CreatedBy?.Id || user?.UserId;
     const res = await this._mapService.actionGreetingToUser(id, true);
-    this.greetingAcceptRejectModal?.dismiss();
-    this.isAcceptRejectModalClosedSubject.next("isClosed");
+    this.closeModal();
+    // this.greetingAcceptRejectModal?.dismiss('accepted');
+    // this.isAcceptRejectModalClosedSubject.next("isClosed");
     // this.chatTray(user);
     if(res && res.Success === true){
       user.Greeting = 1;

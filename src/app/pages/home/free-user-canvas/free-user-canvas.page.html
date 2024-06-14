@@ -57,7 +57,7 @@
           <span> <span class="fi-bold-text"> {{userCanvasProfile.ConnectedUserCount}} </span>&nbsp; Connections </span>
         </ion-button>
         <ion-button *ngIf="loadPrivateUser != true" shape="round" size="small" class="connected-members-chat" (click)="startChat()">
-          <ion-icon name="connected-members-chat"></ion-icon>
+          <ion-icon  name="connected-members-chat"></ion-icon>
         </ion-button>
       </ion-row>
       <ng-container *ngIf="userId === logInfo.UserId">
@@ -89,7 +89,7 @@
       <ion-grid value="all" *ngIf="loaded && postList && postList.length>0">
         <ion-row>
           <ion-col size="6" *ngFor="let post of postList" (click)="openPostScreen(post)">
-            <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
+            <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag traitBg">
               {{post.BelongsToNodeName}}
             </span>
             <div  *ngIf="post.PostImages && post.PostImages.length>0" class="whiteBg">

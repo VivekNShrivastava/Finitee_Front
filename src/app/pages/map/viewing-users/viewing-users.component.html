@@ -107,8 +107,8 @@
               <div
                 style="display: flex; justify-content: center; align-items: center;"
                 class="font-primary-text" (click)="viewConnection(user)">
-                <ion-icon style="font-size: 35px !important;"
-                  name="unconnected"></ion-icon>
+                <!-- <ion-icon style="font-size: 35px !important;"
+                  name="unconnected"></ion-icon> -->
                 <span class="username font-sz-14">{{ (user.CreatedBy.UserName)
                   || (user.UserName) }}</span>
               </div>
@@ -130,8 +130,10 @@
             <div style="display: flex; flex-direction: column; ">
               <p class="postcount" style="margin-bottom: 0px !important;">200 Posts - 5.2k Connections</p>
               <div style="display: flex; gap: 10px;">
-                <p class="datetime" > {{getDateAndTime(user.ModifiedOn, true, false)}}</p>
-                <p class="datetime">{{getDateAndTime(user.ModifiedOn, false, true)}}</p>
+                <p class="datetime" > {{_commonService.formatDateToIST(user.ModifiedOn)}}</p>
+
+                <!-- <p class="datetime" > {{getDateAndTime(user.ModifiedOn, true, false)}}</p> -->
+                <!-- <p class="datetime">{{getDateAndTime(user.ModifiedOn, false, true)}}</p> -->
               </div>
             </div>
           
@@ -139,7 +141,8 @@
             [fromUserId]="user.CreatedBy.Id || user.UserId"
             [fromUserName]="user.CreatedBy.UserName || user.UserName"
             [fromUserProfile]="(user.CreatedBy.Id + '/' + user.CreatedBy.ProfileImage) || (user.UserId + '/' + user.UserProfilePhoto)"
-            [userInfo]="user">
+            [userInfo]="user"
+            (close)="handleClose($event)">
           </greeting-view>
         
           </div>
@@ -184,16 +187,22 @@
       </div>
       <div class="no-active-greeting"
       style=" margin-top: 150px;"
-        *ngIf="viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 1" >
+        *ngIf="!loaded && viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 1" >
         <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
         <p class="noactive">No Active Greetings!</p>
       </div>
       <div class="no-active-greeting"
       style=" margin-top: 150px;"
-        *ngIf="viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 2">
+        *ngIf="!loaded && viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 2">
         <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
         <p class="noactive">No Previous Greeting !</p>
       </div>
     </ion-list>
+
+    <ng-container *ngIf="loaded">
+      <ion-card>
+        <ion-skeleton-text style="height:60px" animated></ion-skeleton-text>
+      </ion-card>
+    </ng-container>
   </div>
 </ion-content>
