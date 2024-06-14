@@ -18,14 +18,14 @@
   <ion-col size="4" *ngFor="let mediaFile of mediaFiles; let i = index">
     <ion-card>
       <ng-container *ngIf="mediaFile.indexOf('localhost')!=-1 || mediaFile.indexOf('base64')!=-1;">
-        <img style="width:100%" src="{{mediaFile}}" />
+        <img style="width:100%; height: 96px;" src="{{mediaFile}}" />
         <ion-spinner style="position: absolute; color: #03A9F4; left: 30%; width: 45px; height: 45px;">
         </ion-spinner>
         <div style="position: absolute; color: #03A9F4; left: 30%; width: 45px; height: 45px;">
           {{attachmentService.progress}}%</div>
       </ng-container>
       <ng-container *ngIf="mediaFile.indexOf('localhost')==-1 && mediaFile.indexOf('base64')==-1;">
-        <img style="width:100%" src="{{appConstants.mediaPrefix + mediaFile}}" />
+        <img style="width:100%; height: 96px;" src="{{appConstants.mediaPrefix + mediaFile}}" />
       </ng-container>
       <ion-buttons *ngIf="attachmentService.progress === 98" class="remove">
         <ion-button shape="round" (click)="deleteProductImage(i)">

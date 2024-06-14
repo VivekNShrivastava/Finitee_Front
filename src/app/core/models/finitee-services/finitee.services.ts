@@ -17,7 +17,8 @@ export class FiniteeService {
   CreatedOn: Date = new Date();
   ModifiedOn: Date = new Date();
   DaysLeft: any;
-
+  FirstName: string = '';
+  LastName: string = '';
   IsActive: boolean = true;
 }
 

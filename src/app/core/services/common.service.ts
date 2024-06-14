@@ -347,6 +347,39 @@ export class CommonService {
 
   }
 
+  formatDateToIST(isoString: string): string {
+    // Parse the ISO string to create a Date object in UTC
+    const date = new Date(isoString);
+  
+    // India Standard Time (IST) is UTC+5:30
+    const IST_OFFSET = 5.5 * 60 * 60 * 1000; // 5 hours and 30 minutes in milliseconds
+  
+    // Get the time in milliseconds and add the IST offset
+    const istTime = new Date(date.getTime() + IST_OFFSET);
+  
+    // Extract IST date and time parts
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const month = monthNames[istTime.getUTCMonth()]; // IST month
+    const day = istTime.getUTCDate(); // IST day
+    const year = istTime.getUTCFullYear(); // IST year
+  
+    // Get IST hours and minutes
+    let hours = istTime.getUTCHours(); // IST hours
+    const minutes = istTime.getUTCMinutes(); // IST minutes
+  
+    // Convert 24-hour time to 12-hour time and determine AM/PM
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+  
+    // Format minutes to always have two digits
+    const minutesFormatted = minutes < 10 ? '0' + minutes : minutes;
+  
+    // Construct the formatted date string
+    return `${month} ${day}, ${year} ${hours}:${minutesFormatted} ${ampm}`;
+  }
+  
+
   // get currency & amount for payment.
   getCurrencyByCountry(country: string) {
     return new Promise<any>((resolve) => {

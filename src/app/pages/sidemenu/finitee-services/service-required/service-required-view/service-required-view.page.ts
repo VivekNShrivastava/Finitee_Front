@@ -26,7 +26,7 @@ export class ServiceRequiredViewPage extends BasePage implements OnInit {
     private router: Router,
     private finiteeService: FiniteeServicesService,
     private authService: AuthService,
-    private alertController: AlertController, private commonService: CommonService, private paymentService: PaymentService,
+    private alertController: AlertController, public commonService: CommonService, private paymentService: PaymentService,
   ) {
     super(authService);
     this.route.params.subscribe((params: any) => {
@@ -90,7 +90,7 @@ export class ServiceRequiredViewPage extends BasePage implements OnInit {
           buttons: [
             {
               text: "Dismiss",
-              cssClass: "danger",
+              cssClass: "dismiss",
               handler: async () => {
               },
             },
