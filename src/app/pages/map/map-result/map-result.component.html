@@ -109,16 +109,26 @@
 
     <!-- BUSINESSES -->
     <!-- *ngIf="business.length > 0" -->
-    <ion-accordion  value="business"
+    <ion-accordion *ngIf="business.length > 0"  value="business" 
       toggleIcon="accordion-icon">
       <ion-item slot="header">
         <ion-icon name="bluebusiness"></ion-icon>
         <ion-label>Businesses ({{business.length}})</ion-label>
       </ion-item>
-      <div class="lines-bottom ion-padding" slot="content">
+      <div *ngFor="let user of users;let i=index" class="lines-bottom ion-padding" slot="content">
         <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; gap: 7px; justify-content: center;">
-            <div>Img</div>
+            <div>
+           
+              <ion-avatar style="border-radius: 0px !important; width: 86px !important;" (click)="viewConnection(user)">
+
+                <img style="--border-radius: 20% !important; width: 86px !important; height: 86px; max-width: unset; " 
+                  src="{{appConstants.mediaPrefix + user['Image']}}"
+                  onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'" />
+              </ion-avatar>
+
+              
+            </div>
             <div><p class="businessname">Toyota</p></div>
           </div>
           <div style="display: flex; align-items: center;">
@@ -398,7 +408,7 @@
 
                 <img class="user-logo-main"
                   src="{{appConstants.mediaPrefix + user['ProfileImage']}}"
-                  onError="this.src='assets/icons/business/anonymous.svg'" />
+                  onError="this.src='assets/custom-ion-icons/Serviceavailable_thumbnail.svg'" />
               </ion-avatar>
               <div class="font-primary-text" (click)="viewConnection(user)">
                 <span class="font-sz-14">{{user['Title']}}</span>
@@ -454,7 +464,7 @@
 
                 <img style="--border-radius: 20% !important; width: 86px !important; height: 86px; max-width: unset;" 
                   src="{{appConstants.mediaPrefix + user['Image']}}"
-                  onError="this.src='assets/icons/business/anonymous.svg'" />
+                  onError="this.src='assets/custom-ion-icons/servicerequired_thumbnail.svg'" />
               </ion-avatar>
             </div>
 
@@ -504,7 +514,7 @@
 
                 <img style="--border-radius: 20% !important; width: 86px !important; height: 86px; max-width: unset; " 
                   src="{{appConstants.mediaPrefix + user['Image']}}"
-                  onError="this.src='assets/icons/business/anonymous.svg'" />
+                  onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'" />
               </ion-avatar>
             </div>
 

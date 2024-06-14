@@ -2,12 +2,26 @@
 
 <ion-row class="firstrow">
 
-  <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)"
-    [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}" class="userimg"
-    src="{{appConstants.mediaPrefix + (currentItem.Image) }}"
-    onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'" />
 
-  <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
+  <!-- <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)"
+    [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}"
+    class="userimg"
+    src="{{appConstants.mediaPrefix + (currentItem.Image) }}"
+    onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"/> -->
+
+    <img *ngIf="currentItem.entity !== 'U'" 
+    (click)="open(currentItem)"
+    [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}"
+    class="userimg"
+    [src]="appConstants.mediaPrefix + (currentItem.Image)"
+    (error)="onError($event, currentItem.entity)" />
+
+
+
+
+  <ion-icon name="close-icon" class="closecross"
+    (click)="closeDetails()"></ion-icon>
+ 
 
 </ion-row>
 
@@ -59,6 +73,7 @@
         <div style="display: flex; gap: 10px;">
 
           <div>
+
             <ion-icon
               *ngIf="currentItem.IsConnected === 0 || currentItem.IsConnected === 2 || currentItem.IsConnected === 3"
               [name]="updateConnectionIcon()" style="font-size: 36px;" (click)="sendConnection(currentItem)">
@@ -72,6 +87,7 @@
             <ion-icon [name]="updateGreetingIcon()" slot="start" (click)="sendGreeting(currentItem)"
               style="width: 100%; height: 100px;"></ion-icon>
           </div>
+
 
           <!-- removed onHold functionality -->
           <!-- <ion-icon name="onhold" style="font-size: 36px;" (click)="tempClick()"></ion-icon> -->

@@ -111,6 +111,45 @@ export class MarkerDetailComponent implements OnInit {
     return iconName;
   }
 
+
+
+  //   getConnectionIcon() {
+  //   var iconName = 'free-user-request-white-icon';
+  //   if (this.userCanvasProfile.IsConnected)
+  //     return iconName = 'free-user-connected-white-icon';
+  //   else if (this.userCanvasProfile.IsRequestTo === true)
+  //     iconName = 'free-user-recieved-white-icon';
+  //   else if (this.userCanvasProfile.IsRequestExits)
+  //     iconName = 'free-user-pending-white-icon';
+    
+  //   return iconName
+  // }
+
+  // send-connection-sonar-icon
+
+  getFallbackImage(entity: string): string {
+    switch (entity) {
+      case 'E':
+        return 'assets/custom-ion-icons/Event_thumbnail.svg';
+      case 'SA':
+        return 'assets/custom-ion-icons/Serviceavailable_thumbnail.svg';
+      case 'SR':
+        return 'assets/custom-ion-icons/servicerequired_thumbnail.svg';
+      // Add more cases as needed for other entities
+      default:
+        return 'assets/custom-ion-icons/default_thumbnail.svg';
+    }
+  }
+
+  onError(event: Event, entity: string): void {
+    const element = event.target as HTMLImageElement;
+    element.src = this.getFallbackImage(entity);
+  }
+
+
+
+
+
   updateConnectionIcon() {
     var iconName2 = 'send-connection-sonar-icon';
     if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
@@ -123,6 +162,7 @@ export class MarkerDetailComponent implements OnInit {
       return iconName2 = 'connected-sonar-icon';
     }
     return iconName2; 
+
   }
 
   async sendConnection(user: any) {
