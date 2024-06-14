@@ -60,6 +60,12 @@ export class PostItemsComponent extends BasePage implements OnInit {
   replyButtonClickedFlags: boolean = false;
   replyToName : string = "";
   IsReplySectionOpen: boolean = false;
+  
+
+     toggleDescription(post: any) {
+       post.showFullDescription = !post.showFullDescription;
+   }
+  
 
 
   @ViewChild('videoPlayer') videoPlayer: any;
@@ -149,16 +155,11 @@ export class PostItemsComponent extends BasePage implements OnInit {
   }
 
   async topThreeReplies(comment: any) {
-    if(this.IsReplySectionOpen) this.IsReplySectionOpen = false;
+    if(comment.showReplies) comment.showReplies = false;
     else{
-      comment.showReply = "";
-      comment.showReply = "true" + comment.Id;
-      console.log(comment.showReply, "showReply");
-      // this.topReplies = await this._postService.getTopPostCommentReplies(comment.Id);
       comment.topThreeReplies = await this._postService.getTopPostCommentReplies(comment.Id);
-      this.IsReplySectionOpen = true;
-    }
-    
+      comment.showReplies = true;
+    } 
   }
 
   openUser(data: any) {
@@ -216,6 +217,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
   async getCommentList(postId: string) {
     this.commentLoaded = false;
     this.commentList = await this._postService.getCommentsByPostId(postId, this.userId);
+    console.log(this.commentList);
     this.commentLoaded = true;
   }
 
