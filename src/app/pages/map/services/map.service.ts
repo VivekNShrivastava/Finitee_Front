@@ -181,35 +181,35 @@ export class MapService {
     });
   }
 
-  public oneTimeSearch(searchTerms: MapSearchTerms, logInfo: FiniteeUser, location: any, sonarSearch: any): Observable<any> {
-    const params = {
-      UserId: logInfo.UserId,
-      Latitude: location.lat,
-      Longitude: location.lng,
-      SearchKey: searchTerms.key,
-      UserAge: searchTerms.age,
-      RangeInKm: searchTerms.km,
-      UserTypeSearch: searchTerms.type ? searchTerms.type.split(',') : ['All'],
-      BuyOrSell: searchTerms.bysl ?? false,
-      UserTypeId: logInfo.UserTypeId,
-      Popular: searchTerms.pplr ?? false,
-      IsProductSpecific: searchTerms.isprt,
-      searchRequest: null
-    };
+  public oneTimeSearch( sonarSearch: any): Observable<any> {
+    // const params = {
+    //   UserId: logInfo.UserId,
+    //   Latitude: location.lat,
+    //   Longitude: location.lng,
+    //   SearchKey: searchTerms.key,
+    //   UserAge: searchTerms.age,
+    //   RangeInKm: searchTerms.km,
+    //   UserTypeSearch: searchTerms.type ? searchTerms.type.split(',') : ['All'],
+    //   BuyOrSell: searchTerms.bysl ?? false,
+    //   UserTypeId: logInfo.UserTypeId,
+    //   Popular: searchTerms.pplr ?? false,
+    //   IsProductSpecific: searchTerms.isprt,
+    //   searchRequest: null
+    // };
 
-    const obj: AllSonarSearchRequest = {
-      geolocation: { latitude: 19.2616678, longitude: 72.9630232},
-      searchKey: searchTerms.key || "",
-      scope: 1,
-      freeUser: true,
-      connections: false,
-      businessUser: true,
-      nonProfitUser: false,
-      events: true,
-      sales: false,
-      serviceReq: true,
-      serviceAvailable: false,
-    };
+    // const obj: AllSonarSearchRequest = {
+    //   geolocation: { latitude: 19.2616678, longitude: 72.9630232},
+    //   searchKey: searchTerms.key || "",
+    //   scope: 1,
+    //   freeUser: true,
+    //   connections: false,
+    //   businessUser: true,
+    //   nonProfitUser: false,
+    //   events: true,
+    //   sales: false,
+    //   serviceReq: true,
+    //   serviceAvailable: false,
+    // };
     return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
       map((response: any) => {
         console.log("response", response);
@@ -243,7 +243,7 @@ export class MapService {
           this.addSalesListing(responseData.SonarSalesListingSearchRespond, false);
         }
 
-        return response;
+        return {response, sonarSearch};
       })
     );
   }

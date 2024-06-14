@@ -2,14 +2,26 @@
 
 <ion-row class="firstrow">
 
-  <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)"
+
+  <!-- <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)"
     [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}"
     class="userimg"
     src="{{appConstants.mediaPrefix + (currentItem.Image) }}"
-    onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'" />
+    onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"/> -->
+
+    <img *ngIf="currentItem.entity !== 'U'" 
+    (click)="open(currentItem)"
+    [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}"
+    class="userimg"
+    [src]="appConstants.mediaPrefix + (currentItem.Image)"
+    (error)="onError($event, currentItem.entity)" />
+
+
+
 
   <ion-icon name="close-icon" class="closecross"
     (click)="closeDetails()"></ion-icon>
+ 
 
 </ion-row>
 
@@ -22,39 +34,36 @@
 
 <ion-row class="firstrow">
 
-  <img *ngIf="currentItem.entity=='U' " (click)="openUser(currentItem)"
-    class="userimg"
+  <img *ngIf="currentItem.entity=='U' " (click)="openUser(currentItem)" class="userimg"
     src="{{appConstants.mediaPrefix + (currentItem.ProfileImage || currentItem.UserProfileImage) }}"
     onError="this.src='assets/icons/business/anonymous.svg'" />
-  <ion-icon name="close-icon" class="closecross"
-    (click)="closeDetails()"></ion-icon>
+  <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
 </ion-row>
 
 <ion-row class="secondrow" *ngIf="currentItem.entity == 'U'">
-  <!-- (click)="openUser(currentItem)" -->
-  <ion-card class="header-card" *ngIf="currentItem.entity=='U' "
-    style="background-color:  #EAF1F4;">
+
+  <!-- Free User Carousel -->
+  <ion-card class="header-card" *ngIf="currentItem.entity=='U' " style="background-color:  #EAF1F4;">
 
     <ion-card-header class="followeruser" style="background-color:  #EAF1F4; margin-bottom: 5px;">
-      <ion-text class="ion-text-center name" style="margin-bottom: 5px;">{{currentItem.FirstName}}
-        {{currentItem.LastName}} </ion-text>
-      <ion-card-subtitle
-        class="fi-multiline-truncate username">@{{currentItem.UserName}} |
-        {{currentItem.InflowsCount || 0}} Inflows</ion-card-subtitle>
+      <ion-text class="ion-text-center name" style="margin-bottom: 5px;">
+        {{currentItem.FirstName}} {{currentItem.LastName}}
+      </ion-text>
+      <ion-card-subtitle class="fi-multiline-truncate username">
+        @{{currentItem.UserName}} | {{currentItem.InflowsCount || 0}} Inflows
+      </ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
 
       <ion-row class="header-card-details" style="display: flex; margin-bottom: 5px;">
 
-        <ion-button style="width: 107px !important;
-        height: 32px;" shape="round" size="small" color="light"
-        class="endorsement-btn" >
-        {{currentItem.TotalPosts}} Posts
-      </ion-button>
+        <ion-button style="width: 107px !important; height: 32px;" shape="round" size="small" color="light"
+          class="endorsement-btn">
+          {{currentItem.TotalPosts}} Posts
+        </ion-button>
 
-        <ion-button shape="round" size="small" color="light"
-          class="endorsement-btn" (click)="tempClick()">
+        <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
           {{currentItem.TotalConnections}} Connections
         </ion-button>
 
@@ -62,68 +71,59 @@
 
       <ion-row class="header-card-details">
         <div style="display: flex; gap: 10px;">
-          <!-- <greeting-view *ngIf="currentItem.Greeting === 1"  [fromUserId]="user.UserId" [fromUserName]="currentItem.UserName"
-          [fromUserProfile]="user.UserId + '/' + user.UserProfilePhoto" [userInfo]="user">
-          </greeting-view> -->
 
-          <!-- <div>
-            <ion-icon *ngIf="currentItem.IsConnected === 0"
-              [name]="getGreetingIcon()" style="font-size: 36px;"
-              (click)="sendGreeting(currentItem)"></ion-icon>
-          </div> -->
-          <!-- send-connection-sonar-icon -->
           <div>
-            <ion-icon *ngIf="currentItem.IsConnected === 0 || currentItem.IsConnected === 2 || currentItem.IsConnected === 3" 
-                      [name]="connectionIcon" style="font-size: 36px;"
-                      (click)="sendConnection(currentItem)"></ion-icon>
+
+            <ion-icon
+              *ngIf="currentItem.IsConnected === 0 || currentItem.IsConnected === 2 || currentItem.IsConnected === 3"
+              [name]="updateConnectionIcon()" style="font-size: 36px;" (click)="sendConnection(currentItem)">
+            </ion-icon>
           </div>
-          
-          
-          <button 
-          *ngIf="currentItem.Greeting === 0 || currentItem.Greeting === 1 || currentItem.Greeting === 4 || currentItem.Greeting === 5 "
-          
 
+          <!-- [ngClass]="getButtonClass()" --><!-- {{ getButtonText() }} -->
+          <div *ngIf="currentItem.Greeting === 1 || currentItem.Greeting === 4 || currentItem.Greeting === 5 "
+            shape="round"
+            style="display: flex; align-items: center; justify-content: center; width: 160px; height: 34px; margin-right: -37px; margin-top: 5px;">
+            <ion-icon [name]="updateGreetingIcon()" slot="start" (click)="sendGreeting(currentItem)"
+              style="width: 100%; height: 100px;"></ion-icon>
+          </div>
 
-          (click)="sendGreeting(currentItem)" 
-          shape="round" 
-          [ngClass]="getButtonClass()"
-          style="display: flex; align-items: center; justify-content: center; width: 152px;
-          height: 34px;">
-          <ion-icon [name]="greetingIcon" slot="start" style="
-          margin-right: 8px; font-size: 25px;"></ion-icon>
-          {{ getButtonText() }}
-        </button>
-        
-        
-       
-          <!-- <ion-icon *ngIf="currentItem.Greeting === 2 " name="greeting" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon>
-          <ion-icon *ngIf="currentItem.Greeting === 3 " name="greeting" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon>
-          <ion-icon *ngIf="currentItem.Greeting === 4 " name="greeting-blink" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon>
-          <ion-icon *ngIf="currentItem.Greeting === 5 " name="greeting-sent" style="font-size: 36px;" (click)="sendGreeting(currentItem)"></ion-icon> -->
 
           <!-- removed onHold functionality -->
           <!-- <ion-icon name="onhold" style="font-size: 36px;" (click)="tempClick()"></ion-icon> -->
 
-
-
-          <div *ngIf="currentItem.IsConnected === 1" class="chat">
-            <ion-icon name="chatwhite" style="font-size: 36px;"
-              (click)="tempClick()"></ion-icon>
-
+          <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" class="chat">
+            <ion-icon name="chatwhite" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
             Chat Now
           </div>
 
         </div>
       </ion-row>
+
     </ion-card-content>
   </ion-card>
+
+  <div class="traitshead">
+    <ion-text>My Traits</ion-text>
+  </div>
+
+  <ion-card class="header-card" *ngIf="currentItem.entity=='U' " style="background-color:  #EAF1F4; height: auto; width: 307px; padding-bottom: 20px;">
+    <div *ngIf="currentItem.entity == 'U' && currentItem.Traits.length > 0" class="alltraits">
+      <ion-chip *ngFor="let trait of currentItem.Traits" class="person_trait" color="primary">
+        {{ trait }}
+      </ion-chip>
+    </div>
+    <ion-icon *ngIf="currentItem.Traits.length === 0" name="no-traits-icon" style="width: 100%; margin-top: 29px; font-size: 50px;"></ion-icon>
+    <p *ngIf="currentItem.Traits.length === 0" style="color: #6F8BA5; display: flex; justify-content: center; align-items: center; font: var(--unnamed-font-style-normal) normal medium 19px/25px var(--unnamed-font-family-sf-pro-display); font-size: 19px">No traits setup</p>
+   
+  </ion-card>
+
   <ion-icon *ngIf="showPrevious" name="chevron-back-circle-outline" class="back"
     (click)="loadNextItem(true)">
   </ion-icon>
 
   <!-- Business -->
-  <ion-card class="header-card"
-    *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
+  <ion-card class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
     <ion-text>{{currentItem.DisplayName}}</ion-text>
     <p><ion-text>{{currentItem.SonorDescription}}</ion-text></p>
     <ion-card-header>
@@ -134,12 +134,10 @@
     <ion-card-content>
 
       <ion-row class="header-card-details">
-        <ion-button shape="round" size="small" color="light"
-          class="endorsement-btn connectios" (click)="tempClick()">
+        <ion-button shape="round" size="small" color="light" class="endorsement-btn connectios" (click)="tempClick()">
           5.2k Connections
         </ion-button>
-        <ion-button shape="round" size="small" color="light"
-          class="endorsement-btn" (click)="tempClick()">
+        <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="tempClick()">
           1k Endorsements
         </ion-button>
       </ion-row>
@@ -150,13 +148,11 @@
       <!-- row for business home other -->
       <ion-row class="header-card-details">
 
-        <ion-button shape="round" size="small" class="connected-members-chat"
-          (click)="tempClick()">
+        <ion-button shape="round" size="small" class="connected-members-chat" (click)="tempClick()">
           <ion-icon name="connected-members-chat"></ion-icon>
           <span> Chat Now</span>
         </ion-button>
-        <ion-button shape="round" size="small" class="connected-members-chat"
-          (click)="tempClick()">
+        <ion-button shape="round" size="small" class="connected-members-chat" (click)="tempClick()">
           <ion-icon name="see-more"></ion-icon>
           <span> Sonar</span>
         </ion-button>
@@ -164,52 +160,10 @@
     </ion-card-content>
   </ion-card>
   <ion-icon *ngIf="showNext" name="chevron-forward-circle-outline" class="front"
-    (click)="loadNextItem(false)"></ion-icon>
+    (click)="loadNextItem(false)">
+  </ion-icon>
+
 </ion-row>
-
-<div class="traitshead"
-  *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1">
-  <ion-text>My Traits</ion-text>
-</div>
-
-<!-- <div *ngIf="currentItem.entity=='U' " class="alltraits">
-  
-  <ion-chip class="person_trait" color="primary">Dance</ion-chip>
-  <ion-chip class="person_trait" color="primary">football Play</ion-chip>
-  <ion-chip class="person_trait" color="primary">Music</ion-chip>
-  <ion-chip class="person_trait" color="primary">Cricket</ion-chip>
-  <ion-chip class="person_trait" color="primary">Event creating</ion-chip>
-  <ion-chip class="person_trait" color="primary">Reading Books</ion-chip>
-  <ion-chip class="person_trait" color="primary">Stiching</ion-chip>
-</div> -->
-
-<!-- <div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
-
-  <div class="traitshead" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==1">
-    <ion-text>My Traits</ion-text>
-  </div>
-
-<div  *ngIf="currentItem.entity=='U' " class="alltraits">
-    <ion-chip class="person_trait" color="primary">Dance</ion-chip>
-    <ion-chip class="person_trait" color="primary">football Play</ion-chip>
-    <ion-chip class="person_trait" color="primary">Music</ion-chip>
-    <ion-chip class="person_trait" color="primary">Cricket</ion-chip>
-    <ion-chip class="person_trait" color="primary">Event creating</ion-chip>
-    <ion-chip class="person_trait" color="primary">Reading Books</ion-chip>
-    <ion-chip class="person_trait" color="primary">Stiching</ion-chip>
-  </div> -->
-<div *ngIf="currentItem.entity == 'U'" class="alltraits">
-  <ion-chip *ngFor="let trait of currentItem.Traits" class="person_trait"
-    color="primary">
-    {{ trait }}
-  </ion-chip>
-</div>
-
-<!-- <div *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
-
-    <ion-text>Products & Services</ion-text>
-  </div> -->
-<!-- </div> -->
 
 <div style="display: flex; justify-content: center; align-items: center;">
 
@@ -217,27 +171,11 @@
 
     <ion-row class="secondrow">
 
-      <ion-card (click)="open(currentItem)" class="header-card2"
-        *ngIf="currentItem.entity !='U' "
+      <ion-card (click)="open(currentItem)" class="header-card2" *ngIf="currentItem.entity !='U' "
         style="background-color:  #EAF1F4;">
 
         <ion-card-header class="eventcard" style="background-color:  #EAF1F4;">
-          <div
-            style="display:flex; justify-content: center; align-items: center; ">
-
-
-<!--           <ion-text style="font-size:23px; color:#285078 ; text-align: center; height: 26px;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-            class="ion-text-center name eventname">{{currentItem.Title}}</ion-text>
-        </div>
-
-        <div *ngIf="currentItem.entity === 'SA' || currentItem.entity === 'SL' || currentItem.entity === 'SR'"
-          style="font-size:27px; color: #1A3253; display: flex; text-align: center; justify-content: center; align-items: center;">
-          <p style=" margin-bottom: 0px; margin-top: 22px; font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 26px/31px var(--unnamed-font-family-sf-pro-display);">$ {{currentItem.Price}} {{currentItem.PriceType}}</p>
-        </div>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <div >
-            <img class="userevent_namelogo" src="{{appConstants.mediaPrefix + (currentItem.ProfileImage)}}"
-            onError="this.src='assets/icons/business/anonymous.svg'" > -->
+          <div style="display:flex; justify-content: center; align-items: center; ">
 
             <ion-text
               style="font-size:23px; color:#285078 ; text-align: center; height: 26px;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
@@ -245,21 +183,19 @@
 
           </div>
 
-          <div
-            *ngIf="currentItem.entity === 'SA' || currentItem.entity === 'SL' || currentItem.entity === 'SR'"
+          <div *ngIf="currentItem.entity === 'SA' || currentItem.entity === 'SL' || currentItem.entity === 'SR'"
             style="font-size:27px; color: #1A3253; display: flex; text-align: center; justify-content: center; align-items: center;">
             <p
-              style=" margin-bottom: 0px; margin-top: 22px; font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 26px/31px var(--unnamed-font-family-sf-pro-display);">$
+              style=" margin-bottom: 0px; margin-top: 22px; font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 26px/31px var(--unnamed-font-family-sf-pro-display);">
+              $
               {{currentItem.Price}} {{currentItem.PriceType}}</p>
           </div>
-          <div
-            style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
             <div>
               <img class="userevent_namelogo"
                 src="{{appConstants.mediaPrefix + (currentItem.ProfileImage || currentItem.Image)}}">
             </div>
-            <p *ngIf="currentItem.entity != 'U'"
-              style="font-size: 21px; color: #1A3253;">
+            <p *ngIf="currentItem.entity != 'U'" style="font-size: 21px; color: #1A3253;">
               {{currentItem.FirstName}} {{currentItem.LastName}} </p>
             <!-- <p *ngIf="currentItem.entity =='SL' " style="font-size: 24px; color: #1A3253;">@{{currentItem.FirstName}}</p> -->
 
@@ -281,30 +217,25 @@
           </div>
 
           <div>
-            <p
-              style="font-size: 17px; text-align: center; color: #285078;">{{currentItem.Description}}</p>
+            <p style="font-size: 17px; text-align: center; color: #285078;">{{currentItem.Description}}</p>
             <!-- <p *ngIf="currentItem.entity =='E' "  style="font-size: 16px; text-align: center;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p> -->
           </div>
 
           <div *ngIf="currentItem.entity === 'SR'"
             style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-            <p
-              style="color: #285078; font-size: 22px; margin-bottom: 0px; margin-top:10px;">Start
+            <p style="color: #285078; font-size: 22px; margin-bottom: 0px; margin-top:10px;">Start
               Date:</p>
-            <p
-              style="color: #285078; font-size: 24px; margin-top: 10px;">16/03/24</p>
+            <p style="color: #285078; font-size: 24px; margin-top: 10px;">16/03/24</p>
           </div>
 
           <div>
-            <h1 *ngIf="currentItem.entity =='E' "
-              style="text-align: center; font-size:20px ; color: #285078;">Address:
+            <h1 *ngIf="currentItem.entity =='E' " style="text-align: center; font-size:20px ; color: #285078;">Address:
             </h1>
-            <h1 *ngIf="currentItem.entity =='SL' "
-              style="text-align: center; font-size:20px ; color: #285078;">Condition:
+            <h1 *ngIf="currentItem.entity =='SL' " style="text-align: center; font-size:20px ; color: #285078;">
+              Condition:
             </h1>
 
-            <p *ngIf="currentItem.entity =='SL' "
-              style="font-size:17px ; color:#285078 ; text-align: center;">
+            <p *ngIf="currentItem.entity =='SL' " style="font-size:17px ; color:#285078 ; text-align: center;">
 
               {{commonService.getCondition(currentItem.Condition)}}
             </p>
@@ -324,30 +255,22 @@
         </ion-card-header>
 
       </ion-card>
-
-      <!-- <ion-icon *ngIf="showNext" name="chevron-forward-circle-outline" class="front2"
-    (click)="loadNextItem(false)"></ion-icon> -->
-
-      <!-- <ion-icon *ngIf="showPrevious" name="chevron-back-circle-outline" class="back2"
-      (click)="loadNextItem(true)"></ion-icon> -->
-
     </ion-row>
   </ion-card>
-  <ion-icon *ngIf="showPrevious && currentItem.entity !='U'"
-    name="chevron-back-circle-outline" class="back2"
-    (click)="loadNextItem(true)"></ion-icon>
-  <ion-icon *ngIf="showNext && currentItem.entity !='U'"
-    name="chevron-forward-circle-outline" class="front2"
-    (click)="loadNextItem(false)"></ion-icon>
+
+  <ion-icon *ngIf="showPrevious && currentItem.entity !='U'" name="chevron-back-circle-outline" class="back2"
+    (click)="loadNextItem(true)">
+  </ion-icon>
+  <ion-icon *ngIf="showNext && currentItem.entity !='U'" name="chevron-forward-circle-outline" class="front2"
+    (click)="loadNextItem(false)">
+  </ion-icon>
+
 </div>
 
-<ion-modal #greetingAcceptRejectModal [initialBreakpoint]="0.31"
-  [showBackdrop]="true" [breakpoints]="[0.25]">
+<ion-modal #greetingAcceptRejectModal [initialBreakpoint]="0.31" [showBackdrop]="true" [breakpoints]="[0.25]">
   <ng-template>
-    <div class="font-weight-600 font-primary-text"
-      style="padding: 20px 20px 0px 20px;">
-      <div class="display-flex--row flex-align-center"
-        style="margin-bottom: 10px;">
+    <div class="font-weight-600 font-primary-text" style="padding: 20px 20px 0px 20px;">
+      <div class="display-flex--row flex-align-center" style="margin-bottom: 10px;">
         <div>
           <ng-container *ngTemplateOutlet="userAvatarSmallView;"></ng-container>
         </div>
@@ -356,18 +279,14 @@
         </div>
       </div>
       <ion-list class="custom-class-list">
-        <ion-item (click)="acceptGreeting(currentItem)"
-          style="margin-bottom: 0px">
-          <ion-icon name="greeting-accept"
-            style="margin-right: 10px;"></ion-icon>
+        <ion-item (click)="acceptGreeting(currentItem)" style="margin-bottom: 0px">
+          <ion-icon name="greeting-accept" style="margin-right: 10px;"></ion-icon>
           <ion-label>
             Accept
           </ion-label>
         </ion-item>
-        <ion-item (click)="rejectGreeting(currentItem)"
-          style="margin-bottom: 0px">
-          <ion-icon name="greeting-reject"
-            style="margin-right: 10px;"></ion-icon>
+        <ion-item (click)="rejectGreeting(currentItem)" style="margin-bottom: 0px">
+          <ion-icon name="greeting-reject" style="margin-right: 10px;"></ion-icon>
           <ion-label>
             Reject
           </ion-label>
@@ -379,8 +298,7 @@
 
 <ng-template #userAvatarSmallView>
   <ion-avatar style="width: 35px;height: 35px;overflow: hidden;">
-    <img [src]="appConstants.mediaPrefix + currentItem.ProfileImage"
-      style="width:100%;"
+    <img [src]="appConstants.mediaPrefix + currentItem.ProfileImage" style="width:100%;"
       onerror="this.onerror=null;this.src='assets/imgs/male.png';">
   </ion-avatar>
 </ng-template>

@@ -622,6 +622,7 @@ ion-img::part(image){
  width: 30px;
   height: 79px;
 color: black;
+top: 110px
 
 }
 .back2{
@@ -638,6 +639,7 @@ color: black;
   width: 30px;
   height: 79px;
   color: black;
+  top:110px
 
 }
 .front2{
@@ -660,6 +662,8 @@ color: black;
   margin-top: 33px;
 }
 .traitshead{
+  margin-bottom: 10px;
+  margin-top: -16px;
   text-align: center;
   font: var(--unnamed-font-style-normal) normal bold 20px/38px var(--unnamed-font-family-sf-pro-display);
 color: var(--unnamed-color-285078);

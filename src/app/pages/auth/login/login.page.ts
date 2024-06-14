@@ -257,7 +257,7 @@ export class LoginPage implements OnInit {
       next: (response) => {
         this.regService.commonService.hideLoader();
         console.log("loginResponse: ", response);
-        this.locationService.getCurrencyByCountry();
+        // this.locationService.getCurrencyByCountry();
       },
       error: (error) => {
         this.regService.commonService.hideLoader();

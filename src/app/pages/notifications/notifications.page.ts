@@ -3,19 +3,24 @@ import { NavController } from '@ionic/angular';
 import { CommonService } from 'src/app/core/services/common.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { ChatsService } from 'src/app/core/services/chat/chats.service';
+import { Router } from '@angular/router';
+import { BasePage } from 'src/app/base.page';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.page.html',
   styleUrls: ['./notifications.page.scss'],
 })
-export class NotificationsPage implements OnInit {
+export class NotificationsPage extends BasePage implements OnInit {
   notifiactions: any = [];
   constructor(private nav: NavController, 
     public commonService: CommonService, 
     private _storageService: StorageService,
-    public chatService: ChatsService
-  ) { }
+    public chatService: ChatsService,
+    private router: Router,
+    private authService: AuthService
+  ) { super(authService)}
 
 
   ngOnInit() {
@@ -35,6 +40,16 @@ export class NotificationsPage implements OnInit {
       this.chatService.openChat(selctedUser); 
     }
     
+  }
+
+  navigateToGreeting(){
+    console.log('navigating to greeting section');
+    const data = {
+      callFunction: 'greetingFunction'
+    }
+    // this.navEx.state = data;
+    this.navEx = {state: data}
+    this.router.navigateByUrl('tabs/map', this.navEx);
   }
 
   getAllNotification() {

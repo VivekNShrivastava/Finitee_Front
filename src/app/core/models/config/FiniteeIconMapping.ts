@@ -157,10 +157,13 @@ export const finiteeIconMapper = {
   'blue-carousel':'assets/custom-ion-icons/Greetingiconwhitebluecarousel.svg',
   'Greeting-icon-white-green-carousel':'assets/custom-ion-icons/GreetingbuttonCarouselgreen.svg',
   'orange-carousel':'assets/custom-ion-icons/orange-carousel.svg',
-
+'Event_thumbnail':'assets/custom-ion-icons/Event_thumbnail.svg',
+'Serviceavailable_thumbnail':'assets/custom-ion-icons/Serviceavailable_thumbnail.svg',
+'servicerequired_thumbnail':'assets/custom-ion-icons/servicerequired_thumbnail.svg',
+'Donation':'assets/custom-ion-icons/Donation.svg',
   'green-handshake': 'assets/custom-ion-icons/md-green-handshake.svg',
   'no-handshake': 'assets/custom-ion-icons/md-no-handshake.svg',
-  handshake: 'assets/custom-ion-icons/md-handshake.svg',
+  'greeting': 'assets/custom-ion-icons/md-handshake.svg',
   'no-profile': 'assets/custom-ion-icons/md-no-profile.svg',
   'no-hi': 'assets/custom-ion-icons/md-no-hi.svg',
   'no-dollar': 'assets/custom-ion-icons/md-no-dollar.svg',
@@ -190,7 +193,7 @@ export const finiteeIconMapper = {
 
   'greeting-blink': 'assets/custom-ion-icons/md-green-handshake.svg',
   'sonar-setting': 'assets/custom-ion-icons/sonar/sonar-setting.svg',
-  // 'greeting-no-circle': 'assets/custom-ion-icons/sonar/greeting-no-circle.svg',
+  'greeting-no-circle': 'assets/custom-ion-icons/sonar/greeting-no-circle.svg',
   'view-on-map': 'assets/custom-ion-icons/sonar/view-on-map.svg',
   'create-totem': 'assets/custom-ion-icons/sonar/create-totem-blue.svg',
   'viewing-binoculars': 'assets/custom-ion-icons/viewing-binoculars.svg',
@@ -203,7 +206,7 @@ export const finiteeIconMapper = {
   'greeting-sent': 'assets/custom-ion-icons/sonar/greeting-sent.svg',
   'close-icon': 'assets/custom-ion-icons/cross-icon.svg',
   //'no-handshake': 'assets/custom-ion-icons/md-no-handshake.svg',
-  'greeting': 'assets/custom-ion-icons/Greetingiconwhitebluecarousel.svg',
+  // 'greeting': 'assets/custom-ion-icons/Greetingiconwhitebluecarousel.svg',
   //'no-profile': 'assets/custom-ion-icons/md-no-profile.svg',
   //'no-hi': 'assets/custom-ion-icons/md-no-hi.svg',
   //'no-dollar': 'assets/custom-ion-icons/md-no-dollar.svg',
@@ -356,6 +359,11 @@ export const finiteeIconMapper = {
   'user-report':'assets/icons/screen-wise-icons/free-user/Menu-report-user-icon.svg',
   'user-inflows-color':'assets/icons/screen-wise-icons/free-user/Menu-Inflows-Icon-color.svg',
   'send-connection-sonar-icon':'assets/icons/screen-wise-icons/free-user/send_conn_sonar.svg',
+  'connected-sonar-icon':'assets/icons/screen-wise-icons/free-user/Connected - Carousel.svg',
+  'send-greeting-blue':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel blue.svg',
+  'sent-greeting-orange':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel orange.svg',
+  'receive-greeting-green':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel Green.svg',
+  'no-traits-icon':'assets/icons/screen-wise-icons/free-user/no_trait_icon.svg',
 
 };
 
