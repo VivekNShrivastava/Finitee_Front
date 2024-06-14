@@ -1,12 +1,12 @@
 <ion-content style="border-radius: 100px 100px 0 0;">
   <div style="width: 100%;height:100%;" class="whiteblue">
-    <div *ngIf="isLocationTurnedOn === true" class="mapclass" style="position: relative;height: 100%;width:100%; overflow: hidden;">
+    <div  class="mapclass" style="position: relative;height: 100%;width:100%; overflow: hidden;">
 
       <div class="top-result-container">
         <div class="c-fab-button" *ngIf="searchCriteria">
           <div (click)="showSonarSearchResultInListView(true)" > {{resultCount}} results </div>
           <div style="line-height: 11px;">
-            <ion-icon style="font-size: 24px;" name="refresh-outline" (click)="refreshMarker()"></ion-icon>
+            <ion-icon style="font-size: 24px;" name="refresh-outline" (click)="refreshMarkerOne()"></ion-icon>
           </div>
           <div style="line-height: 5px;">
             <ion-icon style="font-size: 16px;margin-right: 10px;" name="close-icon" (click)="clearResults(true)"></ion-icon>
@@ -34,13 +34,13 @@
 
 
       </div>
-      <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; align-items: center;" *ngIf="userConnectionActive === true">
+      <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; align-items: center;" *ngIf="!isLocationTurnedOn && isNativeLocationOn == true">
         <img src="../../../assets/icons/screen-wise-icons/Sonar icons/Sonar service not available icon.svg">
         <p>Sonar Service is not available</p>
       </div>
       <div id="map_canvas" #map_canvas style="height:100%;"> </div>
 
-      <div *ngIf="isLocationTurnedOn == true" class="icons-list" style="display: flex;flex-direction: column;gap: 10px;align-items: center;">
+      <div *ngIf="isLocationTurnedOn" class="icons-list" style="display: flex;flex-direction: column;gap: 10px;align-items: center;">
 
         <ion-fab-button (click)="openSonarSetting()" *ngIf="isBackEnabled && user?.UserTypeId == '1'"
           class="map-fab-button2">
@@ -87,11 +87,11 @@
 
       </div>
     </div>
-    <div *ngIf="isLocationTurnedOn == false">
+    <div *ngIf="isNativeLocationOn == false">
       <div class="permission-message">
         <p class="darkbf" style="margin-bottom: 0px;">To see places near you, turn on location services.</p>
         <p class="darkbf" style="margin-top: 9px;">You can also search friends with greetings.</p>
-        <ion-button color="secondary" style="text-transform: capitalize;" (click)="checkGPSPermission()">
+        <ion-button color="secondary" style="text-transform: capitalize;" (click)="openNativeLocation()">
           Turn on Location Service
         </ion-button>
       </div>
@@ -104,7 +104,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #markerDetailModal [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75]" handle="false">
+  <ion-modal #markerDetailModal [initialBreakpoint]="0.43" [breakpoints]="[0, 0.80]" handle="false">
     <ng-template>
       <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
         <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="markerListMainResult"

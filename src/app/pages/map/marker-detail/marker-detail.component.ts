@@ -14,7 +14,8 @@ import { ModalController } from '@ionic/angular';
 import { ChatDetailPage } from '../../chat/chat-detail/chat-detail.page';
 import { ChatsService } from 'src/app/core/services/chat/chats.service';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
-
+import { ConnectionsService } from 'src/app/core/services/connections.service';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-marker-detail',
   templateUrl: './marker-detail.component.html',
@@ -37,11 +38,11 @@ export class MarkerDetailComponent implements OnInit {
   greetingList: any = [];
   swipeSubsciption!: Subscription;
   greetingIcon: string = 'greeting';
-  connectionIcon:string='send-connection-sonar-icon';
-  
+  connectionIcon: string = 'send-connection-sonar-icon';
+
 
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
- 
+
 
   constructor(public swipeService: SwipeService,
     public mapService: MapService,
@@ -50,8 +51,10 @@ export class MarkerDetailComponent implements OnInit {
     public commonService: CommonService,
     public modalController: ModalController,
     public chatService: ChatsService,
-    public firestoreService: FirestoreService
-  ) { 
+    public firestoreService: FirestoreService,
+    public connectionsService: ConnectionsService,
+    public alertController: AlertController
+  ) {
     this.user = this.authService.getUserInfo();
     console.log("marker-user", this.user);
 
@@ -59,29 +62,34 @@ export class MarkerDetailComponent implements OnInit {
 
     this.firestoreService.greetingList$.subscribe(updatedData => {
       this.greetingList = updatedData;
-      if(this.greetingList.length > 0){
+      if (this.greetingList.length > 0) {
         const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
-        if(this.greetingList[0] === id && this.markerList[this.markerCurrentIndex].Greeting === 1){
+        if (this.greetingList[0] === id && this.markerList[this.markerCurrentIndex].Greeting === 1) {
           this.markerList[this.markerCurrentIndex].Greeting = 4;
-          this.updateGreetingIcon();
+          // this.updateGreetingIcon();
+          // this.getButtonClass();
+          // this.getButtonText();
+          
         }
-      }else{
-        if(this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4){
+      } else {
+        if (this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4) {
           this.markerList[this.markerCurrentIndex].Greeting = 1;
-          this.updateGreetingIcon();
+          // this.updateGreetingIcon();
+          // this.getButtonClass();
+          // this.getButtonText();   
         }
       }
-      
+
       // this.loadCurrentItem();
       console.log("map updated data", this.greetingList);
     });
   }
 
   ngOnInit() {
-    console.log("markerCurrentIndex: ", this.markerCurrentIndex);
-    console.log("markerList tl", this.markerList);
-    console.log("markerList: ", this.markerList[this.markerCurrentIndex]);
-    console.log('Current Item on Init issssssssssssf:', this.currentItem);
+    // console.log("markerCurrentIndex: ", this.markerCurrentIndex);
+    // console.log("markerList tl", this.markerList);
+    // console.log("markerList: ", this.markerList[this.markerCurrentIndex]);
+    // console.log('Current Item on Init issssssssssssf:', this.currentItem);
     // this.markerList = this.markerList.sort((a : any, b : any) => a.Proximity - b.Proximity);
 
     //removed viewing functionality
@@ -90,75 +98,113 @@ export class MarkerDetailComponent implements OnInit {
 
     this.subscribeSwipeEvent();
     this.loadCurrentItem();
-    this.updateGreetingIcon();
+    // this.updateGreetingIcon();
   }
-
-
-  
 
   updateGreetingIcon() {
-    var iconName = 'greeting';
+    var iconName = 'send-greeting-blue';
     if (this.markerList[this.markerCurrentIndex]?.Greeting === 4) {
-      iconName = 'Greeting-icon-white-green-carousel';
+      return iconName = 'receive-greeting-green';
     } else if (this.markerList[this.markerCurrentIndex]?.Greeting === 5) {
-      iconName = 'orange-carousel';
+      return iconName = 'sent-greeting-orange';
     }
-    this.greetingIcon = iconName;
+    return iconName;
   }
 
+  updateConnectionIcon() {
+    var iconName2 = 'send-connection-sonar-icon';
+    if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
+      return iconName2 = 'free-user-pending-white-icon';
+    } else if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
+      return iconName2 = 'free-user-recieved-white-icon';
+    } else if(this.markerList[this.markerCurrentIndex]?.IsConnected === 4){
+      this.markerList[this.markerCurrentIndex].Greeting = 3;
+      this.updateGreetingIcon();
+      return iconName2 = 'connected-sonar-icon';
+    }
+    return iconName2; 
+  }
 
-  //   getConnectionIcon() {
-  //   var iconName = 'free-user-request-white-icon';
-  //   if (this.userCanvasProfile.IsConnected)
-  //     return iconName = 'free-user-connected-white-icon';
-  //   else if (this.userCanvasProfile.IsRequestTo === true)
-  //     iconName = 'free-user-recieved-white-icon';
-  //   else if (this.userCanvasProfile.IsRequestExits)
-  //     iconName = 'free-user-pending-white-icon';
+  async sendConnection(user: any) {
+    if (user.IsConnected === 0) {
+      console.log("Sending connection request...");
+      const res = await this.mapService.sendConnectionTOuser(user.Id);
+      if (res && res.ResponseData && res.ResponseData.Success) {
+        this.commonService.presentToast('Connection Sent To ' + user.UserName);
+        user.IsConnected = 3;
+        this.markerList[this.markerCurrentIndex].IsConnected = 3; // Update the marker list item
+        this.updateConnectionIcon(); // Update the icon after successful connection
+      }
+    } else if (user.IsConnected === 3) {
+      console.log("Cancelling connection request...");
+      const res = await this.mapService.cancelConnectionToUser(user.Id);
+      if (res && res.ResponseData && res.ResponseData.Success) {
+        user.IsConnected = 0;
+        this.markerList[this.markerCurrentIndex].IsConnected = 0; // Update the marker list item
+        this.commonService.presentToast("Connection Cancelled");
+        this.updateConnectionIcon(); // Update the icon after cancelling connection
+      } else if (res && !res.ResponseData.Success) {
+        this.commonService.presentToast("Cannot cancel connection to " + user.UserName);
+      } else {
+        this.commonService.presentToast("Something went wrong");
+      }
+    }else if(user.IsConnected === 2){
+      await this.acceptRejectModalConnection(user);
+    }
+  }
+
+  async acceptRejectModalConnection (user: any) {
+    const alert = await this.alertController.create({
+      header: `You Have A Connection Request!`,
+      cssClass: 'add-user-alert',
+      buttons: [
+        {
+          text: 'Decline',
+          role: 'reject',
+          cssClass: 'add-user-alert-send-button',
+          handler: (data: any) => {
+            this.requestAction(false, user);
+          }
+        },
+        {
+          text: 'Accept',
+          role: 'confirm',
+          cssClass: 'add-user-alert-send-without-button',
+          handler: (data: any) => {
+            this.requestAction(true, user);
+            alert.dismiss();
+          }
+        },
+        {
+          text: 'X',
+          role: 'close',
+          cssClass: 'add-user-alert-close-button',
+          handler: (data: any) => {
+            alert.dismiss();
+          }
+        },
+      ],
+    });
+
+    await alert.present(); 
+  }
+
+  async requestAction(reqAcceptOrDecline: boolean, user: any) {
+
     
-  //   return iconName
-  // }
-
-  // send-connection-sonar-icon
- updateConnectionIcon() {
-  var iconName2 = 'send-connection-sonar-icon';
-  if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
-    iconName2 = 'dots';
-  } else if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
-    iconName2 = 'dots';
-  }
-  this.connectionIcon = iconName2; // Update component property
-  console.log('Updated icon:', this.connectionIcon); // Log the updated icon
-}
-
-async sendConnection(user: any) {
-  if (user.IsConnected === 0) {
-    console.log("Sending connection request...");
-    const res = await this.mapService.sendConnectionTOuser(user.Id);
-    if (res && res.ResponseData && res.ResponseData.Success) {
-      this.commonService.presentToast('Connection Sent To ' + user.UserName);
-      user.IsConnected = 2;
-      this.markerList[this.markerCurrentIndex].IsConnected = 2; // Update the marker list item
-      this.updateConnectionIcon(); // Update the icon after successful connection
-    }
-  } else if (user.IsConnected === 2) {
-    console.log("Cancelling connection request...");
-    const res = await this.mapService.cancelConnectionToUser(user.Id);
-    if (res && res.ResponseData && res.ResponseData.Success) {
-      user.IsConnected = 0;
-      this.markerList[this.markerCurrentIndex].IsConnected = 0; // Update the marker list item
-      this.commonService.presentToast("Connection Cancelled");
-      this.updateConnectionIcon(); // Update the icon after cancelling connection
-    } else if (res && !res.ResponseData.Success) {
-      this.commonService.presentToast("Cannot cancel connection to " + user.UserName);
-    } else {
-      this.commonService.presentToast("Something went wrong");
+    var res = await this.connectionsService.actionConnectionRequest(reqAcceptOrDecline, user?.Id);
+    if(res){
+      if(!reqAcceptOrDecline){
+        user.IsConnected = 0;
+        this.markerList[this.markerCurrentIndex].IsConnected = 0;
+        this.updateConnectionIcon();
+      }else{
+        user.IsConnected = 4;
+        this.updateConnectionIcon();
+      }
+      
     }
   }
-}
-
-
-
 
   async sendGreeting(user: any) {
     if (user.Greeting === 1) {
@@ -169,18 +215,18 @@ async sendConnection(user: any) {
         this.markerList[this.markerCurrentIndex].Greeting = 5; // Ensure the correct item is updated
         this.updateGreetingIcon();
       }
-    } else if(user.Greeting === 5) {
+    } else if (user.Greeting === 5) {
       const res = await this.mapService.cancelGreetingToUser(user.Id);
-      if(res && res.Success) {
+      if (res && res.Success) {
         user.Greeting = 1;
         this.commonService.presentToast("Greeting Cancelled");
         this.updateGreetingIcon();
-      } else if(res && !res.Success) {
+      } else if (res && !res.Success) {
         this.commonService.presentToast("Cannot send greeting to " + user.UserName + " until One Hour");
       } else {
         this.commonService.presentToast("Something went wrong");
       }
-    } else if(user.Greeting === 4) {
+    } else if (user.Greeting === 4) {
       this.showGreetingActions(user);
     }
   }
@@ -189,23 +235,23 @@ async sendConnection(user: any) {
     return {
       'green-background': this.greetingIcon === 'greeting',
       'orange-background': this.greetingIcon === 'orange-carousel',
-      'greenbg':this.greetingIcon === 'Greeting-icon-white-green-carousel'
+      'greenbg': this.greetingIcon === 'Greeting-icon-white-green-carousel'
     };
   }
 
   getButtonText() {
     if (this.greetingIcon === 'greeting') {
-        return 'Send Greeting';
+      return 'Send Greeting';
     } else if (this.greetingIcon === 'orange-greeting') {
-        return 'Greeting Sent';
+      return 'Greeting Sent';
     } else {
-        return 'Greeting Received';
+      return 'Greeting Received';
     }
-}
+  }
 
 
   public showGreetingActions(user: any): void {
-    this.greetingAcceptRejectModal?.present().then(() => {});
+    this.greetingAcceptRejectModal?.present().then(() => { });
   }
 
   public closeShowGreetingActions(): void {
@@ -227,23 +273,23 @@ async sendConnection(user: any) {
   }
 
   open(item: any) {
-    switch(item.entity){
-      case 'E': 
-        this.router.navigateByUrl(`/events/event-view/${item.Id}`) 
+    switch (item.entity) {
+      case 'E':
+        this.router.navigateByUrl(`/events/event-view/${item.Id}`)
         this.closeDetails();
         break;
 
-      case 'SL': 
+      case 'SL':
         this.router.navigateByUrl(`/sales-listing/sales-item-view/${item.Id}`)
         this.closeDetails();
         break;
 
-      case 'SA': 
+      case 'SA':
         this.router.navigateByUrl(`service-available/service-available-view/${item.Id}`);
         this.closeDetails();
         break;
 
-      case 'SR': 
+      case 'SR':
         this.router.navigateByUrl(`service-required/service-required-view/${item.Id}`);
         this.closeDetails();
         break;
@@ -260,7 +306,7 @@ async sendConnection(user: any) {
 
     }
     this.closeDetails();
-    const res = await this.chatService.openChat(selctedUser, true);
+    const res = await this.chatService.openChat(selectedUser, true);
 
     console.log(res);
 
@@ -275,30 +321,30 @@ async sendConnection(user: any) {
       }
     });
     modal.onDidDismiss().then(result => {
-      if (result) {}
+      if (result) { }
     });
     return await modal.present();
   }
 
-  async acceptGreeting(user: any){
+  async acceptGreeting(user: any) {
     this.closeShowGreetingActions();
     const res = await this.mapService.actionGreetingToUser(user.Id, true);
-    if(res && res.Success === true){
+    if (res && res.Success === true) {
       user.Greeting = 1;
       this.updateGreetingIcon();
       this.startChat(user);
-    }else{
+    } else {
       console.log("error while accepting greeting");
     }
   }
 
-  async rejectGreeting(user: any){
+  async rejectGreeting(user: any) {
     this.closeShowGreetingActions();
     const res = await this.mapService.actionGreetingToUser(user.Id, false);
-    if(res && res.Success === true){
+    if (res && res.Success === true) {
       user.Greeting = 1;
       this.updateGreetingIcon();
-    }else{
+    } else {
       console.log("error while rejecting greeting");
     }
   }
@@ -336,7 +382,7 @@ async sendConnection(user: any) {
         this.currentItem = this.markerList[this.markerCurrentIndex];
         console.log("current", this.currentItem);
         console.log("Greeting Icon:", this.greetingIcon);
-        console.log("Connection Icon",this.connectionIcon);
+        console.log("Connection Icon", this.connectionIcon);
       } else {
         this.currentItem = this.markerList[0];
       }
@@ -356,7 +402,7 @@ async sendConnection(user: any) {
   }
 
   async loadNextItem(previous: boolean) {
-    console.log("loadNextItem: previous: " + previous + " CurrentIndex: "+ this.markerCurrentIndex);
+    console.log("loadNextItem: previous: " + previous + " CurrentIndex: " + this.markerCurrentIndex);
     if (this.markerList && this.markerList.length > 0) {
       if (previous) {
         if (this.markerCurrentIndex > 0) {
@@ -370,17 +416,17 @@ async sendConnection(user: any) {
         }
       }
       this.currentItem = this.markerList[this.markerCurrentIndex];
-      console.log("loadNextItem: previous: " + previous + " NewIndex: "+ this.markerCurrentIndex);
-      if(this.markerList[this.markerCurrentIndex].UserName){
+      console.log("loadNextItem: previous: " + previous + " NewIndex: " + this.markerCurrentIndex);
+      if (this.markerList[this.markerCurrentIndex].UserName) {
         console.log("current", this.markerList[this.markerCurrentIndex]);
-        if(this.markerList[this.markerCurrentIndex].Greeting === 1){
+        if (this.markerList[this.markerCurrentIndex].Greeting === 1) {
           const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
           const res = this.greetingList.includes(id);
-          if(res == true) this.markerList[this.markerCurrentIndex].Greeting = 4;
-        }else if(this.markerList[this.markerCurrentIndex].Greeting === 4){
+          if (res == true) this.markerList[this.markerCurrentIndex].Greeting = 4;
+        } else if (this.markerList[this.markerCurrentIndex].Greeting === 4) {
           const id = 'u-' + this.markerList[this.markerCurrentIndex].Id;
           const res = this.greetingList.includes(id);
-          if(res == false) this.markerList[this.markerCurrentIndex].Greeting = 1;
+          if (res == false) this.markerList[this.markerCurrentIndex].Greeting = 1;
         }
       }
       this.setNextPreviousVisibility();
@@ -388,5 +434,5 @@ async sendConnection(user: any) {
     }
   }
 
-  tempClick() {}
+  tempClick() { }
 }
