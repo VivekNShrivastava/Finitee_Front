@@ -60,22 +60,15 @@
       <!-- description -->
       <ion-text>
         <div *ngIf="post.PostDescription.length <= 500">
-          <p>
-            <!-- Hello this isme in temple with my family on holiday hahahahah -->
-            {{post.PostDescription}}
-          </p>
+          <p>{{post.PostDescription}}</p>
         </div>
-
-        <div>
-          <p style="display: flex;" *ngIf="!showFullDescription && post.PostDescription.length > 500"
-            (click)="showFullDescription = true">{{ post.PostDescription.slice(0, 500) }} ...See more</p>
-          <p *ngIf="showFullDescription && post.PostDescription.length > 500">
-            {{ post.PostDescription }}
-          </p>
+        <div *ngIf="post.PostDescription.length > 500">
+          <p *ngIf="!post.showFullDescription" (click)="toggleDescription(post)">{{ post.PostDescription.slice(0, 500) }} ...See more</p>
+          <p *ngIf="post.showFullDescription" (click)="toggleDescription(post)">{{ post.PostDescription }}...See less</p>
         </div>
-
       </ion-text>
-
+      
+      
       <!-- images or video slide -->
       <div class="ion-text-center  post-screen-slide">
         <ion-slides [pager]="post.PostImages.length>1 ? true : false"
@@ -409,10 +402,11 @@
                     <!-- <h4 (click)="replyComment(comment)">Reply</h4> -->
                     <h4 (click)="repliesForComment('replyToComment' ,comment)">Reply</h4>
                     <h4 *ngIf="comment.CommentReplyCount > 0" (click)="topThreeReplies(comment)">{{comment.CommentReplyCount}} Replies</h4>
-                  </div>
+                  </div>                        
                 </ion-item>
                 <!-- replies -->
-                <ion-list class="replies" *ngIf=" comment.showReply === 'true' + (comment?.Id?.toString() || '') && IsReplySectionOpen">
+                <!-- <ion-list class="replies" *ngIf=" comment.showReply === 'true' + (comment?.Id?.toString() || '') && IsReplySectionOpen"> -->
+                <ion-list class="replies" *ngIf="comment.showReplies">
                   <ion-item lines="none" *ngFor="let reply of comment.topThreeReplies">
                     <ion-avatar slot="start">
                       <img (click)="openUser(comment.CreatedBy)"

@@ -7,6 +7,7 @@ import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { MapService } from 'src/app/pages/map/services/map.service';
 import * as config from 'src/app/core/models/config/ApiMethods';
 import { UserLocation } from 'src/app/pages/map/models/Location';
+import { SonarPage } from '../../sidemenu/settings-privacy/sonar/sonar.page';
 
 @Component({
   selector: 'app-map-search',
@@ -188,56 +189,56 @@ export class MapSearchComponent implements OnInit {
   }
 
   setUsPing() {
-    this.setSearchOptions();
-    const currentHours = new Date().getHours();
-    const params = {
-      id: this.mapParams.id,
-      lat: this.mapParams.lat,
-      lng: this.mapParams.lng,
-      key: this.keyinfo == undefined ? null : this.keyinfo,
-      age: {
-        MinAge: +this.ageMinMax.lower,
-        MaxAge: +this.ageMinMax.upper
-      },
-      km: this.radius,
-      type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-      buyorsell: null,
-      dt: new Date(),
-      ustypid: this.logInfo.UserTypeId,
-      flag: 'P',
-      pplr: null,
-      isprt: 0,
-      fdt: new Date(),
-      tdt: new Date(),
-    };
-    let method: string;
-    let isNewPing = false;
-    if (Object.entries(this.setPingObj).length == 0) {
-      method = config.INS_PING_SER;
-      isNewPing = true;
-    } else {
-      method = config.UPD_PING_SER;
-    }
-    // console.log(method, params);
-    this.httpService.post(method, params)
-      .subscribe(async (result: any) => {
-        const obj = {
-          oneTimeSearch: false,
-          key: this.keyinfo == undefined ? null : this.keyinfo,
-          age: {
-            MinAge: +this.ageMinMax.lower,
-            MaxAge: +this.ageMinMax.upper
-          },
-          km: this.radius,
-          type: this.searchTypeString ? this.searchTypeString : 'All',
-          bysl: null,
-          pplr: null,
-          isprt: 0,
-          status: null,
-          frequency: this.frequency,
-          duration: this.duration
-        };
-      });
+    // this.setSearchOptions();
+    // const currentHours = new Date().getHours();
+    // const params = {
+    //   id: this.mapParams.id,
+    //   lat: this.mapParams.lat,
+    //   lng: this.mapParams.lng,
+    //   key: this.keyinfo == undefined ? null : this.keyinfo,
+    //   age: {
+    //     MinAge: +this.ageMinMax.lower,
+    //     MaxAge: +this.ageMinMax.upper
+    //   },
+    //   km: this.radius,
+    //   type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
+    //   buyorsell: null,
+    //   dt: new Date(),
+    //   ustypid: this.logInfo.UserTypeId,
+    //   flag: 'P',
+    //   pplr: null,
+    //   isprt: 0,
+    //   fdt: new Date(),
+    //   tdt: new Date(),
+    // };
+    // let method: string;
+    // let isNewPing = false;
+    // if (Object.entries(this.setPingObj).length == 0) {
+    //   method = config.INS_PING_SER;
+    //   isNewPing = true;
+    // } else {
+    //   method = config.UPD_PING_SER;
+    // }
+    // // console.log(method, params);
+    // this.httpService.post(method, params)
+    //   .subscribe(async (result: any) => {
+    //     const obj = {
+    //       oneTimeSearch: false,
+    //       key: this.keyinfo == undefined ? null : this.keyinfo,
+    //       age: {
+    //         MinAge: +this.ageMinMax.lower,
+    //         MaxAge: +this.ageMinMax.upper
+    //       },
+    //       km: this.radius,
+    //       type: this.searchTypeString ? this.searchTypeString : 'All',
+    //       bysl: null,
+    //       pplr: null,
+    //       isprt: 0,
+    //       status: null,
+    //       frequency: this.frequency,
+    //       duration: this.duration
+    //     };
+    //   });
   }
 
   closeModal() {
@@ -280,13 +281,13 @@ export class MapSearchComponent implements OnInit {
           role: 'activated',
           cssClass: 'isactive',
           handler: (blah) => {
-            this.isActivatePing('1');
+            // this.isActivatePing('1');
           }
         }, {
           text: 'Cancel',
           cssClass: 'isdeactive',
           handler: () => {
-            this.isActivatePing('0');
+            // this.isActivatePing('0');
           }
         }
       ]
@@ -294,71 +295,75 @@ export class MapSearchComponent implements OnInit {
     await alert.present();
   }
 
-  async isActivatePing(flag: '0' | '1') {
+  // async isActivatePing(flag: '0' | '1') {
 
-    const params = {
-      id: this.mapParams.setting.pvid,
-      usrid: this.logInfo.UserId,
-      isactive: flag,
-      lat: this.mapParams.lat,
-      lng: this.mapParams.lng,
-      dt: new Date(),
-      radius: this.mapParams.radius,
-      ustypid: this.logInfo.UserTypeId,
-      flag: 'P'
-    };
-    const method = config.DEC_PING_SER;
-    this.httpService.post(method, params)
-      .subscribe(
-        async (result: any) => {
-          let obj = {
-            oneTimeSearch: false,
-            key: this.keyinfo == undefined ? null : this.keyinfo,
-            age: {
-              MinAge: +this.ageMinMax.lower,
-              MaxAge: +this.ageMinMax.upper
-            },
-            km: this.radius,
-            type: this.searchTypeString ? this.searchTypeString : 'All',
-            bysl: null,
-            pplr: null,
-            isprt: 0,
-            status: null,
-            frequency: this.frequency,
-            duration: this.duration
-          };
-          // console.log(method, result, status);
-          if (flag == '1') {
-            const endTime = Date.now() + (this.duration * 1000);
-          }
-        },
-        error => {
-          this.closeModal();
-          // console.log('deactivate ping - error', error);
-        }
-      );
-  }
+  //   const params = {
+  //     id: this.mapParams.setting.pvid,
+  //     usrid: this.logInfo.UserId,
+  //     isactive: flag,
+  //     lat: this.mapParams.lat,
+  //     lng: this.mapParams.lng,
+  //     dt: new Date(),
+  //     radius: this.mapParams.radius,
+  //     ustypid: this.logInfo.UserTypeId,
+  //     flag: 'P'
+  //   };
+  //   const method = config.DEC_PING_SER;
+  //   this.httpService.post(method, params)
+  //     .subscribe(
+  //       async (result: any) => {
+  //         let obj = {
+  //           oneTimeSearch: false,
+  //           key: this.keyinfo == undefined ? null : this.keyinfo,
+  //           age: {
+  //             MinAge: +this.ageMinMax.lower,
+  //             MaxAge: +this.ageMinMax.upper
+  //           },
+  //           km: this.radius,
+  //           type: this.searchTypeString ? this.searchTypeString : 'All',
+  //           bysl: null,
+  //           pplr: null,
+  //           isprt: 0,
+  //           status: null,
+  //           frequency: this.frequency,
+  //           duration: this.duration
+  //         };
+  //         // console.log(method, result, status);
+  //         if (flag == '1') {
+  //           const endTime = Date.now() + (this.duration * 1000);
+  //         }
+  //       },
+  //       error => {
+  //         this.closeModal();
+  //         // console.log('deactivate ping - error', error);
+  //       }
+  //     );
+  // }
 
   async oneTimeSearch() {
     this.setSearchOptions();
     this.progressBar = true;
-    await this.mapService.oneTimeSearch({
-      age: {
-        MinAge: +this.ageMinMax.lower,
-        MaxAge: +this.ageMinMax.upper
-      },
-      bysl: null,
-      isprt: 0,
-      key: this.keyinfo == undefined ? null : this.keyinfo,
-      km: this.radius,
-      pplr: null,
-      type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-    },
-      this.logInfo,<UserLocation>{
-        lat: this.mapParams.lat,
-        lng: this.mapParams.lng
-      },{
-        geolocation: { latitude: 19.2616678, longitude: 72.9630232},
+    this.mapService.oneTimeSearch(
+      // {
+      //   age: {
+      //     MinAge: +this.ageMinMax.lower,
+      //     MaxAge: +this.ageMinMax.upper
+      //   },
+      //   bysl: null,
+      //   isprt: 0,
+      //   key: this.keyinfo == undefined ? null : this.keyinfo,
+      //   km: this.radius,
+      //   pplr: null,
+      //   type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
+      // },
+      // this.logInfo, 
+      // <UserLocation>
+      // {
+      //   lat: this.mapParams.lat,
+      //   lng: this.mapParams.lng
+      // }, 
+      {
+        geolocation: { latitude: 19.2616678, longitude: 72.9630232 },
         searchKey: this.keyinfo || "",
         scope: this.radius,
         freeUser: this.searchType[1].isChecked,
@@ -372,19 +377,19 @@ export class MapSearchComponent implements OnInit {
       }
     ).subscribe(response => {
       this.progressBar = false;
-      const searchTerms = {
-        oneTimeSearch: true,
-        key: this.keyinfo == undefined ? null : this.keyinfo,
-        age: {
-          MinAge: +this.ageMinMax.lower,
-          MaxAge: +this.ageMinMax.upper
-        },
-        km: this.radius,
-        type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-        bysl: null,
-        pplr: null,
-        isprt: 0,
-      };
+      // const searchTerms = {
+      //   oneTimeSearch: true,
+      //   key: this.keyinfo == undefined ? null : this.keyinfo,
+      //   age: {
+      //     MinAge: +this.ageMinMax.lower,
+      //     MaxAge: +this.ageMinMax.upper
+      //   },
+      //   km: this.radius,
+      //   type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
+      //   bysl: null,
+      //   pplr: null,
+      //   isprt: 0,
+      // };
       this.modalController.dismiss(response);
     });
   }
@@ -455,7 +460,7 @@ export class MapSearchComponent implements OnInit {
       if (result) {
         if (type == 'existingPing') {
           if (result.flag == 'y') {
-            this.isActivatePing('0');
+            // this.isActivatePing('0');
           }
           if (result.flag == 'n') {
             this.closeModal();
@@ -463,7 +468,7 @@ export class MapSearchComponent implements OnInit {
         }
         if (type == 'newSearch') {
           if (result.flag == 'y') {
-            this.isActivatePing('0');
+            // this.isActivatePing('0');
           }
           if (result.flag == 'n') {
             this.closeModal();
