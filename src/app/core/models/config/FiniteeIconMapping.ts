@@ -359,6 +359,11 @@ export const finiteeIconMapper = {
   'user-report':'assets/icons/screen-wise-icons/free-user/Menu-report-user-icon.svg',
   'user-inflows-color':'assets/icons/screen-wise-icons/free-user/Menu-Inflows-Icon-color.svg',
   'send-connection-sonar-icon':'assets/icons/screen-wise-icons/free-user/send_conn_sonar.svg',
+  'connected-sonar-icon':'assets/icons/screen-wise-icons/free-user/Connected - Carousel.svg',
+  'send-greeting-blue':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel blue.svg',
+  'sent-greeting-orange':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel orange.svg',
+  'receive-greeting-green':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel Green.svg',
+  'no-traits-icon':'assets/icons/screen-wise-icons/free-user/no_trait_icon.svg',
 
 };
 

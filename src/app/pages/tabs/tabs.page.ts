@@ -140,18 +140,14 @@ export class TabsPage extends BasePage implements OnInit {
   }
 
   greetingNotification(notificationData: any){
-    console.log(notificationData);
-    console.log(notificationData.body.includes('sent'))
-    console.log(notificationData.body.includes('accepted'))
-    if(notificationData.body.includes('sent')){
-      console.log("sent noti");
+    if(notificationData.body.includes('sent') && notificationData.body.title === 'Greeting'){
       const data = {
         callFunction: 'viewGreetingDetails'
       }
       this.navEx.state = data;
       console.log('navex', this.navEx);
       this.router.navigate(['/tabs/map'], this.navEx)
-    }else if(notificationData.body.includes('accepted')){
+    }else if(notificationData.body.includes('accepted') && notificationData.body.title === 'Greeting'){
       console.log("noti accepted");
       this.router.navigateByUrl('/notifications');
     }
