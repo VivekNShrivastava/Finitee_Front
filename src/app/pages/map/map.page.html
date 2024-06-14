@@ -6,7 +6,7 @@
         <div class="c-fab-button" *ngIf="searchCriteria">
           <div (click)="showSonarSearchResultInListView(true)" > {{resultCount}} results </div>
           <div style="line-height: 11px;">
-            <ion-icon style="font-size: 24px;" name="refresh-outline" (click)="refreshMarker()"></ion-icon>
+            <ion-icon style="font-size: 24px;" name="refresh-outline" (click)="refreshMarkerOne()"></ion-icon>
           </div>
           <div style="line-height: 5px;">
             <ion-icon style="font-size: 16px;margin-right: 10px;" name="close-icon" (click)="clearResults(true)"></ion-icon>
@@ -104,7 +104,7 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #markerDetailModal [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75]" handle="false">
+  <ion-modal #markerDetailModal [initialBreakpoint]="0.43" [breakpoints]="[0, 0.80]" handle="false">
     <ng-template>
       <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
         <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="markerListMainResult"

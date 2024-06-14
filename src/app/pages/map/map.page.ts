@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, Injector, Inject, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, ComponentRef, ElementRef, Injector, Inject, NgZone, OnDestroy, ViewChild, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 import { IonModal, MenuController, ModalController, NavController, Platform } from '@ionic/angular';
@@ -51,7 +51,7 @@ export enum MapFlag {
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage extends BasePage implements OnDestroy {
+export class MapPage extends BasePage implements OnInit, OnDestroy {
   @ViewChild('map_canvas') mapRef?: ElementRef<HTMLElement>;
   @ViewChild('sonarSettingModal') sonarSettingModal?: IonModal;
   @ViewChild('markerDetailModal') markerDetailModal?: IonModal;
@@ -138,6 +138,8 @@ export class MapPage extends BasePage implements OnDestroy {
 
   receivedData: any;
 
+  mapSearchObj: any = [];
+
 
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
   mapCenter!: google.maps.LatLng;
@@ -194,32 +196,15 @@ export class MapPage extends BasePage implements OnDestroy {
     super(authService);
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
-    this.authService.authState.subscribe((authState: boolean) => {
-      console.log("authState", authState)
-      if (authState == true) {
 
-        //removed viewing functionality
-
-        // this.firestoreSubscription = this.firestoreService.viewList$.subscribe(updatedData => {
-        //   this.viewList = updatedData;
-        //   this.viewListNumber = this.viewList?.names?.length;
-        // });
-
-        this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
-          this.greetList = updatedData;
-          console.log(this.greetList);
-          this.greetListNumber = this.greetList?.length;
-          console.log("res -", this.greetListNumber);
-        });
-
-        this.getUserSonarPrivacySettings();
-
-        // this.currentLocationUpdate();
-
-        // this.getCurrentLocation();
-
-      }
+    this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
+      this.greetList = updatedData;
+      console.log(this.greetList);
+      this.greetListNumber = this.greetList?.length;
+      console.log("res -", this.greetListNumber);
     });
+
+    this.getUserSonarPrivacySettings();
 
     this.network.addListener('networkStatusChange', status => {
       if (status.connected === false) {
@@ -351,7 +336,15 @@ export class MapPage extends BasePage implements OnDestroy {
 
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
+
     await this.printCurrentPosition();
+
+    const navigation = this.router.getCurrentNavigation();
+    console.log(navigation);
+    if (navigation?.extras.state) {
+      console.log(navigation?.extras.state)// retrieve the state parameter
+    }
+
     await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log("performing the action...", notification);
       if (notification.actionId === 'tap') console.log('tapped');
@@ -866,6 +859,15 @@ export class MapPage extends BasePage implements OnDestroy {
       }
     }
     forLoop(0);
+  }
+
+  async refreshMarkerOne(){
+    this.mapService.oneTimeSearch(this.mapSearchObj)
+    .subscribe((response: any) => {
+      this.clearResults();
+      this.searchCriteria = response;
+      this.searchResultUpdate();
+    })
   }
 
   async refreshMarker() {
@@ -2188,14 +2190,7 @@ export class MapPage extends BasePage implements OnDestroy {
   }
 
   async searchMap() {
-    // const obj = {
-    //   lat: this.location.lat,
-    //   lng: this.location.lng,
-    //   id: this.user.UserId,
-    //   setting: this.privacySett,
-    //   radius: this.radius,
-    //   searchCriteria: this.searchCriteria,
-    // };
+    
 
     const obj: AllSonarSearchRequest = {
       geolocation: { latitude: this.location.lat, longitude: this.location.lng },
@@ -2245,6 +2240,8 @@ export class MapPage extends BasePage implements OnDestroy {
       componentProps: { values: obj }
     });
     modal.onDidDismiss().then(result => {
+      console.log('res', result);
+      this.mapSearchObj = result?.data?.sonarSearch;
       this.markers.splice(0, this.markers.length);
       this.clearResults();
       this.mapSearchResult = result;
