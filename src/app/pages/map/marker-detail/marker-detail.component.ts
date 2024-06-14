@@ -284,7 +284,7 @@ async sendConnection(user: any) {
 
     }
     this.closeDetails();
-    const res = await this.chatService.openChat(selctedUser, true);
+    const res = await this.chatService.openChat(selectedUser, true);
 
     console.log(res);
 
