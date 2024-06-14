@@ -11,6 +11,7 @@ export class Post {
     Privacy: string = "";
     PostTraits: Array<string> = [];
     PostImages: Array<string> = [];
+    showFullDescription = false;
     BelongsToId?: string;
     BelongsToNodeName: string = "";
     CommentCount: number = 0;
