@@ -2,15 +2,24 @@
 
 <ion-row class="firstrow">
 
-  <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)"
+  <!-- <img *ngIf="currentItem.entity !='U' " (click)="open(currentItem)"
     [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}"
     class="userimg"
     src="{{appConstants.mediaPrefix + (currentItem.Image) }}"
-    onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'" />
+    onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"/> -->
+
+    <img *ngIf="currentItem.entity !== 'U'" 
+    (click)="open(currentItem)"
+    [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}"
+    class="userimg"
+    [src]="appConstants.mediaPrefix + (currentItem.Image)"
+    (error)="onError($event, currentItem.entity)" />
+
+
 
   <ion-icon name="close-icon" class="closecross"
     (click)="closeDetails()"></ion-icon>
-
+ 
 </ion-row>
 
 <!-- <ion-row class="secondrow">
@@ -72,11 +81,10 @@
           </div> -->
           <!-- send-connection-sonar-icon -->
           <div>
-            <ion-icon *ngIf="currentItem.IsConnected === 0 || currentItem.IsConnected === 2 || currentItem.IsConnected === 3" 
-                      [name]="connectionIcon" style="font-size: 36px;"
-                      (click)="sendConnection(currentItem)"></ion-icon>
+            <ion-icon *ngIf="currentItem.IsConnected === 0 || currentItem.IsConnected === 3 || currentItem.IsConnected === 2" 
+            [name]="updateConnectionIcon()" style="font-size: 36px;"
+              (click)="sendConnection(currentItem)"></ion-icon>
           </div>
-          
           
           <button 
           *ngIf="currentItem.Greeting === 0 || currentItem.Greeting === 1 || currentItem.Greeting === 4 || currentItem.Greeting === 5 "

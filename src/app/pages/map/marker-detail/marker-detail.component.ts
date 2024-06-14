@@ -120,6 +120,30 @@ export class MarkerDetailComponent implements OnInit {
   // }
 
   // send-connection-sonar-icon
+
+  getFallbackImage(entity: string): string {
+    switch (entity) {
+      case 'E':
+        return 'assets/custom-ion-icons/Event_thumbnail.svg';
+      case 'SA':
+        return 'assets/custom-ion-icons/Serviceavailable_thumbnail.svg';
+      case 'SR':
+        return 'assets/custom-ion-icons/servicerequired_thumbnail.svg';
+      // Add more cases as needed for other entities
+      default:
+        return 'assets/custom-ion-icons/default_thumbnail.svg';
+    }
+  }
+
+  onError(event: Event, entity: string): void {
+    const element = event.target as HTMLImageElement;
+    element.src = this.getFallbackImage(entity);
+  }
+
+
+
+
+
  updateConnectionIcon() {
   var iconName2 = 'send-connection-sonar-icon';
   if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
