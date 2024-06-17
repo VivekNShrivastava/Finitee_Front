@@ -20,25 +20,25 @@
         <!-- user data -->
         <ion-item lines="none" class="profileBg" style="--overflow:visible;">
           <ng-container slot="start" style="position: relative;">
-            <ion-avatar [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '54px':'48px' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '54px' : '48px'}">
+            <ion-avatar [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px':'45px' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px' : '45px'}">
               <img class="business-logo" [src]="appConstants.mediaPrefix + post.CreatedBy!.ProfileImage"
-                   onError="this.src='assets/icons/business/anonymous.svg'" [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '50px':'45px' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '53px' : '43px'}"/>
-            </ion-avatar>
-            <ion-label class="fi-name-label" [ngStyle]="{'position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '81px' : 'initial' ,'top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '0px' : 'initial'}">
+                   onError="this.src='assets/icons/business/anonymous.svg'" [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%':'100%' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%' : '100%' }"/>
+          </ion-avatar>
+            <ion-label class="fi-name-label" [ngStyle]="{'position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '95px' : 'initial' ,'top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '0px' : 'initial'}">
               <h3>{{post.CreatedBy!.UserName}}</h3>
               <p>3 mins ago <span *ngIf="post.IsEdited === true">(edited)</span></p>
             </ion-label>
             <!-- <ion-icon  size="large"  [name]="beamicon" [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '168px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '-10px' : 'initial'}">
              
             </ion-icon> -->
-             <ion-icon size="large" name="beam-post" [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '190px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '1px' : 'initial'}"></ion-icon>
+             <ion-icon size="large" name="beam-post" [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '165px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '1px' : 'initial'}"></ion-icon>
             
             <ng-contianer *ngIf="post.BeamedFromUser && post.BeamedFromUser.Id" style="display: contents;">
               <ion-avatar style="position: absolute; left: 21px; top: 23px; width: 40px; height: 40px;">
                 <img class="business-logo" [src]="appConstants.mediaPrefix + post.BeamedFromUser!.ProfileImage"
                      onError="this.src='assets/icons/business/anonymous.svg'" style="width: 35px; height: 35px;" />
               </ion-avatar>
-              <ion-label class="fi-name-label" style="position: absolute; left: 80px; top: 1px;">
+              <ion-label class="fi-name-label" style="position: absolute; left: 72px; width: 88px; height: auto; top: 1px;">
                 <h3>{{post.BeamedFromUser!.UserName}}</h3>
               </ion-label>
             </ng-contianer>
