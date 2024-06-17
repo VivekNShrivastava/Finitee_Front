@@ -9,6 +9,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { PaymentService } from 'src/app/core/services/payment.service';
 import { SalesListingService } from 'src/app/core/services/sales-listing/sales-listing.service';
+
 declare var Razorpay: any;
 
 @Component({
@@ -20,12 +21,13 @@ export class SalesItemViewPage extends BasePage implements OnInit {
   itemId!: number;
   salesItem: SalesItem = new SalesItem;
   currencySymbol?:string;
+  createdById: any;
   constructor(
     private route: ActivatedRoute, private alertController: AlertController,
     private router: Router,
     private salesListingService: SalesListingService,
     private authService: AuthService,
-    private commonService: CommonService, private paymentService: PaymentService
+    public commonService: CommonService, public paymentService: PaymentService
   ) {
     super(authService);
     this.route.params.subscribe((params: any) => {
@@ -54,6 +56,7 @@ export class SalesItemViewPage extends BasePage implements OnInit {
   async salesItemById(){
     var result = await this.salesListingService.getSalesItemBySlId(this.itemId);
     this.salesItem = result;
+    this.createdById = this.salesItem.CreatedBy.Id
   }
 
   edit() {

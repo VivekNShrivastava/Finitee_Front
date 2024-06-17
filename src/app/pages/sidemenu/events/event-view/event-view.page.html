@@ -7,8 +7,8 @@
     <ion-title>Events</ion-title>
     <ion-buttons slot="end">
       <ion-button shape="round" expand="block" *ngIf="createdById != logInfoDetails.UserId">
-        <ion-icon name="location-circle-blue-icon">
-        </ion-icon>
+        <!-- <ion-icon name="location-circle-blue-icon">
+        </ion-icon> -->
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -18,10 +18,12 @@
   <ion-list>
     <ion-item lines="none">
       <ion-avatar slot="start">
-        <ion-img alt="Logo" src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
+        <ion-img *ngIf="event && event.CreatedBy" alt="Logo" 
+        src="{{appConstants.mediaPrefix + (event.CreatedBy.ProfileImage) }}"
+       ></ion-img>
       </ion-avatar>
       <ion-label>
-        <h3 style="font-size: 17px; color: #1A3253;">{{logInfoDetails.UserName}}</h3>
+        <h3 *ngIf="event && event.CreatedBy" style="font-size: 17px; color: #1A3253;">{{event.CreatedBy.UserName}}</h3>
         <p style="font-size: 13px; color: #1A3253;">20 mins ago</p>
       </ion-label>
       <ion-label slot="end" class="fd-views-label" *ngIf="event.RequireInvite == true">

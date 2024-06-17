@@ -160,6 +160,7 @@ export const finiteeIconMapper = {
 'Event_thumbnail':'assets/custom-ion-icons/Event_thumbnail.svg',
 'Serviceavailable_thumbnail':'assets/custom-ion-icons/Serviceavailable_thumbnail.svg',
 'servicerequired_thumbnail':'assets/custom-ion-icons/servicerequired_thumbnail.svg',
+'saleslisting_thumbnail':'assets/custom-ion-icons/saleslisting_thumbnail.svg',
 'Donation':'assets/custom-ion-icons/Donation.svg',
   'green-handshake': 'assets/custom-ion-icons/md-green-handshake.svg',
   'no-handshake': 'assets/custom-ion-icons/md-no-handshake.svg',
