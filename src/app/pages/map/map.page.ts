@@ -196,7 +196,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     super(authService);
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
-    this.locationPermission()
+   
     this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
       this.greetList = updatedData;
       console.log(this.greetList);
