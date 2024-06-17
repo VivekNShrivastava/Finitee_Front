@@ -38,6 +38,8 @@ import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-s
 // import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import { Capacitor } from '@capacitor/core';
 import { AlertController } from '@ionic/angular';
+import { App } from '@capacitor/app';
+
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
 const MAP_INIT_ZOOM = 13;
@@ -195,6 +197,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     @Inject('NetworkPlugin') public network: NetworkPlugin
   ) {
     super(authService);
+    this.setupListener();
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
 
@@ -230,6 +233,26 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     }
   }
 
+  async setupListener() {
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) {
+        console.log("background", isActive)
+        // App went to background
+        // Save anything you fear might be lost
+      } else {
+        console.log("foreground", isActive)
+        // App went to foreground
+        // restart things like sound playing
+        this.checkLocationPerm();
+      }
+    });
+  }
+
+  async checkLocationPerm () {
+    const perm = await Geolocation.checkPermissions();
+    if(perm?.location === 'granted') this.printCurrentPosition(); 
+  }
+
   printCurrentPosition = async () => {
 
     try {
@@ -237,13 +260,14 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       const perm = await Geolocation.checkPermissions();
       console.log('check perm', perm?.location);
       if (perm?.location !== "granted") {
-        if(perm?.location === 'prompt') this.isPrompt = false;
         this.isLocationTurnedOn = false;
         const permReq = await Geolocation.requestPermissions();
         console.log('req perm', permReq?.location);
         if(permReq?.location !== 'granted'){
+          this.isPrompt = false;
           this.locationPermission();
         }else{
+          this.isPrompt = false;
           this.isLocationTurnedOn = true;
           this.loadMap();
         }
@@ -253,6 +277,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         this.loadMap();
       }
     } catch (error: any) {
+      this.isPrompt = false;
       console.log("catched error", error);
       // this.openNativeLocation();
       if(error?.message === "Location services are not enabled"){
