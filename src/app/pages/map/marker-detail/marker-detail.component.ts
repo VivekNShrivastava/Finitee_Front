@@ -69,7 +69,7 @@ export class MarkerDetailComponent implements OnInit {
           // this.updateGreetingIcon();
           // this.getButtonClass();
           // this.getButtonText();
-          
+
         }
       } else {
         if (this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4) {
@@ -121,7 +121,7 @@ export class MarkerDetailComponent implements OnInit {
   //     iconName = 'free-user-recieved-white-icon';
   //   else if (this.userCanvasProfile.IsRequestExits)
   //     iconName = 'free-user-pending-white-icon';
-    
+
   //   return iconName
   // }
 
@@ -135,6 +135,9 @@ export class MarkerDetailComponent implements OnInit {
         return 'assets/custom-ion-icons/Serviceavailable_thumbnail.svg';
       case 'SR':
         return 'assets/custom-ion-icons/servicerequired_thumbnail.svg';
+
+      case 'SL':
+        return 'assets/custom-ion-icons/saleslisting_thumbnail.svg';
       // Add more cases as needed for other entities
       default:
         return 'assets/custom-ion-icons/default_thumbnail.svg';
@@ -155,13 +158,13 @@ export class MarkerDetailComponent implements OnInit {
     if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
       return iconName2 = 'connection-req-sent-icon';
     } else if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
-      return iconName2 = 'connection-req-recieved-icon';
+      return iconName2 = 'free-user-recieved-white-icon';
     } else if(this.markerList[this.markerCurrentIndex]?.IsConnected === 4){
       this.markerList[this.markerCurrentIndex].Greeting = 3;
       this.updateGreetingIcon();
       // return iconName2 = 'connected-sonar-icon';
     }
-    return iconName2; 
+    return iconName2;
 
   }
 
@@ -188,12 +191,12 @@ export class MarkerDetailComponent implements OnInit {
       } else {
         this.commonService.presentToast("Something went wrong");
       }
-    }else if(user.IsConnected === 2){
+    } else if (user.IsConnected === 2) {
       await this.acceptRejectModalConnection(user);
     }
   }
 
-  async acceptRejectModalConnection (user: any) {
+  async acceptRejectModalConnection(user: any) {
     const alert = await this.alertController.create({
       header: `You Have A Connection Request!`,
       cssClass: 'add-user-alert',
@@ -226,23 +229,23 @@ export class MarkerDetailComponent implements OnInit {
       ],
     });
 
-    await alert.present(); 
+    await alert.present();
   }
 
   async requestAction(reqAcceptOrDecline: boolean, user: any) {
 
-    
+
     var res = await this.connectionsService.actionConnectionRequest(reqAcceptOrDecline, user?.Id);
-    if(res){
-      if(!reqAcceptOrDecline){
+    if (res) {
+      if (!reqAcceptOrDecline) {
         user.IsConnected = 0;
         this.markerList[this.markerCurrentIndex].IsConnected = 0;
         this.updateConnectionIcon();
-      }else{
+      } else {
         user.IsConnected = 4;
         this.updateConnectionIcon();
       }
-      
+
     }
   }
 
