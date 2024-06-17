@@ -18,8 +18,9 @@
   </ion-toolbar> -->
 
   <ion-toolbar class="toolb">
-    <ion-segment [(ngModel)]="searchMode">
-      <ion-title value="N" class="searchsonar">Search</ion-title>
+    <!-- [(ngModel)]="searchMode" -->
+    <ion-segment>
+      <ion-title value="N" class="searchsonar" >Search</ion-title>
       <!-- <ion-segment-button value="N" checked>
         Search
       </ion-segment-button> -->
@@ -88,10 +89,10 @@
       </table>
     </div>
     <div class="linemark"><div class="line"></div></div>
-    <div style="padding: 0px 10px;" *ngIf="searchMode=='N'">
+    <div style="padding: 0px 10px; margin-top: 20px;" *ngIf="searchMode=='N'">
       <div class="ele">
         <ion-list style="padding-right: 10px;" class="display-flex flex-wrap-wrap">
-          <ion-item style="margin-bottom: 0px;" *ngFor="let type of searchType"
+          <ion-item style="margin-bottom: 15px;" *ngFor="let type of searchType"
             [ngClass]="{ 'width-100':type.label == 'All' ,  'width-50':type.label != 'All'  }"
             [hidden]="((type.value=='F'||type.label=='Connections') && logInfo.UserTypeId!=1) || (logInfo.UserTypeId == 1 && type.label=='Connected Members') ">
             <ion-label class="medbf" style="font-size: 15px;">{{type.label}}</ion-label>
@@ -100,7 +101,14 @@
           </ion-item>
         </ion-list>
       </div>
-
+    </div>
+    <div class="button-container">
+      <ion-button class="search-button-events" shape="round">
+       <p id="events"> Show all events</p>
+      </ion-button>
+      <ion-button class="search-button-donations" shape="round">
+        <p id="donations"> Show all donations</p>
+      </ion-button>
     </div>
     <div style="padding:20px">
       <ion-button *ngIf="searchMode=='N'" class="search-button" expand="full" shape="round" (click)="oneTimeSearch()">

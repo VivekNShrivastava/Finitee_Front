@@ -186,7 +186,7 @@
           <div style="display:flex; justify-content: center; align-items: center; ">
 
             <ion-text
-              style="font-size:23px; color:#285078 ; text-align: center; height: 26px;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+              style="font-size:24px; color:#285078 ; text-align: center; height: 26px;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
               class="ion-text-center name eventname">{{currentItem.Title}}</ion-text>
 
           </div>
@@ -194,16 +194,15 @@
           <div *ngIf="currentItem.entity === 'SA' || currentItem.entity === 'SL' || currentItem.entity === 'SR'"
             style="font-size:27px; color: #1A3253; display: flex; text-align: center; justify-content: center; align-items: center;">
             <p
-              style=" margin-bottom: 0px; margin-top: 22px; font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 26px/31px var(--unnamed-font-family-sf-pro-display);">
-              $
-              {{currentItem.Price}} {{currentItem.PriceType}}</p>
+              class="price">
+              ${{currentItem.Price}} {{currentItem.PriceType}}</p>
           </div>
           <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
             <div>
               <img class="userevent_namelogo"
                 src="{{appConstants.mediaPrefix + (currentItem.ProfileImage || currentItem.Image)}}">
             </div>
-            <p *ngIf="currentItem.entity != 'U'" style="font-size: 21px; color: #1A3253;">
+            <p *ngIf="currentItem.entity != 'U'" style="font-size: 23px; color: #1A3253; ">
               {{currentItem.FirstName}} {{currentItem.LastName}} </p>
             <!-- <p *ngIf="currentItem.entity =='SL' " style="font-size: 24px; color: #1A3253;">@{{currentItem.FirstName}}</p> -->
 
