@@ -139,6 +139,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   receivedData: any;
 
   mapSearchObj: any = [];
+  isPrompt: boolean = true;
 
 
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
@@ -220,6 +221,15 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
   }
 
+  ionViewDidEnter () {
+    console.log("ionViewDidEnter");
+    const navigation = this.router.getCurrentNavigation();
+    console.log(navigation);
+    if (navigation?.extras.state) {
+      console.log(navigation?.extras.state)// retrieve the state parameter
+    }
+  }
+
   printCurrentPosition = async () => {
 
     try {
@@ -227,6 +237,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       const perm = await Geolocation.checkPermissions();
       console.log('check perm', perm?.location);
       if (perm?.location !== "granted") {
+        if(perm?.location === 'prompt') this.isPrompt = false;
         this.isLocationTurnedOn = false;
         const permReq = await Geolocation.requestPermissions();
         console.log('req perm', permReq?.location);
@@ -237,6 +248,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
           this.loadMap();
         }
       } else if (perm.location === "granted") {
+        this.isPrompt = false;
         this.isLocationTurnedOn = true;
         this.loadMap();
       }
@@ -338,12 +350,14 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     console.log("ionViewWillEnter");
 
     await this.printCurrentPosition();
+    console.log(this.router.getCurrentNavigation());
+    console.log(this.router!.getCurrentNavigation()?.extras?.state); // should log out 'bar'
 
-    const navigation = this.router.getCurrentNavigation();
-    console.log(navigation);
-    if (navigation?.extras.state) {
-      console.log(navigation?.extras.state)// retrieve the state parameter
-    }
+    // const navigation = this.router.getCurrentNavigation();
+    // console.log(navigation);
+    // if (navigation?.extras.state) {
+    //   console.log(navigation?.extras.state)// retrieve the state parameter
+    // }
 
     await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log("performing the action...", notification);
@@ -866,12 +880,20 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   async refreshMarkerOne(){
-    this.mapService.oneTimeSearch(this.mapSearchObj)
-    .subscribe((response: any) => {
-      this.clearResults();
-      this.searchCriteria = response;
-      this.searchResultUpdate();
-    })
+    try{
+      this._commonService.showLoader();
+      this.mapService.oneTimeSearch(this.mapSearchObj)
+      .subscribe((response: any) => {
+        this.clearResults();
+        this.searchCriteria = response;
+        this.searchResultUpdate();
+        this._commonService.hideLoader();
+      })
+    }catch(e: any){
+      this._commonService.hideLoader();
+      console.log(e);
+    }
+   
   }
 
   async refreshMarker() {
@@ -2570,9 +2592,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
     modal.onDidDismiss()
       .then(result => {
-        if (result) {
-          // this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
-        }
+
       });
     return await modal.present();
   }

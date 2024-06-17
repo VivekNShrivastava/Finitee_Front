@@ -153,13 +153,13 @@ export class MarkerDetailComponent implements OnInit {
   updateConnectionIcon() {
     var iconName2 = 'send-connection-sonar-icon';
     if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
-      return iconName2 = 'free-user-pending-white-icon';
+      return iconName2 = 'connection-req-sent-icon';
     } else if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
-      return iconName2 = 'free-user-recieved-white-icon';
+      return iconName2 = 'connection-req-recieved-icon';
     } else if(this.markerList[this.markerCurrentIndex]?.IsConnected === 4){
       this.markerList[this.markerCurrentIndex].Greeting = 3;
       this.updateGreetingIcon();
-      return iconName2 = 'connected-sonar-icon';
+      // return iconName2 = 'connected-sonar-icon';
     }
     return iconName2; 
 
