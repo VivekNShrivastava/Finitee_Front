@@ -6,6 +6,8 @@ import { ChatsService } from 'src/app/core/services/chat/chats.service';
 import { Router } from '@angular/router';
 import { BasePage } from 'src/app/base.page';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ModalController } from '@ionic/angular';
+import { ViewingUsersComponent } from '../map/viewing-users/viewing-users.component';
 
 @Component({
   selector: 'app-notifications',
@@ -19,7 +21,8 @@ export class NotificationsPage extends BasePage implements OnInit {
     private _storageService: StorageService,
     public chatService: ChatsService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalController: ModalController
   ) { super(authService)}
 
 
@@ -27,29 +30,47 @@ export class NotificationsPage extends BasePage implements OnInit {
     this.getAllNotification();
   }
 
-  navigateToChat(notiData: any){
-    console.log('data', notiData);
-    if(notiData.title === 'Greeting' && notiData.body.includes('accepted')){
-      var selctedUser: any = {
-        UserId: notiData.data.fromId,
-        DisplayName: notiData.body.split(' ')[0],
-        ProfilePhoto: 'ProfileImage == undefined ? null : this.navParams.ProfileImage',
-        groupId: ""
-      }
-      console.log('start-chatting...', selctedUser);
-      this.chatService.openChat(selctedUser); 
+  notificationTitle(notiData: any){
+    switch (notiData.title) {
+      case 'Greeting' :
+        console.log("Greeting");
+        this.greetingNotification(notiData);
+        break;
+      case 'Post': 
+        console.log('Post');
+        break;
+      default: console.log('defalut');
     }
-    
   }
 
-  navigateToGreeting(){
-    console.log('navigating to greeting section');
-    const data = {
-      callFunction: 'greetingFunction'
+  greetingNotification(notiData: any){
+    if(notiData.title === 'Greeting' && notiData.body.includes('accepted')) 
+      this.navigateToChat(notiData);
+    else if(notiData.title === 'Greeting' && notiData.body.includes('sent'))
+      this.viewGreetingDetails();
+  }
+
+  navigateToChat(notiData: any){
+    this.commonService.showLoader();
+    var selctedUser: any = {
+      UserId: notiData.data.fromId,
+      DisplayName: notiData.body.split(' ')[0],
+      ProfilePhoto: 'ProfileImage == undefined ? null : this.navParams.ProfileImage',
+      groupId: ""
     }
-    // this.navEx.state = data;
-    this.navEx = {state: data}
-    this.router.navigateByUrl('tabs/map', this.navEx);
+    this.chatService.openChat(selctedUser); 
+    this.commonService.hideLoader();
+  }
+
+  public async viewGreetingDetails(): Promise<void> {
+    const modal = await this.modalController.create({
+      component: ViewingUsersComponent,
+      componentProps: {
+        template: "Greeting",
+      }
+    });
+    modal.onDidDismiss();
+    return await modal.present();
   }
 
   getAllNotification() {
