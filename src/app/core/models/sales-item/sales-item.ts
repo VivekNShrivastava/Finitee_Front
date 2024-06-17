@@ -8,7 +8,8 @@ export class SalesItem {
   VisibleTo: string = "A";
   SalesItemImages: Array<string> = [];
   CreatedOn: Date = new Date();
-  ExpireOn: Date = new Date();;
+  ExpireOn: Date = new Date();CreatedBy: any;
+;
   ModifiedOn: Date = new Date();
   Location: string = "current";
   Latitude? : number

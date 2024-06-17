@@ -35,6 +35,7 @@ import { PrivacySettingService } from 'src/app/core/services/privacy-setting.ser
 import { PushNotifications } from '@capacitor/push-notifications';
 import { TabsPage } from '../tabs/tabs.page';
 import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
+
 // import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import { Capacitor } from '@capacitor/core';
 import { AlertController } from '@ionic/angular';
@@ -344,6 +345,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     console.log("OnInit");
     await this.platform.ready();
     this.currentPageHref = window.location.pathname;
+    
   }
 
   async ionViewWillEnter() {
@@ -2620,6 +2622,8 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
     });
   }
+
+  
 
   //Handle swipe event on send msg to subscribers
   swipe(e: TouchEvent, when: string): void {
