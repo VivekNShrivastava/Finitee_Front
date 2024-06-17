@@ -30,20 +30,21 @@
       Ignored
     </ion-button>
   </div>
-  <div style="display: flex; justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+  <div style="display: flex; justify-content: center; align-items: center;"
+    class="maptab" *ngIf="viewTemplate != 'Viewing'">
     <ion-button class="activeclass" shape="round"
       [ngClass]="{'active': activeOrExpired === 1}"
       (click)="activeExpiredGreeting(1)">
       Active
     </ion-button>
-  
+
     <ion-button class="activeclass" shape="round"
       [ngClass]="{'active': activeOrExpired === 2}"
       (click)="activeExpiredGreeting(2)">
-     Previous
+      Previous
     </ion-button>
   </div>
-  
+
   <!-- <div style="justify-content: center; align-items: center;" class="maptab"
     *ngIf="viewTemplate != 'Viewing'">
     <ion-button style="width: 152px;
@@ -67,7 +68,6 @@
     </ion-button>
   </div> -->
 
-
   <!-- <div style="justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
     <ion-button class="activeclass" shape="round"
       [ngClass]="{'active': activeOrExpired == 1}"
@@ -81,7 +81,7 @@
       Expired
     </ion-button>
   </div> -->
-  
+
 </ion-header>
 <ion-content>
 
@@ -97,7 +97,8 @@
             (click)="openUser(user)"
             class="display-flex--row flex-align-center">
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
-              <img style="width: 59px; height: 59px; border-radius: 50%;" animation="gradient"
+              <img style="width: 59px; height: 59px; border-radius: 50%;"
+                animation="gradient"
                 src="{{appConstants.mediaPrefix + ((user.CreatedBy.ProfileImage) || (user.UserProfilePhoto)) }}"
                 onError="this.src='assets/icons/business/anonymous.svg'"
                 alt="User Profile">
@@ -113,40 +114,55 @@
                   || (user.UserName) }}</span>
               </div>
               <div *ngIf="user.Status != null"
-                style="text-align: center; justify-content: center; display: flex; align-items: center; margin-left: 3px; gap: 5px;">
+                style="text-align: center; justify-content: center; display: flex; align-items: center; margin-left: 6px; gap: 5px;">
                 <ion-icon [name]="changeIcon(user.Status)"></ion-icon>
-                <p [ngStyle]="{'color': textColor}" class="acceptedreq">{{greetStatus}}</p>
+                <p [ngStyle]="{'color': textColor}"
+                  class="acceptedreq">{{greetStatus}}</p>
               </div>
-              
+
               <div
                 style="display: flex; align-items: center; margin-left: auto;">
                 <ion-icon name="chat-3dots" (click)="presentRadioAlert()"></ion-icon>
+
               </div>
             </div>
 
           </div>
 
-          <div style="display: flex;  justify-content: space-between; align-items: center; ">
+          <div
+            style="display: flex;  justify-content: space-between; align-items: center; ">
             <div style="display: flex; flex-direction: column; ">
-              <p class="postcount" style="margin-bottom: 0px !important;">200 Posts - 5.2k Connections</p>
+              <p class="postcount"
+                style="margin-bottom: 0px !important; margin-top: 9px;
+              font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+text-align: left;
+font: normal normal 600 16px/26px SF Pro Display;
+letter-spacing: 0.22px;
+color: #285078;">200 Posts - 5.2k Connections</p>
               <div style="display: flex; gap: 10px;">
-                <p class="datetime" > {{_commonService.formatDateToIST(user.ModifiedOn)}}</p>
+                <p class="datetime" style="margin-top: 9px; margin-bottom: 0px;
+                font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+text-align: left;
+font: normal normal 600 16px/26px SF Pro Display;
+letter-spacing: 0.22px;
+color: #285078;"> {{_commonService.formatDateToIST(user.ModifiedOn)}}</p>
 
                 <!-- <p class="datetime" > {{getDateAndTime(user.ModifiedOn, true, false)}}</p> -->
                 <!-- <p class="datetime">{{getDateAndTime(user.ModifiedOn, false, true)}}</p> -->
               </div>
             </div>
-          
+
             <greeting-view *ngIf="viewTemplate != 'Viewing' "
-            [fromUserId]="user.CreatedBy.Id || user.UserId"
-            [fromUserName]="user.CreatedBy.UserName || user.UserName"
-            [fromUserProfile]="(user.CreatedBy.Id + '/' + user.CreatedBy.ProfileImage) || (user.UserId + '/' + user.UserProfilePhoto)"
-            [userInfo]="user"
-            (close)="handleClose($event)">
-          </greeting-view>
-        
+              [fromUserId]="user.CreatedBy.Id || user.UserId"
+              [fromUserName]="user.CreatedBy.UserName || user.UserName"
+              [fromUserProfile]="(user.CreatedBy.Id + '/' + user.CreatedBy.ProfileImage) || (user.UserId + '/' + user.UserProfilePhoto)"
+              [userInfo]="user"
+              (close)="handleClose($event)">
+            </greeting-view>
+
           </div>
-          
 
           <div *ngIf="viewTemplate == 'Viewing'" (click)="openUser(user)"
             class="display-flex--row flex-align-center">
@@ -186,13 +202,13 @@
         </div>
       </div>
       <div class="no-active-greeting"
-      style=" margin-top: 150px;"
-        *ngIf="!loaded && viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 1" >
+        style=" margin-top: 150px;"
+        *ngIf="!loaded && viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 1">
         <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
         <p class="noactive">No Active Greetings!</p>
       </div>
       <div class="no-active-greeting"
-      style=" margin-top: 150px;"
+        style=" margin-top: 150px;"
         *ngIf="!loaded && viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 2">
         <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
         <p class="noactive">No Previous Greeting !</p>

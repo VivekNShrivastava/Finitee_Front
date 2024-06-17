@@ -1079,7 +1079,7 @@ textarea.alert-input.sc-ion-alert-md {
     letter-spacing: var(--unnamed-character-spacing-0-21);
     color: var(--unnamed-color-ffffff);
     text-align: center;
-    font: normal normal normal 13px/16px SF Pro Display;
+    font: normal normal normal 15px/18px SF Pro Display;
     letter-spacing: 0.21px;
     color: #FFFFFF;
     opacity: 1;
@@ -1091,10 +1091,17 @@ textarea.alert-input.sc-ion-alert-md {
   flex-wrap: nowrap;
 }
 .alert-wrapper.sc-ion-alert-md {
-  padding-left: 15px !important;
-  padding-right: 15px !important;
+  padding-left: 13px !important;
+  padding-right: 13px !important;
  text-align: center;
-  max-width: 310px;
+  max-width: 320px;
+  border-radius: 11px;
+
+
+}
+.normal-case{
+  text-transform: none !important;
+  font-weight: bold;
 
 }
 .alert-message.sc-ion-alert-md{
@@ -1114,5 +1121,17 @@ opacity: 1;
 .item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
 
   margin-left: 10px;
+  
 
 }
+.alert1{
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 14px;
+}
+.alert2 , .alert3{
+  margin-top: 7px;
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+
