@@ -10,6 +10,7 @@ import { MapService } from '../services/map.service';
 import { BasePage } from 'src/app/base.page';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GreetingViewComponent } from '../greeting-view/greeting-view.component';
+import { ActionSheetController, AlertController } from '@ionic/angular';
 
 export enum GreetingCode {
   GreetingSend = 'Send',
@@ -44,6 +45,8 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     public router: Router,
     private mapService: MapService,
     private authService: AuthService,
+    private actionSheetCtrl: ActionSheetController,
+    private alertController: AlertController
   ) {
     super(authService);
     const res = this.navParams.get('template');
@@ -172,6 +175,96 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     });
 
     return await modal.present();
+  }
+
+  async presentMenuModalForOther() {
+    
+    var btns = [
+      {
+        text: 'Report',
+        icon: 'user-report',
+        cssClass: 'product-option-action-sheet-button',
+        data: 'Report',
+      },
+      {
+        text: 'Block User',
+        icon: 'user-block',
+        cssClass: 'product-option-action-sheet-button',
+        data: 'Block',
+      },
+    ];
+    const actionSheet = await this.actionSheetCtrl.create({
+      cssClass: 'three-dot-action-sheet',
+      buttons: btns
+    });
+    await actionSheet.present();
+    const result = await actionSheet.onDidDismiss();
+    if(result.data === 'Report'){
+      this.presentRadioAlert();
+    }
+
+  }
+
+  async presentRadioAlert() {
+    const alert = await this.alertController.create({
+      header: 'Report User',
+      inputs: [
+        {
+          name: 'option1',
+          type: 'radio',
+          label: 'I disagree with this user',
+          value: 'I disagree',
+          checked: true, // Set this to true for the default selected option
+        },
+        {
+          name: 'option2',
+          type: 'radio',
+          label: 'Targeted harassment - posted or...',
+          value: 'Targeted harassment',
+        },
+        {
+          name: 'option3',
+          type: 'radio',
+          label: 'Spam',
+          value: 'Spam',
+        },{
+          name: 'option4',
+          type: 'radio',
+          label: 'Inappropriate name',
+          value: 'Inappropriate name',
+        },{
+          name: 'option5',
+          type: 'radio',
+          label: 'Threatening content',
+          value: 'Threatening content',
+        },{
+          name: 'option6',
+          type: 'radio',
+          label: 'Impersonation',
+          value: 'Impersonation',
+        },{
+          name: 'option7',
+          type: 'radio',
+          label: 'Private information',
+          value: 'Private information',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Send Report',
+          handler: (selectedValue) => {
+            // Handle the selected value here
+            // var user_Report = new userReport();
+            // user_Report.nodeId = this.userId;
+            // user_Report.report = selectedValue;
+            // console.log('Selected Value:', selectedValue);
+            // this.reportService.userReport(user_Report)
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   public onViewTypeChange(viewType: number): void {
