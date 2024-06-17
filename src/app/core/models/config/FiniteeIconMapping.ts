@@ -169,9 +169,9 @@ export const finiteeIconMapper = {
   'no-hi': 'assets/custom-ion-icons/md-no-hi.svg',
   'no-dollar': 'assets/custom-ion-icons/md-no-dollar.svg',
   'blue-location': 'assets/custom-ion-icons/md-blue-location.svg',
-  chat: 'assets/custom-ion-icons/md-chat.svg',
-  chatwhitenew: 'assets/custom-ion-icons/chat-white.svg',
-  add: 'assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg',
+  'chat': 'assets/custom-ion-icons/md-chat.svg',
+  'chatwhitenew': 'assets/custom-ion-icons/chat-white.svg',
+  'add': 'assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg',
 
   'chat-camera': 'assets/custom-ion-icons/picturecamera.svg',
   'chat-video':
@@ -365,6 +365,7 @@ export const finiteeIconMapper = {
   'sent-greeting-orange':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel orange.svg',
   'receive-greeting-green':'assets/icons/screen-wise-icons/free-user/Greeting button Carousel Green.svg',
   'no-traits-icon':'assets/icons/screen-wise-icons/free-user/no_trait_icon.svg',
-
+  'connection-req-sent-icon':'assets/icons/screen-wise-icons/free-user/connection_req_sent.svg',
+  'connection-req-recieved-icon':'assets/icons/screen-wise-icons/free-user/connection-req-recieved.svg',
 };
 

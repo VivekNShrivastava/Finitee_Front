@@ -92,9 +92,17 @@
           <!-- removed onHold functionality -->
           <!-- <ion-icon name="onhold" style="font-size: 36px;" (click)="tempClick()"></ion-icon> -->
 
-          <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" class="chat">
+          <!-- <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" class="chat">
             <ion-icon name="chatwhite" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
             Chat Now
+          </div> -->
+
+          <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" style="display: flex; align-items: center; justify-content: center;">
+            <ion-button shape="round" size="small"
+              class="primary-button">
+              <ion-icon style="margin-right: 6px;" name="chaticoninchat" class="icon-40"></ion-icon>
+              Chat now
+            </ion-button>
           </div>
 
         </div>
