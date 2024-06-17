@@ -197,7 +197,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     super(authService);
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
-
+    this.locationPermission()
     this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
       this.greetList = updatedData;
       console.log(this.greetList);
@@ -448,11 +448,15 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   async locationPermission() {
     const alert = await this.alertController.create({
       header: 'Alert',
-      message: 'Enable location services for sonar to work',
+      message: `<div class="mapalertdiv">
+      <p class="alert1" >Your phone location service is disabled.</p>
+      <p class="alert2">Therefore your home location will be shown to other users instead of your live location.</p>
+      <p class="alert3">Enable your phone location service to allow other Finitee users to view your location and connect with you more effectively.</p>
+    </div>`,
       buttons: [
         {
           text: 'Dismiss',
-          cssClass: 'alert-button-cancel',
+          cssClass: 'infos normal-case',
           role: 'cancel',
           handler: async () => {
 
@@ -460,7 +464,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         },
         {
           text: 'Settings',
-          cssClass: 'alert-button-confirm',
+          cssClass: 'infos normal-case',
           role: 'confirm',
           handler: async () => {
             console.log('map req location');

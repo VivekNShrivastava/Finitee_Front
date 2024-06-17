@@ -96,7 +96,7 @@ font-weight: 600;
   }
 
   img{
-    max-width: fit-content;
+    max-width: none;
   }
 
   @media only screen and (min-device-width: 390px) and (max-device-width: 390px){
@@ -122,8 +122,10 @@ font-weight: 600;
 
 .postcount{
     font-size: 17px;
+
 }
 .datetime{
     font-size: 15px;
+
 }
 }
