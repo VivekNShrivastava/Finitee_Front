@@ -544,7 +544,9 @@ ion-footer {
 }
 
 .business-logo {
-  object-fit: cover;
+  // object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 
