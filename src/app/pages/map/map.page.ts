@@ -201,7 +201,6 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.setupListener();
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
-   
     this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
       this.greetList = updatedData;
       console.log(this.greetList);
@@ -2610,12 +2609,11 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   public async viewGreetingDetails(): Promise<void> {
-    // this._commonService.greetingStatusWithDetails();
     const modal = await this.modalController.create({
       component: ViewingUsersComponent,
       componentProps: {
         template: "Greeting",
-      }
+      },      
     });
     modal.onDidDismiss()
       .then(result => {

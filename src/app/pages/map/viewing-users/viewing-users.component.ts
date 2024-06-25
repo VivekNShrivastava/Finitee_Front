@@ -11,6 +11,8 @@ import { BasePage } from 'src/app/base.page';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GreetingViewComponent } from '../greeting-view/greeting-view.component';
 import { ActionSheetController, AlertController } from '@ionic/angular';
+import { ReportService } from 'src/app/core/services/report.service';
+import { userReport } from 'src/app/core/models/report';
 
 export enum GreetingCode {
   GreetingSend = 'Send',
@@ -36,7 +38,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   textColor: string | undefined;
   loaded: boolean = false;
   greetStatus: string | undefined ;
-
+  modalCanDismiss: boolean = false;
   constructor(
     public _commonService: CommonService,
     public navParams: NavParams,
@@ -46,10 +48,14 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     private mapService: MapService,
     private authService: AuthService,
     private actionSheetCtrl: ActionSheetController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private reportService: ReportService
   ) {
     super(authService);
     const res = this.navParams.get('template');
+    this.modalCanDismiss = this.navParams?.data?.['modal']?.['canDismiss'];
+    console.log(this.modalCanDismiss)
+
     this.viewTemplate = res;
     console.log("view", this.viewTemplate)
     
@@ -151,7 +157,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   }
 
   openUser(user: FiniteeUserOnMap) {
-    this.goBack();
+    // this.goBack();
     const navigationExtras: NavigationExtras = {
       state: {
         data: user
@@ -177,8 +183,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     return await modal.present();
   }
 
-  async presentMenuModalForOther() {
-    
+  async presentMenuModalForOther(id: string) {
     var btns = [
       {
         text: 'Report',
@@ -200,12 +205,12 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     await actionSheet.present();
     const result = await actionSheet.onDidDismiss();
     if(result.data === 'Report'){
-      this.presentRadioAlert();
+      this.presentRadioAlert(id);
     }
 
   }
 
-  async presentRadioAlert() {
+  async presentRadioAlert(id: string) {
     const alert = await this.alertController.create({
       header: 'Report User',
       inputs: [
@@ -252,13 +257,19 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
       buttons: [
         {
           text: 'Send Report',
-          handler: (selectedValue) => {
+          handler: async(selectedValue) => {
             // Handle the selected value here
-            // var user_Report = new userReport();
-            // user_Report.nodeId = this.userId;
-            // user_Report.report = selectedValue;
-            // console.log('Selected Value:', selectedValue);
-            // this.reportService.userReport(user_Report)
+            try{
+              this._commonService.showLoader();
+              var user_Report = new userReport();
+              user_Report.nodeId = id;
+              user_Report.report = selectedValue;
+              console.log('Selected Value:', selectedValue);
+              const res = await this.reportService.userReport(user_Report);
+              if(res) this._commonService.hideLoader();
+            }catch(e:any){
+              this._commonService.hideLoader();
+            }
           },
         },
       ],
