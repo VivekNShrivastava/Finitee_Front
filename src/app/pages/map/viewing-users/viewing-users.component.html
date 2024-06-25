@@ -93,9 +93,8 @@
         <div
           *ngIf="filteredGreetingList.length > 0 || viewList.names.length > 0"
           class="lines-bottom ion-padding">
-          <div *ngIf="viewTemplate != 'Viewing' " style="gap: 0px !important;"
-            (click)="openUser(user)"
-            class="display-flex--row flex-align-center">
+          <!-- (click)="openUser(user)" -->
+          <div *ngIf="viewTemplate != 'Viewing' " style="gap: 0px !important;" class="display-flex--row flex-align-center">
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
               <img style="width: 59px; height: 59px; border-radius: 50%;"
                 animation="gradient"
@@ -122,7 +121,7 @@
 
               <div
                 style="display: flex; align-items: center; margin-left: auto;">
-                <ion-icon name="chat-3dots" (click)="presentMenuModalForOther()"></ion-icon>
+                <ion-icon name="chat-3dots" (click)="presentMenuModalForOther(user.CreatedBy.Id)"></ion-icon>
               </div>
             </div>
 
