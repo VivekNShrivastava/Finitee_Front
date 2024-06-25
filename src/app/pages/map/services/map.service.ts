@@ -182,6 +182,7 @@ export class MapService {
   }
 
   public oneTimeSearch( sonarSearch: any): Observable<any> {
+    console.log("janvi mehta",sonarSearch)
     // const params = {
     //   UserId: logInfo.UserId,
     //   Latitude: location.lat,
@@ -242,8 +243,9 @@ export class MapService {
         if (responseData.SonarSalesListingSearchRespond) {
           this.addSalesListing(responseData.SonarSalesListingSearchRespond, false);
         }
-
+console.log("kkkk",response)
         return {response, sonarSearch};
+        
       })
     );
   }
