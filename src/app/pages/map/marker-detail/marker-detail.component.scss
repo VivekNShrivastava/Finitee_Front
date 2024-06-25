@@ -11,52 +11,53 @@
   color: #FFFFFF;
   opacity: 1;
 }
+
 .green-background {
   --background: #1A96D4CC !important;
   background: #1A96D4CC 0% 0% no-repeat padding-box;
-box-shadow: 3px 4px 6px #00000059;
-border-radius: 22px;
-font: var(--unnamed-font-style-normal) normal medium 18px/20px var(--unnamed-font-family-sf-pro-display);
-color: var(--unnamed-color-ffffff);
-text-align: left;
-font: normal normal medium 18px/20px SF Pro Display;
-letter-spacing: 0.29px;
-color: #FFFFFF;
+  box-shadow: 3px 4px 6px #00000059;
+  border-radius: 22px;
+  font: var(--unnamed-font-style-normal) normal medium 18px/20px var(--unnamed-font-family-sf-pro-display);
+  color: var(--unnamed-color-ffffff);
+  text-align: left;
+  font: normal normal medium 18px/20px SF Pro Display;
+  letter-spacing: 0.29px;
+  color: #FFFFFF;
 }
 
-.greenbg{
+.greenbg {
   --background: #30B712 !important;
   background: #1A96D4CC 0% 0% no-repeat padding-box;
-box-shadow: 3px 4px 6px #00000059;
-border-radius: 22px;
-font: var(--unnamed-font-style-normal) normal medium 18px/20px var(--unnamed-font-family-sf-pro-display);
-color: var(--unnamed-color-ffffff);
-text-align: left;
-font: normal normal medium 18px/20px SF Pro Display;
-letter-spacing: 0.29px;
-color: #FFFFFF;
+  box-shadow: 3px 4px 6px #00000059;
+  border-radius: 22px;
+  font: var(--unnamed-font-style-normal) normal medium 18px/20px var(--unnamed-font-family-sf-pro-display);
+  color: var(--unnamed-color-ffffff);
+  text-align: left;
+  font: normal normal medium 18px/20px SF Pro Display;
+  letter-spacing: 0.29px;
+  color: #FFFFFF;
 }
 
 .orange-background {
-  --background:#F26435CC !important;
+  --background: #F26435CC !important;
   background: #F26435CC 0% 0% no-repeat padding-box;
-box-shadow: 3px 4px 6px #00000059;
-border-radius: 22px;
-font: var(--unnamed-font-style-normal) normal medium 20px/22px var(--unnamed-font-family-sf-pro-display);
-font-weight: bold;
-color: var(--unnamed-color-ffffff);
-text-align: left;
-font: normal normal medium 18px/20px SF Pro Display;
-letter-spacing: 0.29px;
-color: #FFFFFF;
+  box-shadow: 3px 4px 6px #00000059;
+  border-radius: 22px;
+  font: var(--unnamed-font-style-normal) normal medium 20px/22px var(--unnamed-font-family-sf-pro-display);
+  font-weight: bold;
+  color: var(--unnamed-color-ffffff);
+  text-align: left;
+  font: normal normal medium 18px/20px SF Pro Display;
+  letter-spacing: 0.29px;
+  color: #FFFFFF;
 }
 
-button{
+button {
   padding-left: 0px !important;
 }
 
 
-.chat{
+.chat {
   border: 2px solid;
   width: 150px;
   border-radius: 43px;
@@ -66,10 +67,11 @@ button{
   background-color: lightskyblue;
 }
 
-.mainuserview{
+.mainuserview {
   position: absolute;
   display: contents;
 }
+
 // .header-md::after {
 //   background-image: none !important;
 // }
@@ -144,6 +146,7 @@ ion-card {
   z-index: 0;
   transform: translateY(-19px);
 }
+
 // .text {
 //   font-size: 10px;
 // }
@@ -177,9 +180,9 @@ ion-card {
   height: 204px;
 
 
-/* UI Properties */
-background: #EAF1F4 0% 0% no-repeat padding-box;
-border-radius: 30px;
+  /* UI Properties */
+  background: #EAF1F4 0% 0% no-repeat padding-box;
+  border-radius: 30px;
   // background: #f0f5f7;
   // padding: 12px 1px;
   // display: flex;
@@ -193,22 +196,22 @@ border-radius: 30px;
 
   // }
   margin-top: 18px;
-  
+
   &-details-other {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
 
-    & > ion-col {
+    &>ion-col {
 
 
-      & > ion-button {
+      &>ion-button {
         margin: 0;
         --padding-start: 0;
         --padding-end: 0;
         text-transform: none;
 
-        & > ion-label {
+        &>ion-label {
           letter-spacing: 0.18px;
           font: normal normal 600 11px/16px;
         }
@@ -216,25 +219,32 @@ border-radius: 30px;
 
     }
   }
+
   ion-card-header {
     padding: 5px;
     text-align: center;
+
     ion-card-subtitle {
       text-align: center;
-      font: normal normal normal 18px/16px SF Pro Display;
-      letter-spacing: 0.22px;
-      color: #1A3253;
+
       opacity: 1;
-      height: 19px;
+
       margin-top: 10px;
-     
+      font: var(--unnamed-font-style-normal) normal normal 20px/27px Segoe UI;
+      color: var(--unnamed-color-707070);
+
+      font: normal normal normal 20px/27px Segoe UI;
+      letter-spacing: 0px;
+      color: #707070;
+
     }
   }
+
   ion-text {
-   
- text-align: center;
- margin-bottom: 15px;
- 
+
+    text-align: center;
+    margin-bottom: 15px;
+
     font: normal normal 600 23px/25px SF Pro Display;
     letter-spacing: 0.37px;
     color: #285078;
@@ -275,32 +285,38 @@ border-radius: 30px;
   // }
 }
 
-.header-card2{
+.header-card2 {
   height: auto;
   margin-top: 0px;
 }
+
 .thumbnail-card {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 185px;
 }
+
 .thumbnail-img {
   width: 100%;
   height: 185px;
   object-fit: cover;
 }
+
 .contact-details {
   border-radius: 11px !important;
-  & > ion-card-content {
+
+  &>ion-card-content {
     padding-left: 5px;
   }
 }
+
 .contact-details-items {
   display: flex;
   justify-content: start;
   column-gap: 5px;
   align-items: center;
+
   // & > ion-card-content {
   //   padding-top: 4px;
   //   padding-left: 4px;
@@ -308,7 +324,7 @@ border-radius: 30px;
   /*  &>ion-icon {
     transform: scale(1.5);
   } */
-  & > ion-text {
+  &>ion-text {
     font: normal normal 600 18px/21px SF Pro Display;
     letter-spacing: 0.22px;
     color: #1A3253;
@@ -318,32 +334,39 @@ border-radius: 30px;
     white-space: nowrap;
   }
 }
+
 .expand {
   position: absolute;
   bottom: 0;
   right: 10px;
+
   &-icon {
     margin-left: auto;
   }
-  ion-icon{
+
+  ion-icon {
     width: 15px;
     height: 10px;
   }
 }
+
 ion-accordion-group {
   padding: 0 15px;
   background: #F0F5F7;
-  & > ion-accordion {
-    & > ion-item {
+
+  &>ion-accordion {
+    &>ion-item {
       margin-bottom: 0;
       --min-height: 32px;
-      & > ion-label {
+
+      &>ion-label {
         font: normal normal bold 18px/28px SF Pro Display;
         letter-spacing: 0.22px;
         color: #285078;
         margin: 0;
       }
-      & > ion-buttons {
+
+      &>ion-buttons {
         ion-button {
           ion-icon {
             height: 15px;
@@ -353,47 +376,56 @@ ion-accordion-group {
       }
 
     }
+
     .list-items {
       background-color: #F0F5F7;
     }
   }
 }
+
 ion-segment {
   background: #f0f5f7;
   padding: 4px;
   justify-content: space-between;
   margin: 5px 0;
   height: 32px;
-  & > ion-text {
+
+  &>ion-text {
     margin-left: 10px;
     font-size: 18px;
     color: #285078;
     font-weight: bold;
   }
+
   // .expand-icon {
   //   margin-right: 15px;
   // }
 }
+
 .products-list {
   padding: 0 10px;
+
   &-card {
     margin: 0;
     border-radius: 0 !important;
     background-color: #F0F5F7;
     border-bottom-left-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
+
     ion-img {
       width: 100%;
       min-height: 170px;
       max-height: 170px;
       object-fit: cover;
     }
+
     &--extra-icon {
       position: absolute;
       top: 4px;
       right: 4px;
       z-index: 10;
-      & > ion-button {
+
+      &>ion-button {
         --padding-top: 0;
         --padding-bottom: 0;
         --padding-top: 0;
@@ -402,22 +434,26 @@ ion-segment {
         --padding-end: 5px;
         border-radius: 4px;
         background: transparent;
-        & > ion-icon {
+
+        &>ion-icon {
           font-size: 1em;
         }
       }
     }
+
     &--header {
       padding: 5px 8px;
       height: 31px;
       background: #e1e6ec;
       border-radius: 0px 0px 10px 10px;
-      & > ion-card-title {
+
+      &>ion-card-title {
         font-size: 17px;
         color: #1A3253;
         font-weight: 600;
         letter-spacing: 0.16px;
       }
+
       // & > ion-card-subtitle {
       //   margin: 0;
       //   font-size: 9px;
@@ -428,6 +464,7 @@ ion-segment {
     }
   }
 }
+
 ion-fab-button {
   margin: 5px;
   --border-radius: 6px;
@@ -435,10 +472,12 @@ ion-fab-button {
   height: 50px;
   transform: rotate(45deg);
   margin-right: 19px;
+
   ion-icon {
     transform: rotate(45deg);
   }
 }
+
 /* .add-post-icon {
   height: 70%;
   width: 70%;
@@ -460,43 +499,54 @@ ion-fab-button {
     }
   }
 } */
-.header-card-details1{
+.header-card-details1 {
 
   display: flex;
   justify-content: center;
-  .connected-members,.connected-members-chat{
+
+  .connected-members,
+  .connected-members-chat {
     width: 35px;
     height: 28px;
     border-radius: 17px;
   }
-  ion-button{
+
+  ion-button {
     --box-shadow: none;
     margin-right: 5px;
   }
-  ion-button:nth-child(2){
+
+  ion-button:nth-child(2) {
     width: 119px;
   }
-  ion-button:nth-child(3){
+
+  ion-button:nth-child(3) {
     width: 112px;
   }
-  ion-icon{
+
+  ion-icon {
     width: 17px;
     height: 16px;
   }
 }
-.header-card-details{
+
+.header-card-details {
   justify-content: center;
   align-items: center;
-  ion-button{
-    --box-shadow:none;
+
+  ion-button {
+    --box-shadow: none;
     align-items: center;
     margin-bottom: 10px;
   }
-  ion-button:nth-child(1){
-    width: 160px !important;;
+
+  ion-button:nth-child(1) {
+    width: 160px !important;
+    ;
   }
 }
-.endorsement-btn{
+
+.endorsement-btn {
 
   --background: transparent;
   --box-shadow: none;
@@ -506,45 +556,61 @@ ion-fab-button {
   width: 150px;
   height: 29px;
   font-size: 17px;
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 20px/14px var(--unnamed-font-family-sf-pro-display);
+
+font: normal normal 600 20px/14px SF Pro Display;
+letter-spacing: 0.32px;
+color: #5D5D5D;
 }
-.endorsement-btn::part(native){
+
+.endorsement-btn::part(native) {
   background: none;
   color: none;
 }
-.fi-header-buttons{
-  ion-button::part(native){
+
+.fi-header-buttons {
+  ion-button::part(native) {
     padding: 0px;
   }
-  .fi-edit-btn{
+
+  .fi-edit-btn {
     padding-right: 7px;
   }
-  .fi-announcement-btn{
+
+  .fi-announcement-btn {
     --background: transparent;
     --box-shadow: none;
     font-size: 0px;
-    ion-icon{
+
+    ion-icon {
       width: 30px;
       height: 21px;
     }
   }
-  .fi-announcement-btn1{
+
+  .fi-announcement-btn1 {
     width: 40px;
-    ion-icon{
+
+    ion-icon {
       width: 30px;
       height: 21px;
     }
   }
-  .three-dots-menu{
+
+  .three-dots-menu {
     width: 30px;
     padding-right: 7px;
-    ion-icon{
-      height:16px
+
+    ion-icon {
+      height: 16px
     }
   }
 }
-ion-img::part(image){
+
+ion-img::part(image) {
   object-fit: cover;
 }
+
 @media screen and (max-width: 1024px) {
   .products-list {
     ion-img {
@@ -552,37 +618,41 @@ ion-img::part(image){
       max-height: 340px;
     }
   }
-  .fi-tab-height{
+
+  .fi-tab-height {
     height: 200px !important;
   }
 }
+
 @media screen and (max-width: 652px) {
   .products-list {
-      ion-img {
-        min-height: 170px;
-        max-height: 170px;
-      }
+    ion-img {
+      min-height: 170px;
+      max-height: 170px;
     }
-    .fi-tab-height{
-      height: 100px !important;
-    }
+  }
+
+  .fi-tab-height {
+    height: 100px !important;
+  }
 }
 
-.secondrow{
+.secondrow {
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.firstrow{
+
+.firstrow {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 20px;
 }
 
-.closecross{
+.closecross {
   width: 11px;
   height: 23px;
   position: absolute;
@@ -600,79 +670,86 @@ ion-img::part(image){
   margin-top: -74px;
   object-fit: cover;
 }
-.userimgevent{
+
+.userimgevent {
   width: 196px;
   height: 143px;
-  border-radius:48px;
+  border-radius: 48px;
   position: absolute;
   border: 0px solid;
   z-index: 1;
   margin-top: -74px;
 }
-.secondrow{
+
+.secondrow {
   display: flex;
   justify-content: center;
   align-items: center;
   // width: 307px;
-// height: 20px;
+  // height: 20px;
   // position: relative;
 }
-.back{
-  position: absolute;
- left: 11px;
- width: 30px;
-  height: 79px;
-color: black;
-top: 110px
 
-}
-.back2{
+.back {
   position: absolute;
-  top:112px ;
   left: 11px;
   width: 30px;
-   height: 79px;
- color: black;
-}
-.front{
-  position: absolute;
-  right: 11px;
-  width: 30px;
   height: 79px;
   color: black;
-  top:110px
-
+  top: 110px
 }
-.front2{
+
+.back2 {
   position: absolute;
-  top:112px ;
-  right: 11px;
+  top: 112px;
+  left: 11px;
   width: 30px;
   height: 79px;
   color: black;
 }
 
-.followeruser{
-  margin-top:25px ;
+.front {
+  position: absolute;
+  right: 11px;
+  width: 30px;
+  height: 79px;
+  color: black;
+  top: 110px
 }
-.followeruserevent{
+
+.front2 {
+  position: absolute;
+  top: 112px;
+  right: 11px;
+  width: 30px;
+  height: 79px;
+  color: black;
+}
+
+.followeruser {
+  margin-top: 25px;
+}
+
+.followeruserevent {
   display: none;
   // margin-top: 3px;
 }
-.eventcard{
+
+.eventcard {
   margin-top: 33px;
 }
-.traitshead{
+
+.traitshead {
   margin-bottom: 10px;
   margin-top: -16px;
   text-align: center;
   font: var(--unnamed-font-style-normal) normal bold 20px/38px var(--unnamed-font-family-sf-pro-display);
-color: var(--unnamed-color-285078);
+  color: var(--unnamed-color-285078);
 
-font: normal normal bold 20px/38px SF Pro Display;
-letter-spacing: 0.32px;
-color: #285078;
-opacity: 1;
+  font: normal normal bold 20px/38px SF Pro Display;
+  letter-spacing: 0.32px;
+  color: #285078;
+  opacity: 1;
 }
 
 ion-col {
@@ -682,35 +759,40 @@ ion-col {
   text-align: center;
 }
 
-.alltraits{
+.alltraits {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   margin: 20px 20px 0px 20px;
 }
-.person_trait{
- 
-height: 37px;
-background: #E8F7FE 0% 0% no-repeat padding-box;
-border: 2px solid #AED6E9;
-border-radius: 22px;
-opacity: 1;
-font: var(--unnamed-font-style-normal) normal medium 18px/40px var(--unnamed-font-family-sf-pro-display);
-color: var(--unnamed-color-285078);
-text-align: left;
-font: normal normal medium 16px/38px SF Pro Display;
-letter-spacing: 0.25px;
-color: #285078;
-opacity: 1;
-font-size: 18px;
+
+.person_trait {
+
+  height: 37px;
+  background: #E8F7FE 0% 0% no-repeat padding-box;
+  border: 2px solid #AED6E9;
+  border-radius: 22px;
+  opacity: 1;
+  font: var(--unnamed-font-style-normal) normal medium 18px/40px var(--unnamed-font-family-sf-pro-display);
+  color: var(--unnamed-color-285078);
+  text-align: left;
+  font: normal normal medium 16px/38px SF Pro Display;
+  letter-spacing: 0.25px;
+  color: #285078;
+  opacity: 1;
+  font-size: 18px;
 }
-.modal-wrapper, .modal-shadow {
+
+.modal-wrapper,
+.modal-shadow {
   overflow: visible !important; // Use !important to ensure the override
 }
-.ion-overlay-wrapper{
+
+.ion-overlay-wrapper {
   overflow: visible;
 }
+
 /* app-marker-detail.component.scss */
 
 :host {
@@ -721,6 +803,7 @@ font-size: 18px;
 .your-ionic-modal-class {
   overflow: visible !important;
 }
+
 /* app-marker-detail.component.scss */
 
 
@@ -728,78 +811,86 @@ font-size: 18px;
   overflow: visible !important;
 }
 
-.modal-handle{
+.modal-handle {
   z-index: 0;
 }
-@media (min-width: 600px){
-  .closecross{
-  top: 14px;
-  left: 473px;
-  width: 23px;
-  height: 23px;
+
+@media (min-width: 600px) {
+  .closecross {
+    top: 14px;
+    left: 473px;
+    width: 23px;
+    height: 23px;
   }
+
   .header-card {
     width: 407px;
     height: 256px;
-  
-  }  
-  .header-card ion-text{
+
+  }
+
+  .header-card ion-text {
     margin-bottom: 20px;
     font-size: 30px;
   }
+
   ion-card-header {
- 
+
 
     ion-card-subtitle {
-   margin-top: 15px;
-     
+      margin-top: 15px;
+
     }
   }
 
-  .header-card-details button{
-    width:187px !important; ;
+  .header-card-details button {
+    width: 187px !important;
+    ;
   }
 }
 
-@media (min-width: 471px){
-  .front{
+@media (min-width: 471px) {
+  .front {
     right: 68px;
   }
-  .back{
+
+  .back {
     left: 67px;
   }
+
   ion-card-subtitle {
     margin-top: 15px;
-      
-     }
+
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   ion-card-header {
-  ion-card-subtitle {
+    ion-card-subtitle {
 
-    margin-top: 25px;
-        font: normal normal normal 20px/18px SF Pro Display;
-     }}
+      margin-top: 25px;
+      font: normal normal normal 20px/18px SF Pro Display;
+    }
+  }
 
 
-     .header-card{
-      width: 440px;
+  .header-card {
+    width: 440px;
     height: 287px;
-     }
+  }
 
-     @media screen and (min-width: 768px) and (max-width: 1024px) {
-      .header-card-details{
-      
-        ion-button:nth-child(1){
-          width: 185px !important;
-          height: 38.6px;
-          font-size: 25px;
-        }
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .header-card-details {
+
+      ion-button:nth-child(1) {
+        width: 185px !important;
+        height: 38.6px;
+        font-size: 25px;
       }
     }
-   
-     
+  }
+
+
 }
 
 
@@ -813,39 +904,40 @@ ion-icon[name="chevron-back-circle-outline"]::part(inner) {
   border-radius: 50%;
 }
 
-.userevent_namelogo{
+.userevent_namelogo {
   width: 50px;
-height: 50px;
-border: 1px solid var(--unnamed-color-707070);
-box-shadow: -1px 3px 6px #000000B8;
+  height: 50px;
+  border: 1px solid var(--unnamed-color-707070);
+  box-shadow: -1px 3px 6px #000000B8;
 
-border-radius: 24px;
-border: 3px solid white;
-object-fit: cover; 
+  border-radius: 24px;
+  border: 3px solid white;
+  object-fit: cover;
 
 }
 
-.eventname{
+.eventname {
   font: var(--unnamed-font-style-normal) normal bold 25px/24px var(--unnamed-font-family-sf-pro-display);
   font: normal normal bold 25px/24px SF Pro Display;
-letter-spacing: 0.4px;
-color: #285078;
-opacity: 1;
+  letter-spacing: 0.4px;
+  color: #285078;
+  opacity: 1;
 }
 
-.eventdate , .eventtime{
+.eventdate,
+.eventtime {
   font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 16px/19px var(--unnamed-font-family-sf-pro-display);
   letter-spacing: 0.25px;
 }
 
-.price{
+.price {
   font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 26px/31px var(--unnamed-font-family-sf-pro-display);
-color: var(--unnamed-color-1a3253);
-text-align: left;
-font: normal normal 600 26px/31px SF Pro Display;
-letter-spacing: 0.41px;
-color: #1A3253;
-font-weight: 600;
-margin-bottom: 0px;
-margin-top: 20px;
+  color: var(--unnamed-color-1a3253);
+  text-align: left;
+  font: normal normal 600 26px/31px SF Pro Display;
+  letter-spacing: 0.41px;
+  color: #1A3253;
+  font-weight: 600;
+  margin-bottom: 0px;
+  margin-top: 20px;
 }
