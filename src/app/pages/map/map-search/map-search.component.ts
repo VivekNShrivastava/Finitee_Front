@@ -28,14 +28,14 @@ export class MapSearchComponent implements OnInit {
     { label: 'Businesses', isChecked: false, value: 'B' },
     { label: 'Service available', isChecked: false, value: 'SA' },
     { label: 'NonProfits', isChecked: false, value: 'N' },
-    // { label: 'Promotions', isChecked: false, value: 'P' },
+    { label: 'Promotions', isChecked: false, value: 'P' },
     { label: 'Totems', isChecked: false, value: 'TT' },
-    // { label: 'Finitee specials', isChecked: false, value: 'FS' },
+    { label: 'Finitee specials', isChecked: false, value: 'FS' },
     { label: 'Buy', isChecked: false, value: 'S' },
-    // { label: 'Connected Members', isChecked: false, value: 'C' },
-    // { label: 'Individual Users', isChecked: false, value: 'F' },
+    { label: 'Connected Members', isChecked: false, value: 'C' },
+    { label: 'Individual Users', isChecked: false, value: 'F' },
     { label: 'Events', isChecked: false, value: 'E' },
-    // { label: 'Sales', isChecked: false, value: 'SA' }
+    { label: 'Sales', isChecked: false, value: 'SA' }
 
   ];
   pages: any;

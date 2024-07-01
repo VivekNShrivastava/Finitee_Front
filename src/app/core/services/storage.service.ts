@@ -77,7 +77,7 @@ export class StorageService {
       time,
       uniId
     }
-    this.data_noti.push(notiData_time);
+    this.data_noti.unshift(notiData_time);
     
     localStorage.setItem(key, JSON.stringify(this.data_noti));
   }
