@@ -2333,10 +2333,6 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       componentProps: { values: obj }
     });
 
- 
-
-
-
     modal.onDidDismiss().then(result => {
       console.log('res', result);
       this.mapSearchObj = result?.data?.sonarSearch;
@@ -2377,6 +2373,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
     return await modal.present();
   }
+
   getheightforsonar(): number {
     throw new Error('Method not implemented.');
   }
@@ -2681,19 +2678,37 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.markerDetailModal?.dismiss();
   }
 
-  public onShowPreviousMarker(latLng: any): void {
-    console.log('runn prev', latLng)
-    const lat = latLng.Latitude;
-    const lng = latLng.Longitude;
+  public onShowPreviousMarker(curr: any): void {
+    console.log('runn prev', curr)
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
     
     this.map?.panTo({lat, lng})
     //move to selected marker
   }
 
-  public onShowNextMarker(latLng: any): void {
-    console.log('runn next', latLng)
-    const lat = latLng.Latitude;
-    const lng = latLng.Longitude;
+  public onShowNextMarker(curr: any): void {
+    console.log('runn next', curr)
+
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+
+    // const lat = latLng.Latitude;
+    // const lng = latLng.Longitude;
     this.map?.panTo({lat, lng})
     //move to selected marker
   }
@@ -2701,12 +2716,17 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   public panMapToCurrLoc(curr: any){
     console.log('cuurent->', curr);
 
-    // const lat = curr.latLng && curr.latLng.LatLong ? curr.latLng.LatLong.Latitude : curr.latLng.Latitude;
-    // const lng = curr.latLng.LatLong ? curr.latLng.LatLong.Longitude : curr.latLng.Longitude;
-
-    const lat = curr.Latitude;
-    const lng = curr.Longitude;
-    // this.map?.panTo({lat, lng})
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+   
+    this.map?.panTo({lat, lng})
   }
 
   public async openMarkerDetails(): Promise<void> {
