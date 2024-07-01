@@ -98,7 +98,7 @@ export class SalesListingService {
       return this.http.get<any>(config.GET_ALL_SL_BY_USR).subscribe((response: any) => {
         //this.commonService.hideLoader();
         this.salesItemList = response.ResponseData;
-        console.log("response", response);
+        console.log("response is here ", response);
         resolve(true);
       },
         (error) => {

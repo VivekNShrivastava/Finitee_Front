@@ -50,8 +50,13 @@
         {{currentItem.FirstName}} {{currentItem.LastName}}
       </ion-text>
       <ion-card-subtitle class="fi-multiline-truncate username">
-        @{{currentItem.UserName}} | {{currentItem.InflowsCount || 0}} Inflows
+        <!-- <div>
+  Device height: {{ countedheight }} px
+</div> -->
+
+        @{{currentItem.UserName.length > 15 ? (currentItem.UserName | slice:0:15) + '...' : currentItem.UserName}} | {{currentItem2.InflowsCount || 0}} Inflows
       </ion-card-subtitle>
+      
     </ion-card-header>
 
     <ion-card-content>
@@ -224,10 +229,11 @@
                 to 2 pm</p>
             </div>
           </div>
-
+   
           <div>
-            <p style="font-size: 17px; text-align: center; color: #285078;">{{currentItem.Description}}</p>
-            <!-- <p *ngIf="currentItem.entity =='E' "  style="font-size: 16px; text-align: center;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p> -->
+            <p style="font-size: 17px; text-align: center; color: #285078;">
+              {{currentItem.Description.length > 120 ? (currentItem.Description | slice:0:120) + '...' : currentItem.Description}}</p>
+           
           </div>
 
           <div *ngIf="currentItem.entity === 'SR'"
