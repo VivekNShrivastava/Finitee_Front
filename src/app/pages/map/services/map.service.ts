@@ -182,6 +182,7 @@ export class MapService {
   }
 
   public oneTimeSearch( sonarSearch: any): Observable<any> {
+  
     // const params = {
     //   UserId: logInfo.UserId,
     //   Latitude: location.lat,
@@ -213,7 +214,7 @@ export class MapService {
     console.log("clicked");
     return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
       map((response: any) => {
-        console.log("response", response);
+       
         const responseData = response || {};
         this.mainList = [];
         if (responseData.SonarFreeUserSearchRespond?.length) {
@@ -243,8 +244,9 @@ export class MapService {
         if (responseData.SonarSalesListingSearchRespond) {
           this.addSalesListing(responseData.SonarSalesListingSearchRespond, false);
         }
-
+console.log("kkkk",response)
         return {response, sonarSearch};
+        
       })
     );
   }

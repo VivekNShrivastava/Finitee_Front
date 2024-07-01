@@ -213,6 +213,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   async presentRadioAlert(id: string) {
     const alert = await this.alertController.create({
       header: 'Report User',
+      cssClass: 'custom-alerts',
       inputs: [
         {
           name: 'option1',
@@ -224,7 +225,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
         {
           name: 'option2',
           type: 'radio',
-          label: 'Targeted harassment - posted or...',
+          label: 'Targeted harassment',
           value: 'Targeted harassment',
         },
         {
@@ -257,6 +258,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
       buttons: [
         {
           text: 'Send Report',
+          cssClass:'infos alertreport',
           handler: async(selectedValue) => {
             // Handle the selected value here
             try{

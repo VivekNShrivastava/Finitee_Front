@@ -103,11 +103,12 @@
     </ng-template>
   </ion-modal>
 
-  <ion-modal #markerDetailModal [initialBreakpoint]="0.37" [breakpoints]="[0, 0.70]" handle="false">
+  <ion-modal #markerDetailModal [initialBreakpoint]="countedHeight"    [breakpoints]="[0, countedHeight, 0.70]" handle="false">
     <ng-template>
       <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
         <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="markerListMainResult"
-          (onCloseDetails)="closeMarkerDetails()" (onShowPrevious)="onShowPreviousMarker()" (onShowNext)="onShowNextMarker()">
+          (onCloseDetails)="closeMarkerDetails()" (onShowPrevious)="onShowPreviousMarker($event)" (onShowNext)="onShowNextMarker($event)"
+          (panMapToCurrLoc)="panMapToCurrLoc($event)">
         </app-marker-detail>
       </div>
     </ng-template>

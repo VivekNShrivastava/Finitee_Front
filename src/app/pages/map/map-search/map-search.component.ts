@@ -28,14 +28,14 @@ export class MapSearchComponent implements OnInit {
     { label: 'Businesses', isChecked: false, value: 'B' },
     { label: 'Service available', isChecked: false, value: 'SA' },
     { label: 'NonProfits', isChecked: false, value: 'N' },
-    // { label: 'Promotions', isChecked: false, value: 'P' },
+    { label: 'Promotions', isChecked: false, value: 'P' },
     { label: 'Totems', isChecked: false, value: 'TT' },
-    // { label: 'Finitee specials', isChecked: false, value: 'FS' },
+    { label: 'Finitee specials', isChecked: false, value: 'FS' },
     { label: 'Buy', isChecked: false, value: 'S' },
-    // { label: 'Connected Members', isChecked: false, value: 'C' },
-    // { label: 'Individual Users', isChecked: false, value: 'F' },
+    { label: 'Connected Members', isChecked: false, value: 'C' },
+    { label: 'Individual Users', isChecked: false, value: 'F' },
     { label: 'Events', isChecked: false, value: 'E' },
-    // { label: 'Sales', isChecked: false, value: 'SA' }
+    { label: 'Sales', isChecked: false, value: 'SA' }
 
   ];
   pages: any;
@@ -122,7 +122,11 @@ export class MapSearchComponent implements OnInit {
     );
     this.searchMode = 'N';
     this.setPingObj = {};
+
+    
   }
+
+  
   async ionViewDidEnter() {
     if (this.navParams.data['values'].searchCriteria) {
       const searchCriteria = this.navParams.data['values'].searchCriteria;
@@ -341,58 +345,38 @@ export class MapSearchComponent implements OnInit {
   // }
 
   async oneTimeSearch() {
-    console.log("clicked map-search.components", this.searchType);
+   
+  
     this.setSearchOptions();
+    
+  
     this.progressBar = true;
     this.mapService.oneTimeSearch(
-      // {
-      //   age: {
-      //     MinAge: +this.ageMinMax.lower,
-      //     MaxAge: +this.ageMinMax.upper
-      //   },
-      //   bysl: null,
-      //   isprt: 0,
-      //   key: this.keyinfo == undefined ? null : this.keyinfo,
-      //   km: this.radius,
-      //   pplr: null,
-      //   type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-      // },
-      // this.logInfo, 
-      // <UserLocation>
-      // {
-      //   lat: this.mapParams.lat,
-      //   lng: this.mapParams.lng
-      // }, 
       {
         geolocation: { latitude: 19.2616678, longitude: 72.9630232 },
         searchKey: this.keyinfo || "",
         scope: this.radius,
         freeUser: this.searchType[1].isChecked,
+        Donations: this.searchType[2].isChecked,
         connections: this.searchType[3].isChecked,
         businessUser: this.searchType[5].isChecked,
         nonProfitUser: this.searchType[7].isChecked,
-        events: this.searchType[10].isChecked,
-        sales: this.searchType[9].isChecked,
+        events: this.searchType[14].isChecked,
+        sales: this.searchType[15].isChecked,
         serviceReq: this.searchType[4].isChecked,
         serviceAvailable: this.searchType[6].isChecked,
       }
-    ).subscribe(response => {
-      this.progressBar = false;
-      // const searchTerms = {
-      //   oneTimeSearch: true,
-      //   key: this.keyinfo == undefined ? null : this.keyinfo,
-      //   age: {
-      //     MinAge: +this.ageMinMax.lower,
-      //     MaxAge: +this.ageMinMax.upper
-      //   },
-      //   km: this.radius,
-      //   type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-      //   bysl: null,
-      //   pplr: null,
-      //   isprt: 0,
-      // };
-      this.modalController.dismiss(response);
-    });
+    ).subscribe(
+      response => {
+        console.log('Response received:', response); // Log response
+        this.progressBar = false;
+        this.modalController.dismiss(response);
+      },
+      error => {
+        console.error('Error:', error); // Log error if any
+        this.progressBar = false;
+      }
+    );
   }
   searchTypeChanged(typeCode: string) {
     if (this.tempOtherSearchTerm) {
@@ -422,9 +406,13 @@ export class MapSearchComponent implements OnInit {
   setSearchOptions() {
     this.searchTypeString = '';
     for (let i = 0; i < this.searchType.length; i++) {
+     
       const element = this.searchType[i];
+    
       if (element.isChecked) {
         this.searchTypeString += this.searchTypeString != '' ? ', ' + element.value : element.value
+        console.log( this.searchTypeString)
+      
       }
     }
     if (this.searchType.filter(val => val.value == 'All')[0].isChecked) {
