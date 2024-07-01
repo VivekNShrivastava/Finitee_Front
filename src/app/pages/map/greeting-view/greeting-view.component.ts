@@ -122,7 +122,7 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
 
   getGreetingIcon(userInfo: any, icon?: string){
     var iconName = "greeting";
-    console.log(userInfo.Id);
+    // console.log(userInfo.Id);
     if(userInfo.Id.includes('sent')){
       console.log('true');
       iconName = 'greeting-sent';

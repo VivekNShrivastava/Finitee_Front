@@ -28,14 +28,14 @@ export class MapSearchComponent implements OnInit {
     { label: 'Businesses', isChecked: false, value: 'B' },
     { label: 'Service available', isChecked: false, value: 'SA' },
     { label: 'NonProfits', isChecked: false, value: 'N' },
-    { label: 'Promotions', isChecked: false, value: 'P' },
+    // { label: 'Promotions', isChecked: false, value: 'P' },
     { label: 'Totems', isChecked: false, value: 'TT' },
-    { label: 'Finitee specials', isChecked: false, value: 'FS' },
+    // { label: 'Finitee specials', isChecked: false, value: 'FS' },
     { label: 'Buy', isChecked: false, value: 'S' },
-    { label: 'Connected Members', isChecked: false, value: 'C' },
-    { label: 'Individual Users', isChecked: false, value: 'F' },
+    // { label: 'Connected Members', isChecked: false, value: 'C' },
+    // { label: 'Individual Users', isChecked: false, value: 'F' },
     { label: 'Events', isChecked: false, value: 'E' },
-    { label: 'Sales', isChecked: false, value: 'SA' }
+    // { label: 'Sales', isChecked: false, value: 'SA' }
 
   ];
   pages: any;
@@ -361,8 +361,8 @@ export class MapSearchComponent implements OnInit {
         connections: this.searchType[3].isChecked,
         businessUser: this.searchType[5].isChecked,
         nonProfitUser: this.searchType[7].isChecked,
-        events: this.searchType[10].isChecked,
-        Totems: this.searchType[8].isChecked,
+        events: this.searchType[14].isChecked,
+        sales: this.searchType[15].isChecked,
         serviceReq: this.searchType[4].isChecked,
         serviceAvailable: this.searchType[6].isChecked,
       }
@@ -411,7 +411,7 @@ export class MapSearchComponent implements OnInit {
     
       if (element.isChecked) {
         this.searchTypeString += this.searchTypeString != '' ? ', ' + element.value : element.value
-        console.log( this.searchTypeString)
+        // console.log( this.searchTypeString)
       
       }
     }
