@@ -12,6 +12,12 @@
   opacity: 1;
 }
 
+.username{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .green-background {
   --background: #1A96D4CC !important;
   background: #1A96D4CC 0% 0% no-repeat padding-box;
@@ -145,6 +151,7 @@ ion-card {
   border-radius: 30px !important;
   z-index: 0;
   transform: translateY(-19px);
+  width: 95%;
 }
 
 // .text {
@@ -176,8 +183,8 @@ ion-card {
   }
 } */
 .header-card {
-  width: 307px;
-  height: 204px;
+  width: 85%;
+  height: 210px;
 
 
   /* UI Properties */
@@ -233,7 +240,7 @@ ion-card {
       font: var(--unnamed-font-style-normal) normal normal 20px/27px Segoe UI;
       color: var(--unnamed-color-707070);
 
-      font: normal normal normal 20px/27px Segoe UI;
+      font: normal normal normal 18px/27px Segoe UI;
       letter-spacing: 0px;
       color: #707070;
 
@@ -503,6 +510,7 @@ ion-fab-button {
 
   display: flex;
   justify-content: center;
+  gap: 3%;
 
   .connected-members,
   .connected-members-chat {
@@ -533,6 +541,7 @@ ion-fab-button {
 .header-card-details {
   justify-content: center;
   align-items: center;
+  gap: 3%;
 
   ion-button {
     --box-shadow: none;
@@ -561,6 +570,9 @@ ion-fab-button {
 font: normal normal 600 20px/14px SF Pro Display;
 letter-spacing: 0.32px;
 color: #5D5D5D;
+
+
+
 }
 
 .endorsement-btn::part(native) {
@@ -869,7 +881,7 @@ ion-col {
     ion-card-subtitle {
 
       margin-top: 25px;
-      font: normal normal normal 20px/18px SF Pro Display;
+      font: normal normal normal 18px/18px SF Pro Display;
     }
   }
 

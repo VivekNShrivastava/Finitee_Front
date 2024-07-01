@@ -108,10 +108,11 @@ export class EventListPage extends BasePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Delete event',
       message: 'Are you sure you want to delete this event?',
+      cssClass: 'custom-alert-message',
       buttons: [
         {
           text: 'Cancel',
-          cssClass: 'alert-button-cancel',
+          cssClass: 'infos',
           role: 'cancel',
           handler: async () => {
             // Handle cancel action if needed.
@@ -119,7 +120,7 @@ export class EventListPage extends BasePage implements OnInit {
         },
         {
           text: 'Delete',
-          cssClass: 'alert-button-confirm',
+          cssClass: 'dangers',
           role: 'confirm',
           handler: async () => {
             try {
