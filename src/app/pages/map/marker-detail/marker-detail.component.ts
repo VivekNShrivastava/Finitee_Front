@@ -30,6 +30,7 @@ export class MarkerDetailComponent implements OnInit {
   @Output() onCloseDetails: EventEmitter<any> = new EventEmitter<any>();
   @Output() onShowPrevious: EventEmitter<any> = new EventEmitter<any>();
   @Output() onShowNext: EventEmitter<any> = new EventEmitter<any>();
+  @Output() panMapToCurrLoc: EventEmitter<any> = new EventEmitter<any>();
   readonly appConstants: any = AppConstants;
   showNext: boolean = false;
   showPrevious: boolean = false;
@@ -174,7 +175,7 @@ export class MarkerDetailComponent implements OnInit {
     if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
       return iconName2 = 'connection-req-sent-icon';
     } else if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
-      return iconName2 = 'free-user-recieved-white-icon';
+      return iconName2 = 'connection-req-recieved-icon';
     } else if(this.markerList[this.markerCurrentIndex]?.IsConnected === 4){
       this.markerList[this.markerCurrentIndex].Greeting = 3;
       this.updateGreetingIcon();
@@ -470,12 +471,14 @@ export class MarkerDetailComponent implements OnInit {
       if (previous) {
         if (this.markerCurrentIndex > 0) {
           this.markerCurrentIndex--;
-          this.onShowPrevious.emit();
+          this.panMapToCurrLoc.emit(this.currentItem);
+          this.onShowPrevious.emit(this.markerList[this.markerCurrentIndex ]);
         }
       } else {
         if (this.markerCurrentIndex < this.markerList.length - 1) {
           this.markerCurrentIndex++;
-          this.onShowNext.emit();
+          this.panMapToCurrLoc.emit(this.currentItem);
+          this.onShowNext.emit(this.markerList[this.markerCurrentIndex]);
         }
       }
       this.currentItem = this.markerList[this.markerCurrentIndex];

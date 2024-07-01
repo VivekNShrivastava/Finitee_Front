@@ -43,6 +43,7 @@
           <ion-col style="padding-right: 0px;     padding-left: 0px;     display: flex;
           justify-content: center;" size="4">
             <!-- <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img> -->
+
             <img style="border-radius: 10px; width:93%; height:84px;" src="{{appConstants.mediaPrefix+event.EventImages[0]}}" 
             onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"/>
           </ion-col>

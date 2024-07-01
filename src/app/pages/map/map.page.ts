@@ -144,7 +144,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   mapSearchObj: any = [];
   isPrompt: boolean = true;
 
-
+  currUser: any;
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
   mapCenter!: google.maps.LatLng;
   markerCurrentIndex = -1;
@@ -453,6 +453,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
+    setTimeout(() => {
+      const buttons = document.querySelectorAll('.gm-style .gm-style-iw-c button');
+      buttons.forEach(button => {
+        (button as HTMLElement).style.display = 'none';
+      });
+    }, 1000)
     console.log('ngAfterViewInit');
     await this.platform.ready();
     console.log('conn', this.userConnectionActive);
@@ -684,6 +690,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
       this.refreshMap();
       this.mapService.hideLoader();
+      this.map.addListener('click', (event: google.maps.MapMouseEvent) => {
+        // Prevent the default info window from showing
+        if (event.domEvent) {
+          event.stop();
+        }
+      });
       this.map.addListener("click", () => {
         if (this.mapWindow) {
           this.mapWindow.close();
@@ -1015,7 +1027,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       // this.addClusterElementsToMap(this.clusterMap, 0);
       this.addSameLatLongMarkersToMap(this.clusterMap, 0);
 
-
+      console.log(this.clusterMap)
       if (this.markersMap.size + this.clusterMap.size === 1) {
         let latLng;
         for (const [key, value] of this.markersMap) {
@@ -2227,6 +2239,11 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       for (var i in markers) {
         bounds.extend(markers[i].position)
       }
+      const position = {
+        lat: this.location.lat,
+        lng: this.location.lng
+      }
+      bounds.extend(position);
     }
     this.map?.fitBounds(bounds);
   }
@@ -2316,10 +2333,6 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       componentProps: { values: obj }
     });
 
- 
-
-
-
     modal.onDidDismiss().then(result => {
       console.log('res', result);
       this.mapSearchObj = result?.data?.sonarSearch;
@@ -2360,6 +2373,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
     return await modal.present();
   }
+
   getheightforsonar(): number {
     throw new Error('Method not implemented.');
   }
@@ -2664,12 +2678,55 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.markerDetailModal?.dismiss();
   }
 
-  public onShowPreviousMarker(): void {
+  public onShowPreviousMarker(curr: any): void {
+    console.log('runn prev', curr)
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+    
+    this.map?.panTo({lat, lng})
     //move to selected marker
   }
 
-  public onShowNextMarker(): void {
+  public onShowNextMarker(curr: any): void {
+    console.log('runn next', curr)
+
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+
+    // const lat = latLng.Latitude;
+    // const lng = latLng.Longitude;
+    this.map?.panTo({lat, lng})
     //move to selected marker
+  }
+
+  public panMapToCurrLoc(curr: any){
+    console.log('cuurent->', curr);
+
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+   
+    this.map?.panTo({lat, lng})
   }
 
   public async openMarkerDetails(): Promise<void> {

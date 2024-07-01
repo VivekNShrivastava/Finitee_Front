@@ -362,7 +362,7 @@ export class MapSearchComponent implements OnInit {
         businessUser: this.searchType[5].isChecked,
         nonProfitUser: this.searchType[7].isChecked,
         events: this.searchType[10].isChecked,
-        Totems: this.searchType[8].isChecked,
+        // sales: this.searchType[15].isChecked,
         serviceReq: this.searchType[4].isChecked,
         serviceAvailable: this.searchType[6].isChecked,
       }
@@ -411,7 +411,7 @@ export class MapSearchComponent implements OnInit {
     
       if (element.isChecked) {
         this.searchTypeString += this.searchTypeString != '' ? ', ' + element.value : element.value
-        console.log( this.searchTypeString)
+        // console.log( this.searchTypeString)
       
       }
     }
