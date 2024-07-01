@@ -341,6 +341,7 @@ export class MapSearchComponent implements OnInit {
   // }
 
   async oneTimeSearch() {
+    console.log("clicked map-search.components", this.searchType);
     this.setSearchOptions();
     this.progressBar = true;
     this.mapService.oneTimeSearch(
@@ -370,8 +371,8 @@ export class MapSearchComponent implements OnInit {
         connections: this.searchType[3].isChecked,
         businessUser: this.searchType[5].isChecked,
         nonProfitUser: this.searchType[7].isChecked,
-        events: this.searchType[14].isChecked,
-        sales: this.searchType[15].isChecked,
+        events: this.searchType[10].isChecked,
+        sales: this.searchType[9].isChecked,
         serviceReq: this.searchType[4].isChecked,
         serviceAvailable: this.searchType[6].isChecked,
       }

@@ -210,6 +210,7 @@ export class MapService {
     //   serviceReq: true,
     //   serviceAvailable: false,
     // };
+    console.log("clicked");
     return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
       map((response: any) => {
         console.log("response", response);
