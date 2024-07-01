@@ -23,7 +23,6 @@ import { SplashScreen } from '@capacitor/splash-screen';
 export class AppComponent {
   locationUpdateInterval$: any;
   constructor(private authService: AuthService, private paymentService: PaymentService, private locationService: LocationService, private commonService: CommonService, private router: Router, public location: Location, public _userPrivacyServivce: UserPrivacyService) {
-    // SplashScreen.hide();
     addIcons(finiteeIconMapper);
     this.initializeApp();
   }
@@ -51,11 +50,14 @@ export class AppComponent {
     //   autoHide: false,
     // });
     // await SplashScreen.show({
-    //   showDuration: 1000,
+    //   showDuration: 1500,
     //   autoHide: true,
     // });
-    if (Capacitor.isNativePlatform())
+    if (Capacitor.isNativePlatform()) {
       this.setTextZoom();
+      // await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
+    }
+
 
     const temp = localStorage.getItem('firstLaunch');
     // console.log('ls', temp);
@@ -75,11 +77,12 @@ export class AppComponent {
           // console.log("auth false");
           this.router.navigate([''], {replaceUrl: true});
         }
+
+        // if (Capacitor.isNativePlatform()) {
+        //   await SplashScreen.hide(); // Hide splash screen once initialization is complete
+        // }
       });
     }
-
-    
-
   }
  
   setTextZoom() {

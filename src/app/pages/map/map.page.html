@@ -107,7 +107,8 @@
     <ng-template>
       <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
         <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="markerListMainResult"
-          (onCloseDetails)="closeMarkerDetails()" (onShowPrevious)="onShowPreviousMarker()" (onShowNext)="onShowNextMarker()">
+          (onCloseDetails)="closeMarkerDetails()" (onShowPrevious)="onShowPreviousMarker($event)" (onShowNext)="onShowNextMarker($event)"
+          (panMapToCurrLoc)="panMapToCurrLoc($event)">
         </app-marker-detail>
       </div>
     </ng-template>

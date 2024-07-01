@@ -496,21 +496,7 @@ ion-fab-button {
     width: 160px !important;;
   }
 }
-.endorsement-btn{
 
-  --background: transparent;
-  --box-shadow: none;
-  border: 1px solid #1A3253;
-  border-radius: 17px;
-  color: #1A3253;
-  width: 150px;
-  height: 29px;
-  font-size: 17px;
-}
-.endorsement-btn::part(native){
-  background: none;
-  color: none;
-}
 .fi-header-buttons{
   ion-button::part(native){
     padding: 0px;
