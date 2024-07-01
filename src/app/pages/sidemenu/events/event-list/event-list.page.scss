@@ -24,6 +24,7 @@ ion-content {
           object-fit: cover;
         }
         & > ion-card {
+          width: 100%;
           box-shadow: none;
           background: #EAF1F4;
           border-radius: 22px;
@@ -32,25 +33,26 @@ ion-content {
             padding: 15px 10px;
             & > ion-text {
               h4 {
-                font: normal normal 600 14px/24px SF Pro Display;
+                font: normal normal 600 16px/24px SF Pro Display;
                 letter-spacing: 0.22px;
                 color: #285078;
                 height: 14px;
                 margin-bottom: 8px;
-                font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+                font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 16px/24px var(--unnamed-font-family-sf-pro-display);
 color: var(--unnamed-color-285078);
 text-align: left;
-font: normal normal 600 14px/24px SF Pro Display;
+
 letter-spacing: 0.22px;
 color: #285078;
+margin-top: 5px;
                 
                 &.completed-event {
                   // color: #E57676;
                   // height: 16px;
-                  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+                  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 16px/24px var(--unnamed-font-family-sf-pro-display);
 color: var(--unnamed-color-285078);
 text-align: left;
-font: normal normal 600 14px/24px SF Pro Display;
+font: normal normal 600 16px/24px SF Pro Display;
 letter-spacing: 0.22px;
 color: #285078;
                 }
@@ -62,9 +64,11 @@ color: #285078;
               }
             }
             & > ion-buttons {
-              position: absolute;
-              bottom: 6px;
-              right: 5px;
+              display: flex;
+              justify-content: end;
+              // position: absolute;
+              // bottom: 6px;
+              // right: 5px;
               & > ion-button {
                 background: #ffffff;
                 height: 26px;
@@ -141,4 +145,9 @@ text-align: left;
 font: normal normal 600 16px/26px SF Pro Display;
 letter-spacing: 0.22px;
 color: #285078;
+}
+
+.alert-message.sc-ion-alert-md {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
 }

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { Subscription } from 'rxjs';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { SwipeService } from 'src/app/core/services/swipe.service';
-import { IonModal } from '@ionic/angular';
+import { IonModal, Platform } from '@ionic/angular';
 import 'firebase/firestore';
 import { MapService } from '../services/map.service';
 import { BasePage } from 'src/app/base.page';
@@ -16,6 +16,8 @@ import { ChatsService } from 'src/app/core/services/chat/chats.service';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { ConnectionsService } from 'src/app/core/services/connections.service';
 import { AlertController } from '@ionic/angular';
+import { SlicePipe } from '@angular/common';
+
 @Component({
   selector: 'app-marker-detail',
   templateUrl: './marker-detail.component.html',
@@ -43,9 +45,12 @@ export class MarkerDetailComponent implements OnInit {
 
 
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
+  deviceHeight: number | undefined;
+
 
 
   constructor(public swipeService: SwipeService,
+    private platform: Platform,
     public mapService: MapService,
     public authService: AuthService,
     public router: Router,
@@ -99,7 +104,18 @@ export class MarkerDetailComponent implements OnInit {
 
     this.subscribeSwipeEvent();
     this.loadCurrentItem();
+    this.platform.ready().then(() => {
+      this.deviceHeight = this.getDeviceHeight();
+      const countedheight = (264 / this.deviceHeight).toFixed(2);
+      console.log("this is the ",countedheight)
+    });
+
     // this.updateGreetingIcon();
+  }
+
+  getDeviceHeight(): number {
+    
+    return window.innerHeight;
   }
 
   updateGreetingIcon() {
@@ -421,10 +437,14 @@ export class MarkerDetailComponent implements OnInit {
   }
 
   loadCurrentItem() {
+
     if (this.markerList && this.markerList.length > 0) {
       if (this.markerCurrentIndex > -1 && this.markerCurrentIndex < this.markerList.length) {
         this.currentItem = this.markerList[this.markerCurrentIndex];
         console.log("current", this.currentItem);
+        const inflow=this.currentItem.InflowsCount
+        // this.getRandomInflowsCount(inflow)
+        
         console.log("Greeting Icon:", this.greetingIcon);
         console.log("Connection Icon", this.connectionIcon);
       } else {
@@ -479,6 +499,57 @@ export class MarkerDetailComponent implements OnInit {
       this.updateGreetingIcon();
     }
   }
+  // getRandomInflowsCount(inflow: any) {
+  //   console.log("here is all inflows from count",inflow)
+    
+  // }
+
+  getRandomInflowsCount(): string {
+    const inflows2 = Math.floor(Math.random() * (9000000 - 1000 + 1)) + 1000;
+    console.log(inflows2)
+
+    // Format the number
+    const formattedInflows = this.formatNumber(inflows2);
+
+    console.log(formattedInflows);
+    return formattedInflows;
+  }
+
+  formatNumber(num: number): string {
+    if (num >= 1000 && num < 1000000) {
+      return Math.floor(num / 1000) + 'k';
+    } else if (num >= 1000000) {
+      const millionValue = num / 1000000;
+      if (Math.floor(millionValue) === millionValue) {
+        return millionValue.toFixed(0) + 'M';
+      } else {
+        return millionValue.toFixed(1).replace(/\.0$/, '') + 'M';
+      }
+    } else {
+      return num.toString();
+    }
+  }
+  
+  
+  
+
+  // Other component logic...
+
+
+
+  currentItem2: any = {
+   
+    InflowsCount: this.getRandomInflowsCount()
+  };
+
 
   tempClick() { }
 }
+function ifelse(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}
+
+function elif(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}
+

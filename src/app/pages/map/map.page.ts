@@ -170,6 +170,10 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   locationUpdateInterval$: any;
   prevLiveLocation: UserLocation = new UserLocation();
   isNativeLocationOn : boolean = true;
+  screenService: any;
+  deviceHeight: number | undefined;
+  countedHeight: number | undefined;
+  countedHeight2: number | undefined;
 
   constructor(
     private platform: Platform,
@@ -365,12 +369,24 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     return status.connected;
   };
 
+
+
   async ngOnInit() {
     console.log("OnInit");
     await this.platform.ready();
     this.currentPageHref = window.location.pathname;
-    
+    this.platform.ready().then(() => {
+      this.deviceHeight = this.getDeviceHeight();
+      this.countedHeight = parseFloat((270 / this.deviceHeight).toFixed(2)); // Parse to float for numeric binding
+      console.log("This is the countedHeight: ", this.countedHeight);
+    });
   }
+
+  getDeviceHeight(): number {
+    return window.innerHeight;
+  }
+
+
 
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
@@ -415,9 +431,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
   ionViewWillLeave() {
 
-    //removed viewing functionality
 
-    // this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
 
     if (this.firestoreSubscription) {
       this.firestoreSubscription.unsubscribe();
@@ -2279,35 +2293,50 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     let breakpoints: number[];
     let initialBreakpoint: number;
 
-    if (screenWidth < 768) {
+    // if (screenWidth < 768) {
 
-      if (screenWidth == 412) {
-        breakpoints = [0, 0.8];
-        initialBreakpoint = 0.7;
-      } else {
-        breakpoints = [0, 1];
-        initialBreakpoint = 0.9;
-      }
-      // Small screens (e.g., smartphones)
+    //   if (screenWidth == 412) {
+    //     breakpoints = [0, 0.8];
+    //     initialBreakpoint = 0.7;
+    //   } else {
+    //     breakpoints = [0, 1];
+    //     initialBreakpoint = 0.9;
+    //   }
+    
+
+    // }
+    // else if (screenWidth >= 768 && screenWidth < 1024) {
+   
+    //   breakpoints = [0, 0.6];
+    //   initialBreakpoint = 0.6;
+    // } else {
+      
+    //   breakpoints = [0, 0.4];
+    //   initialBreakpoint = 0.4;
+    // }
+  
+    const getheightforsonar = () => {
+      const windowheight= window.innerHeight;
+      this.countedHeight2 = parseFloat((637 / windowheight).toFixed(2));
+      // console.log("Yesssssssssssssssssss",this.countedHeight2)
+      return this.countedHeight2;
 
     }
-    else if (screenWidth >= 768 && screenWidth < 1024) {
-      // Medium screens (e.g., tablets)
-      breakpoints = [0, 0.6];
-      initialBreakpoint = 0.6;
-    } else {
-      // Large screens (e.g., desktops)
-      breakpoints = [0, 0.4];
-      initialBreakpoint = 0.4;
-    }
+    
 
     const modal = await this.modalController.create({
       component: MapSearchComponent,
-      breakpoints: breakpoints,
-      initialBreakpoint: initialBreakpoint,
+      breakpoints:[0, getheightforsonar()],
+      
+      initialBreakpoint:getheightforsonar() ,
       handle: false,
       componentProps: { values: obj }
     });
+
+ 
+
+
+
     modal.onDidDismiss().then(result => {
       console.log('res', result);
       this.mapSearchObj = result?.data?.sonarSearch;
@@ -2347,6 +2376,9 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       }
     });
     return await modal.present();
+  }
+  getheightforsonar(): number {
+    throw new Error('Method not implemented.');
   }
 
   async updateMapSearch(params: any) {

@@ -43,11 +43,12 @@
           <ion-col style="padding-right: 0px;     padding-left: 0px;     display: flex;
           justify-content: center;" size="4">
             <!-- <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img> -->
-            <img style="border-radius: 10px; width: 104px; height:84px;" src="{{appConstants.mediaPrefix+event.EventImages[0]}}" 
+
+            <img style="border-radius: 10px; width:93%; height:84px;" src="{{appConstants.mediaPrefix+event.EventImages[0]}}" 
             onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"/>
           </ion-col>
           <ion-col style="padding-left: 0px;" size="8" >
-            <ion-card button="true" style="  width: 230px;
+            <ion-card button="true" style="  width: 100%;
             background: #EAF1F4 0% 0% no-repeat padding-box;
             border-radius: 22px;
             height: auto; margin-left: 0px;  box-shadow: none !important;" >
@@ -111,15 +112,17 @@
     <ion-grid *ngIf="selectedTab == 'expired' ">
       <ion-row class="ion-align-items-center" *ngFor="let event of completedEventList; let i=index">
         <ion-col size="4" style="    display: flex; justify-content: center;">
-          <ion-img style="border-radius: 10px; height: 100px;  " *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
+          <ion-img style="border-radius: 10px; " 
+          *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"
+          onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"></ion-img>
         </ion-col>
         <ion-col style="padding-left: 10px;" size="8" >
-          <ion-card button="true" style="  width: 222px;
+          <ion-card button="true" style="  width: 100%;
           background: #EAF1F4 0% 0% no-repeat padding-box;
           border-radius: 22px;
           height: auto;">
 
-            <ion-card-content style="padding: 6px 16px 22px 16px; display: flex; flex-direction: column;">
+            <ion-card-content style="padding: 6px 16px 10px 16px; display: flex; flex-direction: column;">
               <ion-text>
                 <h4 class="completed-event dates" >{{event.Title}}</h4>
               </ion-text>
@@ -127,7 +130,7 @@
                 <h4  class="completed-event dates">{{event.StartDate | date}}</h4>
               </ion-text>
               <ion-text>
-                <h4  class="completed-event dates">{{event.StartDate | date:'shortTime'}} <ng-container
+                <h4 style="margin-bottom: 15px;" class="completed-event dates">{{event.StartDate | date:'shortTime'}} <ng-container
                     *ngIf="event.StartDate != null && event.EndDate != null ">to</ng-container> {{event.EndDate |
                   date:'shortTime'}}</h4>
               </ion-text>
