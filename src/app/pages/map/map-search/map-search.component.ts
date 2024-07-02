@@ -6,8 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { MapService } from 'src/app/pages/map/services/map.service';
 import * as config from 'src/app/core/models/config/ApiMethods';
-import { UserLocation } from 'src/app/pages/map/models/Location';
-import { SonarPage } from '../../sidemenu/settings-privacy/sonar/sonar.page';
+import { LocationService } from 'src/app/core/services/location.service';
 
 @Component({
   selector: 'app-map-search',
@@ -76,7 +75,8 @@ export class MapSearchComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public authService: AuthService,
-    public mapService: MapService
+    public mapService: MapService,
+    private locationService: LocationService
   ) {
     this.mapParams = this.navParams?.data?.['values'];
     this.googleAutocomplete = new google.maps.places.AutocompleteService();
@@ -351,9 +351,20 @@ export class MapSearchComponent implements OnInit {
     
   
     this.progressBar = true;
+    var sonarSearch_location = {
+      lat : 0,
+      lng : 0
+    }
+    const curr_loc = await this.locationService.getCurrentLocationLatLng();
+    if(location){
+      sonarSearch_location.lat = curr_loc.lat,
+      sonarSearch_location.lng = curr_loc.lng
+      console.log(location);
+    }
     this.mapService.oneTimeSearch(
       {
-        geolocation: { latitude: 19.2616678, longitude: 72.9630232 },
+        // geolocation: { latitude: 19.2616678, longitude: 72.9630232 },
+        geolocation: {latitude: sonarSearch_location?.lat, longitude: sonarSearch_location?.lng},
         searchKey: this.keyinfo || "",
         scope: this.radius,
         freeUser: this.searchType[1].isChecked,
