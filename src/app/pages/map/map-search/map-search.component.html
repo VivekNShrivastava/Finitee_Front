@@ -20,7 +20,14 @@
   <ion-toolbar class="toolb">
     <!-- [(ngModel)]="searchMode" -->
     <ion-segment>
-      <ion-title value="N" class="searchsonar" >Search</ion-title>
+      <div>
+        <ion-title value="N" class="searchsonar" >Search</ion-title>
+        <ion-buttons slot="end" style="position: absolute;right: 5px;">
+          <ion-button>
+            <img style="padding-right: 7px; padding-bottom: 7px; width: 20px; height: 20px;" src="assets/icon/fin/close.png">
+          </ion-button>
+        </ion-buttons>
+      </div>
       <!-- <ion-segment-button value="N" checked>
         Search
       </ion-segment-button> -->
@@ -57,36 +64,43 @@
       </div>
     </div>
 
-    <div class="ele" style="padding: 10px 25px 0px;" *ngIf="searchMode=='N'">
-      <table class="medbf" style="width: 100%;font-weight: 500;">
-      <Tr>
-        <Td>
-          Location
-        </Td>
-        <Td>
-          <ion-input class=" locationsearch"  type="textarea"></ion-input>
-        </Td>
-      </Tr>
-        <Tr>
-          <Td style="width: 100px;">
-            Scope
-          </Td>
-          <Td>
-            <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input> &nbsp; &nbsp;
-            Miles
-          </Td>
-        </Tr>
-        <Tr *ngIf="logInfo && logInfo.UserTypeId ==1">
-          <Td>
-            Age
-          </Td>
-          <Td>
-            <ion-input class="search-box input-field" [(ngModel)]="ageMinMax.lower" type="number"></ion-input>
-            <span class="to-label"> To </span>
-            <ion-input class="search-box input-field" [(ngModel)]="ageMinMax.upper" type="number"></ion-input>
-          </Td>
-        </Tr>
-      </table>
+    <div>
+      <div class="ele" style="padding: 10px 25px 0px;" *ngIf="searchMode=='N'">
+        <table class="medbf1">
+          <Tr>
+              <Td>
+              Scope
+            </Td>
+            <Td style="padding-left: 7px;">
+              <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input> &nbsp; &nbsp;
+              Miles
+            </Td>
+          </Tr>
+          <Tr>
+            <ion-button class="locationsearch" shape="round"> Set Location</ion-button>
+            <!-- <Td>
+              Location
+            </Td>
+            <Td>
+              <ion-input class=" locationsearch"  type="textarea"></ion-input>
+            </Td> -->
+          </Tr>
+        </table>
+      </div>
+      <div class="ele" style="padding: 10px 25px 0px;" *ngIf="searchMode=='N'">
+        <table class="medbf" style="width: 100%;font-weight: 500;">
+          <Tr *ngIf="logInfo && logInfo.UserTypeId ==1">
+            <Td>
+              Age
+            </Td>
+            <Td>
+              <ion-input class="search-box input-field" [(ngModel)]="ageMinMax.lower" type="number"></ion-input>
+              <span class="to-label"> To </span>
+              <ion-input class="search-box input-field" [(ngModel)]="ageMinMax.upper" type="number"></ion-input>
+            </Td>
+          </Tr>
+        </table>
+      </div>
     </div>
     <div class="linemark"><div class="line"></div></div>
     <div style="padding: 0px 10px; margin-top: 20px;" *ngIf="searchMode=='N'">
@@ -102,14 +116,14 @@
         </ion-list>
       </div>
     </div>
-    <div class="button-container">
+    <!-- <div class="button-container">
       <ion-button class="search-button-events" shape="round">
        <p id="events"> Show all events</p>
       </ion-button>
       <ion-button class="search-button-donations" shape="round">
         <p id="donations"> Show all donations</p>
       </ion-button>
-    </div>
+    </div> -->
     <div style="padding:20px">
       <ion-button *ngIf="searchMode=='N'" class="search-button" expand="full" shape="round" (click)="oneTimeSearch()">
         Search
