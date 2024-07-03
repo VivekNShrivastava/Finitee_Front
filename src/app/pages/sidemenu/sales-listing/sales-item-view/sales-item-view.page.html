@@ -12,10 +12,10 @@
   <ion-list>
     <ion-item lines="none">
       <ion-avatar slot="start">
-        <ion-img alt="Logo" src=""></ion-img>
+        <ion-img *ngIf="salesItem && salesItem.CreatedBy" src="{{appConstants.mediaPrefix + (salesItem.CreatedBy.ProfileImage) }}" alt="Logo" src=""></ion-img>
       </ion-avatar>
       <ion-label>
-        <h3>{{logInfo.DisplayName}}</h3>
+        <h3 *ngIf="salesItem && salesItem.CreatedBy">{{salesItem.CreatedBy.UserName}}</h3>
         <p>3 mins ago</p>
       </ion-label>
       <ion-label slot="end" class="fd-views-label">
@@ -63,13 +63,16 @@
       </ion-label>
     </div>
 
-    <div style="margin-bottom: 10px;">
-      <ion-label class="input-label">Viewable by</ion-label>
-      <br>
-      <ion-label class="desc">
-        {{salesItem.VisibleTo}}
-      </ion-label>
-    </div>
+    <ion-item lines="none" *ngIf="createdById == salesItem.UserId">
+      <div>
+        <ion-text>
+          <h4 style="font-size: 17px; color: #285078;">Viewable by</h4>
+        </ion-text>
+        <ion-text>
+          <p style="font-size: 17px; color: #285078;" class="ion-no-margin">{{commonService.getPrivacyFullValue(salesItem.VisibleTo)}}</p>
+        </ion-text>
+      </div>
+    </ion-item>
 
     <div style="margin-bottom: 10px;">
       <ion-label class="input-label">Location</ion-label>

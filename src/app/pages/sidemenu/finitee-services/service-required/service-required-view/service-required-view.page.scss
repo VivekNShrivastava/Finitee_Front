@@ -51,6 +51,7 @@ ion-content {
 
     & ion-item {
       margin-bottom: 0;
+      margin-top: 7px;
       --min-height: 0;
 
       & div {
@@ -80,14 +81,16 @@ ion-content {
         }
 
         p {
-          font: normal normal normal 13px/21px SF Pro Display;
+          font: normal normal normal 15px/21px SF Pro Display;
           letter-spacing: 0.18px;
           color: #1A3253;
+          font-weight: 600;
         }
       }
 
       & ion-text {
         min-height: 26px;
+        padding-left: 0px;
 
         & h2 {
           font: normal normal 600 22px/24px SF Pro Display;
@@ -156,16 +159,30 @@ ion-footer {
 
 
 .input-label{
-  font: normal normal 600 13px/24px SF Pro Display;
-  letter-spacing: 0.21px;
-  color: #505050;
-  font-size: 15px;
+ 
   margin-left: 8px;
+
+
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 17px/26px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-285078);
+text-align: left;
+
+letter-spacing: 0.24px;
+color: #285078;
+font-weight: 800;
 }
 .desc{
-  font: normal normal 600 16px/24px SF Pro Display;
-  letter-spacing: 0.21px;
-  color: #285078;
+  
   margin-left: 9px;
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 500;
+
+
+  font: var(--unnamed-font-style-normal) normal normal var(--unnamed-font-size-13) 15px/24px var(--unnamed-font-family-sf-pro-display);
+letter-spacing: var(--unnamed-character-spacing-0-21);
+color: var(--unnamed-color-1a3253);
+text-align: left;
+font: normal normal normal 13px/24px SF Pro Display;
+letter-spacing: 0.21px;
+color: #1A3253;
 }
