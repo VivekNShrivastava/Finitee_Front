@@ -339,7 +339,7 @@ ion-icon.ion-accordion-toggle-icon {
   font: var(--unnamed-font-style-normal) normal normal 16px/26px var(--unnamed-font-family-sf-pro-display);
 color: var(--unnamed-color-285078);
 
-font: normal normal normal 20px/26px SF Pro Display;
+font: normal normal normal 18px/26px SF Pro Display;
 letter-spacing: 0.25px;
 color: #285078;
 opacity: 1;
@@ -1079,7 +1079,7 @@ textarea.alert-input.sc-ion-alert-md {
     letter-spacing: var(--unnamed-character-spacing-0-21);
     color: var(--unnamed-color-ffffff);
     text-align: center;
-    font: normal normal normal 13px/16px SF Pro Display;
+    font: normal normal normal 15px/18px SF Pro Display;
     letter-spacing: 0.21px;
     color: #FFFFFF;
     opacity: 1;
@@ -1091,10 +1091,18 @@ textarea.alert-input.sc-ion-alert-md {
   flex-wrap: nowrap;
 }
 .alert-wrapper.sc-ion-alert-md {
-  padding-left: 15px !important;
-  padding-right: 15px !important;
+  padding-left: 13px !important;
+  padding-right: 13px !important;
  text-align: center;
-  max-width: 310px;
+  max-width: 320px;
+  width: 321px;
+  border-radius: 11px;
+
+
+}
+.normal-case{
+  text-transform: none !important;
+  font-weight: bold;
 
 }
 .alert-message.sc-ion-alert-md{
@@ -1114,5 +1122,33 @@ opacity: 1;
 .item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
 
   margin-left: 10px;
+  
 
+}
+.alert1{
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 14px;
+}
+.alert2 , .alert3{
+  margin-top: 7px;
+  margin-bottom: 0px;
+  font-size: 14px;
+}
+.alert-radio-group.sc-ion-alert-md, .alert-checkbox-group.sc-ion-alert-md{
+  max-height: 458px !important;
+}
+
+/* global.scss */
+.custom-alerts .alert-radio-label {
+  font: var(--unnamed-font-style-normal) normal normal 14px/24px var(--unnamed-font-family-sf-pro-display);
+  text-align: left;
+  font: normal normal normal 17px/24px SF Pro Display;
+  letter-spacing: 0.22px;
+  color: #788692;
+  padding-left: 40px;
+}
+
+.alertrepot .alert-button-group sc-ion-alert-md{
+margin-top: 30px;
 }

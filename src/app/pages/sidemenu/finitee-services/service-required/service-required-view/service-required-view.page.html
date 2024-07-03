@@ -13,16 +13,16 @@
     <ion-item lines="none">
       <ion-avatar slot="start">
         <!-- <ion-img alt="Logo" src="appConstants.mediaPrefix+ProfileImage"></ion-img> -->
-        <img src="appConstants.mediaPrefix+ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" />
+        <img src="appConstants.mediaPrefix+ProfileImage"  />
       </ion-avatar>
       <ion-label>
         <h3>{{serviceObj.FirstName}} {{serviceObj.LastName}}</h3>
         <p>3 mins ago</p>
       </ion-label>
       <ion-label style="display: flex; text-align: center; justify-content: center; align-items: center; background-color: #F0F5F7;  width: 130px;
-      height: 34px; border-radius: 17px;" slot="end" class="fd-views-label">
-        <p style="font-size:14px ;">300 views</p>
-        <ion-icon name="heat-map-icon"></ion-icon>
+      height: 36px; border-radius: 17px;" slot="end" class="fd-views-label">
+        <p style="font-size:15px ;">300 views</p>
+        <ion-icon style="font-size: 25px !important; margin-right: 5px;" name="heat-map-icon"></ion-icon>
       </ion-label>
     </ion-item>
 
@@ -37,14 +37,14 @@
         <ion-slide *ngFor="let i of serviceObj.ImageList">
           <ion-card class="ion-no-margin">
             <!-- <ion-img alt="thumbnail-img" [src]="appConstants.mediaPrefix+i"></ion-img> -->
-            <img src="appConstants.mediaPrefix+i" onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
+            <img src="appConstants.mediaPrefix+i" onerror="this.style.display='none'" />
           </ion-card>
         </ion-slide>
       </ion-slides>
     </ion-item>
 
     <ion-item lines="none">
-      <ion-label style="font-size: 18px; font-weight: 500; color: #285078;">
+      <ion-label style="font-size: 20px; font-weight: 500; color: #285078;">
         {{currencySymbol}}{{serviceObj.Price}}{{serviceObj.PriceType}}
       </ion-label>
     </ion-item>

@@ -132,6 +132,8 @@ ion-content {
           font: normal normal normal 15px/21px SF Pro Display;
           letter-spacing: 0.24px;
           color: #285078;
+          margin-top: 10px;
+          margin-bottom: 10px;
         }
 
       }
@@ -193,6 +195,7 @@ ion-footer {
     font: normal normal bold 16px/24px SF Pro Display;
     letter-spacing: 0.25px;
     color: #FFFFFF;
+    height: 53px;
   }
   .fi-twoBtns{
     display: flex;

@@ -50,15 +50,22 @@
         {{currentItem.FirstName}} {{currentItem.LastName}}
       </ion-text>
       <ion-card-subtitle class="fi-multiline-truncate username">
-        @{{currentItem.UserName}} | {{currentItem.InflowsCount || 0}} Inflows
+        <!-- <div>
+  Device height: {{ countedheight }} px
+</div> -->
+
+        @{{currentItem.UserName.length > 15 ? (currentItem.UserName | slice:0:15) + '...' : currentItem.UserName}} | {{currentItem2.InflowsCount || 0}} Inflows
       </ion-card-subtitle>
+      
     </ion-card-header>
 
     <ion-card-content>
 
       <ion-row class="header-card-details" style="display: flex; margin-bottom: 5px;">
 
-        <ion-button style="width: 107px !important; height: 32px;" shape="round" size="small" color="light"
+        <ion-button  style="width: 107px !important; height: 32px;
+        
+        " shape="round" size="small" color="light" 
           class="endorsement-btn">
           {{currentItem.TotalPosts}} Posts
         </ion-button>
@@ -92,9 +99,17 @@
           <!-- removed onHold functionality -->
           <!-- <ion-icon name="onhold" style="font-size: 36px;" (click)="tempClick()"></ion-icon> -->
 
-          <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" class="chat">
+          <!-- <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" class="chat">
             <ion-icon name="chatwhite" style="font-size: 36px;" (click)="tempClick()"></ion-icon>
             Chat Now
+          </div> -->
+
+          <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" style="display: flex; align-items: center; justify-content: center;">
+            <ion-button shape="round" size="small"
+              class="primary-button" (click)="startChat(currentItem)">
+              <ion-icon style="margin-right: 6px;" name="chaticoninchat" class="icon-40"></ion-icon>
+              Chat now
+            </ion-button>
           </div>
 
         </div>
@@ -178,7 +193,7 @@
           <div style="display:flex; justify-content: center; align-items: center; ">
 
             <ion-text
-              style="font-size:23px; color:#285078 ; text-align: center; height: 26px;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+              style="font-size:24px; color:#285078 ; text-align: center; height: 26px;  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
               class="ion-text-center name eventname">{{currentItem.Title}}</ion-text>
 
           </div>
@@ -186,16 +201,15 @@
           <div *ngIf="currentItem.entity === 'SA' || currentItem.entity === 'SL' || currentItem.entity === 'SR'"
             style="font-size:27px; color: #1A3253; display: flex; text-align: center; justify-content: center; align-items: center;">
             <p
-              style=" margin-bottom: 0px; margin-top: 22px; font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 26px/31px var(--unnamed-font-family-sf-pro-display);">
-              $
-              {{currentItem.Price}} {{currentItem.PriceType}}</p>
+              class="price">
+              ${{currentItem.Price}} {{currentItem.PriceType}}</p>
           </div>
           <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
             <div>
               <img class="userevent_namelogo"
                 src="{{appConstants.mediaPrefix + (currentItem.ProfileImage || currentItem.Image)}}">
             </div>
-            <p *ngIf="currentItem.entity != 'U'" style="font-size: 21px; color: #1A3253;">
+            <p *ngIf="currentItem.entity != 'U'" style="font-size: 23px; color: #1A3253; ">
               {{currentItem.FirstName}} {{currentItem.LastName}} </p>
             <!-- <p *ngIf="currentItem.entity =='SL' " style="font-size: 24px; color: #1A3253;">@{{currentItem.FirstName}}</p> -->
 
@@ -215,10 +229,11 @@
                 to 2 pm</p>
             </div>
           </div>
-
+   
           <div>
-            <p style="font-size: 17px; text-align: center; color: #285078;">{{currentItem.Description}}</p>
-            <!-- <p *ngIf="currentItem.entity =='E' "  style="font-size: 16px; text-align: center;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p> -->
+            <p style="font-size: 17px; text-align: center; color: #285078;">
+              {{currentItem.Description.length > 120 ? (currentItem.Description | slice:0:120) + '...' : currentItem.Description}}</p>
+           
           </div>
 
           <div *ngIf="currentItem.entity === 'SR'"
@@ -302,3 +317,19 @@
       onerror="this.onerror=null;this.src='assets/imgs/male.png';">
   </ion-avatar>
 </ng-template>
+
+<!-- .endorsement-btn{
+
+  --background: transparent;
+  --box-shadow: none;
+  border: 1px solid #1A3253;
+  border-radius: 17px;
+  color: #1A3253;
+  width: 150px;
+  height: 29px;
+  font-size: 17px;
+}
+.endorsement-btn::part(native){
+  background: none;
+  color: none;
+} -->

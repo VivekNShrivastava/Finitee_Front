@@ -10,6 +10,9 @@ import { MapService } from '../services/map.service';
 import { BasePage } from 'src/app/base.page';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GreetingViewComponent } from '../greeting-view/greeting-view.component';
+import { ActionSheetController, AlertController } from '@ionic/angular';
+import { ReportService } from 'src/app/core/services/report.service';
+import { userReport } from 'src/app/core/models/report';
 
 export enum GreetingCode {
   GreetingSend = 'Send',
@@ -35,7 +38,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   textColor: string | undefined;
   loaded: boolean = false;
   greetStatus: string | undefined ;
-
+  modalCanDismiss: boolean = false;
   constructor(
     public _commonService: CommonService,
     public navParams: NavParams,
@@ -44,9 +47,15 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     public router: Router,
     private mapService: MapService,
     private authService: AuthService,
+    private actionSheetCtrl: ActionSheetController,
+    private alertController: AlertController,
+    private reportService: ReportService
   ) {
     super(authService);
     const res = this.navParams.get('template');
+    this.modalCanDismiss = this.navParams?.data?.['modal']?.['canDismiss'];
+    console.log(this.modalCanDismiss)
+
     this.viewTemplate = res;
     console.log("view", this.viewTemplate)
     
@@ -148,7 +157,7 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   }
 
   openUser(user: FiniteeUserOnMap) {
-    this.goBack();
+    // this.goBack();
     const navigationExtras: NavigationExtras = {
       state: {
         data: user
@@ -172,6 +181,103 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     });
 
     return await modal.present();
+  }
+
+  async presentMenuModalForOther(id: string) {
+    var btns = [
+      {
+        text: 'Report',
+        icon: 'user-report',
+        cssClass: 'product-option-action-sheet-button',
+        data: 'Report',
+      },
+      {
+        text: 'Block User',
+        icon: 'user-block',
+        cssClass: 'product-option-action-sheet-button',
+        data: 'Block',
+      },
+    ];
+    const actionSheet = await this.actionSheetCtrl.create({
+      cssClass: 'three-dot-action-sheet',
+      buttons: btns
+    });
+    await actionSheet.present();
+    const result = await actionSheet.onDidDismiss();
+    if(result.data === 'Report'){
+      this.presentRadioAlert(id);
+    }
+
+  }
+
+  async presentRadioAlert(id: string) {
+    const alert = await this.alertController.create({
+      header: 'Report User',
+      cssClass: 'custom-alerts',
+      inputs: [
+        {
+          name: 'option1',
+          type: 'radio',
+          label: 'I disagree with this user',
+          value: 'I disagree',
+          checked: true, // Set this to true for the default selected option
+        },
+        {
+          name: 'option2',
+          type: 'radio',
+          label: 'Targeted harassment',
+          value: 'Targeted harassment',
+        },
+        {
+          name: 'option3',
+          type: 'radio',
+          label: 'Spam',
+          value: 'Spam',
+        },{
+          name: 'option4',
+          type: 'radio',
+          label: 'Inappropriate name',
+          value: 'Inappropriate name',
+        },{
+          name: 'option5',
+          type: 'radio',
+          label: 'Threatening content',
+          value: 'Threatening content',
+        },{
+          name: 'option6',
+          type: 'radio',
+          label: 'Impersonation',
+          value: 'Impersonation',
+        },{
+          name: 'option7',
+          type: 'radio',
+          label: 'Private information',
+          value: 'Private information',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Send Report',
+          cssClass:'infos alertreport',
+          handler: async(selectedValue) => {
+            // Handle the selected value here
+            try{
+              this._commonService.showLoader();
+              var user_Report = new userReport();
+              user_Report.nodeId = id;
+              user_Report.report = selectedValue;
+              console.log('Selected Value:', selectedValue);
+              const res = await this.reportService.userReport(user_Report);
+              if(res) this._commonService.hideLoader();
+            }catch(e:any){
+              this._commonService.hideLoader();
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   public onViewTypeChange(viewType: number): void {

@@ -35,9 +35,12 @@ import { PrivacySettingService } from 'src/app/core/services/privacy-setting.ser
 import { PushNotifications } from '@capacitor/push-notifications';
 import { TabsPage } from '../tabs/tabs.page';
 import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
+
 // import { LocationAccuracy } from '@awesome-cordova-plugins/location-accuracy/ngx';
 import { Capacitor } from '@capacitor/core';
 import { AlertController } from '@ionic/angular';
+import { App } from '@capacitor/app';
+
 const LOCATION_UPDATE_TIME = 20;
 const ZOOM_MAX = 15;
 const MAP_INIT_ZOOM = 13;
@@ -139,8 +142,9 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   receivedData: any;
 
   mapSearchObj: any = [];
+  isPrompt: boolean = true;
 
-
+  currUser: any;
   //https://arminzia.com/blog/working-with-google-maps-in-angular/
   mapCenter!: google.maps.LatLng;
   markerCurrentIndex = -1;
@@ -166,6 +170,10 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   locationUpdateInterval$: any;
   prevLiveLocation: UserLocation = new UserLocation();
   isNativeLocationOn : boolean = true;
+  screenService: any;
+  deviceHeight: number | undefined;
+  countedHeight: number | undefined;
+  countedHeight2: number | undefined;
 
   constructor(
     private platform: Platform,
@@ -194,9 +202,9 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     @Inject('NetworkPlugin') public network: NetworkPlugin
   ) {
     super(authService);
+    this.setupListener();
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
-
     this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
       this.greetList = updatedData;
       console.log(this.greetList);
@@ -220,6 +228,35 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
   }
 
+  ionViewDidEnter () {
+    console.log("ionViewDidEnter");
+    const navigation = this.router.getCurrentNavigation();
+    console.log(navigation);
+    if (navigation?.extras.state) {
+      console.log(navigation?.extras.state)// retrieve the state parameter
+    }
+  }
+
+  async setupListener() {
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) {
+        console.log("background", isActive)
+        // App went to background
+        // Save anything you fear might be lost
+      } else {
+        console.log("foreground", isActive)
+        // App went to foreground
+        // restart things like sound playing
+        this.checkLocationPerm();
+      }
+    });
+  }
+
+  async checkLocationPerm () {
+    const perm = await Geolocation.checkPermissions();
+    if(perm?.location === 'granted') this.printCurrentPosition(); 
+  }
+
   printCurrentPosition = async () => {
 
     try {
@@ -231,16 +268,20 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         const permReq = await Geolocation.requestPermissions();
         console.log('req perm', permReq?.location);
         if(permReq?.location !== 'granted'){
+          this.isPrompt = false;
           this.locationPermission();
         }else{
+          this.isPrompt = false;
           this.isLocationTurnedOn = true;
           this.loadMap();
         }
       } else if (perm.location === "granted") {
+        this.isPrompt = false;
         this.isLocationTurnedOn = true;
         this.loadMap();
       }
     } catch (error: any) {
+      this.isPrompt = false;
       console.log("catched error", error);
       // this.openNativeLocation();
       if(error?.message === "Location services are not enabled"){
@@ -328,22 +369,37 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     return status.connected;
   };
 
+
+
   async ngOnInit() {
     console.log("OnInit");
     await this.platform.ready();
     this.currentPageHref = window.location.pathname;
+    this.platform.ready().then(() => {
+      this.deviceHeight = this.getDeviceHeight();
+      this.countedHeight = parseFloat((270 / this.deviceHeight).toFixed(2)); // Parse to float for numeric binding
+      console.log("This is the countedHeight: ", this.countedHeight);
+    });
   }
+
+  getDeviceHeight(): number {
+    return window.innerHeight;
+  }
+
+
 
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
 
     await this.printCurrentPosition();
+    console.log(this.router.getCurrentNavigation());
+    console.log(this.router!.getCurrentNavigation()?.extras?.state); // should log out 'bar'
 
-    const navigation = this.router.getCurrentNavigation();
-    console.log(navigation);
-    if (navigation?.extras.state) {
-      console.log(navigation?.extras.state)// retrieve the state parameter
-    }
+    // const navigation = this.router.getCurrentNavigation();
+    // console.log(navigation);
+    // if (navigation?.extras.state) {
+    //   console.log(navigation?.extras.state)// retrieve the state parameter
+    // }
 
     await PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
       console.log("performing the action...", notification);
@@ -375,9 +431,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
   ionViewWillLeave() {
 
-    //removed viewing functionality
 
-    // this.firestoreService.deleteFieldFromDocuments(this.user.UserId)
 
     if (this.firestoreSubscription) {
       this.firestoreSubscription.unsubscribe();
@@ -399,6 +453,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
+    setTimeout(() => {
+      const buttons = document.querySelectorAll('.gm-style .gm-style-iw-c button');
+      buttons.forEach(button => {
+        (button as HTMLElement).style.display = 'none';
+      });
+    }, 1000)
     console.log('ngAfterViewInit');
     await this.platform.ready();
     console.log('conn', this.userConnectionActive);
@@ -434,11 +494,15 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   async locationPermission() {
     const alert = await this.alertController.create({
       header: 'Alert',
-      message: 'Enable location services for sonar to work',
+      message: `<div class="mapalertdiv">
+      <p class="alert1" >Your phone location service is disabled.</p>
+      <p class="alert2">Therefore your home location will be shown to other users instead of your live location.</p>
+      <p class="alert3">Enable your phone location service to allow other Finitee users to view your location and connect with you more effectively.</p>
+    </div>`,
       buttons: [
         {
           text: 'Dismiss',
-          cssClass: 'alert-button-cancel',
+          cssClass: 'infos normal-case',
           role: 'cancel',
           handler: async () => {
 
@@ -446,7 +510,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         },
         {
           text: 'Settings',
-          cssClass: 'alert-button-confirm',
+          cssClass: 'infos normal-case',
           role: 'confirm',
           handler: async () => {
             console.log('map req location');
@@ -626,6 +690,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
       this.refreshMap();
       this.mapService.hideLoader();
+      this.map.addListener('click', (event: google.maps.MapMouseEvent) => {
+        // Prevent the default info window from showing
+        if (event.domEvent) {
+          event.stop();
+        }
+      });
       this.map.addListener("click", () => {
         if (this.mapWindow) {
           this.mapWindow.close();
@@ -862,12 +932,20 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   async refreshMarkerOne(){
-    this.mapService.oneTimeSearch(this.mapSearchObj)
-    .subscribe((response: any) => {
-      this.clearResults();
-      this.searchCriteria = response;
-      this.searchResultUpdate();
-    })
+    try{
+      this._commonService.showLoader();
+      this.mapService.oneTimeSearch(this.mapSearchObj)
+      .subscribe((response: any) => {
+        this.clearResults();
+        this.searchCriteria = response;
+        this.searchResultUpdate();
+        this._commonService.hideLoader();
+      })
+    }catch(e: any){
+      this._commonService.hideLoader();
+      console.log(e);
+    }
+   
   }
 
   async refreshMarker() {
@@ -949,7 +1027,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       // this.addClusterElementsToMap(this.clusterMap, 0);
       this.addSameLatLongMarkersToMap(this.clusterMap, 0);
 
-
+      console.log(this.clusterMap)
       if (this.markersMap.size + this.clusterMap.size === 1) {
         let latLng;
         for (const [key, value] of this.markersMap) {
@@ -2161,6 +2239,11 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       for (var i in markers) {
         bounds.extend(markers[i].position)
       }
+      const position = {
+        lat: this.location.lat,
+        lng: this.location.lng
+      }
+      bounds.extend(position);
     }
     this.map?.fitBounds(bounds);
   }
@@ -2210,35 +2293,46 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     let breakpoints: number[];
     let initialBreakpoint: number;
 
-    if (screenWidth < 768) {
+    // if (screenWidth < 768) {
 
-      if (screenWidth == 412) {
-        breakpoints = [0, 0.8];
-        initialBreakpoint = 0.7;
-      } else {
-        breakpoints = [0, 1];
-        initialBreakpoint = 0.9;
-      }
-      // Small screens (e.g., smartphones)
+    //   if (screenWidth == 412) {
+    //     breakpoints = [0, 0.8];
+    //     initialBreakpoint = 0.7;
+    //   } else {
+    //     breakpoints = [0, 1];
+    //     initialBreakpoint = 0.9;
+    //   }
+    
+
+    // }
+    // else if (screenWidth >= 768 && screenWidth < 1024) {
+   
+    //   breakpoints = [0, 0.6];
+    //   initialBreakpoint = 0.6;
+    // } else {
+      
+    //   breakpoints = [0, 0.4];
+    //   initialBreakpoint = 0.4;
+    // }
+  
+    const getheightforsonar = () => {
+      const windowheight= window.innerHeight;
+      this.countedHeight2 = parseFloat((637 / windowheight).toFixed(2));
+      // console.log("Yesssssssssssssssssss",this.countedHeight2)
+      return this.countedHeight2;
 
     }
-    else if (screenWidth >= 768 && screenWidth < 1024) {
-      // Medium screens (e.g., tablets)
-      breakpoints = [0, 0.6];
-      initialBreakpoint = 0.6;
-    } else {
-      // Large screens (e.g., desktops)
-      breakpoints = [0, 0.4];
-      initialBreakpoint = 0.4;
-    }
+    
 
     const modal = await this.modalController.create({
       component: MapSearchComponent,
-      breakpoints: breakpoints,
-      initialBreakpoint: initialBreakpoint,
+      breakpoints:[0, getheightforsonar()],
+      
+      initialBreakpoint:getheightforsonar() ,
       handle: false,
       componentProps: { values: obj }
     });
+
     modal.onDidDismiss().then(result => {
       console.log('res', result);
       this.mapSearchObj = result?.data?.sonarSearch;
@@ -2278,6 +2372,10 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       }
     });
     return await modal.present();
+  }
+
+  getheightforsonar(): number {
+    throw new Error('Method not implemented.');
   }
 
   async updateMapSearch(params: any) {
@@ -2557,18 +2655,15 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   public async viewGreetingDetails(): Promise<void> {
-    // this._commonService.greetingStatusWithDetails();
     const modal = await this.modalController.create({
       component: ViewingUsersComponent,
       componentProps: {
         template: "Greeting",
-      }
+      },      
     });
     modal.onDidDismiss()
       .then(result => {
-        if (result) {
-          // this.addUserToMap([result.data as SonarFreeUserSearchRespond], 0);
-        }
+
       });
     return await modal.present();
   }
@@ -2583,12 +2678,55 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.markerDetailModal?.dismiss();
   }
 
-  public onShowPreviousMarker(): void {
+  public onShowPreviousMarker(curr: any): void {
+    console.log('runn prev', curr)
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+    
+    this.map?.panTo({lat, lng})
     //move to selected marker
   }
 
-  public onShowNextMarker(): void {
+  public onShowNextMarker(curr: any): void {
+    console.log('runn next', curr)
+
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+
+    // const lat = latLng.Latitude;
+    // const lng = latLng.Longitude;
+    this.map?.panTo({lat, lng})
     //move to selected marker
+  }
+
+  public panMapToCurrLoc(curr: any){
+    console.log('cuurent->', curr);
+
+    let lat = 0;
+    let lng = 0;
+    if(curr?.LatLong){
+      lat = curr.LatLong.Latitude;
+      lng = curr.LatLong.Longitude;
+    }else{
+      lat = curr.Latitude;
+      lng = curr.Longitude;
+    }
+   
+    this.map?.panTo({lat, lng})
   }
 
   public async openMarkerDetails(): Promise<void> {
@@ -2596,6 +2734,8 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
     });
   }
+
+  
 
   //Handle swipe event on send msg to subscribers
   swipe(e: TouchEvent, when: string): void {

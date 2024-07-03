@@ -17,6 +17,7 @@ import {
   PushNotificationSchema,
   Token,
 } from '@capacitor/push-notifications';
+import { isatty } from 'tty';
 
 @Component({
   selector: 'app-tabs',
@@ -26,9 +27,9 @@ import {
 export class TabsPage extends BasePage implements OnInit {
   @ViewChild('menu') menu!: IonMenu;
   @ViewChild('tabs', { static: false }) tabs!: IonTabs;
-  //userType: any;
   selectedTab: any;
   backPressTimeStamp!: any;
+  store: string = '';
   constructor(
     private chatService: ChatsService,
     private router: Router,
@@ -40,6 +41,8 @@ export class TabsPage extends BasePage implements OnInit {
     private _storageService: StorageService
   ) {
     super(authService);
+    // this.setupListener();
+
   }
 
   async ngOnInit() {
@@ -97,6 +100,21 @@ export class TabsPage extends BasePage implements OnInit {
     await alert.present();
   }
 
+  async setupListener() {
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) {
+        console.log("background", isActive)
+        // App went to background
+        // Save anything you fear might be lost
+        this.store = 'saved info';
+      } else {
+        console.log("foreground", isActive)
+        // App went to foreground
+        // restart things like sound playing
+        console.log('store', this.store)
+      }
+    });
+  }
 
   async addListeners() {
     await PushNotifications.addListener('registration', token => {

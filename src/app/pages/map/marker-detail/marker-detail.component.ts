@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { Subscription } from 'rxjs';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { SwipeService } from 'src/app/core/services/swipe.service';
-import { IonModal } from '@ionic/angular';
+import { IonModal, Platform } from '@ionic/angular';
 import 'firebase/firestore';
 import { MapService } from '../services/map.service';
 import { BasePage } from 'src/app/base.page';
@@ -16,6 +16,8 @@ import { ChatsService } from 'src/app/core/services/chat/chats.service';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
 import { ConnectionsService } from 'src/app/core/services/connections.service';
 import { AlertController } from '@ionic/angular';
+import { SlicePipe } from '@angular/common';
+
 @Component({
   selector: 'app-marker-detail',
   templateUrl: './marker-detail.component.html',
@@ -28,6 +30,7 @@ export class MarkerDetailComponent implements OnInit {
   @Output() onCloseDetails: EventEmitter<any> = new EventEmitter<any>();
   @Output() onShowPrevious: EventEmitter<any> = new EventEmitter<any>();
   @Output() onShowNext: EventEmitter<any> = new EventEmitter<any>();
+  @Output() panMapToCurrLoc: EventEmitter<any> = new EventEmitter<any>();
   readonly appConstants: any = AppConstants;
   showNext: boolean = false;
   showPrevious: boolean = false;
@@ -42,9 +45,12 @@ export class MarkerDetailComponent implements OnInit {
 
 
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
+  deviceHeight: number | undefined;
+
 
 
   constructor(public swipeService: SwipeService,
+    private platform: Platform,
     public mapService: MapService,
     public authService: AuthService,
     public router: Router,
@@ -69,7 +75,7 @@ export class MarkerDetailComponent implements OnInit {
           // this.updateGreetingIcon();
           // this.getButtonClass();
           // this.getButtonText();
-          
+
         }
       } else {
         if (this.markerList && this.markerList[this.markerCurrentIndex].Greeting === 4) {
@@ -98,7 +104,18 @@ export class MarkerDetailComponent implements OnInit {
 
     this.subscribeSwipeEvent();
     this.loadCurrentItem();
+    this.platform.ready().then(() => {
+      this.deviceHeight = this.getDeviceHeight();
+      const countedheight = (264 / this.deviceHeight).toFixed(2);
+      console.log("this is the ",countedheight)
+    });
+
     // this.updateGreetingIcon();
+  }
+
+  getDeviceHeight(): number {
+    
+    return window.innerHeight;
   }
 
   updateGreetingIcon() {
@@ -121,7 +138,7 @@ export class MarkerDetailComponent implements OnInit {
   //     iconName = 'free-user-recieved-white-icon';
   //   else if (this.userCanvasProfile.IsRequestExits)
   //     iconName = 'free-user-pending-white-icon';
-    
+
   //   return iconName
   // }
 
@@ -135,6 +152,9 @@ export class MarkerDetailComponent implements OnInit {
         return 'assets/custom-ion-icons/Serviceavailable_thumbnail.svg';
       case 'SR':
         return 'assets/custom-ion-icons/servicerequired_thumbnail.svg';
+
+      case 'SL':
+        return 'assets/custom-ion-icons/saleslisting_thumbnail.svg';
       // Add more cases as needed for other entities
       default:
         return 'assets/custom-ion-icons/default_thumbnail.svg';
@@ -153,15 +173,15 @@ export class MarkerDetailComponent implements OnInit {
   updateConnectionIcon() {
     var iconName2 = 'send-connection-sonar-icon';
     if (this.markerList[this.markerCurrentIndex]?.IsConnected === 3) {
-      return iconName2 = 'free-user-pending-white-icon';
+      return iconName2 = 'connection-req-sent-icon';
     } else if (this.markerList[this.markerCurrentIndex]?.IsConnected === 2) {
-      return iconName2 = 'free-user-recieved-white-icon';
+      return iconName2 = 'connection-req-recieved-icon';
     } else if(this.markerList[this.markerCurrentIndex]?.IsConnected === 4){
       this.markerList[this.markerCurrentIndex].Greeting = 3;
       this.updateGreetingIcon();
-      return iconName2 = 'connected-sonar-icon';
+      // return iconName2 = 'connected-sonar-icon';
     }
-    return iconName2; 
+    return iconName2;
 
   }
 
@@ -188,12 +208,12 @@ export class MarkerDetailComponent implements OnInit {
       } else {
         this.commonService.presentToast("Something went wrong");
       }
-    }else if(user.IsConnected === 2){
+    } else if (user.IsConnected === 2) {
       await this.acceptRejectModalConnection(user);
     }
   }
 
-  async acceptRejectModalConnection (user: any) {
+  async acceptRejectModalConnection(user: any) {
     const alert = await this.alertController.create({
       header: `You Have A Connection Request!`,
       cssClass: 'add-user-alert',
@@ -226,23 +246,23 @@ export class MarkerDetailComponent implements OnInit {
       ],
     });
 
-    await alert.present(); 
+    await alert.present();
   }
 
   async requestAction(reqAcceptOrDecline: boolean, user: any) {
 
-    
+
     var res = await this.connectionsService.actionConnectionRequest(reqAcceptOrDecline, user?.Id);
-    if(res){
-      if(!reqAcceptOrDecline){
+    if (res) {
+      if (!reqAcceptOrDecline) {
         user.IsConnected = 0;
         this.markerList[this.markerCurrentIndex].IsConnected = 0;
         this.updateConnectionIcon();
-      }else{
+      } else {
         user.IsConnected = 4;
         this.updateConnectionIcon();
       }
-      
+
     }
   }
 
@@ -417,10 +437,14 @@ export class MarkerDetailComponent implements OnInit {
   }
 
   loadCurrentItem() {
+
     if (this.markerList && this.markerList.length > 0) {
       if (this.markerCurrentIndex > -1 && this.markerCurrentIndex < this.markerList.length) {
         this.currentItem = this.markerList[this.markerCurrentIndex];
         console.log("current", this.currentItem);
+        const inflow=this.currentItem.InflowsCount
+        // this.getRandomInflowsCount(inflow)
+        
         console.log("Greeting Icon:", this.greetingIcon);
         console.log("Connection Icon", this.connectionIcon);
       } else {
@@ -447,12 +471,14 @@ export class MarkerDetailComponent implements OnInit {
       if (previous) {
         if (this.markerCurrentIndex > 0) {
           this.markerCurrentIndex--;
-          this.onShowPrevious.emit();
+          this.panMapToCurrLoc.emit(this.currentItem);
+          this.onShowPrevious.emit(this.markerList[this.markerCurrentIndex ]);
         }
       } else {
         if (this.markerCurrentIndex < this.markerList.length - 1) {
           this.markerCurrentIndex++;
-          this.onShowNext.emit();
+          this.panMapToCurrLoc.emit(this.currentItem);
+          this.onShowNext.emit(this.markerList[this.markerCurrentIndex]);
         }
       }
       this.currentItem = this.markerList[this.markerCurrentIndex];
@@ -473,6 +499,57 @@ export class MarkerDetailComponent implements OnInit {
       this.updateGreetingIcon();
     }
   }
+  // getRandomInflowsCount(inflow: any) {
+  //   console.log("here is all inflows from count",inflow)
+    
+  // }
+
+  getRandomInflowsCount(): string {
+    const inflows2 = Math.floor(Math.random() * (9000000 - 1000 + 1)) + 1000;
+    console.log(inflows2)
+
+    // Format the number
+    const formattedInflows = this.formatNumber(inflows2);
+
+    console.log(formattedInflows);
+    return formattedInflows;
+  }
+
+  formatNumber(num: number): string {
+    if (num >= 1000 && num < 1000000) {
+      return Math.floor(num / 1000) + 'k';
+    } else if (num >= 1000000) {
+      const millionValue = num / 1000000;
+      if (Math.floor(millionValue) === millionValue) {
+        return millionValue.toFixed(0) + 'M';
+      } else {
+        return millionValue.toFixed(1).replace(/\.0$/, '') + 'M';
+      }
+    } else {
+      return num.toString();
+    }
+  }
+  
+  
+  
+
+  // Other component logic...
+
+
+
+  currentItem2: any = {
+   
+    InflowsCount: this.getRandomInflowsCount()
+  };
+
 
   tempClick() { }
 }
+function ifelse(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}
+
+function elif(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}
+
