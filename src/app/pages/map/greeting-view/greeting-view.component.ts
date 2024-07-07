@@ -25,7 +25,6 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
   public isShowChatIcon: boolean = false;
   public attachmentURL = environment.attachementUrl;
   public openChat?: Subscription;
-
   public isAcceptRejectModalClosedSubject : BehaviorSubject<any> = new BehaviorSubject<any>('i-closed');
   public isAcceptRejectModalClosed = this.isAcceptRejectModalClosedSubject.asObservable();
 
@@ -57,28 +56,51 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     this.onGreetingEvent();
   }
 
-  async sendGreeting(user: any){
-    if(user.Greeting === 1){
-      const res = await this._mapService.sendGreetingToUser(user.Id)
+  async sendGreeting(userInfo?: any){
+
+    const iconName = this.getGreetingIcon(userInfo.CreatedBy);
+    if(iconName === 'greeting'){
+      const res = await this._mapService.sendGreetingToUser(userInfo?.CreatedBy?.Id);
       if(res && res.Success){
-        this._commonService.presentToast("Greeting sent to " + user.UserName)
-        user.Greeting = 5;
-        this.getGreetingIcon();
-      }else{
-        this._commonService.presentToast("Something went wrong")
+        console.log('sent');
+        const icon = this.getGreetingIcon(userInfo?.CreatedBy, 'greeting-sent');
+        console.log(icon, userInfo);
+      } 
+    }else if(iconName === 'greeting-sent'){
+      const res = await this._mapService.cancelGreetingToUser(userInfo?.CreatedBy?.Id);
+      if (res && res.Success) {
+        this.getGreetingIcon('greeting-can');
+        this._commonService.presentToast("Greeting Cancelled");
+      } else if (res && !res.Success) {
+        this._commonService.presentToast("Cannot send greeting to " + ''+ " until One Hour");
+      } else {
+        this._commonService.presentToast("Something went wrong");
       }
-    }else if(user.Greeting === 5){
-      const res = await this._mapService.cancelGreetingToUser(user.Id)
-      if(res && res.Success){
-        user.Greeting = 1;
-        this._commonService.presentToast("Greeting Cancelled")
-        this.getGreetingIcon();
-      }else{
-        this._commonService.presentToast("Something went wrong")
-      }
-    }else if(user.Greeting === 4){
-      this.showGreetingActions();
-    }   
+    }
+    
+    
+    
+    // if(user.Greeting === 1){
+    //   const res = await this._mapService.sendGreetingToUser(user.Id)
+    //   if(res && res.Success){
+    //     this._commonService.presentToast("Greeting sent to " + user.UserName)
+    //     user.Greeting = 5;
+    //     this.getGreetingIcon();
+    //   }else{
+    //     this._commonService.presentToast("Something went wrong")
+    //   }
+    // }else if(user.Greeting === 5){
+    //   const res = await this._mapService.cancelGreetingToUser(user.Id)
+    //   if(res && res.Success){
+    //     user.Greeting = 1;
+    //     this._commonService.presentToast("Greeting Cancelled")
+    //     this.getGreetingIcon();
+    //   }else{
+    //     this._commonService.presentToast("Something went wrong")
+    //   }
+    // }else if(user.Greeting === 4){
+    //   this.showGreetingActions();
+    // }   
   }
 
   closeModal(){
@@ -87,13 +109,9 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     this.modalController.dismiss('gretting modal closed dismissed');
   }
 
-  public showGreetingActions(): void {
-    if(this.userInfo && (this.userInfo.Status != null || this.userInfo.Greeting)) {
-      console.log(this.userInfo)
-      if(this.userInfo.Greeting && (this.userInfo.Greeting == 1 || this.userInfo.Greeting == 5)){
-        this.sendGreeting(this.userInfo)
-      }
-      // this.sendGreeting(this.userInfo.CreatedBy);
+  public showGreetingActions(userInfo: any): void {
+    if(userInfo.Status != null) {
+      this.sendGreeting(userInfo);
     } 
     else{
       this.greetingAcceptRejectModal?.present().then(() => {
@@ -102,34 +120,28 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     } 
   }
 
-  getGreetingIcon(){
+  getGreetingIcon(userInfo: any, icon?: string){
     var iconName = "greeting";
-    if(this.userInfo){
-      // if(this.userInfo?.Greeting == 1) iconName = "greeting";
-      // else if(this.userInfo?.Greeting == 4) iconName = "greeting-blink";
-      // else if(this.userInfo?.Greeting == 5) iconName = "greeting-sent";
-      if(this.userInfo && (this.userInfo.Status != null || this.userInfo.Greeting )){
-        if(this.userInfo.Greeting){
-          switch(this.userInfo.Greeting){
-            case 1: iconName = "greeting";
-            break;
-            case 4: iconName = "greeting-blink";
-            break;
-            case 5: iconName = "greeting-sent";
-            break;
-            default : iconName = "greeting";
-          }
-        }
-      }
-      else iconName = "greeting-blink";
-
-     
-     
-        
-
+    // console.log(userInfo.Id);
+    if(userInfo.Id.includes('sent')){
+      console.log('true');
+      iconName = 'greeting-sent';
+    } 
+    else if(icon && icon === "greeting-sent"){
+      userInfo.Id = userInfo.Id+ '_' +'sent';
+      console.log('changing greeting for', userInfo)
+      iconName = "greeting-sent";
     }
-    
+    else if(icon && icon === "greeting-can"){
+      userInfo.Id = userInfo.Id.split('_sent');
+      iconName = "greeting";
+    }
     return iconName;
+    // if(this.userInfo){
+    //   if(this.userInfo?.Greeting == 1) iconName = "greeting";
+    //   else if(this.userInfo?.Greeting == 4) iconName = "greeting-blink";
+    //   else if(this.userInfo?.Greeting == 5) iconName = "greeting-sent"; 
+    // }
   }
 
   // public sendGreeting(): void {
@@ -184,7 +196,7 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     // this.chatTray(user);
     if(res && res.Success === true){
       user.Greeting = 1;
-      this.getGreetingIcon();
+      this.getGreetingIcon(user);
       this.startChat(user?.CreatedBy);
     }else{
       console.log("error while accepting greeting");
@@ -219,7 +231,7 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
     const res = await this._mapService.actionGreetingToUser(id, false);
     if(res && res.Success === true){
       user.Greeting = 1;
-      this.getGreetingIcon();
+      this.getGreetingIcon(user);
     }else{
       console.log("error while rejecting greeting");
     }

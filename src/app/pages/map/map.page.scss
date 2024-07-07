@@ -3,6 +3,14 @@
     width: 100% !important;
 }
 
+div.poi-info-window .view-link {
+    display:none;
+}
+
+.gm-style .gm-style-iw-c{
+    display: none !important;
+}
+
 .backicon {
     position: absolute;
     top: 5px;
@@ -234,6 +242,10 @@ ion-footer {
     top: 10px;
 }
 
+::ng-deep gm-style-iw-a{
+    display: none !important;
+
+}
 ::ng-deep .gm-style .gm-style-iw-c button {
     display: none !important;
 }
