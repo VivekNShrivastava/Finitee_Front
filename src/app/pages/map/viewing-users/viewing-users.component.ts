@@ -121,7 +121,10 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   async getUserGreetingHistory() {
     this.loaded = true;
     const res = await this.mapService.getGreetingHistory();
-    if (res) this.greetingListApi = res?.ResponseData?.greetings;
+    if (res){
+      this.greetingListApi = res?.ResponseData?.greetings;
+      this.greetingListApi.sort((a: any, b: any) => new Date(b.ModifiedOn).getTime() - new Date(a.ModifiedOn).getTime())
+    } 
     this.loaded = false;
     this.activeExpiredGreeting(1);
     
