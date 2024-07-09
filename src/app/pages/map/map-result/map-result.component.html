@@ -506,9 +506,17 @@
 
               <div style="display: flex; flex-direction: column; width: 250px;" class="font-primary-text " (click)="viewConnection(user)">
                 <p style="margin-top: 0px;" class="itemforsale">{{user['Title']}}</p>
-                <div>
+                <div *ngIf="user['Description'].length <= 100">
                   <p style="margin: 7px 0px 7px 0px;">{{user['Description']}}</p>
-                </div>
+                </div> 
+                  <div *ngIf="user['Description'].length > 100">  
+                  <p style="margin: 7px 0px 7px 0px;">
+                    {{ user['Description'].slice(0, 100)}} ...
+                  </p>
+                </div>           
+                <!-- <div>
+                  <p style="margin: 7px 0px 7px 0px;">{{user['Description']}}</p>
+                </div> -->
                 <div style="display: flex; gap: 5px; text-align: center; ">
                   <p class="salesownername" style="margin: 0px; font-weight: bold;">{{user['FirstName']}}</p>
                   <p class="posteddate" style="margin: 0px;" >1 day ago</p>
