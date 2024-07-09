@@ -57,12 +57,17 @@
             <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input> &nbsp; &nbsp;
             Miles
 
-       
-            
+            <button style="width: 113px;
+            height: 34px;
+            background: #0AA5F5 0% 0% no-repeat padding-box;
+            border-radius: 27px !important;
+            opacity: 1; font: var(--unnamed-font-style-normal) normal bold var(--unnamed-font-family-sf-pro-display);
+            color: var(--unnamed-color-ffffff); ">
+             <ion-icon  name="sonarsearch-location" ></ion-icon>
+            set Location
 
+            </button>
           </Td>
-          <ion-icon style="font-size: 100px;" name="sonarsearch-location" ></ion-icon>
-    
         
         </Tr>
         <Tr *ngIf="logInfo && logInfo.UserTypeId ==1">
