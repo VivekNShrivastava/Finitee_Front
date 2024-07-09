@@ -2317,7 +2317,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   
     const getheightforsonar = () => {
       const windowheight= window.innerHeight;
-      this.countedHeight2 = parseFloat((637 / windowheight).toFixed(2));
+      this.countedHeight2 = parseFloat((529 / windowheight).toFixed(2));
       // console.log("Yesssssssssssssssssss",this.countedHeight2)
       return this.countedHeight2;
 
