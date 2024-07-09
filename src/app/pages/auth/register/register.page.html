@@ -206,17 +206,23 @@
           </ion-item>
           <!-- </ion-list> -->
           <p class="tc"
-            style="margin: 0px 20px 0px 20px; margin-bottom: 15px; font-weight: 300; color:	#282626;">By
-            tapping "Continue", you agree to our <br> <a
+            style="margin: 0px 20px 0px 20px; margin-bottom: 15px; font-weight: 200; color:	#A8A8A8;">By
+            tapping "Continue", you agree to our <br>
+            <a
               style="text-decoration: underline;
             font: normal normal 100 17px/22px SF Pro Display;
             letter-spacing: 0.22px;
-            color: #282626; font-weight: 300; margin-top: 40px;"
+            color: #505050; font-weight: 300; margin-top: 40px;"
+              [routerLink]="['/terms-conditions']">Community Guidelines ,</a> <a
+              style="text-decoration: underline;
+            font: normal normal 100 17px/22px SF Pro Display;
+            letter-spacing: 0.22px;
+            color: #505050; font-weight: 300; margin-top: 40px;"
               [routerLink]="['/terms-conditions']">Privacy Policy</a> and <a
               style="text-decoration: underline;
             font: normal normal 100 17px/22px SF Pro Display;
             letter-spacing: 0.22px;
-            color: 	#282626; font-weight: 300; margin-top: 40px;"
+            color: 	#505050; font-weight: 300; margin-top: 40px;"
               [routerLink]="['/terms-conditions']">Terms of Service</a>.</p>
           <ion-button class="lgn-class2" expand="block" shape="round"
             [disabled]="phoneForm.invalid" type="submit">Continue</ion-button>
@@ -291,7 +297,7 @@
             <ion-input class="input" type="password"
               placeholder="Confirm Password"
               formControlName="password2"></ion-input>
-            <span slot="error">Passwords do not match</span>
+              <span slot="error" *ngIf="passwordForm.controls['password2'].value.length > 0 ">Passwords do not match</span>
           </ion-item>
           <ion-button class="lgn-class" expand="block" shape="round"
             [disabled]="passwordForm.invalid"
@@ -373,11 +379,19 @@
         <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
 
           <p class="subheading">{{getAddressLabel()}}</p>
-          <p class="tc"
+          <p class="tc" style="font: var(--unnamed-font-style-normal) normal 300 16px/18px var(--unnamed-font-family-sf-pro-display);
+          text-align: center;
+          font: normal normal 300 16px/18px SF Pro Display;
+          letter-spacing: 0.22px;
+          color: #788692; padding: 0px 25px 0px 25px;"
             *ngIf="selectedUserType == AppConstants.USER_TYPE.FR_USER">You home
             location details will not be
             shared with any other user</p>
-          <p class="tc">You can set it by your current location or you can enter
+          <p class="tc" style="font: var(--unnamed-font-style-normal) normal 300 16px/18px var(--unnamed-font-family-sf-pro-display);
+          text-align: center;
+          font: normal normal 300 16px/18px SF Pro Display;
+          letter-spacing: 0.22px;
+          color: #788692; padding: 0px 35px 0px 35px;">You can set it by your current location or you can enter
             the address below</p>
           <ion-button class="center-button" shape="round" style="width: 264px;
           height: 53px; font-size: 16px;"
@@ -433,7 +447,7 @@
     
             <ion-item lines="none" class="fi-inputSelect" style="overflow: hidden;">
               <ion-input [readonly]="true" class="input" type="text"
-                formControlName="state" placeholder="Select State"
+                formControlName="state" placeholder="State"
                 id="selectState">
               </ion-input>
               <ion-icon slot="end" name="caret-down-outline"></ion-icon>
@@ -442,15 +456,17 @@
 
           <ion-item lines="none" class="fi-inputSelect">
             <ion-input [readonly]="true" class="input" type="text"
-              formControlName="city" placeholder="Select City" id="selectCity">
+              formControlName="city" placeholder="City" id="selectCity">
             </ion-input>
             <ion-icon slot="end" name="caret-down-outline"></ion-icon>
           </ion-item>
           <ion-item lines="none">
-            <span slot="error" class="fi-error-msg">Zip Code is required</span>
-            <ion-input class="input" type="number" formControlName="zipCode"
-              placeholder="Zip Code"></ion-input>
-
+            
+            <ion-input class="input" type="number" formControlName="zipCode" placeholder="Zip Code"></ion-input>
+           
+            <span slot="error" class="fi-error-msg" *ngIf="addressForm.controls['zipCode'].value.length === 0 && addressForm.controls['zipCode'].touched">Zip Code is required</span>
+            
+            
           </ion-item>
           <!-- <ion-item lines="none">
             <ion-input class="input" placeholder="Unit Number" formContorlName="unitNo"></ion-input>
@@ -458,7 +474,7 @@
           <ion-item lines="none">
             <ion-input class="input" placeholder="Address Line 1"
               formControlName="addressLine1"></ion-input>
-            <span slot="error" class="fi-error-msg">Address Line 1 is
+            <span slot="error" class="fi-error-msg"  *ngIf="addressForm.controls['addressLine1'].value.length === 0 && addressForm.controls['addressLine1'].touched">Address Line 1 is
               required</span>
           </ion-item>
           <ion-item lines="none">
