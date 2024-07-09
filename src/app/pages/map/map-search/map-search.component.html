@@ -34,11 +34,12 @@
               [(ngModel)]="keyinfo"></ion-input>
           </form>
 
-          <ion-buttons slot="end" style="position: absolute;right: 5px;">
-            <ion-button class="activated" (click)="keyinfo=''">
+          <ion-buttons *ngIf="keyinfo.length > 0 " slot="end" style="position: absolute;right: 5px;">
+            <ion-button  class="activated" (click)="keyinfo= ''">
               <img style="padding-right: 7px;" src="assets/icon/fin/close.png">
             </ion-button>
           </ion-buttons>
+
         </ion-item>
         <ion-list *ngIf="searchMode=='L' && autocompleteItems.length > 0 && keyinfo" class="location-item">
           <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
