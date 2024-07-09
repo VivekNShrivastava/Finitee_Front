@@ -47,7 +47,7 @@ export class MapSearchComponent implements OnInit {
     upper: 600
   };
   connType: any = 'All';
-  keyinfo: any = null;
+  keyinfo: any =  "";
   ageMinMax = {
     lower: 18,
     upper: 80

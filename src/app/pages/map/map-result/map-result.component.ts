@@ -34,7 +34,7 @@ export class MapResultComponent implements OnInit {
   salesListings = [];
   serviceAvailable = [];
   serviceRequired = [];
-  events = [];
+  events: any[] = [];
 
   constructor(
     public _commonService: CommonService,
@@ -61,6 +61,8 @@ export class MapResultComponent implements OnInit {
       this.serviceAvailable = this.results.filter((val: any) => val.entity == 'SA');
       this.serviceRequired = this.results.filter((val: any) => val.entity == 'SR');
       this.events = this.results.filter((val: any) => val.entity == 'E');
+        // Initialize showFullDescription property for users
+        // this.events.forEach(event => event.showFullDescription = false);
     }
   }
 
