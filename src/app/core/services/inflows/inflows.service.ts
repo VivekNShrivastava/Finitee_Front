@@ -34,13 +34,13 @@ export class InflowsService {
     });
   }
 
-  getInflows(InflowsType: any, userTypeId: Number) {
+  getInflows(inflowsType: Number, week: Number, part: Number) {
     return new Promise<any>((resolve, reject) => {
       //this.commonService.showLoader();
-      return this.http.get<any>(config.API.INFLOWS.GET_INFLOWS + "/" + InflowsType + "/" + userTypeId).subscribe((response: any) => {
+      return this.http.get<any>(config.API.INFLOWS.GET_INFLOWS + "/" + inflowsType + "/" + week + "/" + part).subscribe((response: any) => {
         //this.commonService.hideLoader();
 
-        resolve(response.ResponseData.postList);
+        resolve(response.ResponseData);
       },
         (error) => {
           //this.commonService.hideLoader();

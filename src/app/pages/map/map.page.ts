@@ -448,7 +448,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
       this.subscription.remove(this.subscription);
     }
-    this.deleteSearch();
+    // this.deleteSearch();
     this.intervalTimer = interval(60000);
   }
 
@@ -1846,16 +1846,16 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     return new Promise(resolve => resolve(true));
   }
 
-  deleteSearch() {
-    const params = {
-      usrid: this.user.UserId,
-    };
-    const method = config.DEL_PING_SER;
-    this.http.post(method, params)
-      .subscribe((result) => {
-        this.cmmflag = this.getFlag();
-      });
-  }
+  // deleteSearch() {
+  //   const params = {
+  //     usrid: this.user.UserId,
+  //   };
+  //   const method = config.DEL_PING_SER;
+  //   this.http.post(method, params)
+  //     .subscribe((result) => {
+  //       this.cmmflag = this.getFlag();
+  //     });
+  // }
   getFlag() {
     if (this.privacySett.psenbl) { return MapFlag.Ping; }
     if (this.privacySett.mst) { return this.privacySett.mst; }
