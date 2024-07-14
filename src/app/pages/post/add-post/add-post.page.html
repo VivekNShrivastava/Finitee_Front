@@ -12,9 +12,84 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+
+
+  <ion-list class="profileBgClass">
+    <!-- user data -->
+    <ion-item lines="none" class="profileBg" style="--overflow:visible;">
+      <ng-container slot="start" style="position: relative;">
+        <ion-avatar>
+          <img class="business-logo" [src]="appConstants.mediaPrefix"
+            onError="this.src='assets/icons/business/anonymous.svg'"/>
+        </ion-avatar>
+        <ion-label class="fi-name-label">
+          <!-- <h3>{{post.CreatedBy!.UserName}}</h3> -->
+           <h3>Nisarg Barot</h3>
+        </ion-label>
+        
+     
+
+      </ng-container>
+
+      <ion-buttons slot="end">
+        <ion-button shape="round">
+          <ion-icon name="three-dots"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <!-- image and video-->
+  <div class="ion-text-center  post-screen-slide">
+    <ion-slides>
+      <ion-slide>
+        <ion-card class="media">
+          <ion-icon *ngIf="photo.length <= 0" src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+
+          <!-- <video class="video" [poster]="appConstants.mediaPrefix "
+            controls>
+            <source [src]="appConstants.mediaPrefix  " type="video/mp4">
+          </video> -->
+
+          <ion-img style="width: 100%;" *ngIf="photo.length > 0" id="{{post.Id}}-img" 
+            [src]="photo">
+          </ion-img>
+
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
+    <div class="favour-n-beam">
+      <ion-buttons>
+        <ion-button shape="round" >
+          <ion-icon name="comment-favour-outlined"></ion-icon>
+        </ion-button>
+        <ion-button shape="round">
+          <ion-icon name="post-chat"></ion-icon>
+        </ion-button>
+        <ion-button shape="round">
+          <ion-icon name="beam-post"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+
+    <div class="stats display-flex ion-align-items-center fi-flexend">
+      <h4>25 Favors</h4>
+      <span></span>
+      <h4>10 Beams</h4>
+      <span></span>
+      <h4>7 Comments</h4>
+    </div>
+  </ion-item>
+  
+
+
   <ion-list class="input-form">
     <!--Title-->
-    <ion-item lines="none" *ngIf="paramsData.isDonationPost">
+
+    <!-- <ion-item lines="none" *ngIf="paramsData.isDonationPost">
       <ion-input [(ngModel)]="post.Title" autocapitalize="on" class="custom-textarea"
         placeholder="Title"></ion-input>
     </ion-item>
@@ -23,26 +98,29 @@
     <ion-item lines="none" *ngIf="paramsData.Type === 'TRAIT' " >
       <ion-input [(ngModel)]="paramsData.TraitRequest.Trait" [readonly]="isTraitReadOnly" autocapitalize="on" class="custom-textarea"
         placeholder="Trait"></ion-input>
-    </ion-item>
+    </ion-item> -->
 
     <!--Description-->
-    <ion-item lines="none">
+
+    <!-- <ion-item lines="none">
       <ion-textarea [(ngModel)]="post.PostDescription" autocapitalize="on" class="custom-textarea"
         placeholder="Type description here" maxLength="2000" >
-        <!-- [ngStyle]="{ 'font-size': updateFontSize() }" -->
       </ion-textarea>
-    </ion-item>
+    </ion-item> -->
 
     <!--traits-->
-    <ion-chip *ngFor="let trait of post.PostTraits;  let i = index" color="primary">
+
+    <!-- <ion-chip *ngFor="let trait of post.PostTraits;  let i = index" color="primary">
       <ion-label>{{trait }}</ion-label>
       <ion-icon name="close-circle" color="white" (click)="deleteTrait(i)"></ion-icon>
-    </ion-chip>
+    </ion-chip> -->
+
     <!-- <ion-button expand="block" color="light" (click)="addTraits()">Add Traits</ion-button> -->
     <!-- <ion-button expand="block" color="light" (click)="addTraits()">Add Tags</ion-button> -->
 
 
     <!--privacy-->
+
     <ion-item lines="none" id="viewable-by" class="item-selection" *ngIf="paramsData.isDonationPost">
       <ion-input placeholder="Privacy" value="{{_commonService.getPrivacyFullValue(post.Privacy)}}"
         [(ngModel)]="post.Privacy"></ion-input>
@@ -52,6 +130,7 @@
         </ion-button>
       </ion-buttons>
     </ion-item>
+
     <ion-popover trigger="viewable-by" side="bottom" alignment="end" [dismissOnSelect]="true" triggerAction="click">
       <ng-template>
         <ion-list>
@@ -70,20 +149,30 @@
     <app-multiple-media-upload 
       [postLimit]="post.PostImages.length"
       [mediaFiles]="post.PostImages"
-      (filePathEvent)="addMedia($event)">
+      (filePathEvent)="addMedia($event)"
+      (imagePath)="imagePathMedia($event)">
     </app-multiple-media-upload>
 
-    <div class="error-message" *ngIf="saveClicked && post.PostImages.length==0 && post.PostDescription==''">
+    <!-- <div class="error-message" *ngIf="saveClicked && post.PostImages.length==0 && post.PostDescription==''">
       <ion-icon name="information-circle-outline"></ion-icon>
       <span>Please enter Description or atleast one image/video</span>
-    </div>
+    </div> -->
+
   </ion-list>
+
 </ion-content>
+
 <ion-footer class="create-btn">
-  <ion-button shape="round" expand="block"
+  <!-- <ion-button shape="round" expand="block"
     [color]="(post.PostDescription=='' && post.PostImages.length==0) ? 'medium' : 'primary'" 
     (click)="savePost()"
     [disabled]="saveClicked">
     Create post
-  </ion-button>
+  </ion-button> -->
+
+  <ion-button shape="round" expand="block"
+  color="primary" 
+  (click)="addPost()">
+  Create post
+</ion-button>
 </ion-footer>

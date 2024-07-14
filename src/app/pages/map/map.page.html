@@ -30,11 +30,12 @@
           <div (click)="viewGreetingDetails()" class="c-fab-button">
             <ion-icon style="font-size: 26px;"
               name="greeting-no-circle"></ion-icon>
-            <div *ngIf="greetListNumber > 0"> {{greetListNumber}} </div>
+            <div *ngIf="greetListNumber > 0"></div>
             <div style="line-height: 5px;">
               <ion-icon style="font-size: 22px;padding-right: 5px;"
                 name="chevron-forward-outline"></ion-icon>
             </div>
+            <div class="greetNumberDot"><p class="greetNumber">{{greetListNumber}} </p></div>
           </div>
 
           <div style="display: flex; flex-direction: column;">
