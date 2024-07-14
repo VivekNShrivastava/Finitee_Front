@@ -14,6 +14,8 @@ import { interval } from 'rxjs';
 import { Location } from '@angular/common';
 import { UserPrivacyService } from './core/services/user-privacy/user-privacy.service';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { Platform } from '@ionic/angular';
+import { platform } from 'os';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,9 @@ import { SplashScreen } from '@capacitor/splash-screen';
 })
 export class AppComponent {
   locationUpdateInterval$: any;
-  constructor(private authService: AuthService, private paymentService: PaymentService, private locationService: LocationService, private commonService: CommonService, private router: Router, public location: Location, public _userPrivacyServivce: UserPrivacyService) {
+  constructor(private authService: AuthService, private paymentService: PaymentService, private locationService: LocationService, private commonService: CommonService, private router: Router, public location: Location, public _userPrivacyServivce: UserPrivacyService,
+    private platform: Platform
+  ) {
     addIcons(finiteeIconMapper);
     this.initializeApp();
   }
@@ -53,6 +57,9 @@ export class AppComponent {
     //   showDuration: 1500,
     //   autoHide: true,
     // });
+
+    const res = this.getPlatformName();
+    console.log(res);
     if (Capacitor.isNativePlatform()) {
       this.setTextZoom();
       // await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
@@ -84,6 +91,27 @@ export class AppComponent {
       });
     }
   }
+
+  getPlatformName(): string {
+    if (this.platform.is('cordova')) {
+      return 'Cordova';
+    } else if (this.platform.is('capacitor')) {
+      return 'Capacitor';
+    } else if (this.platform.is('android')) {
+      return 'Android';
+    } else if (this.platform.is('ios')) {
+      return 'iOS';
+    } else if (this.platform.is('desktop')) {
+      return 'Desktop';
+    } else if (this.platform.is('mobileweb')) {
+      return 'Mobile Web';
+    } else if (this.platform.is('pwa')) {
+      return 'PWA';
+    } else {
+      return 'Unknown';
+    }
+  }
+  
  
   setTextZoom() {
     var options: SetOptions = {

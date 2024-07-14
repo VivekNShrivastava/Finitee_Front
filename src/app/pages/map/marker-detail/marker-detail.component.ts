@@ -42,8 +42,8 @@ export class MarkerDetailComponent implements OnInit {
   swipeSubsciption!: Subscription;
   greetingIcon: string = 'greeting';
   connectionIcon: string = 'send-connection-sonar-icon';
-
-
+  prevIconName: string = "";
+  nextIconName: string = "";
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
   deviceHeight: number | undefined;
 
@@ -459,11 +459,67 @@ export class MarkerDetailComponent implements OnInit {
     if (this.markerList && this.markerList.length > 1) {
       this.showPrevious = this.markerCurrentIndex > 0;
       this.showNext = this.markerCurrentIndex < this.markerList.length - 1;
+      if(this.showNext) this.updateNextIcon();
+      if(this.showPrevious) this.updatePrevIcon();
     } else {
       this.showNext = false;
       this.showPrevious = false;
     }
   }
+
+  updateNextIcon(){
+    const index = this.markerCurrentIndex + 1;
+    let curr_lat = 0;
+    let curr_lng = 0;
+    let next_lat = 0;
+    let next_lng = 0;
+    
+    if(this.markerList[this.markerCurrentIndex].LatLong){
+      curr_lat = this.markerList[this.markerCurrentIndex]?.LatLong.Latitude;
+      curr_lng = this.markerList[this.markerCurrentIndex]?.LatLong.Longitude;
+    }else{
+      curr_lat = this.markerList[this.markerCurrentIndex]?.Latitude;
+      curr_lng = this.markerList[this.markerCurrentIndex]?.Latitude;
+    }
+    if(this.markerList[index].LatLong){
+      next_lat = this.markerList[index]?.LatLong.Latitude;
+      next_lng = this.markerList[index]?.LatLong.Longitude;
+    }else{
+      next_lat = this.markerList[index]?.Latitude;
+      next_lng = this.markerList[index]?.Latitude;
+    }
+  
+    if(curr_lat === next_lat && curr_lng === next_lng) this.nextIconName = 'chevron-forward-circle-outline';
+    else this.nextIconName = 'flame';
+  }
+
+  updatePrevIcon(){
+    const index = this.markerCurrentIndex - 1;
+    let curr_lat = 0;
+    let curr_lng = 0;
+    let next_lat = 0;
+    let next_lng = 0;
+    
+    if(this.markerList[this.markerCurrentIndex].LatLong){
+      curr_lat = this.markerList[this.markerCurrentIndex]?.LatLong.Latitude;
+      curr_lng = this.markerList[this.markerCurrentIndex]?.LatLong.Longitude;
+    }else{
+      curr_lat = this.markerList[this.markerCurrentIndex]?.Latitude;
+      curr_lng = this.markerList[this.markerCurrentIndex]?.Latitude;
+    }
+    if(this.markerList[index].LatLong){
+      next_lat = this.markerList[index]?.LatLong.Latitude;
+      next_lng = this.markerList[index]?.LatLong.Longitude;
+    }else{
+      next_lat = this.markerList[index]?.Latitude;
+      next_lng = this.markerList[index]?.Latitude;
+    }
+
+    if(curr_lat === next_lat && curr_lng === next_lng) this.prevIconName = 'chevron-back-circle-outline';
+    else this.prevIconName = 'flame';
+  }
+
+
 
   async loadNextItem(previous: boolean) {
     console.log("loadNextItem: previous: " + previous + " CurrentIndex: " + this.markerCurrentIndex);
@@ -471,13 +527,13 @@ export class MarkerDetailComponent implements OnInit {
       if (previous) {
         if (this.markerCurrentIndex > 0) {
           this.markerCurrentIndex--;
-          this.panMapToCurrLoc.emit(this.currentItem);
+          // this.panMapToCurrLoc.emit(this.currentItem);
           this.onShowPrevious.emit(this.markerList[this.markerCurrentIndex ]);
         }
       } else {
         if (this.markerCurrentIndex < this.markerList.length - 1) {
           this.markerCurrentIndex++;
-          this.panMapToCurrLoc.emit(this.currentItem);
+          // this.panMapToCurrLoc.emit(this.currentItem);
           this.onShowNext.emit(this.markerList[this.markerCurrentIndex]);
         }
       }

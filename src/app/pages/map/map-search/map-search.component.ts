@@ -47,7 +47,7 @@ export class MapSearchComponent implements OnInit {
     upper: 600
   };
   connType: any = 'All';
-  keyinfo: any = null;
+  keyinfo: any = "";
   ageMinMax = {
     lower: 18,
     upper: 80
@@ -357,10 +357,10 @@ export class MapSearchComponent implements OnInit {
       lng : 0
     }
     const curr_loc = await this.locationService.getCurrentLocationLatLng();
-    if(location){
+    if(curr_loc){
       sonarSearch_location.lat = curr_loc.lat,
       sonarSearch_location.lng = curr_loc.lng
-      console.log(location);
+      console.log(curr_loc);
     }
     this.mapService.oneTimeSearch(
       {
@@ -368,6 +368,7 @@ export class MapSearchComponent implements OnInit {
         geolocation: {latitude: sonarSearch_location?.lat, longitude: sonarSearch_location?.lng},
         searchKey: this.keyinfo || "",
         scope: this.radius,
+        age: {lower: this.ageMinMax.lower, upper: this.ageMinMax.upper},
         freeUser: this.searchType[1].isChecked,
         Donations: this.searchType[2].isChecked,
         connections: this.searchType[3].isChecked,

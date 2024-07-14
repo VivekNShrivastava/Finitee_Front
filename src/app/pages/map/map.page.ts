@@ -999,6 +999,19 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.resultCount = results.length;
     if (results.length > 0) {
       this.mainResultFromSearch = results;
+      this.mainResultFromSearch.sort((a: any, b: any) => {
+        if(a?.LatLong){
+          if (a.LatLong.Latitude === b.LatLong.Latitude) {
+            return a.LatLong.Longitude - b.LatLong.Longitude;
+          }
+          return a.LatLong.Latitude - b.LatLong.Latitude;
+        }else{
+          if (a.Latitude === b.Latitude) {
+            return a.Longitude - b.Longitude;
+          }
+          return a.Latitude - b.Latitude;
+        }
+      });
       //remove tl
       console.log( "tl" ,results);
       this._commonService.savedSonarLocations.forEach((val: any) => {
@@ -1026,8 +1039,8 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       console.log(this.clusterMap)
       // this.addClusterElementsToMap(this.clusterMap, 0);
       this.addSameLatLongMarkersToMap(this.clusterMap, 0);
-
       console.log(this.clusterMap)
+
       if (this.markersMap.size + this.clusterMap.size === 1) {
         let latLng;
         for (const [key, value] of this.markersMap) {
@@ -2089,6 +2102,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     const res = this.markerListMainResult?.findIndex((v: any) => {
       return (v as any)?.Id === id;
     })
+    console.log("list", this.markerListMainResult);
     this.markerCurrentIndex = res;
 
     // const markerData: MarkerInfo<any> = (marker as any)?.markerData;
@@ -2336,8 +2350,8 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     modal.onDidDismiss().then(result => {
       console.log('res', result);
       this.mapSearchObj = result?.data?.sonarSearch;
-      this.markers.splice(0, this.markers.length);
-      this.clearResults();
+      // this.markers.splice(0, this.markers.length);
+      // this.clearResults();
       this.mapSearchResult = result;
       // this.removeSearchResultFromMap();obsolete
       // this.removeAdvanceMarkerFromMap();
@@ -2358,7 +2372,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
             // result.data[`location`] = this.location;
             this.searchResultUpdate();
           } else {
-            this.clearMap();
+            // this.clearMap();
             if (result.data != undefined && result.data != null) {
               this.cmmflag = result.data.status;
               this.updatelocation();
@@ -2679,7 +2693,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   public onShowPreviousMarker(curr: any): void {
-    console.log('runn prev', curr)
+    // console.log('runn prev', curr)
     let lat = 0;
     let lng = 0;
     if(curr?.LatLong){
@@ -2695,7 +2709,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   public onShowNextMarker(curr: any): void {
-    console.log('runn next', curr)
+    // console.log('runn next', curr)
 
     let lat = 0;
     let lng = 0;
@@ -2714,19 +2728,19 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   public panMapToCurrLoc(curr: any){
-    console.log('cuurent->', curr);
+    // console.log('cuurent->', curr);
 
-    let lat = 0;
-    let lng = 0;
-    if(curr?.LatLong){
-      lat = curr.LatLong.Latitude;
-      lng = curr.LatLong.Longitude;
-    }else{
-      lat = curr.Latitude;
-      lng = curr.Longitude;
-    }
+    // let lat = 0;
+    // let lng = 0;
+    // if(curr?.LatLong){
+    //   lat = curr.LatLong.Latitude;
+    //   lng = curr.LatLong.Longitude;
+    // }else{
+    //   lat = curr.Latitude;
+    //   lng = curr.Longitude;
+    // }
    
-    this.map?.panTo({lat, lng})
+    // this.map?.panTo({lat, lng})
   }
 
   public async openMarkerDetails(): Promise<void> {

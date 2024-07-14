@@ -1,6 +1,10 @@
 import { AppConstants } from "../config/AppConstants";
 import { CreatedByDto } from "../user/createdByDto";
 
+export class SendPost {
+    Post!: Post;
+    Media!: Media;
+}
 
 export class Post {
     Id: string = "";
@@ -21,4 +25,20 @@ export class Post {
     CreatedOn!: any;
     CreatedBy!: CreatedByDto;
     BeamedFromUser!: CreatedByDto;
+}
+
+export class Media{
+    Image!: Image;
+    Video!: Video;
+}
+
+export class Image{
+    ImageFile!: File;
+    SerialNumber: number = 0;
+}
+
+export class Video{
+    VideoFile!: File;
+    Thumbnail!: File;
+    SerialNumber: number = 0;
 }

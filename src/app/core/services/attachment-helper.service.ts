@@ -1,10 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { Diagnostic } from '@awesome-cordova-plugins/diagnostic/ngx';
-/* import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx'; */
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 import { CaptureVideoOptions, MediaCapture } from '@awesome-cordova-plugins/media-capture/ngx';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
@@ -15,11 +12,9 @@ import * as config from 'src/app/core/models/config/ApiMethods';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { AuthService } from './auth.service';
-import { ERR_PLUGIN_NOT_INSTALLED } from '@awesome-cordova-plugins/core/decorators/common';
-import { Plugin } from '@awesome-cordova-plugins/core';
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from '../components/image-cropper/image-cropper.component';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,11 +51,12 @@ export class AttachmentHelperService {
   async captureMedia(mediaType: Number, sourceType: Number) {
     this.user = await this.authService.getUserInfo();
     if(mediaType === AppConstants.MEDIA_PICTURE && sourceType === AppConstants.SOURCE_CAMERA)       
-      this.openCameraToTakePhoto(false, CameraSource.Camera);
+      return this.openCameraToTakePhoto(false, CameraSource.Camera);
     else if (mediaType === AppConstants.MEDIA_VIDEO && sourceType === AppConstants.SOURCE_CAMERA)
       this.openCameraToRecordVideo();
     else if (sourceType === AppConstants.SOURCE_PHOTOLIBRARY)
       this.selectMediaFromGallery("post");
+    return;
   }
 
 
@@ -73,24 +69,28 @@ export class AttachmentHelperService {
       source: source // Camera, Photos or Prompt!
       // source: CameraSource.Prompt,
     });
-    if (image) {
-      // Open the image cropper modal
-      const modal = await this.modalController.create({
-        component: ImageCropperComponent,
-        componentProps: {
-          imageUri: image.base64String,
-        },
-      });
+
+    console.log(image, "cam");
+    const photo = `data:image/${image.format};base64,${image.base64String}`;
+    return photo;
+    // if (image) {
+    //   // Open the image cropper modal
+    //   const modal = await this.modalController.create({
+    //     component: ImageCropperComponent,
+    //     componentProps: {
+    //       imageUri: image.base64String,
+    //     },
+    //   });
   
-      // Present the modal
-      await modal.present();
+    //   // Present the modal
+    //   await modal.present();
 
-      const { data } = await modal.onDidDismiss();
+    //   const { data } = await modal.onDidDismiss();
 
-      if (data) {
-        this.saveMedia(data, "I")
-      }
-    }
+    //   if (data) {
+    //     this.saveMedia(data, "I")
+    //   }
+    // }
   }
 
   async openCameraToRecordVideo() {

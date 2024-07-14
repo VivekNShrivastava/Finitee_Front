@@ -11,6 +11,25 @@ div.poi-info-window .view-link {
     display: none !important;
 }
 
+.greetNumberDot{
+    background-color: #03a9f5;
+    border-radius: 50%;
+    width: 19px;
+    height: 19px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 7px;
+    left: 70px;
+}
+
+.greetNumber{
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+}
+
 .backicon {
     position: absolute;
     top: 5px;
@@ -269,7 +288,7 @@ a {
 
 .c-fab-button {
     display: flex;
-    gap: 10px;
+    gap: 3px;
     align-items: center;
     height: 5vh;
     background: white;
