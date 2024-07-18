@@ -65,13 +65,16 @@ export class AttachmentHelperService {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: true,
-      resultType: CameraResultType.Base64,
+      resultType: CameraResultType.Uri,
       source: source // Camera, Photos or Prompt!
       // source: CameraSource.Prompt,
     });
 
+    
     console.log(image, "cam");
-    const photo = `data:image/${image.format};base64,${image.base64String}`;
+    // const photo = `data:image/${image.format};base64,${image.base64String}`;
+    const photo = image.webPath;
+    this.saveMedia(image.webPath, "I");
     return photo;
     // if (image) {
     //   // Open the image cropper modal
@@ -210,6 +213,7 @@ export class AttachmentHelperService {
   uploadFileToServerv2(formData: any, noToken?: boolean) {
     return new Promise((resolve, reject) => {
       this.progress = "0";
+      console.log(formData)
       let url = noToken ? config.COMMON_UPLOAD_WO_TOKEN : config.COM_URL_NEW + this.user?.UserId + "&module=TT";
       this.httpService.post(url, formData, {
         reportProgress: true,
