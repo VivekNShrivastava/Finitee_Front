@@ -72,9 +72,15 @@ export class AttachmentHelperService {
 
     
     console.log(image, "cam");
+    const dimensions = await this.getImageDimensions(image.webPath);
+    console.log('Width:', dimensions.width, 'Height:', dimensions.height);
+
+    const aspectRatio = dimensions.width / dimensions.height;
+    console.log('Aspect Ratio:', aspectRatio);
+
     // const photo = `data:image/${image.format};base64,${image.base64String}`;
     const photo = image.webPath;
-    this.saveMedia(image.webPath, "I");
+    this.saveMedia(image.webPath, "I", dimensions.width, dimensions.height, aspectRatio);
     return photo;
     // if (image) {
     //   // Open the image cropper modal
@@ -94,6 +100,17 @@ export class AttachmentHelperService {
     //     this.saveMedia(data, "I")
     //   }
     // }
+  }
+
+  async getImageDimensions(imageSrc: any): Promise<{width: number, height: number}> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        };
+        img.onerror = reject;
+        img.src = imageSrc;
+    });
   }
 
   async openCameraToRecordVideo() {
@@ -118,7 +135,11 @@ export class AttachmentHelperService {
         var mediafileProfile = mediafileArray.files[0];
         if(mediafileProfile){
           // console.log("profilepic", mediafileProfile);
-          this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
+          const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path);
+          const dimensions = await this.getImageDimensions(filePath);
+          const aspectRatio = dimensions.width / dimensions.height;
+          // this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
+          this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
         }
       }
     }else{
@@ -134,7 +155,10 @@ export class AttachmentHelperService {
             this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.path));
           }
           else {//image 
-            this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafile.path), "I");
+            const filePath = this.win.Ionic.WebView.convertFileSrc(mediafile.path);
+            const dimensions = await this.getImageDimensions(filePath);
+            const aspectRatio = dimensions.width / dimensions.height;
+            this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
           }
         }
       }
@@ -156,7 +180,7 @@ export class AttachmentHelperService {
   }
 
 
-  async saveMedia(filepath: any, ImageOrVideo: any, thumbNailBase64?: any) {
+  async saveMedia(filepath: any, ImageOrVideo: any, width: number, height: number, aspectRatio: number, thumbNailBase64?: any) {
     const response = await fetch(filepath);
     const fileBlob = await response.blob();
 
@@ -181,7 +205,10 @@ export class AttachmentHelperService {
       filePath: filepath,
       thumbName: "Thumb_" + thumbfilename,
       thumbBlob: thumbfileBlob,
-      thumbFilePath: thumbFilepath
+      thumbFilePath: thumbFilepath,
+      width: width,
+      height: height,
+      aspectRatio: aspectRatio
     };
     console.log(obj);
     this.onMediaSave.emit(obj);
