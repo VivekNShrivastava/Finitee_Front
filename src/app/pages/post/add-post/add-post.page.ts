@@ -23,7 +23,11 @@ export class AddPostPage extends BasePage implements OnInit {
   isTraitReadOnly : boolean = true;
   photo: any[] = [];
   sendPost: AddPostRequest = new AddPostRequest;
-  fileToUpload: any;
+  fileToUpload: any[] = [];
+  slideOptions = {
+    direction: 'vertical',
+    initialSlide: 0
+  };
   constructor(
     private router: Router,
     private navCtrl: NavController,
@@ -73,8 +77,8 @@ export class AddPostPage extends BasePage implements OnInit {
     this.post.PostTraits.splice(i, 1);
   }
 
-  fileToUploadToServer(formData: any){
-    console.log('fileToUploadToServer', formData);
+  fileToUploadToServer(mediaObj: any){
+    console.log('fileToUploadToServer', mediaObj);
     // for (let pair of (formData as any).entries()) {
     //   console.log(pair[0] + ':', pair[1]);
     //   this.fileToUpload = pair[1];
@@ -83,9 +87,9 @@ export class AddPostPage extends BasePage implements OnInit {
     //     console.log('  Blob type:', pair[1].type);
     //   }
     // }
-    this.fileToUpload = formData;
+    this.fileToUpload.push(mediaObj);
 
-    console.log('asd', this.sendPost)
+    console.log('asd', this.fileToUpload)
   }
 
   imagePathMedia(imagePath: string){
@@ -162,10 +166,13 @@ export class AddPostPage extends BasePage implements OnInit {
     const media = new Media();
     media.images = [];
 
-    media.images.push({
-      imageFile: this.fileToUpload,
-      serialNumber: 1
-    })
+    for(let i=0; i<this.fileToUpload.length; i++){
+      media.images.push({
+        imageFile: this.fileToUpload[i],
+        // serialNumber: 1
+      })
+    }
+    
 
     this.sendPost = {
       post : this.post,
@@ -174,12 +181,16 @@ export class AddPostPage extends BasePage implements OnInit {
 
     const formData = new FormData();
     formData.append('Post', JSON.stringify(this.sendPost.post));
+    formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
 
     // Append each image file and its serial number
-    this.sendPost.media.images?.forEach((image: ImageFinitee, index: number) => {
-      formData.append('file', this.fileToUpload.blob, this.fileToUpload.name);
-      formData.append(`media.images[${index}].serialNumber`, image.serialNumber.toString());
+    this.sendPost.media.images?.forEach((image: any, index: number) => {
+      formData.append('file', image.imageFile.blob, image.imageFile.name);
     });
+
+    // this.fileToUpload.forEach((image: any) => {
+
+    // })
 
     // Log the contents of the FormData object for verification
     for (const [key, value] of (formData as any).entries()) {
