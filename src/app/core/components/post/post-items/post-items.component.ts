@@ -17,9 +17,9 @@ import { ProfileService } from 'src/app/core/services/canvas-home/profile.servic
 import { ReportService } from 'src/app/core/services/report.service';
 import { userReport } from 'src/app/core/models/report';
 import { userConnection } from 'src/app/core/models/connection/connection';
-import { CreatedByDto } from 'src/app/core/models/user/createdByDto';
-import { EventListPage } from 'src/app/pages/sidemenu/events/event-list/event-list.page';
-
+import { CommonService } from 'src/app/core/services/common.service';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { InflowsService } from 'src/app/core/services/inflows/inflows.service';
 @Component({
   standalone: true,
   imports: [IonicModule,
@@ -60,7 +60,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
   replyButtonClickedFlags: boolean = false;
   replyToName : string = "";
   IsReplySectionOpen: boolean = false;
-  
+  inflowsLoaded: boolean = true;
 
      toggleDescription(post: any) {
        post.showFullDescription = !post.showFullDescription;
@@ -72,7 +72,9 @@ export class PostItemsComponent extends BasePage implements OnInit {
   isVideoPlaying = false;
   isAudioOn = true;
   videoProgress = 0;
-
+  value: Number = 0;
+  week: number = 0;
+  part: number = 0;
   isCommentModalOpen: boolean = false;
   isReplyModalOpen: boolean = false;
   breakPoint: any = 1;
@@ -90,19 +92,21 @@ export class PostItemsComponent extends BasePage implements OnInit {
     private navCtrl: NavController,
     private alertController: AlertController,
     private router: Router,
-    private reportService: ReportService) {
-
+    private reportService: ReportService,
+    public commonService: CommonService,
+    private inflowServices: InflowsService) {
     super(authService);
-
-
   }
+
   ngOnInit() {
     this.logInfo =  this.authService.getUserInfo();
-    
-    // this.userId = this._userProfileService.getUserProfile(this.logInfo.UserId, this.logInfo.UserId);
 
     if (this.paramsData) {
+      this.value = this.paramsData['value'];
+      this.week = this.paramsData['week'];
+      this.part = this.paramsData['part'];
       this.postList = [...this.paramsData['postlist']];
+      this.dateAndTime(0);
       this.selectedPost = this.paramsData['selectedPost'];
       this.postViewType = this.paramsData['postViewType'];
       this.postCommentViewType = this.paramsData['postCommentViewType'];
@@ -111,8 +115,6 @@ export class PostItemsComponent extends BasePage implements OnInit {
       if (this.postCommentViewType == AppConstants.POST_COMMENT_VIEW_TYPE.INLINE)
         this.getCommentList(this.selectedPost.Id);
     }
-
-    
   }
 
   ngAfterViewInit() {
@@ -126,15 +128,72 @@ export class PostItemsComponent extends BasePage implements OnInit {
 
   }
 
-
-
-
   updateFontSize(PostDescription: any) {
     const maxLength = 2000; // Your character limit
     const currentLength = PostDescription.length;
     const fontSizePercentage = (currentLength / maxLength) * 100;
     const newSize = 15 - fontSizePercentage * 0.05; // Adjust the factor as needed
     return `${newSize}px`;
+  }
+
+  dateAndTime(listLength: number){
+    let ind = 0;
+    if(listLength > 0) ind = this.postList.length - listLength!;
+    for(let i=ind; i < this.postList.length; i++){
+      this.postList[i].CreatedOn = this.getTimeDifference(this.postList[i].CreatedOn)
+    }
+    this.inflowsLoaded = true;
+    // this.postList = this.postList?.map((post) => {
+    //   post.CreatedOn = this.getTimeDifference(post.CreatedOn);
+    //   return post;
+    // });
+  }
+
+  async generateItems(){
+    this.inflowsLoaded = false;
+    const res = await this.inflowServices.getInflows(this.value, this.week, this.part);
+    if(res.postList?.length > 0){
+      this.postList.push(...res.postList);
+      this.dateAndTime(res.postList.length);
+      // console.log(...res.postList);
+    }
+    if(res.complete){
+      this.week = this.week + 1;
+    }else this.part = this.part + 1;
+  }
+
+  onIonInfinite(ev: any) {
+    console.log('asd');
+    this.generateItems();
+    setTimeout(() => {
+      (ev as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
+  }
+
+  getTimeDifference(dateStr: string): string {
+    const inputDate = new Date(dateStr);
+    const currentDate = new Date();
+    const diffMs = currentDate.getTime() - inputDate.getTime();
+
+    const diffSeconds = diffMs / 1000;
+    const diffMinutes = diffSeconds / 60;
+    const diffHours = diffMinutes / 60;
+    const diffDays = diffHours / 24;
+
+    if (diffSeconds < 60) {
+      return `${Math.floor(diffSeconds)} seconds ago`;
+    } else if (diffMinutes < 60) {
+      if(diffMinutes < 2) return `${Math.floor(diffMinutes)} minute ago`; 
+      else return `${Math.floor(diffMinutes)} minutes ago`;
+    } else if (diffHours < 24) {
+      if(diffHours < 2) return `${Math.floor(diffHours)} hour ago`;
+      else return `${Math.floor(diffHours)} hours ago`;
+    } else if (diffDays < 7) {
+      if(diffDays < 2) return `${Math.floor(diffDays)} day ago`
+      else return `${Math.floor(diffDays)} days ago`;
+    } else {
+      return inputDate.toISOString().split('T')[0]; // Returns date in YYYY-MM-DD format
+    }
   }
 
   async repliesForComment(action: string, comment: any, reply?:any){

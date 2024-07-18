@@ -1,3 +1,75 @@
+<ion-content>
+
+  <ion-list class="profileBgClass">
+    <!-- user data -->
+    <ion-item lines="none" class="profileBg" style="--overflow:visible;">
+      <ng-container slot="start" style="position: relative;">
+        <ion-avatar>
+          <img class="business-logo" [src]="appConstants.mediaPrefix"
+            onError="this.src='assets/icons/business/anonymous.svg'"/>
+        </ion-avatar>
+        <ion-label class="fi-name-label">
+          <!-- <h3>{{post.CreatedBy!.UserName}}</h3> -->
+           <h3>Nisarg Barot</h3>
+        </ion-label>
+      </ng-container>
+
+      <ion-buttons slot="end">
+        <ion-button shape="round">
+          <ion-icon name="three-dots"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <!-- image and video-->
+  <div class="ion-text-center  post-screen-slide">
+    <ion-slides>
+      <ion-slide>
+        <ion-card class="media">
+          <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+
+          <!-- <video class="video" [poster]="appConstants.mediaPrefix "
+            controls>
+            <source [src]="appConstants.mediaPrefix  " type="video/mp4">
+          </video> -->
+
+          <!-- <ion-img id="{{post.Id}}-img" 
+            [src]="appConstants.mediaPrefix ">
+          </ion-img> -->
+
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  </div>
+
+  <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
+    <div class="favour-n-beam">
+      <ion-buttons>
+        <ion-button shape="round" >
+          <ion-icon name="comment-favour-outlined"></ion-icon>
+        </ion-button>
+        <ion-button shape="round">
+          <ion-icon name="post-chat"></ion-icon>
+        </ion-button>
+        <ion-button shape="round">
+          <ion-icon name="beam-post"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+
+    <div class="stats display-flex ion-align-items-center fi-flexend">
+      <h4>25 Favors</h4>
+      <span></span>
+      <h4>10 Beams</h4>
+      <span></span>
+      <h4>7 Comments</h4>
+    </div>
+  </ion-item>
+
+</ion-content>
+
+
 <ion-row>
   <ion-col size="7">
     <ion-buttons>

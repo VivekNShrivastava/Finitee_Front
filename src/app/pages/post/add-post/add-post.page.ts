@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
-import { Post } from 'src/app/core/models/post/post';
+import { Post, SendPost } from 'src/app/core/models/post/post';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BusinessCanvasService } from 'src/app/core/services/canvas-home/business-canvas.service';
 import { PostService } from 'src/app/core/services/post.service';
@@ -21,6 +21,8 @@ export class AddPostPage extends BasePage implements OnInit {
   BelongsToId!: string;
   saveClicked: boolean = false;
   isTraitReadOnly : boolean = true;
+  photo: any = "";
+  sendPost: SendPost = new SendPost;
 
   constructor(
     private router: Router,
@@ -69,6 +71,11 @@ export class AddPostPage extends BasePage implements OnInit {
 
   deleteTrait(i: number) {
     this.post.PostTraits.splice(i, 1);
+  }
+
+  imagePathMedia(imagePath: string){
+    console.log(imagePath);
+    this.photo = imagePath;
   }
 
   addMedia(filePath: string) {
@@ -129,5 +136,11 @@ export class AddPostPage extends BasePage implements OnInit {
 
   selectedPrivacy(data: any) {
     this.post.Privacy = data.detail.value;
+  }
+
+  addPost(){
+    console.log("posted!")
+    console.log(this.sendPost);
+    // this.postService.createPost(this.sendPost);
   }
 }

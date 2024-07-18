@@ -10,7 +10,47 @@ ion-textarea.custom-textarea {
     border-radius: 11px;
     opacity: 1;
 }
-  
+
+ion-item {
+  margin-bottom: 0;
+
+  & div.favour-n-beam {
+    display: flex;
+
+  }
+
+  & div.stats {
+    h4 {
+      font: normal normal bold 14px/21px SF Pro Display;
+      letter-spacing: 0.04px;
+      color: #1A3253;
+      padding: 0 3px;
+      margin: 0;
+    }
+
+    span {
+      width: 4px;
+      height: 4px;
+      background-color: #1A3253;
+      border-radius: 50%;
+    }
+  }
+}
+
+.media{
+  background-color: #F0F5F7;
+  width: 100%;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileBgClass{
+  margin-top: -6px;
+  // background-color: #28507;
+  background: #f0f5f7;
+}
 
 ion-title {
     color: #285078;
