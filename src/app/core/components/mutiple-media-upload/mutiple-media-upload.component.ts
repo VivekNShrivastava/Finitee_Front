@@ -57,13 +57,14 @@ export class MultipleMediaUploadComponent implements OnInit {
       if (mediaObj != null) {
         // this.filePathEvent.emit(mediaObj.thumbFilePath);
         this.imagePath.emit(mediaObj);
+        this.fileToUpload.emit(mediaObj);
         console.log("mediaObj", mediaObj)
-        this.uploadFileToserver(mediaObj);
+        // this.uploadFileToserver(mediaObj);
       }
     })
     this.mediaCoverSubscription = this.attachmentService.onMediaCoverSelction.subscribe((mediaObj: any) => {
       if (mediaObj != null) {
-        this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.cover);
+        // this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.cover);
       }
     })
   }
@@ -96,7 +97,6 @@ export class MultipleMediaUploadComponent implements OnInit {
         console.log('  Blob type:', pair[1].type);
       }
     }
-    this.fileToUpload.emit(mediaObj);
     var response: any = await this.attachmentService.uploadFileToServerv2(formData);
     if (response != "error") {
       this.response = true;

@@ -34,7 +34,7 @@ export class Media {
 
 export class ImageFinitee {
     imageFile!: File;
-    serialNumber!: number;
+    // serialNumber!: number;
 }
 
 export class VideoFinitee {
