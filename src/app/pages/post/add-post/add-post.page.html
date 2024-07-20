@@ -40,28 +40,28 @@
   </ion-list>
 
   <!-- image and video-->
-  <div class="ion-text-center  post-screen-slide">
-    <ion-slides [pager]="photo.length > 1 ? true : false" [options]="slideOptions">
-      <ion-slide *ngFor="let photo of photo">
-        <ion-card class="media">
-          <ion-icon *ngIf="photo.length <= 0" src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+  <div class="ion-text-center  post-screen-slide ">
+    <ion-slides *ngIf="fileToUpload.length > 0" [pager]="true" class="post-screen-slide">
+      <ion-slide  *ngFor="let photo of fileToUpload" style="display: block; height: auto;">
+        <ion-card >
 
-          <!-- <video class="video" [poster]="appConstants.mediaPrefix "
+          <video *ngIf="photo['mediaType'] === 'V' " class="video" 
             controls>
-            <source [src]="appConstants.mediaPrefix  " type="video/mp4">
-          </video> -->
+            <source [src]="photo.filePath" type="video/mp4">
+          </video>
 
-          <ion-img style="width: 100%;" *ngIf="photo.length > 0" id="{{post.Id}}-img" 
-            [src]="photo">
+          <ion-img *ngIf="photo['mediaType'] !== 'V' " style="width: 100%;" id="{{post.Id}}-img" 
+            [src]="photo.thumbFilePath">
           </ion-img>
 
         </ion-card>
       </ion-slide>
-      <ion-card *ngIf="photo.length <= 0" class="media">
-        <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
-      </ion-card>
     </ion-slides>
+    <ion-card *ngIf="fileToUpload.length <= 0" class="media">
+      <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+    </ion-card>
   </div>
+
 
   <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
     <div class="favour-n-beam">

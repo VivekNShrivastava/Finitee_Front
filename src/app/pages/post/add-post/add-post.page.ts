@@ -25,7 +25,7 @@ export class AddPostPage extends BasePage implements OnInit {
   sendPost: AddPostRequest = new AddPostRequest;
   fileToUpload: any[] = [];
   slideOptions = {
-    direction: 'vertical',
+    direction: 'horizontal',
     initialSlide: 0
   };
   constructor(
@@ -78,15 +78,6 @@ export class AddPostPage extends BasePage implements OnInit {
   }
 
   fileToUploadToServer(mediaObj: any){
-    console.log('fileToUploadToServer', mediaObj);
-    // for (let pair of (formData as any).entries()) {
-    //   console.log(pair[0] + ':', pair[1]);
-    //   this.fileToUpload = pair[1];
-    //   if (pair[1] instanceof Blob) {
-    //     console.log('  Blob size:', pair[1].size);
-    //     console.log('  Blob type:', pair[1].type);
-    //   }
-    // }
     this.fileToUpload.push(mediaObj);
 
     console.log('asd', this.fileToUpload)
@@ -95,6 +86,7 @@ export class AddPostPage extends BasePage implements OnInit {
   imagePathMedia(imagePath: string){
     console.log( imagePath);
     this.photo.push(imagePath);
+    console.log(this.photo)
   }
 
   addMedia(filePath: string) {
@@ -185,7 +177,12 @@ export class AddPostPage extends BasePage implements OnInit {
 
     // Append each image file and its serial number
     this.sendPost.media.images?.forEach((image: any, index: number) => {
-      formData.append('file', image.imageFile.blob, image.imageFile.name);
+      if(image.imageFile.name.includes('mp4')){
+        formData.append('file', image.imageFile.blob, image.imageFile.filePath);
+        formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
+      }else{
+        formData.append('file', image.imageFile.blob, image.imageFile.name);
+      }
     });
 
     // this.fileToUpload.forEach((image: any) => {
