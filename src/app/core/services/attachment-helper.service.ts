@@ -66,8 +66,7 @@ export class AttachmentHelperService {
       quality: 100,
       allowEditing: true,
       resultType: CameraResultType.Uri,
-      source: source // Camera, Photos or Prompt!
-      // source: CameraSource.Prompt,
+      source: CameraSource.Camera// Camera, Photos or Prompt!
     });
 
     
@@ -81,7 +80,7 @@ export class AttachmentHelperService {
     // const photo = `data:image/${image.format};base64,${image.base64String}`;
     const photo = image.webPath;
     this.saveMedia(image.webPath, "I", dimensions.width, dimensions.height, aspectRatio);
-    return photo;
+    // return photo;
     // if (image) {
     //   // Open the image cropper modal
     //   const modal = await this.modalController.create({
@@ -144,13 +143,18 @@ export class AttachmentHelperService {
       }
     }else{
       const mediafileArray: any = await FilePicker.pickMedia({
-        multiple: false
+        multiple: true,
+        readData: true
       });
-      // console.log(mediafileArray, mediafileArray.files[0]);
+      // const mediafileArray: any = await Camera.pickImages({
+      //   quality: 100,
+      //   limit: 5
+      // });
+      console.log('media files ...');
+      console.log(mediafileArray, mediafileArray.files[0]);
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
         if (mediafile) {
-          // console.log("Post")
           if (mediafile.mimeType.indexOf("video") != -1) {//video
             this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.path));
           }
