@@ -64,7 +64,9 @@ export class MultipleMediaUploadComponent implements OnInit {
     })
     this.mediaCoverSubscription = this.attachmentService.onMediaCoverSelction.subscribe((mediaObj: any) => {
       if (mediaObj != null) {
-        // this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.cover);
+        console.log("video obj", mediaObj);
+        const aspectRatio = mediaObj.width/mediaObj.height;
+        this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.width, mediaObj.height, aspectRatio, mediaObj.cover);
       }
     })
   }
@@ -74,10 +76,10 @@ export class MultipleMediaUploadComponent implements OnInit {
     event.preventDefault();
     console.log(MediaType + "  --  " + SourceType);
     const res = await this.attachmentService.captureMedia(MediaType, SourceType);
-    if(res){
-      console.log(res)
-      this.imagePath.emit(res)
-    } 
+    // if(res){
+    //   console.log(res)
+    //   this.imagePath.emit(res)
+    // } 
   }
 
 
