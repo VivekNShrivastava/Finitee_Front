@@ -11,6 +11,26 @@ ion-textarea.custom-textarea {
     opacity: 1;
 }
 
+.post-screen-slide {
+  & ion-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    min-height:100px;
+    max-height: 350px;
+    box-shadow: none;
+    overflow: visible;
+
+    /*  & ion-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    } */
+  }
+}
+
 ion-item {
   margin-bottom: 0;
 
@@ -44,6 +64,12 @@ ion-item {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+
+.postBg {
+  background-color: #285078 !important;
+  min-height: 40%;
 }
 
 .profileBgClass{

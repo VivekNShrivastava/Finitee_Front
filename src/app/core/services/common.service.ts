@@ -129,7 +129,6 @@ export class CommonService {
   }
 
   showLoader(functionName?: string) {
-    // console.log('showLoader: Start: ', functionName);
     this.loaderLoading = false;
     this.loadingController
       ?.create({
@@ -138,12 +137,10 @@ export class CommonService {
       .then((response) => {
         response.present();
         this.loaderLoading = true;
-        // console.log('showLoader: End');
       });
   }
 
   hideLoader(functionName?: string) {
-    // console.log('hideLoader: Start', functionName);
     let self = this;
     if (!this.loaderLoading) {
       setTimeout(() => {

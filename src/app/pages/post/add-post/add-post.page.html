@@ -41,25 +41,28 @@
 </div>
 
   <!-- image and video-->
-  <div class="ion-text-center  post-screen-slide">
-    <ion-slides>
-      <ion-slide>
-        <ion-card class="media">
-          <ion-icon *ngIf="photo.length <= 0" src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+  <div class="ion-text-center  post-screen-slide ">
+    <ion-slides *ngIf="fileToUpload.length > 0" [pager]="true" class="post-screen-slide">
+      <ion-slide  *ngFor="let photo of fileToUpload" style="display: block; height: auto;">
+        <ion-card >
 
-          <!-- <video class="video" [poster]="appConstants.mediaPrefix "
+          <video *ngIf="photo['mediaType'] === 'V' " class="video" 
             controls>
-            <source [src]="appConstants.mediaPrefix  " type="video/mp4">
-          </video> -->
+            <source [src]="photo.filePath" type="video/mp4">
+          </video>
 
-          <ion-img style="width: 100%;" *ngIf="photo.length > 0" id="{{post.Id}}-img" 
-            [src]="photo">
+          <ion-img *ngIf="photo['mediaType'] !== 'V' " style="width: 100%;" id="{{post.Id}}-img" 
+            [src]="photo.thumbFilePath">
           </ion-img>
 
         </ion-card>
       </ion-slide>
     </ion-slides>
+    <ion-card *ngIf="fileToUpload.length <= 0" class="media">
+      <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+    </ion-card>
   </div>
+
 
   <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
     <div class="favour-n-beam">
@@ -151,7 +154,8 @@
       [postLimit]="post.PostImages.length"
       [mediaFiles]="post.PostImages"
       (filePathEvent)="addMedia($event)"
-      (imagePath)="imagePathMedia($event)">
+      (imagePath)="imagePathMedia($event)"
+      (fileToUpload)="fileToUploadToServer($event)">
     </app-multiple-media-upload>
 
     <!-- <div class="error-message" *ngIf="saveClicked && post.PostImages.length==0 && post.PostDescription==''">
@@ -173,6 +177,7 @@
 
   <ion-button shape="round" expand="block"
   color="primary" 
+  [disabled]="photo.length === 0"
   (click)="addPost()">
   Create post
 </ion-button>

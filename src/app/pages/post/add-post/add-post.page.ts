@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
-import { Post, SendPost } from 'src/app/core/models/post/post';
+import { Post, AddPostRequest, Media, ImageFinitee, VideoFinitee } from 'src/app/core/models/post/post';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BusinessCanvasService } from 'src/app/core/services/canvas-home/business-canvas.service';
 import { PostService } from 'src/app/core/services/post.service';
@@ -21,9 +21,13 @@ export class AddPostPage extends BasePage implements OnInit {
   BelongsToId!: string;
   saveClicked: boolean = false;
   isTraitReadOnly : boolean = true;
-  photo: any = "";
-  sendPost: SendPost = new SendPost;
-
+  photo: any[] = [];
+  sendPost: AddPostRequest = new AddPostRequest;
+  fileToUpload: any[] = [];
+  slideOptions = {
+    direction: 'horizontal',
+    initialSlide: 0
+  };
   constructor(
     private router: Router,
     private navCtrl: NavController,
@@ -73,12 +77,20 @@ export class AddPostPage extends BasePage implements OnInit {
     this.post.PostTraits.splice(i, 1);
   }
 
+  fileToUploadToServer(mediaObj: any){
+    this.fileToUpload.push(mediaObj);
+
+    console.log('asd', this.fileToUpload)
+  }
+
   imagePathMedia(imagePath: string){
-    console.log(imagePath);
-    this.photo = imagePath;
+    console.log( imagePath);
+    this.photo.push(imagePath);
+    console.log(this.photo)
   }
 
   addMedia(filePath: string) {
+    console.log('addMedia', filePath);
     if (filePath.indexOf("delete") != -1) {
       var filePathSplit = filePath.split("-");
       this.post.PostImages.splice(parseInt(filePathSplit[1]), 1)
@@ -116,7 +128,8 @@ export class AddPostPage extends BasePage implements OnInit {
         this.post.Type = this.paramsData.Type;
       }
       console.log(this.post);
-      var result = await this.postService.createPost(this.post);
+      var result;
+      // var result = await this.postService.createPost(res);
       if (result) {
         this.post["Id"] = result;
         this.post.CreatedBy = this.getCreatedByData();
@@ -138,9 +151,55 @@ export class AddPostPage extends BasePage implements OnInit {
     this.post.Privacy = data.detail.value;
   }
 
-  addPost(){
-    console.log("posted!")
+  async addPost() {
+    console.log("posted!");
     console.log(this.sendPost);
-    // this.postService.createPost(this.sendPost);
-  }
+
+    const media = new Media();
+    media.images = [];
+
+    for(let i=0; i<this.fileToUpload.length; i++){
+      media.images.push({
+        imageFile: this.fileToUpload[i],
+        // serialNumber: 1
+      })
+    }
+    
+
+    this.sendPost = {
+      post : this.post,
+      media: media
+    }
+
+    const formData = new FormData();
+    formData.append('Post', JSON.stringify(this.sendPost.post));
+    formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
+
+    // Append each image file and its serial number
+    this.sendPost.media.images?.forEach((image: any, index: number) => {
+      if(image.imageFile.name.includes('mp4')){
+        formData.append('file', image.imageFile.blob, image.imageFile.filePath);
+        formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
+      }else{
+        formData.append('file', image.imageFile.blob, image.imageFile.name);
+      }
+    });
+
+    // this.fileToUpload.forEach((image: any) => {
+
+    // })
+
+    // Log the contents of the FormData object for verification
+    for (const [key, value] of (formData as any).entries()) {
+        console.log(key, value);
+    }
+
+    try {
+        const res = await this.postService.createPost(formData);
+        console.log(res);
+    } catch (error) {
+        console.error('Error creating post:', error);
+    }
+}
+
 }

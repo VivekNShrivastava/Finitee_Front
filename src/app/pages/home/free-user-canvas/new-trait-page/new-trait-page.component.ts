@@ -30,6 +30,7 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
   userId: string = "";
   navParams: any;
   isTraitReadOnly : boolean = true;
+  fileToUpload: any[] = [];
 
   constructor(
     private router: Router,
@@ -40,22 +41,11 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
     public _commonService: CommonService,
     private postService: PostService,
     public attachmentService: AttachmentHelperService
-  ) {     super(authService);
-
-    console.log("asd", this.router!.getCurrentNavigation()!.extras.state)
+  ) {     
+    super(authService);
     this.navParams = this.router!.getCurrentNavigation()!.extras.state;
     this.post.PostDescription = this.navParams.traitInput;
-    // if (this.router!.getCurrentNavigation()!.extras.state) {
-    //   this.navParams = this.router!.getCurrentNavigation()!.extras.state!['data'];
-    //   console.log("this.navParams", this.navParams);
-    //   this.userId = this.navParams.UserId;
-    //   if (this.navParams.UserId)
-    //     this.userId = this.navParams.UserId;
-    //   if (this.navParams.Id)
-    //     this.userId = this.navParams.Id;
-    // }
     this.userId = this.logInfo.UserId;
-
   }
 
   ngOnInit() {console.log("createTrait")}
@@ -68,20 +58,24 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
     this.post.PostTraits.splice(i, 1);
   }
 
-  addMedia(filePath: string) {
-    // this.saveClicked = true;
-    console.log("addmedia-clicked", this.post.PostImages.length)
-    if (filePath.indexOf("delete") != -1) {
-      var filePathSplit = filePath.split("-");
-      this.post.PostImages.splice(parseInt(filePathSplit[1]), 1)
-    }
-    else if (filePath.indexOf("localhost") != -1 || filePath.indexOf(";base64") != -1)
-      this.post.PostImages.unshift(filePath);
-    else
-      this.post.PostImages[0] = filePath;
+  fileToUploadToServer(mediaObj: any){
+    this.fileToUpload.push(mediaObj);
 
-    // this.saveClicked = false;
-    console.log("addmedia-was-clicked", this.post.PostImages.length)
+    console.log('asd', this.fileToUpload)
+  }
+
+  addMedia(filePath: string) {
+
+    // if (filePath.indexOf("delete") != -1) {
+    //   var filePathSplit = filePath.split("-");
+    //   this.post.PostImages.splice(parseInt(filePathSplit[1]), 1)
+    // }
+    // else if (filePath.indexOf("localhost") != -1 || filePath.indexOf(";base64") != -1)
+    //   this.post.PostImages.unshift(filePath);
+    // else
+    //   this.post.PostImages[0] = filePath;
+
+    // console.log(this.post)
 
   }
 
@@ -108,7 +102,6 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
   }
 
   async savePost() {
-    // this.saveClicked = true;
 
     var uploadFileInprogress = _.filter(this.post.PostImages, function (v) {
       return v.indexOf("localhost") != -1
@@ -122,11 +115,9 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
     var userTrait: UserTrait = new UserTrait();
     userTrait.Trait = this.post.PostDescription || this.navParams.traitInput;
     userTrait.Thumbnail = this.post.PostImages[0];
-    // userTrait.Id = null;
     var res = await this._postService.saveUserTrait(userTrait);
     const openTraitPost = true;
     if(res){
-      // this.navEx!.state!['data'] = true;
       const navigationExtras: NavigationExtras = {
         state: {
           data: {

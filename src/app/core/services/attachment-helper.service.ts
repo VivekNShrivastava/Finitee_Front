@@ -65,14 +65,22 @@ export class AttachmentHelperService {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: true,
-      resultType: CameraResultType.Base64,
-      source: source // Camera, Photos or Prompt!
-      // source: CameraSource.Prompt,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera// Camera, Photos or Prompt!
     });
 
+    
     console.log(image, "cam");
-    const photo = `data:image/${image.format};base64,${image.base64String}`;
-    return photo;
+    const dimensions = await this.getImageDimensions(image.webPath);
+    console.log('Width:', dimensions.width, 'Height:', dimensions.height);
+
+    const aspectRatio = dimensions.width / dimensions.height;
+    console.log('Aspect Ratio:', aspectRatio);
+
+    // const photo = `data:image/${image.format};base64,${image.base64String}`;
+    const photo = image.webPath;
+    this.saveMedia(image.webPath, "I", dimensions.width, dimensions.height, aspectRatio);
+    // return photo;
     // if (image) {
     //   // Open the image cropper modal
     //   const modal = await this.modalController.create({
@@ -91,6 +99,17 @@ export class AttachmentHelperService {
     //     this.saveMedia(data, "I")
     //   }
     // }
+  }
+
+  async getImageDimensions(imageSrc: any): Promise<{width: number, height: number}> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        };
+        img.onerror = reject;
+        img.src = imageSrc;
+    });
   }
 
   async openCameraToRecordVideo() {
@@ -115,23 +134,35 @@ export class AttachmentHelperService {
         var mediafileProfile = mediafileArray.files[0];
         if(mediafileProfile){
           // console.log("profilepic", mediafileProfile);
-          this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
+          const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path);
+          const dimensions = await this.getImageDimensions(filePath);
+          const aspectRatio = dimensions.width / dimensions.height;
+          // this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
+          this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
         }
       }
     }else{
       const mediafileArray: any = await FilePicker.pickMedia({
-        multiple: false
+        multiple: true,
+        readData: true
       });
-      // console.log(mediafileArray, mediafileArray.files[0]);
+      // const mediafileArray: any = await Camera.pickImages({
+      //   quality: 100,
+      //   limit: 5
+      // });
+      console.log('media files ...');
+      console.log(mediafileArray, mediafileArray.files[0]);
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
         if (mediafile) {
-          // console.log("Post")
           if (mediafile.mimeType.indexOf("video") != -1) {//video
             this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.path));
           }
           else {//image 
-            this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafile.path), "I");
+            const filePath = this.win.Ionic.WebView.convertFileSrc(mediafile.path);
+            const dimensions = await this.getImageDimensions(filePath);
+            const aspectRatio = dimensions.width / dimensions.height;
+            this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
           }
         }
       }
@@ -153,7 +184,7 @@ export class AttachmentHelperService {
   }
 
 
-  async saveMedia(filepath: any, ImageOrVideo: any, thumbNailBase64?: any) {
+  async saveMedia(filepath: any, ImageOrVideo: any, width: number, height: number, aspectRatio: number, thumbNailBase64?: any) {
     const response = await fetch(filepath);
     const fileBlob = await response.blob();
 
@@ -178,7 +209,10 @@ export class AttachmentHelperService {
       filePath: filepath,
       thumbName: "Thumb_" + thumbfilename,
       thumbBlob: thumbfileBlob,
-      thumbFilePath: thumbFilepath
+      thumbFilePath: thumbFilepath,
+      width: width,
+      height: height,
+      aspectRatio: aspectRatio
     };
     console.log(obj);
     this.onMediaSave.emit(obj);
@@ -210,6 +244,7 @@ export class AttachmentHelperService {
   uploadFileToServerv2(formData: any, noToken?: boolean) {
     return new Promise((resolve, reject) => {
       this.progress = "0";
+      console.log(formData)
       let url = noToken ? config.COMMON_UPLOAD_WO_TOKEN : config.COM_URL_NEW + this.user?.UserId + "&module=TT";
       this.httpService.post(url, formData, {
         reportProgress: true,

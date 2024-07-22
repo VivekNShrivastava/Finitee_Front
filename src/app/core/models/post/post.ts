@@ -1,11 +1,6 @@
 import { AppConstants } from "../config/AppConstants";
 import { CreatedByDto } from "../user/createdByDto";
 
-export class SendPost {
-    Post!: Post;
-    Media!: Media;
-}
-
 export class Post {
     Id: string = "";
     IsEdited: boolean = false;
@@ -27,18 +22,23 @@ export class Post {
     BeamedFromUser!: CreatedByDto;
 }
 
-export class Media{
-    Image!: Image;
-    Video!: Video;
+export class AddPostRequest {
+    post!: Post;
+    media!: Media;
 }
 
-export class Image{
-    ImageFile!: File;
-    SerialNumber: number = 0;
+export class Media {
+    images?: ImageFinitee[];
+    videos?: VideoFinitee[];
 }
 
-export class Video{
-    VideoFile!: File;
-    Thumbnail!: File;
-    SerialNumber: number = 0;
+export class ImageFinitee {
+    imageFile!: File;
+    // serialNumber!: number;
+}
+
+export class VideoFinitee {
+    videoFile!: File;
+    thumbnail!: File;
+    serialNumber!: number;
 }
