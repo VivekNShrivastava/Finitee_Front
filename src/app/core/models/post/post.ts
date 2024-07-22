@@ -42,3 +42,10 @@ export class VideoFinitee {
     thumbnail!: File;
     serialNumber!: number;
 }
+
+export class Trait { 
+    trait: string = "";
+    id?: string = "";
+    thumbnail?: File;
+    removeThumbnail: boolean = false;
+}

@@ -185,20 +185,32 @@ export class AttachmentHelperService {
 
 
   async saveMedia(filepath: any, ImageOrVideo: any, width: number, height: number, aspectRatio: number, thumbNailBase64?: any) {
+    console.log("filePath", filepath)
     const response = await fetch(filepath);
-    const fileBlob = await response.blob();
+    console.log("response", response)
+    let fileBlob = await response.blob();
+    console.log("fileBlob", fileBlob);
+    if(fileBlob.type === 'application/octet-stream'){
+      let newBlob;
+      if(filepath.includes('video')){
+        newBlob = new Blob([fileBlob], { type: 'video/mp4' });
+        console.log('newBolb', newBlob);
+        fileBlob = newBlob!;
+      } 
+      console.log("updated fileblob", fileBlob);
+    }
 
     var filename = "";
     var thumbfilename = "";
     var thumbFilepath = "";
     var thumbfileBlob: any = "";
-    if (ImageOrVideo == "V") {
+    if (ImageOrVideo === "V") {
       filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".mp4";
       thumbfilename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
       thumbFilepath = this.win.Ionic.WebView.convertFileSrc(thumbNailBase64);
       thumbfileBlob = this.b64toBlob(thumbNailBase64);
     }
-    else if (ImageOrVideo == "I") {
+    else if (ImageOrVideo === "I") {
       filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
       thumbFilepath = filepath;
     }

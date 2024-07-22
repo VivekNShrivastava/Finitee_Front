@@ -52,8 +52,10 @@
 
     <div class="ion-text-center  post-screen-slide ">
       <ion-slides *ngIf="fileToUpload.length > 0" class="post-screen-slide">
-        <ion-slide  *ngFor="let photo of fileToUpload" style="display: block; height: auto;">
-          <ion-img style="width: 100%;" id="{{post.Id}}-img" [src]="photo.thumbFilePath"></ion-img>
+        <ion-slide  *ngFor="let photo of fileToUpload" style="display: block;">
+          <ion-card>
+            <ion-img style="width: 100%;" id="{{post.Id}}-img" [src]="photo.thumbFilePath"></ion-img>   
+          </ion-card>
         </ion-slide>
       </ion-slides>
       <ion-card *ngIf="fileToUpload.length <= 0" class="media">
