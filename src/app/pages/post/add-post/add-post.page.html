@@ -13,10 +13,10 @@
 </ion-header>
 <ion-content>
 
-
+<div style="--overflow:visible; background: #EAF1F4 0% 0% no-repeat padding-box !important; width: 100%;">
   <ion-list class="profileBgClass">
     <!-- user data -->
-    <ion-item lines="none" class="profileBg" style="--overflow:visible;">
+    <ion-item lines="none" class="profileBg" style="--overflow:visible; ">
       <ng-container slot="start" style="position: relative;">
         <ion-avatar>
           <img class="business-logo" [src]="appConstants.mediaPrefix"
@@ -38,6 +38,7 @@
       </ion-buttons>
     </ion-item>
   </ion-list>
+</div>
 
   <!-- image and video-->
   <div class="ion-text-center  post-screen-slide">
