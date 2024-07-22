@@ -140,36 +140,37 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
     console.log("posted!");
     console.log(this.sendPost);
 
-    const media = new Media();
-    media.images = [];
 
-    for (let i = 0; i < this.fileToUpload.length; i++) {
-      media.images.push({
-        imageFile: this.fileToUpload[i],
-        // serialNumber: 1
-      })
-    }
+    this.sendPost.thumbnail = this.fileToUpload[0]
+
+    // for (let i = 0; i < this.fileToUpload.length; i++) {
+    //   this.sendPost.thumbnail.push({
+    //     imageFile: this.fileToUpload[i],
+    //     // serialNumber: 1
+    //   })
+    // }
 
 
     this.sendPost = {
       trait: this.post.PostDescription,
       id: "",
-      thumbnail: media
+      thumbnail: this.sendPost.thumbnail,
+      removeThumbnail: false
     }
 
     const formData = new FormData();
-    formData.append('Post', JSON.stringify(this.sendPost.post));
+    // formData.append('Post', JSON.stringify(this.sendPost.post));
     formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
 
     // Append each image file and its serial number
-    this.sendPost.media.images?.forEach((image: any, index: number) => {
-      if (image.imageFile.name.includes('mp4')) {
-        formData.append('file', image.imageFile.blob, image.imageFile.filePath);
-        formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
-      } else {
-        formData.append('file', image.imageFile.blob, image.imageFile.name);
-      }
-    });
+    // this.sendPost?.forEach((image: any, index: number) => {
+    //   if (image.imageFile.name.includes('mp4')) {
+    //     formData.append('file', image.imageFile.blob, image.imageFile.filePath);
+    //     formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
+    //   } else {
+    //     formData.append('file', image.imageFile.blob, image.imageFile.name);
+    //   }
+    // });
 
     // this.fileToUpload.forEach((image: any) => {
 
