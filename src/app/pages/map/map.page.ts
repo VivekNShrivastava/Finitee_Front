@@ -174,6 +174,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   deviceHeight: number | undefined;
   countedHeight: number | undefined;
   countedHeight2: number | undefined;
+  isDivVisible: boolean = false;
 
   constructor(
     private platform: Platform,
@@ -2287,8 +2288,8 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   async searchMap() {
-    
-
+    this.isDivVisible = !this.isDivVisible;
+  
     const obj: AllSonarSearchRequest = {
       geolocation: { latitude: this.location.lat, longitude: this.location.lng },
       searchKey: 'nisa',
@@ -2303,65 +2304,33 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       serviceAvailable: false,
     };
     const screenWidth = window.innerWidth;
-
+  
     let breakpoints: number[];
     let initialBreakpoint: number;
-
-    // if (screenWidth < 768) {
-
-    //   if (screenWidth == 412) {
-    //     breakpoints = [0, 0.8];
-    //     initialBreakpoint = 0.7;
-    //   } else {
-    //     breakpoints = [0, 1];
-    //     initialBreakpoint = 0.9;
-    //   }
-    
-
-    // }
-    // else if (screenWidth >= 768 && screenWidth < 1024) {
-   
-    //   breakpoints = [0, 0.6];
-    //   initialBreakpoint = 0.6;
-    // } else {
-      
-    //   breakpoints = [0, 0.4];
-    //   initialBreakpoint = 0.4;
-    // }
   
     const getheightforsonar = () => {
-      const windowheight= window.innerHeight;
+      const windowheight = window.innerHeight;
       this.countedHeight2 = parseFloat((564 / windowheight).toFixed(2));
-      // console.log("Yesssssssssssssssssss",this.countedHeight2)
       return this.countedHeight2;
-
     }
-    
-
+  
     const modal = await this.modalController.create({
       component: MapSearchComponent,
-      breakpoints:[0, getheightforsonar()],
-      
-      initialBreakpoint:getheightforsonar() ,
+      breakpoints: [0, getheightforsonar()],
+      initialBreakpoint: getheightforsonar(),
       handle: false,
       componentProps: { values: obj }
     });
-
+  
     modal.onDidDismiss().then(result => {
+      this.isDivVisible = false; // Ensure the div is hidden when the modal is dismissed
       console.log('res', result);
       this.mapSearchObj = result?.data?.sonarSearch;
-      // this.markers.splice(0, this.markers.length);
-      // this.clearResults();
-      this.mapSearchResult = result;
-      // this.removeSearchResultFromMap();obsolete
-      // this.removeAdvanceMarkerFromMap();
       if (result.data) {
         if (result.data?.status == 'L') {
-
           let Latitude = result.data?.lat;
           let Longitude = result.data?.lng;
           let RangeInKm = 2;
-
           this.getTotemByUserId(Latitude, Longitude, RangeInKm);
         } else {
           this.searchCriteria = result.data;
@@ -2369,10 +2338,8 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
             // this.setCircle(result.data)
           }
           if (result.data) {
-            // result.data[`location`] = this.location;
             this.searchResultUpdate();
           } else {
-            // this.clearMap();
             if (result.data != undefined && result.data != null) {
               this.cmmflag = result.data.status;
               this.updatelocation();
@@ -2382,11 +2349,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       } else {
         this.cmmflag = this.getFlag();
         this.updatelocation();
-        // this.removeCircle();
       }
     });
+  
     return await modal.present();
   }
+  
 
   getheightforsonar(): number {
     throw new Error('Method not implemented.');

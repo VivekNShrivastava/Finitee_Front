@@ -36,14 +36,10 @@
             </div>
             <div class="greetNumberDot"><p class="greetNumber">{{greetListNumber}} </p></div>
           </div>
-
-          <!-- <div style="display: flex; flex-direction: column;">
-
+          <div *ngIf="isDivVisible" style="display: flex; flex-direction: column;">
             <ion-icon style="font-size: 60px;" name="sonar-event"></ion-icon>
-
             <ion-icon style="font-size: 60px;" name="sonar-donation"></ion-icon>
-
-          </div> -->
+          </div>
         </div>
 
       </div>
@@ -123,10 +119,13 @@
 
         <!-- sonar search icon -->
         <ion-fab-button size="large" color="primary"
-          style="height: 62px;width: 62px;margin: auto;--box-shadow: 2px 2px 7px #0B113157;"
-          (click)="searchMap()" [disabled]="!isBackEnabled">
-          <ion-icon name="bluesearch" style="font-size: 35px;"></ion-icon>
-        </ion-fab-button>
+        style="height: 62px;width: 62px;margin: auto;--box-shadow: 2px 2px 7px #0B113157;"
+        (click)="searchMap()" [disabled]="!isBackEnabled">
+        <ion-icon name="bluesearch" style="font-size: 35px;"></ion-icon>
+      </ion-fab-button>
+      
+
+      
 
       </div>
     </div>
