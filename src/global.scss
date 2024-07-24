@@ -205,7 +205,7 @@ ion-modal {
 }
 
 ion-modal::part(backdrop) {
-  background: rgba(40, 80, 120, 1);
+  background: transparent;
   opacity: 1;
 }
 

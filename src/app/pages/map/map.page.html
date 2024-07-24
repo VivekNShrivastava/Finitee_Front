@@ -4,8 +4,7 @@
       style="position: relative;height: 100%;width:100%; overflow: hidden;">
       <div class="top-result-container" style="width: 95%;">
         <div class="c-fab-button" *ngIf="searchCriteria">
-          <div (click)="showSonarSearchResultInListView(true)"> {{resultCount}}
-            results </div>
+          <div (click)="showSonarSearchResultInListView(true)"> <p style="font-size: 14px;">{{resultCount}} results</p> </div>
           <div style="line-height: 11px;">
             <ion-icon style="font-size: 24px;" name="refresh-outline"
               (click)="refreshMarkerOne()"></ion-icon>
@@ -38,13 +37,13 @@
             <div class="greetNumberDot"><p class="greetNumber">{{greetListNumber}} </p></div>
           </div>
 
-          <div style="display: flex; flex-direction: column;">
+          <!-- <div style="display: flex; flex-direction: column;">
 
             <ion-icon style="font-size: 60px;" name="sonar-event"></ion-icon>
 
             <ion-icon style="font-size: 60px;" name="sonar-donation"></ion-icon>
 
-          </div>
+          </div> -->
         </div>
 
       </div>
