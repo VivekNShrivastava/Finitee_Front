@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, NavigationExtras } from '@angular/router';
 import { ActionSheetController, AlertController, IonicModule, IonInput, NavController } from '@ionic/angular';
 import _ from 'lodash';
+import {ElementRef, Renderer2} from '@angular/core'
 import { BasePage } from 'src/app/base.page';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { CommentDto, CommentReplyDto } from 'src/app/core/models/post/commentDto';
@@ -62,9 +63,9 @@ export class PostItemsComponent extends BasePage implements OnInit {
   IsReplySectionOpen: boolean = false;
   inflowsLoaded: boolean = true;
 
-     toggleDescription(post: any) {
-       post.showFullDescription = !post.showFullDescription;
-   }
+  toggleDescription(post: any) {
+    post.showFullDescription = !post.showFullDescription;
+  }
   
 
 
@@ -82,7 +83,8 @@ export class PostItemsComponent extends BasePage implements OnInit {
   selectedReply: any = null;//for specific case
   public SelectedAction: any = "CREATE";
   userConnection: Array<userConnection> = [];
-
+  isInflows: boolean = false;
+  @ViewChild('media') media!: ElementRef;
 
   constructor(private actionSheetCtrl: ActionSheetController,
     private authService: AuthService,
@@ -94,7 +96,8 @@ export class PostItemsComponent extends BasePage implements OnInit {
     private router: Router,
     private reportService: ReportService,
     public commonService: CommonService,
-    private inflowServices: InflowsService) {
+    private inflowServices: InflowsService,
+    private renderer: Renderer2) {
     super(authService);
   }
 
@@ -106,7 +109,12 @@ export class PostItemsComponent extends BasePage implements OnInit {
       this.week = this.paramsData['week'];
       this.part = this.paramsData['part'];
       this.postList = [...this.paramsData['postlist']];
+      if(this.value){
+        this.isInflows = true;
+        
+      } 
       this.dateAndTime(0);
+      
       this.selectedPost = this.paramsData['selectedPost'];
       this.postViewType = this.paramsData['postViewType'];
       this.postCommentViewType = this.paramsData['postCommentViewType'];
@@ -118,6 +126,10 @@ export class PostItemsComponent extends BasePage implements OnInit {
   }
 
   ngAfterViewInit() {
+    const deviceHeight = window.innerHeight;
+    const calculatedHeight = deviceHeight * 0.22;
+    this.renderer.setStyle(this.media.nativeElement, 'min-height', `${calculatedHeight}px`);
+  
     setTimeout(() => {
       document.getElementById(this.selectedPost.Id)?.scrollIntoView({
         behavior: "auto",
@@ -125,7 +137,6 @@ export class PostItemsComponent extends BasePage implements OnInit {
         inline: "end"
       });
     }, 200);
-
   }
 
   updateFontSize(PostDescription: any) {
@@ -140,7 +151,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
     let ind = 0;
     if(listLength > 0) ind = this.postList.length - listLength!;
     for(let i=ind; i < this.postList.length; i++){
-      this.postList[i].CreatedOn = this.getTimeDifference(this.postList[i].CreatedOn)
+      this.postList[i].updatedCreatedOn = this.getTimeDifference(this.postList[i].CreatedOn)
     }
     this.inflowsLoaded = true;
     // this.postList = this.postList?.map((post) => {

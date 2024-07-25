@@ -29,7 +29,7 @@
             <ion-label class="fi-name-label"
               [ngStyle]="{'position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '95px' : 'initial' ,'top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '0px' : 'initial'}">
               <h3>{{post.CreatedBy!.UserName}}</h3>
-              <p>{{post.CreatedOn}}<span *ngIf="post.IsEdited === true">(edited)</span></p>
+              <p>{{post.updatedCreatedOn}}<span *ngIf="post.IsEdited === true">(edited)</span></p>
             </ion-label>
             <!-- <ion-icon  size="large"  [name]="beamicon" [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '168px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '-10px' : 'initial'}">
              
@@ -163,7 +163,7 @@
       </ion-card-content>
     </ion-card>
   </ng-container>
-  <ion-infinite-scroll threshold="5000px" (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll *ngIf="isInflows" threshold="5000px" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content loadingText="Loading more data..."></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ng-container>

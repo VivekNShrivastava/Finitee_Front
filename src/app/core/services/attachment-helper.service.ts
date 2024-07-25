@@ -5,7 +5,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { CaptureVideoOptions, MediaCapture } from '@awesome-cordova-plugins/media-capture/ngx';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { NavController, Platform } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import { FileUploadRequest, FileUploadRequestNew } from 'src/app/core/models/FileUploadRequest';
 import * as config from 'src/app/core/models/config/ApiMethods';
@@ -74,7 +74,7 @@ export class AttachmentHelperService {
     const dimensions = await this.getImageDimensions(image.webPath);
     console.log('Width:', dimensions.width, 'Height:', dimensions.height);
 
-    const aspectRatio = dimensions.width / dimensions.height;
+    const aspectRatio = dimensions.height / dimensions.width;
     console.log('Aspect Ratio:', aspectRatio);
 
     // const photo = `data:image/${image.format};base64,${image.base64String}`;
