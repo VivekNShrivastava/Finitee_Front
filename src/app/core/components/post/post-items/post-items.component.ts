@@ -85,6 +85,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
   userConnection: Array<userConnection> = [];
   isInflows: boolean = false;
   @ViewChild('media') media!: ElementRef;
+  slideHeight: string = "";
 
   constructor(private actionSheetCtrl: ActionSheetController,
     private authService: AuthService,
@@ -102,6 +103,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
   }
 
   ngOnInit() {
+    this.updateSlideHeight();
     this.logInfo =  this.authService.getUserInfo();
 
     if (this.paramsData) {
@@ -126,9 +128,9 @@ export class PostItemsComponent extends BasePage implements OnInit {
   }
 
   ngAfterViewInit() {
-    const deviceHeight = window.innerHeight;
-    const calculatedHeight = deviceHeight * 0.22;
-    this.renderer.setStyle(this.media.nativeElement, 'min-height', `${calculatedHeight}px`);
+    // const deviceHeight = window.innerHeight;
+    // const calculatedHeight = deviceHeight * 0.22;
+    // this.renderer.setStyle(this.media.nativeElement, 'min-height', `${calculatedHeight}px`);
   
     setTimeout(() => {
       document.getElementById(this.selectedPost.Id)?.scrollIntoView({
@@ -137,6 +139,11 @@ export class PostItemsComponent extends BasePage implements OnInit {
         inline: "end"
       });
     }, 200);
+  }
+
+  updateSlideHeight() {
+    const deviceHeight = window.innerHeight;
+    this.slideHeight = `${deviceHeight * 0.22}px`;
   }
 
   updateFontSize(PostDescription: any) {
@@ -278,9 +285,9 @@ export class PostItemsComponent extends BasePage implements OnInit {
     }
     else {
       if (height >=460)
-        document.getElementById(event.srcElement.id)?.setAttribute("style", "width:auto; height:460px");
+        document.getElementById(event.srcElement.id)?.setAttribute("style", "width:100%; height:100%");
       else
-        document.getElementById(event.srcElement.id)?.setAttribute("style", "width:auto; height:100%");
+        document.getElementById(event.srcElement.id)?.setAttribute("style", "width:100%; height:100%");
     }
   }
 

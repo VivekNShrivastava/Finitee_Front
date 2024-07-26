@@ -65,40 +65,47 @@ export class AttachmentHelperService {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: true,
-      resultType: CameraResultType.Uri,
+      resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera// Camera, Photos or Prompt!
     });
 
     
-    console.log(image, "cam");
-    const dimensions = await this.getImageDimensions(image.webPath);
-    console.log('Width:', dimensions.width, 'Height:', dimensions.height);
+    // console.log(image, "cam");
+    // const dimensions = await this.getImageDimensions(image.dataUrl);
+    // console.log('Width:', dimensions.width, 'Height:', dimensions.height);
 
-    const aspectRatio = dimensions.height / dimensions.width;
-    console.log('Aspect Ratio:', aspectRatio);
+    // const aspectRatio = dimensions.height / dimensions.width;
+    // console.log('Aspect Ratio:', aspectRatio);
 
-    // const photo = `data:image/${image.format};base64,${image.base64String}`;
-    const photo = image.webPath;
-    this.saveMedia(image.webPath, "I", dimensions.width, dimensions.height, aspectRatio);
-    // return photo;
-    // if (image) {
-    //   // Open the image cropper modal
-    //   const modal = await this.modalController.create({
-    //     component: ImageCropperComponent,
-    //     componentProps: {
-    //       imageUri: image.base64String,
-    //     },
-    //   });
+    // this.saveMedia(image.dataUrl, "I", dimensions.width, dimensions.height, aspectRatio);
+
+    if (image) {
+      
+      const modal = await this.modalController.create({
+        component: ImageCropperComponent,
+        componentProps: {
+          imageUri: image.dataUrl,
+        },
+      });
   
-    //   // Present the modal
-    //   await modal.present();
+      // Present the modal
+      await modal.present();
 
-    //   const { data } = await modal.onDidDismiss();
+      const { data } = await modal.onDidDismiss();
 
-    //   if (data) {
-    //     this.saveMedia(data, "I")
-    //   }
-    // }
+      if (data) {
+
+        console.log(data, "updated");
+        const dimensions = await this.getImageDimensions(data);
+        console.log('Width:', dimensions.width, 'Height:', dimensions.height);
+
+        const aspectRatio = dimensions.height / dimensions.width;
+        console.log('Aspect Ratio:', aspectRatio)
+
+        this.saveMedia(data, "I", dimensions.width, dimensions.height, aspectRatio);
+        console.log(data);
+      }
+    }
   }
 
   async getImageDimensions(imageSrc: any): Promise<{width: number, height: number}> {

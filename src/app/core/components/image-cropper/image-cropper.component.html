@@ -13,14 +13,16 @@
 <image-cropper
     [imageBase64]="myImage"
     [maintainAspectRatio]="true"
-    [aspectRatio]="4 / 3"
+    [aspectRatio]="aspectRatio"
     format="png"
+    [imageQuality]="100"
     (imageCropped)="imageCropped($event)"
     (imageLoaded)="imageLoaded()"
     (loadImageFailed)="loadImageFailed()"
+    class="img-crop"
 ></image-cropper>
 
-<img [src]="croppedImage" />
+<!-- <img [src]="croppedImage" /> -->
 <div style="display: flex; justify-content: center; align-items: center;">
 
 <ion-button style="margin-bottom: 20px; width:266px ; height: 44px; font-size:20px ;" (click)="saveCroppedImage()">Save Cropped Image</ion-button>

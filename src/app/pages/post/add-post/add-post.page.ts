@@ -29,6 +29,7 @@ export class AddPostPage extends BasePage implements OnInit {
     direction: 'horizontal',
     initialSlide: 0
   };
+  slideHeight: string = "";
   constructor(
     private router: Router,
     private navCtrl: NavController,
@@ -49,6 +50,8 @@ export class AddPostPage extends BasePage implements OnInit {
 
   ngOnInit() {
     this.subscribePostTraitsSubject();
+    this.updateSlideHeight();
+
   }
 
   updateFontSize() {
@@ -57,6 +60,11 @@ export class AddPostPage extends BasePage implements OnInit {
     const fontSizePercentage = (currentLength / maxLength) * 100;
     const newSize = 15 - fontSizePercentage * 0.05; // Adjust the factor as needed
     return `${newSize}px`;
+  }
+
+  updateSlideHeight() {
+    const deviceHeight = window.innerHeight;
+    this.slideHeight = `${deviceHeight * 0.22}px`;
   }
 
   async subscribePostTraitsSubject() {
@@ -176,7 +184,8 @@ export class AddPostPage extends BasePage implements OnInit {
       try {
         const res = await this.postService.createPost(formData);
         console.log(res);
-        this.postService.postDataSbj.next({ event: "ADD", data: formData, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
+        this.postService.postDataSbj.next({ event: "ADD", data: this.sendPost, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
+        this.navCtrl.pop();
       } catch (error) {
         console.error('Error creating post:', error);
       }

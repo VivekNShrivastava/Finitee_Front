@@ -172,12 +172,12 @@
     <ion-slide *ngFor="let post of postList" style="display: block;">
       <div class="ion-text-center  post-screen-slide postBg">
         <ion-slides [pager]="post.PostImages.length>1 ? true : false" class="post-screen-slide"
-          *ngIf="post.PostImages && post.PostImages.length>0">
+          *ngIf="post.PostImages && post.PostImages.length>0" [style.height]="slideHeight">
           <ion-slide *ngFor="let postImage of post.PostImages">
             <!--  <ion-card>
               <ion-img [src]="appConstants.mediaPrefix + postImage"></ion-img>
             </ion-card> -->
-            <ion-card>
+            <ion-card [style.height]="slideHeight">
               <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
                 {{post.BelongsToNodeName}}
               </span>

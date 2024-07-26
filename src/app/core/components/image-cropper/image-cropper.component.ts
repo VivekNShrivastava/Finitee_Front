@@ -19,29 +19,23 @@ export class ImageCropperComponent {
     imageChangedEvent: any = '';
     croppedImage: any = '';
     myImage: any ;
+    aspectRatio: number = 1 / 1;
 
     constructor(
         private sanitizer: DomSanitizer,
         private loadingController: LoadingController,
         private modalController: ModalController
-    ) { console.log(this.imageUri, "asd")
-        this.loading();
-    }
+    ) {}
 
     ngOnInit() {
         if (this.imageUri) {
-            console.log('Image URI:', this.imageUri);
+            // console.log('Image URI:', this.imageUri);
             this.myImage = this.imageUri
         }
     }
     
-    async loading(){
-        // const loading = await this.loadingController.create();
-        // await loading.present();
-    }
-
     fileChangeEvent(event: any): void {
-        this.imageUrl = this.imageUri;
+        // this.imageUrl = this.imageUri;
         console.log("fileChangeEvent", event);
     }
     imageCropped(event: any) {
@@ -55,6 +49,12 @@ export class ImageCropperComponent {
         // image = Loaded..
         // this.loadingController.dismiss();
         console.log("imageLoaded");
+        const img = new Image(); 
+        img.src = this.myImage;
+        img.onload = () => {
+            const isLandscape = img.width > img.height;
+            this.aspectRatio = isLandscape ? 1.29 / 1 : 1 / 1.29;
+        };
     }
  
     loadImageFailed() {
