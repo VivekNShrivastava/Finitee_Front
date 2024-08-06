@@ -680,7 +680,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
           };
           this.loadMap();
         }, function (error) {
-           console.log('load map', error.message);
+          //  console.log('load map', error.message);
         }, options);
         setTimeout(() => {
           this.loadMap();

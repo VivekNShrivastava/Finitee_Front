@@ -71,7 +71,10 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
     this.firestoreService.greetingList$.subscribe(updatedData => {
       console.log("map updated data", updatedData);
       this.greetList = updatedData;
-      if (this.viewTemplate === "Greeting") this.getUserGreetingHistory();
+      if (this.viewTemplate === "Greeting"){
+        console.log('api call');
+        this.getUserGreetingHistory();
+      } 
     });
   }
 

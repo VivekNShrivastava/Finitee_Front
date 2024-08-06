@@ -11,6 +11,12 @@ div.poi-info-window .view-link {
     display: none !important;
 }
 
+.greet-container{
+    display: flex;
+    position: relative;
+    width: 93px;
+}
+
 .greetNumberDot{
     background-color: #03a9f5;
     border-radius: 50%;
@@ -19,9 +25,9 @@ div.poi-info-window .view-link {
     justify-content: center;
     display: flex;
     align-items: center;
-    position: fixed;
-    top: 7px;
-    left: 70px;
+    position: absolute;
+    top: -1px;
+    left: 61px;
 }
 
 .greetNumber{
