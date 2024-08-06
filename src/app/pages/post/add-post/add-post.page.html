@@ -72,7 +72,7 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
 
   <!-- image and video-->
   <div class="ion-text-center  post-screen-slide " style="margin-top: 10px;">
-    <ion-slides *ngIf="fileToUpload.length > 0" [pager]="true" class="post-screen-slide">
+    <!-- <ion-slides *ngIf="fileToUpload.length > 0" [pager]="true" class="post-screen-slide" [style.height]="slideHeight">
       <ion-slide  *ngFor="let photo of fileToUpload" style="display: block; height: auto;">
         <ion-card >
 
@@ -87,10 +87,16 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
 
         </ion-card>
       </ion-slide>
-    </ion-slides>
-    <ion-card *ngIf="fileToUpload.length <= 0" class="media">
+    </ion-slides> -->
+    <ion-card *ngIf="fileToUpload.length <= 0" class="media" [style.height]="slideHeight">
       <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
     </ion-card>
+  </div>
+
+  <div *ngIf="fileToUpload && fileToUpload.length > 0" style="width: 100%; max-height: 500px; overflow: hidden;">
+    <!-- <div *ngFor="let fileToUpload of fileToUpload"> -->
+      <app-image-cropper [imageUri]="fileToUpload"></app-image-cropper>
+    <!-- </div> -->
   </div>
 
 <!-- 

@@ -20,6 +20,7 @@ export class Post {
     CreatedOn!: any;
     CreatedBy!: CreatedByDto;
     BeamedFromUser!: CreatedByDto;
+    updatedCreatedOn?: any;
 }
 
 export class AddPostRequest {

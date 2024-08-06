@@ -1,27 +1,32 @@
 <!-- image-cropper.component.html -->
 
-<!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
-<ion-header class="ion-no-border">
-    <ion-toolbar class="display-flex ion-justify-content-center ion-align-items-center">
-      <ion-buttons (click)="dismiss()" slot="start">
-        <ion-icon name="chat-back"></ion-icon>
-      </ion-buttons>
-      <ion-title>Crop Image</ion-title>
-    </ion-toolbar>
-</ion-header>
+<!-- [options]="sliderOpts" zoom -->
+<ion-slides *ngIf="imageUri && imageUri.length > 0" [pager]="true" [options]="sliderOpts">
+  <ion-slide *ngFor="let photo of imageUri" class="slide-container">
+    <!-- [maintainAspectRatio]="true"
+      [aspectRatio]="aspectRatio" -->
+      
+      <!-- #cropArea #imageElement -->
+    <div class="swiper-zoom-container" >
+      <image-cropper
+      (cropperReady)="cropperReady($event)"
+      [imageBase64]="photo.filePath"
+      [transform]="transform"
+      format="png"
+      [imageQuality]="100"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()"
+      (startCropImage)="startCropImage()"
+      (loadImageFailed)="loadImageFailed()"
+      [cropperMaxHeight]="420"
+      class="img"
+      ></image-cropper>
+    </div>
+  </ion-slide>
+</ion-slides>
 
-<image-cropper
-    [imageBase64]="myImage"
-    [maintainAspectRatio]="true"
-    [aspectRatio]="4 / 3"
-    format="png"
-    (imageCropped)="imageCropped($event)"
-    (imageLoaded)="imageLoaded()"
-    (loadImageFailed)="loadImageFailed()"
-></image-cropper>
+<!-- [(transform)]="transform" -->
+      <!-- [allowMoveImage]="true" -->
+<!-- [disabled]="true" -->
+<!-- [hideResizeSquares]="true" -->
 
-<img [src]="croppedImage" />
-<div style="display: flex; justify-content: center; align-items: center;">
-
-<ion-button style="margin-bottom: 20px; width:266px ; height: 44px; font-size:20px ;" (click)="saveCroppedImage()">Save Cropped Image</ion-button>
-</div>

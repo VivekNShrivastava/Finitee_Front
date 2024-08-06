@@ -1300,7 +1300,7 @@ export class RegisterPage implements OnInit {
 
     let result = await FilePicker.pickFiles({
       types: AppConstants.FILE_UPLOAD_TYPE.IMG_PDF,
-      multiple: false,
+      // multiple: false,
     });
     if (result && result.files.length > 0) {
       this.selectedFile = result.files[0];

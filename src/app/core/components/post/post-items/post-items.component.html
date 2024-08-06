@@ -29,7 +29,7 @@
             <ion-label class="fi-name-label"
               [ngStyle]="{'position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '95px' : 'initial' ,'top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '0px' : 'initial'}">
               <h3>{{post.CreatedBy!.UserName}}</h3>
-              <p>{{post.CreatedOn}}<span *ngIf="post.IsEdited === true">(edited)</span></p>
+              <p>{{post.updatedCreatedOn}}<span *ngIf="post.IsEdited === true">(edited)</span></p>
             </ion-label>
             <!-- <ion-icon  size="large"  [name]="beamicon" [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '168px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '-10px' : 'initial'}">
              
@@ -163,7 +163,7 @@
       </ion-card-content>
     </ion-card>
   </ng-container>
-  <ion-infinite-scroll threshold="5000px" (ionInfinite)="onIonInfinite($event)">
+  <ion-infinite-scroll *ngIf="isInflows" threshold="5000px" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content loadingText="Loading more data..."></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ng-container>
@@ -172,12 +172,12 @@
     <ion-slide *ngFor="let post of postList" style="display: block;">
       <div class="ion-text-center  post-screen-slide postBg">
         <ion-slides [pager]="post.PostImages.length>1 ? true : false" class="post-screen-slide"
-          *ngIf="post.PostImages && post.PostImages.length>0">
+          *ngIf="post.PostImages && post.PostImages.length>0" [style.height]="slideHeight">
           <ion-slide *ngFor="let postImage of post.PostImages">
             <!--  <ion-card>
               <ion-img [src]="appConstants.mediaPrefix + postImage"></ion-img>
             </ion-card> -->
-            <ion-card>
+            <ion-card [style.height]="slideHeight">
               <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
                 {{post.BelongsToNodeName}}
               </span>

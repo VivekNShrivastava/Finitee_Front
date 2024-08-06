@@ -47,6 +47,7 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
     this.navParams = this.router!.getCurrentNavigation()!.extras.state;
     this.post.PostDescription = this.navParams.traitInput;
     this.userId = this.logInfo.UserId;
+    console.log(this.navParams)
   }
 
   ngOnInit() { console.log("createTrait") }
@@ -137,53 +138,38 @@ export class NewTraitPageComponent extends BasePage implements OnInit {
   }
 
   async addPost() {
-    console.log("posted!");
-    console.log(this.sendPost);
-
-
-    this.sendPost.thumbnail = this.fileToUpload[0]
-
-    // for (let i = 0; i < this.fileToUpload.length; i++) {
-    //   this.sendPost.thumbnail.push({
-    //     imageFile: this.fileToUpload[i],
-    //     // serialNumber: 1
-    //   })
-    // }
-
 
     this.sendPost = {
       trait: this.post.PostDescription,
       id: "",
-      thumbnail: this.sendPost.thumbnail,
+      thumbnail: this.fileToUpload[0],
       removeThumbnail: false
     }
-
     const formData = new FormData();
-    // formData.append('Post', JSON.stringify(this.sendPost.post));
-    formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
+    formData.append('Trait', this.post.PostDescription);
+    if(this.sendPost.id !== "") formData.append('Id', this.sendPost.id?.toString() || '');
+    formData.append('Thumbnail', this.fileToUpload[0].blob, this.fileToUpload[0].name);
+    formData.append('RemoveThumbnail', this.sendPost.removeThumbnail?.toString());
 
-    // Append each image file and its serial number
-    // this.sendPost?.forEach((image: any, index: number) => {
-    //   if (image.imageFile.name.includes('mp4')) {
-    //     formData.append('file', image.imageFile.blob, image.imageFile.filePath);
-    //     formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
-    //   } else {
-    //     formData.append('file', image.imageFile.blob, image.imageFile.name);
-    //   }
-    // });
-
-    // this.fileToUpload.forEach((image: any) => {
-
-    // })
-
-    // Log the contents of the FormData object for verification
     for (const [key, value] of (formData as any).entries()) {
       console.log(key, value);
     }
 
     try {
-      const res = await this.postService.createPost(formData);
+      const res = await this.postService.saveUserTrait(formData);
       console.log(res);
+      const openTraitPost = true;
+      if (res) {
+        const navigationExtras: NavigationExtras = {
+          state: {
+            data: {
+              openTraitPost
+            },
+          }
+        };
+        this.postService.traitList.next({ event: "ADD", data: formData });
+        this.navCtrl.navigateForward(['tabs/free-user-canvas'], navigationExtras);
+      }
     } catch (error) {
       console.error('Error creating post:', error);
     }

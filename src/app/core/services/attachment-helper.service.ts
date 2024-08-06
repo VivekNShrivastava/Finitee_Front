@@ -5,7 +5,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { CaptureVideoOptions, MediaCapture } from '@awesome-cordova-plugins/media-capture/ngx';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { NavController, Platform } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import { FileUploadRequest, FileUploadRequestNew } from 'src/app/core/models/FileUploadRequest';
 import * as config from 'src/app/core/models/config/ApiMethods';
@@ -14,6 +14,7 @@ import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { AuthService } from './auth.service';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from '../components/image-cropper/image-cropper.component';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -65,28 +66,26 @@ export class AttachmentHelperService {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: true,
-      resultType: CameraResultType.Uri,
+      resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera// Camera, Photos or Prompt!
     });
 
     
     console.log(image, "cam");
-    const dimensions = await this.getImageDimensions(image.webPath);
+    const dimensions = await this.getImageDimensions(image.dataUrl);
     console.log('Width:', dimensions.width, 'Height:', dimensions.height);
 
-    const aspectRatio = dimensions.width / dimensions.height;
+    const aspectRatio = dimensions.height / dimensions.width;
     console.log('Aspect Ratio:', aspectRatio);
 
-    // const photo = `data:image/${image.format};base64,${image.base64String}`;
-    const photo = image.webPath;
-    this.saveMedia(image.webPath, "I", dimensions.width, dimensions.height, aspectRatio);
-    // return photo;
+    this.saveMedia(image.dataUrl, "I", dimensions.width, dimensions.height, aspectRatio);
+
     // if (image) {
-    //   // Open the image cropper modal
+      
     //   const modal = await this.modalController.create({
     //     component: ImageCropperComponent,
     //     componentProps: {
-    //       imageUri: image.base64String,
+    //       imageUri: image.dataUrl,
     //     },
     //   });
   
@@ -96,10 +95,20 @@ export class AttachmentHelperService {
     //   const { data } = await modal.onDidDismiss();
 
     //   if (data) {
-    //     this.saveMedia(data, "I")
+
+    //     console.log(data, "updated");
+    //     const dimensions = await this.getImageDimensions(data);
+    //     console.log('Width:', dimensions.width, 'Height:', dimensions.height);
+
+    //     const aspectRatio = dimensions.height / dimensions.width;
+    //     console.log('Aspect Ratio:', aspectRatio)
+
+    //     this.saveMedia(data, "I", dimensions.width, dimensions.height, aspectRatio);
+    //     console.log(data);
     //   }
     // }
   }
+
 
   async getImageDimensions(imageSrc: any): Promise<{width: number, height: number}> {
     return new Promise((resolve, reject) => {
@@ -127,7 +136,7 @@ export class AttachmentHelperService {
 
     if(media === "profilePic"){
       const mediafileArray = await FilePicker.pickImages({
-        multiple: false,
+        readData: true
       });
       // console.log(mediafileArray, mediafileArray.files[0]);
       if (mediafileArray && mediafileArray.files[0]) {
@@ -142,34 +151,51 @@ export class AttachmentHelperService {
         }
       }
     }else{
-      const mediafileArray: any = await FilePicker.pickMedia({
-        multiple: true,
-        readData: true
-      });
-      // const mediafileArray: any = await Camera.pickImages({
-      //   quality: 100,
-      //   limit: 5
+      // const mediafileArray: any = await FilePicker.pickMedia({
+      //   readData: true,
+      //   limit: 0,
+      //   ordered: true,
+      //   skipTranscoding: true
       // });
+
+      const typeAllowed : string[] = ['image/*', 'video/mp4']
+      const mediafileArray: any = await FilePicker.pickFiles({
+        types: typeAllowed,
+        readData: true,
+        limit: 0
+      })
+      
       console.log('media files ...');
-      console.log(mediafileArray, mediafileArray.files[0]);
+      console.log(mediafileArray, "length", mediafileArray.files.length);
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
-        if (mediafile) {
+        if (mediafileArray.files) {
           if (mediafile.mimeType.indexOf("video") != -1) {//video
             this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.path));
           }
           else {//image 
-            const filePath = this.win.Ionic.WebView.convertFileSrc(mediafile.path);
-            const dimensions = await this.getImageDimensions(filePath);
-            const aspectRatio = dimensions.width / dimensions.height;
-            this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
+            if(mediafileArray.files.length > 1){
+              for(let i=0; i<mediafileArray.files.length; i++){
+                console.log(mediafileArray.files[i]);
+                const filePath = 'data:' + mediafileArray.files[i].mimeType + ';base64,' + mediafileArray.files[i].data;
+                // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileArray.files[i].path);
+                const dimensions = await this.getImageDimensions(filePath);
+                const aspectRatio = dimensions.width / dimensions.height;
+                console.log("filepath", filePath, dimensions); 
+                this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
+              }
+            }else{
+              // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafile.path);
+              const filePath = 'data:' + mediafileArray.files[0].mimeType + ';base64,' + mediafileArray.files[0].data;
+              const dimensions = await this.getImageDimensions(filePath);
+              const aspectRatio = dimensions.width / dimensions.height;
+              console.log("filepath", filePath, dimensions); 
+              this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);  
+            }
           }
         }
       }
     }
-    
-
-
   }
 
 
