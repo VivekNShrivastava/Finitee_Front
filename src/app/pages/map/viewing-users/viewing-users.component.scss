@@ -1,131 +1,188 @@
 .lines-bottom {
-    border-bottom: 1px solid #d3e8ef;
+  border-bottom: 1px solid #d3e8ef;
 }
 
-ion-title{
-    text-align: center;
+ion-title {
+  text-align: center;
 }
 
 .action-list {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .maptab {
-    text-align: center;
-    padding: 15px;
-    display: flex;
+  text-align: center;
+  padding: 15px;
+  display: flex;
 
-    ion-button {
-        --background: #f0f5f7;
-        --box-shadow: none;
-        color: #285078;
-        font-size: 15px;
-        text-transform: none;
-        margin: 0px 10px;
-        --padding-end: 25px;
-        --padding-start: 25px;
-    }
-}
-.activeclass{
-    font: var(--unnamed-font-style-normal) normal normal var(--unnamed-font-size-13)/15px var(--unnamed-font-family-sf-pro-display);
-color: var(--unnamed-color-285078);
-text-align: left;
-font: normal normal normal 13px/15px SF Pro Display;
-letter-spacing: -0.08px;
-color: #285078;
-}
+  // ion-button {
+  //     --background: #f0f5f7;
+  //     --box-shadow: none;
+  //     color: #285078;
+  //     font-size: 15px;
+  //     text-transform: none;
+  //     margin: 0px 10px;
+  //     --padding-end: 25px;
+  //     --padding-start: 25px;
 
-.username{
-font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 18px/21px var(--unnamed-font-family-sf-pro-display);
-color: var(--unnamed-color-285078);
-text-align: left;
-font: normal normal 600 18px/21px SF Pro Display;
-letter-spacing: 0.29px;
-color: #285078;
-opacity: 1;
-}
-.acceptedreq{
-font: var(--unnamed-font-style-normal) normal normal var(--unnamed-font-size-13)/15px var(--unnamed-font-family-sf-pro-display);
-text-align: left;
-font: normal normal normal 15px/17px SF Pro Display;
-letter-spacing: -0.08px;
-// color: #43E63C;
-text-align: center;
-font-weight: 600;
+
+
+  // }
+
+  ion-button {
+    --background: #f0f5f7;
+    --box-shadow: none;
+    color: #285078;
+    font-size: 15px;
+    text-transform: none;
+    margin: 0px 10px;
+    --padding-end: 25px;
+    --padding-start: 25px;
+    position: relative; /* This is important for positioning the red dot */
+  }
+  
+  .red-dot {
+    position: relative;
+    top: -15px; /* Adjust as needed */
+    right: 26px; /* Adjust as needed */
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px; /* Adjust size as needed */
+    font-size: 12px;
+    font-weight: bold;
+  }
+  // .red-dot1 {
+  //   position: relative;
+  //   top: -23px; /* Adjust as needed */
+  //   right: 26px; /* Adjust as needed */
+  //   background-color: red;
+  //   color: white;
+  //   border-radius: 50%;
+  //   padding: 2px 6px; /* Adjust size as needed */
+  //   font-size: 12px;
+  //   font-weight: bold;
+  // }
+  
+  
+  
+
+
+
+
+
+
 }
 
 .activeclass {
-    width: 152px;
-    height: 34px;
-    background: #F0F5F7; /* Default background color */
-    border-radius: 17px;
-    opacity: 1;
-    color: black; /* Default text color */
-    border: none; /* Remove any border */
-    margin: 0 5px; /* Add some margin between buttons */
-  }
-  
-  .activeclass.active {
-    --background: #03A9F5 !important; 
-    color: white !important;
-  }
-  .mapreslist{
-    position: relative;
-  }
+  font: var(--unnamed-font-style-normal) normal normal var(--unnamed-font-size-13)/15px var(--unnamed-font-family-sf-pro-display);
+  color: var(--unnamed-color-285078);
+  text-align: left;
+  font: normal normal normal 13px/15px SF Pro Display;
+  letter-spacing: -0.08px;
+  color: #285078;
+}
+
+.username {
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 18px/21px var(--unnamed-font-family-sf-pro-display);
+  color: var(--unnamed-color-285078);
+  text-align: left;
+  font: normal normal 600 18px/21px SF Pro Display;
+  letter-spacing: 0.29px;
+  color: #285078;
+  opacity: 1;
+}
+
+.acceptedreq {
+  font: var(--unnamed-font-style-normal) normal normal var(--unnamed-font-size-13)/15px var(--unnamed-font-family-sf-pro-display);
+  text-align: left;
+  font: normal normal normal 15px/17px SF Pro Display;
+  letter-spacing: -0.08px;
+  // color: #43E63C;
+  text-align: center;
+  font-weight: 600;
+}
+
+.activeclass {
+  width: 152px;
+  height: 34px;
+  background: #F0F5F7;
+  /* Default background color */
+  border-radius: 17px;
+  opacity: 1;
+  color: black;
+  /* Default text color */
+  border: none;
+  /* Remove any border */
+  margin: 0 5px;
+  /* Add some margin between buttons */
+}
+
+.activeclass.active {
+  --background: #03A9F5 !important;
+  color: white !important;
+}
+
+.mapreslist {
+  position: relative;
+}
 
 
-  .no-active-greeting{
- 
- 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center; 
+.no-active-greeting {
+
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.noactive {
+  font: var(--unnamed-font-style-normal) normal medium 25px/25px var(--unnamed-font-family-sf-pro-display);
+  text-align: left;
+  font: normal normal medium 27px/27px SF Pro Display;
+  letter-spacing: 0.4px;
+  color: #6F8BA5;
+  font-weight: 600;
+}
+
+img {
+  max-width: none;
+}
+
+@media only screen and (min-device-width: 390px) and (max-device-width: 390px) {
+
+  .greetingnum {
+    width: auto;
+    left: calc(100vw - 100%) !important;
   }
 
-  .noactive{
-    font: var(--unnamed-font-style-normal) normal medium 25px/25px var(--unnamed-font-family-sf-pro-display);
-text-align: left;
-font: normal normal medium 27px/27px SF Pro Display;
-letter-spacing: 0.4px;
-color: #6F8BA5;
-font-weight: 600;
-  }
-
-  img{
-    max-width: none;
-  }
-
-  @media only screen and (min-device-width: 390px) and (max-device-width: 390px){
-
-    .greetingnum{
-        width: auto;
-        left: calc(100vw - 100%) !important;
-    }
-  .noactive{
+  .noactive {
     font-size: 20px;
   }
+
   .maptab {
     ion-button {
 
-        font-size: 19px;
+      font-size: 19px;
 
     }
-}
+  }
 
-.activeclass{
+  .activeclass {
     height: 38px;
-}
+  }
 
-.postcount{
+  .postcount {
     font-size: 17px;
 
-}
-.datetime{
+  }
+
+  .datetime {
     font-size: 15px;
 
-}
+  }
 }
