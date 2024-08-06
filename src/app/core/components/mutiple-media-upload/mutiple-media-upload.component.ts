@@ -64,8 +64,7 @@ export class MultipleMediaUploadComponent implements OnInit {
     })
     this.mediaCoverSubscription = this.attachmentService.onMediaCoverSelction.subscribe((mediaObj: any) => {
       if (mediaObj != null) {
-        console.log("video obj", mediaObj);
-        const aspectRatio = mediaObj.width/mediaObj.height;
+        const aspectRatio = mediaObj.height/mediaObj.width;
         this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.width, mediaObj.height, aspectRatio, mediaObj.cover);
       }
     })
@@ -88,17 +87,9 @@ export class MultipleMediaUploadComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', mediaObj.blob, mediaObj.name);
     
-    if (mediaObj.mediaType == "V")
+    if (mediaObj.mediaType === "V")
       formData.append('file', mediaObj.thumbBlob, mediaObj.thumbName);
-    console.log(formData);
-    console.log('FormData entries:');
-    for (let pair of (formData as any).entries()) {
-      console.log(pair[0] + ':', pair[1]);
-      if (pair[1] instanceof Blob) {
-        console.log('  Blob size:', pair[1].size);
-        console.log('  Blob type:', pair[1].type);
-      }
-    }
+    
     var response: any = await this.attachmentService.uploadFileToServerv2(formData);
     if (response != "error") {
       this.response = true;

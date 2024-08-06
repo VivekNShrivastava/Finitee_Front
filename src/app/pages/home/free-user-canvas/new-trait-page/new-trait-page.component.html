@@ -50,7 +50,7 @@
       </ion-buttons>
     </ion-item> -->
 
-    <div class="ion-text-center  post-screen-slide ">
+    <div class="ion-text-center post-screen-slide">
       <ion-slides *ngIf="fileToUpload.length > 0" class="post-screen-slide">
         <ion-slide  *ngFor="let photo of fileToUpload" style="display: block;">
           <ion-card>
@@ -97,7 +97,7 @@
 <ion-footer class="create-btn">
   <ion-button shape="round" expand="block"
     [color]="(post.PostDescription=='' && post.PostImages.length==0) ? 'medium' : 'primary'" 
-    (click)="savePost()"
+    (click)="addPost()"
     [disabled]="saveClicked">
     Create
   </ion-button>

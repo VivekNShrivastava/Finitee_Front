@@ -13,9 +13,39 @@
 </ion-header>
 <ion-content>
 
-<div style="--overflow:visible; background: #EAF1F4 0% 0% no-repeat padding-box !important; width: 100%;">
+<div style="display: flex; justify-content: space-between; align-items: center; text-align: center; width: 100% !important;;
+height: 64px;
+background: #EAF1F4 0% 0% no-repeat padding-box;">
+  <div style="display: flex; gap: 15px; margin-left: 10px;">
+    <div>
+      <img class="business-logo" style="width: 45px; height: 45px; border-radius: 50%;
+  
+      border: 2px solid white;" [src]="appConstants.mediaPrefix"
+            onError="this.src='assets/icons/business/anonymous.svg'"/>
+    </div>
+    <div style=" display: flex; flex-direction: column; text-align: center; margin-top: 5px;">
+      <ion-label class="fi-name-label postowner-name">
+         
+        <h3 style="font-size: 16px; font-weight: 600;">Nisarg Barot</h3>
+        
+     </ion-label>
+     <p class="post-days">1 day ago</p>
+    </div>
+    
+  </div>
+
+  <div>
+    <ion-buttons slot="end">
+      <ion-button shape="round">
+        <ion-icon name="three-dots"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </div>
+</div>
+
+<!-- <div style="--overflow:visible; background: #EAF1F4 0% 0% no-repeat padding-box !important; width: 100%;">
   <ion-list class="profileBgClass">
-    <!-- user data -->
+ 
     <ion-item lines="none" class="profileBg" style="--overflow:visible; ">
       <ng-container slot="start" style="position: relative;">
         <ion-avatar>
@@ -23,7 +53,7 @@
             onError="this.src='assets/icons/business/anonymous.svg'"/>
         </ion-avatar>
         <ion-label class="fi-name-label">
-          <!-- <h3>{{post.CreatedBy!.UserName}}</h3> -->
+         
            <h3>Nisarg Barot</h3>
         </ion-label>
         
@@ -38,11 +68,11 @@
       </ion-buttons>
     </ion-item>
   </ion-list>
-</div>
+</div> -->
 
   <!-- image and video-->
-  <div class="ion-text-center  post-screen-slide ">
-    <ion-slides *ngIf="fileToUpload.length > 0" [pager]="true" class="post-screen-slide">
+  <div class="ion-text-center  post-screen-slide " style="margin-top: 10px;">
+    <!-- <ion-slides *ngIf="fileToUpload.length > 0" [pager]="true" class="post-screen-slide" [style.height]="slideHeight">
       <ion-slide  *ngFor="let photo of fileToUpload" style="display: block; height: auto;">
         <ion-card >
 
@@ -57,25 +87,30 @@
 
         </ion-card>
       </ion-slide>
-    </ion-slides>
-    <ion-card *ngIf="fileToUpload.length <= 0" class="media">
+    </ion-slides> -->
+    <ion-card *ngIf="fileToUpload.length <= 0" class="media" [style.height]="slideHeight">
       <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
     </ion-card>
   </div>
 
+  <div *ngIf="fileToUpload && fileToUpload.length > 0" style="width: 100%; max-height: 500px; overflow: hidden;">
+    <!-- <div *ngFor="let fileToUpload of fileToUpload"> -->
+      <app-image-cropper [imageUri]="fileToUpload"></app-image-cropper>
+    <!-- </div> -->
+  </div>
 
-  <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
+<!-- 
+  <ion-item lines="none"  style=" display: flex;  justify-content: space-between;" >
     <div class="favour-n-beam">
-      <ion-buttons>
-        <ion-button shape="round" >
+      <ion-buttons style="gap:8px ; margin-left: 10px;">
+  
           <ion-icon name="comment-favour-outlined"></ion-icon>
-        </ion-button>
-        <ion-button shape="round">
+  
+
           <ion-icon name="post-chat"></ion-icon>
-        </ion-button>
-        <ion-button shape="round">
+
           <ion-icon name="beam-post"></ion-icon>
-        </ion-button>
+
       </ion-buttons>
     </div>
 
@@ -86,7 +121,34 @@
       <span></span>
       <h4>7 Comments</h4>
     </div>
-  </ion-item>
+  </ion-item> -->
+
+  <div style="display: flex; justify-content: space-between; width: 100% !important; align-items: center; border-bottom: 2px solid #e9e1e1;
+    box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.5);">
+   
+      <div class="favour-n-beam">
+        <ion-buttons style="gap:8px ; margin-left: 10px;">
+    
+            <ion-icon name="comment-favour-outlined"></ion-icon>
+    
+  
+            <ion-icon name="post-chat"></ion-icon>
+  
+            <ion-icon name="beam-post"></ion-icon>
+  
+        </ion-buttons>
+      </div>
+  
+      <div style="display: flex; margin-right: 10px; gap: 5px;">
+        <h4 class="title" style="color: var(--unnamed-color-1a3253); text-align: center; font: normal normal bold 13px/21px SF Pro Display; letter-spacing: 0.04px; color: #1A3253;">25 Favors</h4>
+        <span></span>
+        <h4 class="title dot" style="color: var(--unnamed-color-1a3253); text-align: center; font: normal normal bold 13px/21px SF Pro Display; letter-spacing: 0.04px; color: #1A3253;">10 Beams</h4>
+        <span></span>
+        <h4 class="title dot" style="color: var(--unnamed-color-1a3253); text-align: center; font: normal normal bold 13px/21px SF Pro Display; letter-spacing: 0.04px; color: #1A3253;">7 Comments</h4>
+    </div>
+    
+
+  </div>
   
 
 
@@ -155,7 +217,14 @@
       [mediaFiles]="post.PostImages"
       (filePathEvent)="addMedia($event)"
       (imagePath)="imagePathMedia($event)"
-      (fileToUpload)="fileToUploadToServer($event)">
+      (fileToUpload)="fileToUploadToServer($event)"
+      class="icon-class"
+      style="display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+  ">
     </app-multiple-media-upload>
 
     <!-- <div class="error-message" *ngIf="saveClicked && post.PostImages.length==0 && post.PostDescription==''">
@@ -178,7 +247,11 @@
   <ion-button shape="round" expand="block"
   color="primary" 
   [disabled]="photo.length === 0"
-  (click)="addPost()">
+  (click)="addPost()"
+  style="height: 53px;
+  font: normal normal bold 16px/24px SF Pro Display;
+letter-spacing: 0.25px;
+color: #FFFFFF;">
   Create post
 </ion-button>
 </ion-footer>
