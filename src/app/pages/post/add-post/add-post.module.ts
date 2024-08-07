@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MultipleMediaUploadComponent } from 'src/app/core/components/mutiple-media-upload/mutiple-media-upload.component';
 import { TraitsComponent } from 'src/app/core/components/traits/traits.component';
 import { AddPostPage } from './add-post.page';
-
+import { ImageCropperComponent } from 'src/app/core/components/image-cropper/image-cropper.component';
 
 
 
@@ -19,7 +19,8 @@ import { AddPostPage } from './add-post.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: AddPostPage }]),
     MultipleMediaUploadComponent,
-    TraitsComponent
+    TraitsComponent,
+    ImageCropperComponent
   ],
   declarations: [
     AddPostPage

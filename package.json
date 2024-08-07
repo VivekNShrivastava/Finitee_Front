@@ -45,7 +45,7 @@
     "@capacitor/splash-screen": "^5.0.5",
     "@capacitor/status-bar": "^5.0.0",
     "@capacitor/text-zoom": "^5.0.2",
-    "@capawesome/capacitor-file-picker": "^5.0.0",
+    "@capawesome/capacitor-file-picker": "^6.0.1",
     "@googlemaps/markerclusterer": "^2.0.14",
     "@ionic/angular": "^6.1.9",
     "@microsoft/signalr": "^7.0.0",
@@ -68,6 +68,7 @@
     "ng-recaptcha": "^11.0.0",
     "ngx-image-cropper": "^7.2.1",
     "rxjs": "~7.5.0",
+    "swiper": "^11.1.8",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
