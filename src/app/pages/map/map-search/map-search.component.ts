@@ -8,6 +8,9 @@ import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { MapService } from 'src/app/pages/map/services/map.service';
 import * as config from 'src/app/core/models/config/ApiMethods';
 import { LocationService } from 'src/app/core/services/location.service';
+import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component';
+import { EventItem } from 'src/app/core/models/event/event';
+import { AddressMap } from 'src/app/core/models/places/Address';
 
 @Component({
   selector: 'app-map-search',
@@ -15,6 +18,9 @@ import { LocationService } from 'src/app/core/services/location.service';
   styleUrls: ['./map-search.component.scss'],
 })
 export class MapSearchComponent implements OnInit {
+  eventItem: EventItem = new EventItem();
+  eventLocation: any;
+  
   tempOtherSearchTerm = false;
   searchMode: 'N' | 'P' | 'L' = 'N';
   searchTypeString = '';
@@ -68,6 +74,7 @@ export class MapSearchComponent implements OnInit {
   frequency = 10;
   googleAutocomplete: any;
   autocompleteItems: any[];
+  form: any;
   constructor(
     public httpService: HttpClient,
     public alertController: AlertController,
@@ -77,11 +84,13 @@ export class MapSearchComponent implements OnInit {
     public route: ActivatedRoute,
     public authService: AuthService,
     public mapService: MapService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    
   ) {
     this.mapParams = this.navParams?.data?.['values'];
     this.googleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocompleteItems = [];
+    this.getLatlng();
   }
 
   toggleLevel1(idx: null) {
@@ -126,6 +135,115 @@ export class MapSearchComponent implements OnInit {
 
     
   }
+
+  async openMap() {
+    const modal = await this.modalController.create({
+      component: MapLocation,
+    });
+  
+    await modal.present();
+  
+    const { data } = await modal.onDidDismiss();
+  
+    if (data && data.location) {
+      const { latitude, longitude } = data.location;
+  
+      const latLng = {
+        lat: latitude,
+        lng: longitude
+      };
+  
+      console.log("latlng", latLng);
+  
+      this.eventItem.Latitude = latLng.lat;
+      this.eventItem.Longitude = latLng.lng;
+  
+      const res = await this.locationService.getAddressFromLatLng(latLng);
+  
+      let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+        if (address) {
+          this.eventLocation = address.FormattedAddress;
+          const location: string = this.eventLocation;
+          const add1 = location.slice(0, 69);
+          const add2 = location.slice(70, location.length);
+          this.form.controls['AddressLine1'].setValue(add1);
+          this.form.controls['AddressLine1'].markAsTouched();
+          this.form.controls['AddressLine1'].setErrors(null);
+  
+          this.form.controls['AddressLine2'].setValue(add2);
+          this.form.controls['AddressLine2'].markAsTouched();
+          this.form.controls['AddressLine2'].setErrors(null);
+  
+          this.getLatlng(address);
+        }
+      });
+    }
+  }
+  
+
+  
+  triggerSearch() {
+    if (this.eventItem.Latitude && this.eventItem.Longitude) {
+      const latLng = {
+        lat: this.eventItem.Latitude,
+        lng: this.eventItem.Longitude
+      };
+  
+      this.mapService.oneTimeSearch(
+        {
+          geolocation: { latitude: latLng.lat, longitude: latLng.lng },
+          searchKey: this.keyinfo || "",
+          scope: this.radius,
+          age: { lower: this.ageMinMax.lower, upper: this.ageMinMax.upper },
+          freeUser: this.searchType[1].isChecked,
+          Donations: this.searchType[2].isChecked,
+          connections: this.searchType[3].isChecked,
+          businessUser: this.searchType[5].isChecked,
+          nonProfitUser: this.searchType[7].isChecked,
+          events: this.searchType[10].isChecked,
+          serviceReq: this.searchType[4].isChecked,
+          serviceAvailable: this.searchType[6].isChecked,
+        }
+      ).subscribe(
+        response => {
+          console.log('Response received:', response); // Log response
+          this.progressBar = false;
+          this.modalController.dismiss(response);
+        },
+        error => {
+          console.error('Error:', error); // Log error if any
+          this.progressBar = false;
+        }
+      );
+    } else {
+      console.error('Error: Latitude and Longitude are not set');
+    }
+  }
+  
+  
+
+
+
+  getLatlng(add?: any) {
+
+    if(add){
+      this.eventItem.Latitude = add.Latitude;
+      this.eventItem.Longitude = add.Longitude;
+    }else{
+      var addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
+      this.locationService.getLatLngFromAddressType('home', addrress)
+        .then((latLng) => {
+         this.eventItem.Latitude = latLng.lat
+         this.eventItem.Longitude = latLng.lng
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
+  }
+
+
 
   
   async ionViewDidEnter() {
@@ -362,34 +480,7 @@ export class MapSearchComponent implements OnInit {
       sonarSearch_location.lng = curr_loc.lng
       console.log(curr_loc);
     }
-    this.mapService.oneTimeSearch(
-      {
-        // geolocation: { latitude: 19.2616678, longitude: 72.9630232 },
-        geolocation: {latitude: sonarSearch_location?.lat, longitude: sonarSearch_location?.lng},
-        searchKey: this.keyinfo || "",
-        scope: this.radius,
-        age: {lower: this.ageMinMax.lower, upper: this.ageMinMax.upper},
-        freeUser: this.searchType[1].isChecked,
-        Donations: this.searchType[2].isChecked,
-        connections: this.searchType[3].isChecked,
-        businessUser: this.searchType[5].isChecked,
-        nonProfitUser: this.searchType[7].isChecked,
-        events: this.searchType[10].isChecked,
-        // sales: this.searchType[15].isChecked,
-        serviceReq: this.searchType[4].isChecked,
-        serviceAvailable: this.searchType[6].isChecked,
-      }
-    ).subscribe(
-      response => {
-        console.log('Response received:', response); // Log response
-        this.progressBar = false;
-        this.modalController.dismiss(response);
-      },
-      error => {
-        console.error('Error:', error); // Log error if any
-        this.progressBar = false;
-      }
-    );
+   
   }
   searchTypeChanged(typeCode: string) {
     if (this.tempOtherSearchTerm) {
