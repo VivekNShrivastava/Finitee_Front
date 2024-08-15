@@ -28,17 +28,29 @@
       Ignored
     </ion-button>
   </div>
-  <div style="display: flex; justify-content: center; align-items: center;" class="maptab"
-    *ngIf="viewTemplate != 'Viewing'">
-    <ion-button class="activeclass" shape="round" [ngClass]="{'active': activeOrExpired === 1}"
-      (click)="activeExpiredGreeting(1)">
+ 
+  <div style="display: flex; justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+    <ion-button class="activeclass" shape="round" [ngClass]="{'active': activeOrExpired === 1}" (click)="activeExpiredGreeting(1)">
       Active
+     
     </ion-button>
+    <span class="red-dot">{{ activeRequestCount }}</span>
 
-    <ion-button class="activeclass" shape="round" [ngClass]="{'active': activeOrExpired === 2}"
-      (click)="activeExpiredGreeting(2)">
+    <ion-button class="activeclass" shape="round" [ngClass]="{'active': activeOrExpired === 2}" (click)="activeExpiredGreeting(2)">
       Previous
     </ion-button>
+    <!-- <span class="red-dot1">{{ activeRequestCount1 }}</span> -->
+
+  </div>
+  
+  <div *ngIf="filteredGreetingList.length > 0">
+    <div *ngFor="let greeting of filteredGreetingList">
+      <!-- Customize this part to display your greeting details -->
+      <div>{{ greeting.someProperty }}</div>
+    </div>
+  </div>
+  <div *ngIf="filteredGreetingList.length === 0">
+    <!-- <p>No connections found.</p> -->
   </div>
 
   <!-- <div style="justify-content: center; align-items: center;" class="maptab"

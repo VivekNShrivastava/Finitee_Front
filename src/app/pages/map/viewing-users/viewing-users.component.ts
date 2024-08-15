@@ -29,6 +29,8 @@ export enum GreetingCode {
 export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy {
   public viewType: number = 1;
   public activeOrExpired: number = 1;
+  public activeRequestCount: number = 0;
+  public activeRequestCount1: number = 0;
   public viewTemplate: string = "";
   public viewList: any = [];
   public greetList: any = [];
@@ -289,21 +291,6 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   public onViewTypeChange(viewType: number): void {
     this.viewType = viewType;
   }
-
-  public activeExpiredGreeting(viewType: number): void {
-    this.activeOrExpired = viewType;
-
-    if(viewType === 1){
-      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
-       return x.Status === null
-      })
-    }else if(viewType === 2){
-      this.filteredGreetingList = this.greetingListApi.filter((x:any) => {
-        return x.Status != null 
-      })
-    }
-  }
-
   public viewConnection(user: FiniteeUserOnMap): void {}
 
   public viewUserOnMap(user: FiniteeUserOnMap): void {}
@@ -313,4 +300,62 @@ export class ViewingUsersComponent extends BasePage implements OnInit, OnDestroy
   public greetingUpdate(user: FiniteeUserOnMap, greetingStatus: string): void {}
 
   public blockUser(): void {}
+
+  // public activeExpiredGreeting(viewType: number): void {
+  //   this.activeOrExpired = viewType;
+  //   this.firestoreService.greetingListSubject.subscribe((ListOfActiveGreeting:any)=>{
+  //     console.log("tempstoregreet",ListOfActiveGreeting)
+  //     if (viewType === 1) {
+  //       console.log("a",this.filteredGreetingList)
+       
+  //       this.filteredGreetingList = this.greetingListApi.filter((x: any) => {
+  //        for(i=){
+         
+  //         return x.Id  === ListOfActiveGreeting.Id;
+  //        }
+  //       });
+  //       this.activeRequestCount = this.filteredGreetingList.length;
+  //     } else if (viewType === 2) {
+  //       this.filteredGreetingList = this.greetingListApi.filter((x: any) => {
+  //         return x.Id! === ListOfActiveGreeting.Id;
+  //       });
+  //       // this.activeRequestCount1 = this.filteredGreetingList.length;
+  //     }
+  //   })
+
+  
+
+  // }
+
+
+
+  public activeExpiredGreeting(viewType: number): void {
+    this.activeOrExpired = viewType;
+    this.firestoreService.greetingListSubject.subscribe((listOfActiveGreeting: any[]) => {
+      console.log("tempstoregreet", listOfActiveGreeting);
+  
+      if (viewType === 1) {        
+        listOfActiveGreeting.forEach(activeGreeting => {
+          this.filteredGreetingList = this.greetingListApi.filter((x: any) => {
+            const tocheck = "u-" + x.CreatedBy.Id;
+            return tocheck == activeGreeting;
+          })
+        });
+        console.log("filtered Results",this.filteredGreetingList );
+        
+        this.activeRequestCount = this.filteredGreetingList.length;
+
+      } 
+      else if (viewType === 2) { 
+        listOfActiveGreeting.forEach(activeGreeting => {
+          this.filteredGreetingList = this.greetingListApi.filter((x: any) => {
+            const tocheck = "u-" + x.CreatedBy.Id;
+            return tocheck !== activeGreeting;
+          })
+        });
+
+        console.log("filtered Results",this.filteredGreetingList );
+      }
+    });
+  }
 }
