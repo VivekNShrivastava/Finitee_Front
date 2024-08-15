@@ -16,7 +16,7 @@ export class FirestoreService extends BasePage {
   public viewList$ = this.viewListSubject.asObservable();
   tempStore: any = [];
 
-  private greetingListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public greetingListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public greetingList$ = this.greetingListSubject.asObservable();
   tempStoreGreet: any = [];
 
