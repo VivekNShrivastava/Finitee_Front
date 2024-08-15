@@ -21,7 +21,7 @@ ion-header ion-toolbar ion-title {
   width: 100%;
   height: 100%;
   text-align: center;
-  font: normal normal 600 14px/28px SF Pro Display;
+  font: normal normal 600 16px/28px SF Pro Display;
   letter-spacing: 0.32px;
   color: #285078;
 }
@@ -46,7 +46,7 @@ ion-menu {
       }
 
       & > ion-label {
-        font: normal normal bold 16px/24px SF Pro Display;
+        font: normal normal bold 18px/24px SF Pro Display;
         letter-spacing: 0.25px;
         color: #285078;
       }
@@ -72,7 +72,7 @@ ion-menu {
           }
 
           & > ion-label {
-            font: normal normal bold 16px/24px SF Pro Display;
+            font: normal normal bold 18px/24px SF Pro Display;
             letter-spacing: 0.25px;
             color: #285078;
           }
@@ -92,7 +92,7 @@ ion-menu {
             }
 
             & > ion-label {
-              font: normal normal bold 14px/24px SF Pro Display;
+              font: normal normal bold 16px/24px SF Pro Display;
               letter-spacing: 0.22px;
               color: #79838D;
             }
@@ -121,7 +121,7 @@ ion-menu {
         }
 
         & > ion-label {
-          font: normal normal bold 16px/24px SF Pro Display;
+          font: normal normal bold 18px/24px SF Pro Display;
           letter-spacing: 0.25px;
           color: #285078;
         }

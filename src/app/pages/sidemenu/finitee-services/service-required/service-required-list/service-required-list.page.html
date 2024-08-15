@@ -18,12 +18,14 @@
       Active
     </ion-text>
   </ion-segment>
-  <ion-grid>
+  <ion-grid style="    padding-left: 0px;
+  padding-right: 5px;">
     <ng-container *ngFor="let i of serviceRequiredService.serviceList; let last = last">
       <ion-row   class="ion-align-items-center" (click)="viewDetails(i.Id)" *ngIf="i.DaysLeft >= 0">
         <ion-col size="4">
-          <ion-img [src]="appConstants.mediaPrefix+i.ImageList[0]">
-          </ion-img>
+          <img style="width: 114px;
+          height: 83px;" src="appConstants.mediaPrefix+i.ImageList[0]"
+          onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'">
         </ion-col>
         <ion-col size="8">
           <ion-card class="ion-no-padding">
@@ -164,7 +166,8 @@
   <br>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="primary" (click)="create()">
-      <ion-icon class="add-post-icon" name="add"></ion-icon>
+      <ion-icon name="add"></ion-icon>
+      <!-- <ion-icon class="add-post-icon" name="add"></ion-icon> -->
     </ion-fab-button>
   </ion-fab>
 </ion-content>

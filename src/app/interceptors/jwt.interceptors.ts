@@ -1,7 +1,7 @@
 // import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject, of } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, of, EMPTY } from 'rxjs';
 import * as config from 'src/app/core/models/config/ApiMethods';
 import { environment } from 'src/environments/environment';
 import { BasePage } from '../base.page';
@@ -129,8 +129,8 @@ export class JwtInterceptor extends BasePage implements HttpInterceptor  {
 
     public handle401Error(request: HttpRequest < any >, next: HttpHandler): Observable < any > {
         // Check if another call is already using the refresh logic
-        this.commonService.presentToast("getting new token");
-
+        // this.commonService.presentToast("getting new token");
+        console.log("req", request)
         if(!this.isRefreshingToken) {
             
           // Set to null so other requests will wait
@@ -142,17 +142,19 @@ export class JwtInterceptor extends BasePage implements HttpInterceptor  {
           // First, get a new access token
           return this.authService.getNewAccessToken(request).pipe(
             switchMap((token: any) => {
-            this.commonService.presentToast("getting new token");
+            // this.commonService.presentToast("getting new token");
               if (token) {
                 // Store the new token
                 // console.log("got the new token", token);
+                let accessToken = "";
                 if(token.Token === "Expired"){
-                    console.log("Refresh Token Expired, Logging out")
-                    this.commonService.presentToast("Logging OUt Refresh Token Expired");
-                    this.authService.logout();
+                  console.log("Refresh Token Expired, Logging out")
+                  // this.commonService.presentToast("Logging OUt Refresh Token Expired");
+                  this.authService.logout(true);
+                  return EMPTY;
+                }else{
+                  accessToken = token.Token;
                 }
-                // console.log("api is", request);
-                const accessToken = token.Token;
                 return of( this.authService.storeAccessToken(accessToken))
                 .pipe(
                   switchMap(_ => {
@@ -183,7 +185,6 @@ export class JwtInterceptor extends BasePage implements HttpInterceptor  {
             take(1),
             switchMap(token => {
               // Perform the request again now that we got a new token!
-              console.log("no refres token")
               return next.handle(this.addToken(request));
             })
           );

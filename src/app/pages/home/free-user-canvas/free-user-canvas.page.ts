@@ -63,7 +63,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     super(authService);
     // console.log(this.router!.getCurrentNavigation()!.extras.state, "constructor"); // should log out 'bar'
 
-    // console.log("routed to free-user-canvas", this.router!.getCurrentNavigation()!.extras.state)
+    console.log("routed to free-user-canvas", this.router!.getCurrentNavigation()!.extras.state)
     if (this.router!.getCurrentNavigation()!.extras.state) {
       this.navParams = this.router!.getCurrentNavigation()!.extras.state!['data'];
 
@@ -100,12 +100,14 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     this._postService.postDataSbj.subscribe({
       next: (result: any) => {
         console.log(`observerA: ${result}`);
+        console.log(result.data);
         if (result.event == "ADD"){
           this.postList.unshift(result.data);
           if(result.isTraitPost)
           {
-            this.loaded=false;
-            this.getUserTraitsWithPost();
+            // this.loaded=false;
+            // this.getUserPost();
+            // this.getUserTraitsWithPost();
           }
         }
         else if (result.event == "DELETE") {
@@ -177,7 +179,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
         this.getUserPost();
         break;
       case 'traits':
-        this.getUserTraitsWithPost();
+        this.getUserTraitsWithPost(true);
         break;
       case 'beams':
         this.getUserBeams();
@@ -205,10 +207,11 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     this.loaded = true;
   }
 
-  async getUserTraitsWithPost() {
+  async getUserTraitsWithPost(traitSection?: boolean) {
     this.userTraitPostList = await this._postService.getUserTraitWithPost(this.userId);
     console.log("userTrait", this.userTraitPostList);
     this.loaded = true;
+    if(!traitSection) this.openTraitList();
   }
 
   async getUserBeams() {
@@ -394,10 +397,11 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     //var existingChatGroupId = this.chatService.getGroupIdIfChatThreadAlreadyStarted(this.userId);
     var selctedUser: any = {
       UserId: this.userId,
-      DisplayName: this.navParams.DisplayName,
-      ProfilePhoto: this.navParams.ProfilePhoto == undefined ? null : this.navParams.ProfilePhoto,
+      DisplayName: this.navParams.UserName,
+      ProfilePhoto: this.navParams.ProfileImage == undefined ? null : this.navParams.ProfileImage,
       groupId: ""
     }
+    console.log('start-chatting...', selctedUser);
     this.chatService.openChat(selctedUser);
   }
 
@@ -438,6 +442,12 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     }
   }
 
+  async openTraitList(){
+    this.traitInput = "";
+    this.isTraitModalOpen = true;
+    this.userTraitList = await this._postService.getUserTrait(this.userId);
+  }
+
   openPostScreen(post: any) {
     this.navEx!.state!['postlist'] = this.postList;
     this.navEx!.state!['selectedPost'] = post;
@@ -465,12 +475,12 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     if (obj) {
       this.traitInput = "";
       this.selectedTraitObj = obj;
-    }
+    }else this.selectedTraitObj = "";
   }
 
 
   async saveUserTrait(action: any) {
-    if (action == "EDIT") {
+    if (action === "EDIT") {
       this.editUserTrait.Trait = this.editTraitInput;
       var res = await this._postService.saveUserTrait(this.editUserTrait);
       if (res) {
@@ -485,10 +495,10 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       }
     }
     else {
-      if (this.traitInput != "" && this.userTraitList.length > 0) {
+      if (this.traitInput !== "" && this.userTraitList.length > 0) {
         var t = this.traitInput;
         var traitIndex = _.findIndex(this.userTraitList, function (o) { return o.Trait.toLowerCase() == t.toLowerCase(); });
-        if (traitIndex != -1) {
+        if (traitIndex !== -1) {
           this.commonService.presentToast("You have already created trait for same name");
           return;
         }
@@ -497,16 +507,14 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       
       console.log("selectedTrait -", this.selectedTraitObj);
       console.log("inpit -", this.traitInput);
-      if(this.traitInput != "" || this.selectedTraitObj != ""){
+      if(this.traitInput !== "" || this.selectedTraitObj !== ""){
         setTimeout(() => {
-          if (this.traitInput != "") {
+          if (this.traitInput !== "") {
             this.navEx.state!['traitInput'] = this.traitInput;
             this.router.navigateByUrl('create-trait', this.navEx);
             // var userTrait: UserTrait = new UserTrait();
             // userTrait.Trait = this.traitInput;
             // this.addPost(userTrait);
-  
-  
           } else {
             this.addPost(this.selectedTraitObj);
           }
@@ -515,8 +523,6 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
         this.isTraitModalOpen = true;
         this.commonService.presentToast('Choose a Trait, or create new one');
       }
-      
-      
     }
   }
 
@@ -680,9 +686,12 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       this.navEx!.state!['data'] = { belongsToId: this.userId, Type: this.appConstants.POST_TYPE.USER };
     this.router.navigateByUrl(`post/add-post`, this.navEx);
     this.traitInput = "";
+    this.selectedTraitObj = "";
   }
 
   traitPostsSection(userTrait: UserTraitWithPost) {
+    this.navEx!.state!['value'] = { belongsToId: userTrait.UserTrait.Id, Type: this.appConstants.POST_TYPE.TRAIT, TraitRequest: userTrait.UserTrait };
+
     this.navEx!.state!['data'] = userTrait.UserTrait;
     this.router.navigateByUrl('free-user-canvas/trait-section', this.navEx);
   }
@@ -790,6 +799,11 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     if (this._postService.postDataSbj) {
       this._postService.postDataSbj.unsubscribe();
     }
+  }
+
+  openImage(imagePath: any) {
+    this.navEx!.state!['data'] = imagePath;
+    this.router.navigateByUrl('media-viewer', this.navEx);
   }
 }
 

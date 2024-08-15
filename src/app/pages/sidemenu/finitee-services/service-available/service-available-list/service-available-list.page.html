@@ -1,7 +1,8 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="display-flex ion-align-items-center">
     <ion-buttons slot="start">
-      <app-notification-icon></app-notification-icon>
+      <ion-back-button icon="assets/icons/screen-wise-icons/Canvas screens icons as svg/Back icon.svg">
+      </ion-back-button>
     </ion-buttons>
     <ion-title>Services Available</ion-title>
     <ion-buttons slot="end">
@@ -24,8 +25,8 @@
     <ng-container *ngFor="let i of serviceRequiredService.serviceList;">
       <ion-row class="ion-align-items-center" (click)="viewDetails(i.Id)" *ngIf="i.DaysLeft >= 0">
         <ion-col size="4">
-          <ion-img [src]="appConstants.mediaPrefix+i.ImageList[0]">
-          </ion-img>
+          <img [src]="appConstants.mediaPrefix+i.ImageList[0]"
+          onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
         </ion-col>
         <ion-col size="8">
           <ion-card class="ion-no-padding">
@@ -42,11 +43,11 @@
               </ion-label>
               <ion-buttons>
                 <ion-button class="fi-delete-btn" shape="round" (click)="delete(i.Id) ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+                  <ion-icon style="font-size: 18px;" name="delete"></ion-icon>
                 </ion-button>
                 &nbsp;
                 <ion-button class="fi-edit-btn" shape="round" (click)="edit(i.Id) ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
+                  <ion-icon style="font-size: 18px;" name="edit"></ion-icon>
                 </ion-button>
               </ion-buttons>
             </ion-card-content>
@@ -151,8 +152,8 @@
   <ng-container *ngIf="!loading && serviceRequiredService.serviceList.length == 0">
     <div class="nodata">
       <img style="margin-top: 20px;" src="assets/imgs/new/NoData.png">
-      <h3> You have no service available listings at this time.</h3>
-      <h3> Create a service available listing to put your talents to good use.</h3>
+      <h3 style="font-size: 20px;"> You have no service available listings at this time.</h3>
+      <h3 style="font-size: 20px;"> Create a service available listing to put your talents to good use.</h3>
     </div>
   </ng-container>
   <br>
@@ -161,7 +162,7 @@
   <br>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button color="primary" (click)="create()">
-      <ion-icon class="add-post-icon" name="add"></ion-icon>
+      <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

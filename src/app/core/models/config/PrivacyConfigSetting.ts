@@ -36,26 +36,26 @@ export const PrivacySettingConfig: PrivacySettingConfig[] = <PrivacySettingConfi
             Value: "H"
         }]
     },
-    {
-        SettingName: "Location show while logged in",
-        SettingField: nameof<UserPrivacySetting>("LocationShowOnlyWhenLoggedIn"),
-        Type: "Checkbox"
-    },
+    // {
+    //     SettingName: "Location show while logged in",
+    //     SettingField: nameof<UserPrivacySetting>("LocationShowOnlyWhenLoggedIn"),
+    //     Type: "Checkbox"
+    // },
     {
         SettingName: "Available for greeting while logged in",
-        SettingField: nameof<UserPrivacySetting>("AvailableForGreetingWhenLoggedIn"),
+        SettingField: nameof<UserPrivacySetting>("AvailableForGreeting"),
         Type: "Checkbox"
     },
-    {
-        SettingName: "Real time GPS location offset",
-        SettingField: nameof<UserPrivacySetting>("OffSetLocation"),
-        Type: "Checkbox"
-    },
-    {
-        SettingName: "Home location offset",
-        SettingField: nameof<UserPrivacySetting>("OffSetHomeLocation"),
-        Type: "Checkbox"
-    },
+    // {
+    //     SettingName: "Real time GPS location offset",
+    //     SettingField: nameof<UserPrivacySetting>("OffSetLocation"),
+    //     Type: "Checkbox"
+    // },
+    // {
+    //     SettingName: "Home location offset",
+    //     SettingField: nameof<UserPrivacySetting>("OffSetHomeLocation"),
+    //     Type: "Checkbox"
+    // },
     // {
     //     SettingName: "Is mobile business",
     //     SettingField: nameof<UserPrivacySetting>("IsMobileBusiness"),

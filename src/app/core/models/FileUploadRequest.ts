@@ -18,4 +18,7 @@ export interface FileUploadRequestNew {
     thumbName: string;
     thumbBlob: Blob;
     thumbFilePath: string;
+    width: number;
+    height: number;
+    aspectRatio: number;
 }

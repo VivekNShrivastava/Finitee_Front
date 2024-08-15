@@ -13,6 +13,7 @@ export class CommentDto {
     CommentReplyCount: number = 0;
     showReply: string = "";
     topThreeReplies!: Array<CommentReplyDto>;
+    showReplies: boolean = false;
 }
 
 export class CommentReplyDto {

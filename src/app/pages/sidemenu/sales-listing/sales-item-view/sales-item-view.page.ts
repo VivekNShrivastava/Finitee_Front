@@ -9,6 +9,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { EventsService } from 'src/app/core/services/events.service';
 import { PaymentService } from 'src/app/core/services/payment.service';
 import { SalesListingService } from 'src/app/core/services/sales-listing/sales-listing.service';
+
 declare var Razorpay: any;
 
 @Component({
@@ -20,32 +21,42 @@ export class SalesItemViewPage extends BasePage implements OnInit {
   itemId!: number;
   salesItem: SalesItem = new SalesItem;
   currencySymbol?:string;
+  createdById: any;
   constructor(
     private route: ActivatedRoute, private alertController: AlertController,
     private router: Router,
     private salesListingService: SalesListingService,
     private authService: AuthService,
-    private commonService: CommonService, private paymentService: PaymentService
+    public commonService: CommonService, public paymentService: PaymentService
   ) {
     super(authService);
-
+    this.route.params.subscribe((params: any) => {
+      this.itemId = params.id;
+    });
   }
   ngOnInit() {
 
   }
 
   ionViewWillEnter() {
-    this.salesItem = this.salesListingService.salesItemList.filter(a => a.Id == this.salesListingService.id)[0];
-    this.currencySymbol = this.commonService.currentCurrency.CurrencySymbol
+    // this.salesItem = this.salesListingService.salesItemList.filter(a => a.Id == this.salesListingService.id)[0];.
+    this.salesItemById().then(() => {
+      this.currencySymbol = this.commonService.currentCurrency.CurrencySymbol
 
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+  
+      const expiryDate = new Date(this.salesItem.ExpireOn);
+      expiryDate.setHours(0, 0, 0, 0);
+      const timeDiff = expiryDate.getTime() - currentDate.getTime();
+      this.salesItem.daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    })
+  }
 
-    const expiryDate = new Date(this.salesItem.ExpiredOn);
-    expiryDate.setHours(0, 0, 0, 0);
-    const timeDiff = expiryDate.getTime() - currentDate.getTime();
-    this.salesItem.daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
+  async salesItemById(){
+    var result = await this.salesListingService.getSalesItemBySlId(this.itemId);
+    this.salesItem = result;
+    this.createdById = this.salesItem.CreatedBy.Id
   }
 
   edit() {
@@ -66,8 +77,8 @@ export class SalesItemViewPage extends BasePage implements OnInit {
   async onPaymentSuccess(event: any) {
     try {
       const today = new Date;
-            this.salesItem.ExpiredOn = new Date;
-            this.salesItem.ExpiredOn.setDate(today.getDate() + 30);
+            this.salesItem.ExpireOn = new Date;
+            this.salesItem.ExpireOn.setDate(today.getDate() + 30);
             var res = await this.salesListingService.updateSLItem(this.salesItem);
       if (res) {
         this.router.navigateByUrl('/sales-listing');
@@ -78,7 +89,7 @@ export class SalesItemViewPage extends BasePage implements OnInit {
           buttons: [
             {
               text: "Dismiss",
-              cssClass: "danger",
+              cssClass: "dismiss",
               handler: async () => {
               },
             },

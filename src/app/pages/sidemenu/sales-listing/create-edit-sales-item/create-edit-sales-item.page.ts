@@ -11,7 +11,11 @@ import { PlacesService } from 'src/app/core/services/places.service';
 import { APIService } from 'src/app/core/services/api.service';
 import { PaymentService } from 'src/app/core/services/payment.service';
 import { LocationService } from 'src/app/core/services/location.service';
- 
+import { ModalController } from '@ionic/angular';
+import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component';
+import { AddressMap } from 'src/app/core/models/places/Address';
+import { values } from 'lodash';
+
 @Component({
   selector: 'app-create-edit-sales-item',
   templateUrl: './create-edit-sales-item.page.html',
@@ -23,8 +27,30 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
   isEdit: boolean = false;
   salesItemIndex!: number;
   saveClicked: boolean = false;
-  conditionList = ['New', 'Like new', 'Refurbished', 'Used', 'Not working']
+  conditionList: any = [
+    {
+      title: 'New',
+      value: 1
+    },
+    {
+      title: 'Like new',
+      value: 2
+    },
+    {
+      title: 'Refurbished',
+      value: 3
+    },
+    {
+      title: 'Used',
+      value: 4
+    },
+    {
+      title: 'Not working',
+      value: 5
+    }
+  ]
   disableFrom: boolean = false;
+  salesListingLocation : any;
 
   userProfile: any;
   constructor(
@@ -34,6 +60,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
     private salesListingService: SalesListingService,
     public commonService: CommonService,
     private authService: AuthService,
+    public modalController: ModalController,
     private alertCtrl: AlertController, private apiService: APIService, private paymentService: PaymentService
   ) {
     super(authService);
@@ -45,7 +72,13 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
 
       this.salesItemIndex = this.router!.getCurrentNavigation()!.extras!.state!['extraParams'];
       this.isEdit = true;
+      console.log('visible', this.salesItem.VisibleTo);
+      console.log('conditon', this.salesItem.Condition);
       this.salesItem.VisibleTo = this.commonService.getPrivacyFullValue(this.salesItem.VisibleTo);
+
+
+      // this.salesItem.Condition) = this.commonService.getCondition(1);
+      // this.salesItem.Condition = this.commonService.getCondition(this.salesItem.Condition)
       this.disableFrom = true;
       
     }
@@ -53,7 +86,9 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
       if (this.logInfo.UserTypeId == AppConstants.USER_TYPE.FR_USER) {
         this.appConstants.GeneralPivacy.unshift({ key: 'AI', value: 'All Individuals, Businesses/Nonprofits', })
       }
-      this.salesItem.VisibleTo = this.appConstants.GeneralPivacy[0].value;
+      // this.salesItem.VisibleTo = this.appConstants.GeneralPivacy[0].value;
+      console.log('visible', this.salesItem.VisibleTo);
+
       this.disableFrom = false;
     }
     this.getLatlng();
@@ -73,10 +108,12 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
       title: 'All Individuals, Businesses/Nonprofits'
     },
     {
-      title: 'All Individual Finitee users'
+      title: 'All Finitee users',
+      value: 'A'
     },
     {
-      title: 'Connections only'
+      title: 'Connections only',
+      value: 'C'
     }
   ]
 
@@ -93,20 +130,73 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
     this.salesItem.SalesTraits = traits;
   }
 
-  getLatlng() {
-    this.locationService.getLatLngFromAddressType(this.salesItem.Location)
-      .then((latLng) => {
-       this.salesItem.Latitude = latLng.lat
-       this.salesItem.Longitude = latLng.lng
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  // getLatlng() {
+  //   this.locationService.getLatLngFromAddressType(this.salesItem.Location)
+  //     .then((latLng) => {
+  //      this.salesItem.Latitude = latLng.lat
+  //      this.salesItem.Longitude = latLng.lng
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }
+
+  getLatlng(add?: any) {
+
+    if(add){
+      this.salesItem.Latitude = add.Latitude;
+      this.salesItem.Longitude = add.Longitude;
+    }else{
+      // var addrress = this.salesItem.AddressLine1 + this.salesItem.AddressLine2 + this.eventItem.AddressLine3;
+      // this.locationService.getLatLngFromAddressType('home', addrress)
+      //   .then((latLng) => {
+      //    this.salesItem.Latitude = latLng.lat
+      //    this.salesItem.Longitude = latLng.lng
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error:', error);
+      //   });
+    }
+    // console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
+  }
+
+  async openMap() {
+    const modal = await this.modalController.create({
+      component: MapLocation,
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data && data.location) {
+      const { latitude, longitude } = data.location;
+    }
+
+    const latLng = {
+      lat: data.location.latitude,
+      lng: data.location.longitude
+    }
+
+    console.log("latnln", latLng)
+
+    const res = await this.locationService.getAddressFromLatLng(latLng);
+
+    let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+      if(address){
+        this.salesListingLocation = address.FormattedAddress;  
+        this.getLatlng(address);
+      }     
+    });
+
+    
+
   }
 
   async onSubmit() {
      
     if (this.isEdit) {
+
       var result = await this.salesListingService.updateSLItem(this.salesItem);
       if (result) {
         this.router.navigateByUrl('/sales-listing')
@@ -115,6 +205,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
       if (this.salesItem.SalesItemImages.length > 5) {
         this.commonService.presentToast('Select maximum 5 picture/videos.');
       } else {
+        this.salesItem.Condition = Number(this.salesItem.Condition)
         const alert = await this.alertCtrl.create({
           header: "Alert",
           message: "No changes except to price can be made to the listing " +
@@ -122,8 +213,16 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
             "is final before proceeding to payment?",
           buttons: [
             {
+              text: "Cancel",
+              cssClass: "dangers",
+              
+              
+              handler: () => {
+              },
+            },
+            {
               text: "Continue",
-              cssClass: "info",
+              cssClass: "infos",
               handler: async () => {
                 try {
                   this.paymentService.payment.amount = this.commonService.currentCurrency.Amount;
@@ -133,12 +232,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
                 }
               }
             },
-            {
-              text: "Cancel",
-              cssClass: "danger",
-              handler: () => {
-              },
-            },
+         
           ],
         });
         await alert.present();
@@ -150,7 +244,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
   async onPaymentSuccess(event: any) {
     try {
       const today = new Date();
-      this.salesItem.ExpiredOn = new Date(today.setDate(today.getDate() + 30));
+      this.salesItem.ExpireOn = new Date(today.setDate(today.getDate() + 30));
       const result = await this.salesListingService.createSLItem(this.salesItem);
       if (result) {
         this.router.navigateByUrl('/sales-listing')
@@ -161,7 +255,7 @@ export class CreateEditSalesItemPage extends BasePage implements OnInit {
           buttons: [
             {
               text: "Dismiss",
-              cssClass: "danger",
+              cssClass: "dismiss",
               handler: async () => {
 
               },

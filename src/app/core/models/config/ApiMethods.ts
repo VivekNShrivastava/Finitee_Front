@@ -56,7 +56,7 @@ export const API = {
         },
         EDIT_USERNAME:{
             POST: `${environment.baseUrl}User/ChangeUserName`
-        }
+        },
     },
     BUSINESS: {
         ANNOUNCEMENT: {
@@ -109,11 +109,21 @@ export const API = {
     },
     SEARCH: {
         REGULAR_SEARCH: `${MAP_ROUTE}RegularSearch`,
-        SEARCH: `${MAP_ROUTE}Search`
+        SEARCH_UPDATE: `${environment.baseUrl}Search`,
+        SEARCH: `${MAP_ROUTE}Search`,
+        UPDATE_LIVE_LOCATION: `${environment.baseUrl}Search/UpdateLiveLocation`,
+        ALL_SONAR_SEARCH: `${environment.baseUrl}Search/AllSonarSearch`
     },
     INFLOWS: {
         START_STOP_INFLOWS: `${environment.baseUrl}Inflows/StartStopRecievingInflows`,
         GET_INFLOWS: `${environment.baseUrl}Inflows/GetInflowsByUserId`,
+    },
+    GREETING:{
+        SEND_GREETING_TO_USER: `${environment.baseUrl}Greeting/SendGreetingToUser`,
+        GET_GREETING_HISTORY: `${environment.baseUrl}Greeting/GetGreetingHistory`,
+        ACTION_GREETING_TO_USER: `${environment.baseUrl}Greeting/ActionGreetingToUser`,
+        CANCEL_GREETING_TO_USER: `${environment.baseUrl}Greeting/CancelGreetingToUser`,
+        UPDATE_FIREBASE_GREETING : `${environment.baseUrl}Greeting/UpdateFirebaseGreeting`
     }
 
 }
@@ -137,7 +147,7 @@ export const UPDATE_PRIVACY_SETTING = `${FINITEE_ROUTE}UpdateUserPrivacySetting`
 export const GET_ALL_SL_BY_USR = `${SALES_LISTING_ROUTE}GetAllSalesListingByUser`;
 export const CREATE_SL = `${SALES_LISTING_ROUTE}CreateSalesItem`;
 export const UPD_SL = `${SALES_LISTING_ROUTE}UpdateSalesItem`;
-export const GET_SL_BY_ID = `${SALES_LISTING_ROUTE}getSalesItemById`;
+export const GET_SL_BY_ID = `${SALES_LISTING_ROUTE}GetSalesItemById`;
 export const DEL_SL = `${SALES_LISTING_ROUTE}DeleteSalesItem`;
 
 // Service required

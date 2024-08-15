@@ -48,35 +48,37 @@ export class StorageService {
      return data ? JSON.parse(data) : data;
    } */
 
-  storeTempUser(user: any, step: number) {
-    let dataSet = { timestamp: new Date(), data: user, step: step }
-    localStorage.setItem(KEY_TEMP_USER, JSON.stringify(dataSet));
-  }
+  // storeTempUser(user: any, step: number) {
+  //   let dataSet = { timestamp: new Date(), data: user, step: step }
+  //   localStorage.setItem(KEY_TEMP_USER, JSON.stringify(dataSet));
+  // }
 
-  getTempUser() {
-    let data: any = localStorage.getItem(KEY_TEMP_USER);
-    return data ? JSON.parse(data) : data;
-  }
+  // getTempUser() {
+  //   let data: any = localStorage.getItem(KEY_TEMP_USER);
+  //   return data ? JSON.parse(data) : data;
+  // }
 
-  clearTempUser() {
-    localStorage.removeItem(KEY_TEMP_USER);
-  }
+  // clearTempUser() {
+  //   localStorage.removeItem(KEY_TEMP_USER);
+  // }
 
 
-  saveNotification(notificationData: any, date: string) {
+  saveNotification(notificationData: any, date: string, time: Date) {
     var key = "NOTIFICATION_" + date;
 
     let data_1: any = localStorage.getItem(key);
-    console.log("data", data_1);
-    console.log("data false or true", !data_1);
+    
     if (!data_1){
       this.data_noti = [];
     }
-    this.data_noti.push(notificationData);
+    const uniId = notificationData.id;
+    let notiData_time = {
+      notificationData,
+      time,
+      uniId
+    }
+    this.data_noti.unshift(notiData_time);
     
-    
-    console.log("notification", notificationData)
-    console.log("data array", this.data_noti);
     localStorage.setItem(key, JSON.stringify(this.data_noti));
   }
 

@@ -1,4 +1,4 @@
-ion-content {
+sion-content {
   & > ion-segment {
     background: #EAF1F4;
     padding: 4px;
@@ -28,6 +28,8 @@ ion-content {
           background: #EAF1F4;
           border-radius: 22px;
           margin: 0;
+          width: 230px;
+          height: 83px;
           & > ion-card-content {
             padding: 4px 13px;
             height: 83px;
@@ -83,8 +85,8 @@ ion-content {
       --transform: rotate(45deg);
       --box-shadow: none;
       & > ion-icon {
-        height: 70%;
-        width: 70%;
+        // height: 70%;
+        // width: 70%;
         transform: rotate(45deg);
       }
     }

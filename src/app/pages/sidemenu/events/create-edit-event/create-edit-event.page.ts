@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
@@ -12,14 +12,14 @@ import { LocationService } from 'src/app/core/services/location.service';
 import { ModalController } from '@ionic/angular';
 import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component';
 import { AddressMap } from 'src/app/core/models/places/Address';
-import { add } from 'lodash';
-
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-create-edit-event',
   templateUrl: './create-edit-event.page.html',
   styleUrls: ['./create-edit-event.page.scss'],
 })
 export class CreateEditEventPage extends BasePage implements OnInit {
+  @ViewChild('form') form!: NgForm;
   eventItem: EventItem = new EventItem();
   isEdit: boolean = false;
   editItemIndex!: number;
@@ -73,20 +73,19 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     private authService: AuthService, 
     private locationService: LocationService,
     private route: ActivatedRoute,
-    public CommonService: CommonService,
-    public modalController: ModalController
+    public commonService: CommonService,
+    public modalController: ModalController,
   ) {
     super(authService);
     this.eventItem = this.router!.getCurrentNavigation()!.extras!.state!['data'];
     if (this.eventItem.Id) {
       this.editItemIndex = this.router!.getCurrentNavigation()!.extras!.state!['extraParams'];
       this.isEdit = true;
-      this.eventItem.VisibleTo = this.CommonService.getPrivacyFullValue(this.eventItem.VisibleTo);
+      // this.eventItem.VisibleTo = this.commonService.getPrivacyFullValue(this.eventItem.VisibleTo);
     } else {
       if (this.logInfo.UserTypeId == AppConstants.USER_TYPE.FR_USER) {
         this.appConstants.GeneralPivacy.unshift({ key: 'All Individuals, Businesses/Nonprofits', value: 'All Individuals, Businesses/Nonprofits', })
       }
-      this.eventItem.VisibleTo = "";
     }
     this.getLatlng();
   }
@@ -100,10 +99,15 @@ export class CreateEditEventPage extends BasePage implements OnInit {
 
     if (this.isEdit) {
       const dateObject: any = new Date(this.eventItem.StartDate);
-      if (dateObject != "Invalid Date") {
+      const endDateObj: any = new Date(this.eventItem.EndDate)
+      if (dateObject != "Invalid Date" && endDateObj != "Invalid Date") {
         this._startDate.day = dateObject.getDate(); // Get day (1-31)
         this._startDate.month = dateObject.getMonth() + 1; // Get full month name (e.g., "August")
         this._startDate.year = dateObject.getFullYear(); // Get full year (e.g., 2023)
+
+        this._endDate.day = endDateObj.getDate(); // Get day (1-31)
+        this._endDate.month = endDateObj.getMonth() + 1; // Get full month name (e.g., "August")
+        this._endDate.year = endDateObj.getFullYear(); // Get full year (e.g., 2023)
       }
 
       // Format start time
@@ -117,7 +121,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       this.endTime.eampm = this.datePipe.transform(this.eventItem.EndDate, 'a') as 'AM' | 'PM';
 
     } else {
-      this.eventItem.VisibleTo = 'All Finitee users'
+      // this.eventItem.VisibleTo = this.commonService.getPrivacyFullValue("A");
       this.startTime = {
         shh: '',
         smm: '',
@@ -133,8 +137,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
   async openMap() {
     const modal = await this.modalController.create({
       component: MapLocation,
-      // breakpoints: [0.75],
-      // initialBreakpoint: 0.75,
     });
 
     await modal.present();
@@ -142,9 +144,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     const { data } = await modal.onDidDismiss();
 
     if (data && data.location) {
-      // Handle the chosen location data (latitude, longitude)
       const { latitude, longitude } = data.location;
-      console.log('Chosen Location:', { latitude, longitude });
     }
 
     const latLng = {
@@ -152,13 +152,31 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       lng: data.location.longitude
     }
 
+    console.log("latnln", latLng)
+
     const res = await this.locationService.getAddressFromLatLng(latLng);
-    console.log("res", res);
 
     let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
-      console.log("MAP fetchCurrentArea observeReverseGeocodingResult: ", address);
-      if(address) this.eventLocation = address.FormattedAddress;      
+      if(address){
+        this.eventLocation = address.FormattedAddress;
+        const location: string = this.eventLocation;
+        const add1 = location.slice(0,69);
+        const add2 = location.slice(70, location.length);
+        this.form.controls['AddressLine1'].setValue(add1);
+        this.form.controls['AddressLine1'].markAsTouched(); // Optionally, mark the control as touched to trigger any associated validation messages
+        this.form.controls['AddressLine1'].setErrors(null); // Clear any validation errors
+
+        this.form.controls['AddressLine2'].setValue(add2);
+        this.form.controls['AddressLine2'].markAsTouched();
+        this.form.controls['AddressLine2'].setErrors(null);
+
+        this.getLatlng(address);
+      }     
     });
+  }
+
+  
+  reversePrivacyType ( ){
 
   }
 
@@ -177,11 +195,14 @@ export class CreateEditEventPage extends BasePage implements OnInit {
   ]
 
   selectedVisibleTo(data: any) {
-    console.log("selec", data);
-    // this.eventItem.VisibleTo = data.detail.value;
     if(data.detail.value === "All Finitee users") this.eventItem.VisibleTo = 'A';
     else if(data.detail.value === "Connected members") this.eventItem.VisibleTo = 'C';
     else if(data.detail.value === "Only me") this.eventItem.VisibleTo = 'N';
+  }
+
+  isLeapYear(parsedYear: number): boolean {
+    // const parsedYear = parseInt(year, 10);
+    return (parsedYear % 4 === 0 && parsedYear % 100 !== 0) || (parsedYear % 400 === 0);
   }
 
   isStartDateGreaterOrEqualToToday() {
@@ -195,13 +216,28 @@ export class CreateEditEventPage extends BasePage implements OnInit {
         const day: number = parseInt(this._startDate.day);
         const month: number = parseInt(this._startDate.month) - 1; // JavaScript months are 0-based
         const year: number = parseInt(yearStr);
-        const startDateObj: Date = new Date(year, month, day);
-        if (!(startDateObj >= today)) {
-          this.startDateError.is_show = true;
-          this.startDateError.message = 'Event start date must be greater than or equal to today.';
-        } else {
-          this.startDateError.is_show = false;
+        if ((day === 31 && (month === 1  || month === 3 || month === 5 || month === 8 || month === 10)) ||
+          (day === 30 && month === 1) ||
+          (day === 29 && month === 1 && !this.isLeapYear(year))) {
+            this.startDateError.is_show = true;
+            this.startDateError.message = "Invalid Date"
+        }else{
+          const startDateObj: Date = new Date(year, month, day);
+          const oneYearFromNow = new Date();
+          oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+          if (!(startDateObj >= today)) {
+            this.startDateError.is_show = true;
+            this.startDateError.message = 'Event start date must be greater than or equal to today.';
+          } else {
+            if(!(startDateObj <= oneYearFromNow)){
+              this.startDateError.is_show = true;
+              this.startDateError.message = 'Event start date should not be more than one year from now.';
+            }else this.startDateError.is_show = false;
+          }
         }
+
+        
+        
       }
     }
     this.isStartTimeIsGreaterThanCurrentTime();
@@ -217,13 +253,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
 
         const today = new Date();
         const currenTime = `${today.getHours().toString().padStart(2, '0')}:${today.getMinutes().toString().padStart(2, '0')}:${today.getSeconds().toString().padStart(2, '0')}`;
-
-        // let adjustedHours = parseInt(this.startTime.shh);
-        // if (this.startTime.sampm === 'PM' && parseInt(this.startTime.shh) !== 12) {
-        //   adjustedHours += 12;
-        // } else if (this.startTime.sampm === 'AM' && parseInt(this.startTime.shh) === 12) {
-        //   adjustedHours = 0;
-        // } 
         const startHours = this.convertTo24Hours(this.startTime.sampm, this.startTime.shh)
 
         const startTimeObj = `${startHours.toString().padStart(2, '0')}:${parseInt(this.startTime.smm).toString().padStart(2, '0')}:00`;
@@ -244,7 +273,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
   isEndDateGreaterOrEqualToToday(){
     this.endDateError.is_show = false;
     if(this._endDate || this._endDate.day || this._endDate.month || this._endDate.year){
-      const yearStr: string = this._endDate.year;
+      const yearStr: string = (this._endDate.year).toString();
       if(yearStr.length == 4){
         // Get the current date
         // const today: Date = new Date();
@@ -254,9 +283,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
         const syear: number = parseInt(this._startDate.year);
         const startDateObj: Date = new Date(syear, smonth, sday);
         const endDateObj : Date = new Date(this._endDate.year, this._endDate.month - 1, this._endDate.day);
-        console.log("startDate", startDateObj);
-        console.log("endDate", endDateObj);
-        console.log(startDateObj <= endDateObj);
         if (!(startDateObj <= endDateObj)) {
           this.endDateError.is_show = true;
           this.endDateError.message = 'Event End date must be greater than or equal to Start Date.';
@@ -264,12 +290,20 @@ export class CreateEditEventPage extends BasePage implements OnInit {
           const yearDiff = this._endDate.year - this._startDate.year;
           const monthDiff = this._endDate.month - this._startDate.month;
           const dayDiff = this._endDate.day - this._startDate.day;
-          console.log("difference", yearDiff, monthDiff, dayDiff);
+
+
           if(yearDiff > 0) this.eventDuration = 1;  
           else if(monthDiff > 0) this.eventDuration = 1;
           else if(dayDiff > 0) this.eventDuration = 1;
           else this.eventDuration = 0;
-          console.log("event-duration", this.eventDuration);
+          const oneYearFromNow = new Date();
+          oneYearFromNow.setDate(startDateObj.getDate());
+          oneYearFromNow.setMonth(startDateObj.getMonth() + 1);
+          oneYearFromNow.setFullYear(startDateObj.getFullYear());
+          if(!(endDateObj < oneYearFromNow)){
+            this.endDateError.is_show = true;
+            this.endDateError.message = 'Event duration should not be more than One Month';
+          }
         }
       }
     }
@@ -279,14 +313,11 @@ export class CreateEditEventPage extends BasePage implements OnInit {
 
   isEndTimeGreaterThanStartTime() {
     if (this.startTime.shh && this.startTime.smm && this.endTime.ehh && this.endTime.emm) {
-
       const startHours = this.convertTo24Hours(this.startTime.sampm, this.startTime.shh)
       const endHours = this.convertTo24Hours(this.endTime.eampm, this.endTime.ehh)
 
       const startTimeObj = `${startHours.toString().padStart(2, '0')}:${parseInt(this.startTime.smm).toString().padStart(2, '0')}:00`;
       const endTimeObj = `${endHours.toString().padStart(2, '0')}:${parseInt(this.endTime.emm).toString().padStart(2, '0')}:00`;
-      console.log(startTimeObj, endTimeObj)
-      console.log("checking end TIme: ", (startTimeObj < endTimeObj))
       if (!(startTimeObj < endTimeObj)) {
         if(this.eventDuration === 0){
           this.endTimeError.is_show = true;
@@ -295,8 +326,8 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       } else {
         this.endTimeError.is_show = false;
       }
-
-    }
+    }else this.endTimeError.is_show = false; 
+    // this.isStartDateGreaterOrEqualToToday();
   }
 
   isStartDateEqualToToday() {
@@ -327,7 +358,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
         return false; // Return false when start date is earlier than today
       }
     }
-
     return false; // Return false if necessary data for comparison is missing
   }
 
@@ -344,7 +374,7 @@ export class CreateEditEventPage extends BasePage implements OnInit {
     try {
 
       this.eventItem.StartDate = new Date(`${this._startDate.year}-${this._startDate.month}-${this._startDate.day}`);
-      this.eventItem.EndDate = new Date(`${this._startDate.year}-${this._startDate.month}-${this._startDate.day}`);
+      this.eventItem.EndDate = new Date(`${this._endDate.year}-${this._endDate.month}-${this._endDate.day}`);
 
       if (this.startTime.shh) {
         let startHours = this.convertTo24Hours(this.startTime.sampm, parseInt(this.startTime.shh));
@@ -422,16 +452,23 @@ export class CreateEditEventPage extends BasePage implements OnInit {
 
 
 
-  getLatlng() {
-    var addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
-    this.locationService.getLatLngFromAddressType('home', addrress)
-      .then((latLng) => {
-       this.eventItem.Latitude = latLng.lat
-       this.eventItem.Longitude = latLng.lng
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  getLatlng(add?: any) {
+
+    if(add){
+      this.eventItem.Latitude = add.Latitude;
+      this.eventItem.Longitude = add.Longitude;
+    }else{
+      var addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
+      this.locationService.getLatLngFromAddressType('home', addrress)
+        .then((latLng) => {
+         this.eventItem.Latitude = latLng.lat
+         this.eventItem.Longitude = latLng.lng
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
   }
 
   async onSubmit() {
@@ -473,8 +510,6 @@ export class CreateEditEventPage extends BasePage implements OnInit {
       }
     }
   }
-
- 
 
   initiliazeForm() {
     this.saveClicked = false;

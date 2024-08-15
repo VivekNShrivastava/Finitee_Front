@@ -3,6 +3,39 @@
     width: 100% !important;
 }
 
+div.poi-info-window .view-link {
+    display:none;
+}
+
+.gm-style .gm-style-iw-c{
+    display: none !important;
+}
+
+.greet-container{
+    display: flex;
+    position: relative;
+    width: 93px;
+}
+
+.greetNumberDot{
+    background-color: #03a9f5;
+    border-radius: 50%;
+    width: 19px;
+    height: 19px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: -1px;
+    left: 61px;
+}
+
+.greetNumber{
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+}
+
 .backicon {
     position: absolute;
     top: 5px;
@@ -234,6 +267,10 @@ ion-footer {
     top: 10px;
 }
 
+::ng-deep gm-style-iw-a{
+    display: none !important;
+
+}
 ::ng-deep .gm-style .gm-style-iw-c button {
     display: none !important;
 }
@@ -257,13 +294,14 @@ a {
 
 .c-fab-button {
     display: flex;
-    gap: 10px;
+    gap: 3px;
     align-items: center;
     height: 5vh;
     background: white;
     box-shadow: 2px 2px 7px #0b113157;
     border-radius: 20px;
     padding-left: 1rem;
+    margin-top: 5px;
 }
 
 .top-result-container {
@@ -406,3 +444,66 @@ ion-modal {
     --overflow: visible;
     --background: #F6F6F6;
 }
+
+.map-marker-icon {
+    border-radius: 50%; /* Add other styles as needed */
+}
+
+.price-tag {
+    background-color: #4285F4;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 10px 15px;
+    position: relative;
+}
+  
+.price-tag::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, 0);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #4285F4;
+}
+
+.property {
+    align-items: center;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    color: #263238;
+    display: flex;
+    font-size: 14px;
+    gap: 15px;
+    height: 30px;
+    justify-content: center;
+    padding: 4px;
+    position: relative;
+    position: relative;
+    transition: all 0.3s ease-out;
+    width: 30px;
+}
+  
+.property::after {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid #FFFFFF;
+    content: "";
+    height: 0;
+    left: 50%;
+    position: absolute;
+    top: 95%;
+    transform: translate(-50%, 0);
+    transition: all 0.3s ease-out;
+    width: 0;
+    z-index: 1;
+}
+
+.normal-case {
+    text-transform: none !important;
+  }
+

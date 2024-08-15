@@ -8,7 +8,7 @@ import { User, UserProfile } from 'src/app/core/models/user/UserProfile';
 import { APIService } from 'src/app/core/services/api.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { RegularSearchService } from 'src/app/core/services/regular-search/regular-search.service';
-import { EventItemResponse, FiniteeUserOnMap, PostResponse, SalesItemResponse, ServiceResponse } from '../map/models/MapSearchResult';
+import { EventItemResponse, FiniteeUserOnMap, PostResponse, SalesItemResponse, ServiceResponse, RegularSearchUser, SonarFreeUserSearchRespond } from '../map/models/MapSearchResult';
 import { IonAccordionGroup } from '@ionic/angular';
 import { LocationService } from 'src/app/core/services/location.service';
 import { AddressMap, Area } from 'src/app/core/models/places/Address';
@@ -32,6 +32,7 @@ export class SearchPage extends BasePage implements OnInit {
     super(authService);
   }
 
+  regularSearchUser: Array<RegularSearchUser> = [];
   loadingResult: boolean = false;
   globalSearch: boolean = false;
   eventList: Array<EventItem> = [];
@@ -43,38 +44,40 @@ export class SearchPage extends BasePage implements OnInit {
   eventItemList: Array<EventItemResponse> = [];
   sevicesAvailableList: Array<ServiceResponse> = [];
   sevicesRequiredList: Array<ServiceResponse> = [];
+  totalResultLength: number = 0;
   postList: Array<PostResponse> = [];
-  currentArea: Area = { Coordinate: {
-        Latitude: 0.0,
-        Longitude: 0.0,
-      },
-      Locality: "",
-      City: "",
-      Zip: "",
-      State: "",
-      Country: "",
-      CountryId: -1
-    };
+  currentArea: Area = {
+    Coordinate: {
+      Latitude: 0.0,
+      Longitude: 0.0,
+    },
+    Locality: "",
+    City: "",
+    Zip: "",
+    State: "",
+    Country: "",
+    CountryId: -1
+  };
 
 
   filteredResults: Array<any> = [];
   selectedFilter: any;
   searchFilters: any = [
-    {title: 'All', value: 'all', visible: "", selected: true, results: 0},
-    {title: 'Posts', value: 'posts', visible: "", selected: false, results: 0},
-    {title: 'Users', value: 'users', visible: "1,4", selected: false, results: 0},
-    {title: 'Businesses', value: 'businesses', visible: "", selected: false, results: 0},
-    {title: 'Nonprofits', value: 'nonprofits', visible: "", selected: false, results: 0},
-    {title: 'Events', value: 'events', visible: "", selected: false, results: 0},
-    {title: 'Donations', value: 'donations', visible: "", selected: false, results: 0},
-    {title: 'Sales listings', value: 'sales_listings', visible: "", selected: false, results: 0},
-    {title: 'Service available', value: 'service_available', visible: "", selected: false, results: 0},
-    {title: 'Service required', value: 'service_required', visible: "", selected: false, results: 0},
-    {title: 'Totems', value: 'totems', visible: "", selected: false, results: 0}
+    { title: 'All', value: 'RegAllSearch', visible: "", selected: true, results: 0 },
+    // {title: 'Posts', value: 'posts', visible: "", selected: false, results: 0},
+    { title: 'Users', value: 'RegSearchUsers', visible: "1,4", selected: false, results: 0 },
+    { title: 'Businesses', value: 'businesses', visible: "", selected: false, results: 0 },
+    { title: 'Nonprofits', value: 'nonprofits', visible: "", selected: false, results: 0 },
+    { title: 'Events', value: 'RegSearchEvents', visible: "", selected: false, results: 0 },
+    { title: 'Donations', searchFiltersvalue: 'donations', visible: "", selected: false, results: 0 },
+    { title: 'Sales listings', value: 'RegSearchSalesListing', visible: "", selected: false, results: 0 },
+    { title: 'Service available', value: 'RegSearchServiceAvailable', visible: "", selected: false, results: 0 },
+    { title: 'Service required', value: 'RegSearchServiceRequired', visible: "", selected: false, results: 0 },
+    { title: 'Totems', value: 'totems', visible: "", selected: false, results: 0 }
   ]
 
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     // this.searchData();
   }
 
@@ -84,10 +87,10 @@ export class SearchPage extends BasePage implements OnInit {
     this.fetchCurrentArea();
   }
 
-/*   ngOnChange(){
-    alert("a");
-    this.searchData();
-  } */
+  /*   ngOnChange(){
+      alert("a");
+      this.searchData();
+    } */
 
 
   fetchCurrentArea() {
@@ -112,25 +115,25 @@ export class SearchPage extends BasePage implements OnInit {
     // this.currentArea.Coordinate = {Latitude: latitude, Longitude: longitude};
   }
 
-  async searchData() {
-    var result = await this._regularSerachService.regularSearch();
-    this.eventList = result.EventList;
-    this.userList = result.UserList;
-  }
+  // async searchData(title?:string) {
+  //   var result = await this._regularSerachService.regularSearch(title);
+  //   this.eventList = result.EventList;
+  //   this.userList = result.UserList;
+  // }
 
 
-  openUser(user: FiniteeUserOnMap) {
-    console.log("openUser: ", user);
+  openUser(user: RegularSearchUser) {
 
     const navigationExtras1s: NavigationExtras = {
       state: {
         data: user
       }
     };
-    if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
-      this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
-    else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
-      this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
+    this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
+    // if (user.UserTypeId == AppConstants.USER_TYPE.BN_USER)
+    //   this.router.navigateByUrl('business-user-canvas-other', navigationExtras1s);
+    // else if (user.UserTypeId == AppConstants.USER_TYPE.FR_USER)
+    //   this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
   }
 
   openSalesItem(salesItem: SalesItemResponse) {
@@ -208,22 +211,72 @@ export class SearchPage extends BasePage implements OnInit {
     return requestObject;
   }
 
-  onSearchValueChange(event: any) {
+  async onSearchValueChange(event: any) {
     console.log("onSearchValueChange: ", event);
     console.log("global: ", this.globalSearch);
     console.log("filter: ", this.selectedFilter);
+    if (event.detail.value.length > 0) {
+      this.loadingResult = true;
+      if (event.detail != null && event.detail.value != null && event.detail.value.length > 1) { // min search on input of 2 chars
+        let requestBody = this.getRequestObject(event.detail.value);
+        console.log("requestBody: ", requestBody);
+        // this.performRegularSearch(requestBody);
+        if (requestBody.Filter[0] === 'RegSearchUsers') {
+          const res = await this._regularSerachService.RegSearchUsers(requestBody.Filter[0], requestBody.SearchKey, this.logInfo.UserTypeId);
+          if (res) {
+            console.log("RegSearchUsers", res, this.getSelectedFilter().results);
+            this.regularSearchUser = res;
+            this.setResultCount(requestBody.Filter[0], res.length);
 
-    if (event.detail != null && event.detail.value != null && event.detail.value.length > 1) { // min search on input of 2 chars
-      let requestBody = this.getRequestObject(event.detail.value);
-      console.log("requestBody: ", requestBody);
-      this.performRegularSearch(requestBody);
+          } else console.log("regular search user error");
+        } else {
+          var result = await this._regularSerachService.regularSearch(requestBody.Filter[0], requestBody.SearchKey);
+          if (result) {
+            if (this.selectedFilter.value != "RegAllSearch") {
+              if (this.selectedFilter.value === "RegSearchEvents") {
+                this.eventItemList = result;
+                this.setResultCount("RegSearchEvents", this.eventItemList.length);
+                this.loadingResult = false;
+              } else if (this.selectedFilter.value === "RegSearchSalesListing") {
+                this.salesItemList = result;
+                this.setResultCount("RegSearchSalesListing", this.salesItemList.length);
+                this.loadingResult = false;
+              }
+              this.loadingResult = false;
+            } else {
+              console.log("regularSearch", result);
+              this.regularSearchUser = result.FreeUserSearchRespond || "";
+              // this.businessUserList = result.BusinessUsers;
+              // this.nonProfitUserList = result.NonProfitUsers;
+              this.salesItemList = result.SalesListingSearchRespond || "";
+              this.eventItemList = result.EventSearchRespond || "";
+              this.sevicesAvailableList = result.ServiceAvailableSearchRespond || "";
+              this.sevicesRequiredList = result.ServiceRequiredSearchRespond || "";
+
+              let allResult = this.regularSearchUser.length + this.salesItemList.length + this.eventItemList.length + this.salesItemList.length + this.sevicesRequiredList.length + this.viewServiceAvailable.length;
+              this.totalResultLength = this.regularSearchUser.length + this.salesItemList.length + this.eventItemList.length + this.salesItemList.length + this.sevicesRequiredList.length + this.viewServiceAvailable.length;
+
+              this.setResultCount("RegAllSearch", allResult)
+              this.setResultCount("RegSearchUsers", this.regularSearchUser.length);
+              this.setResultCount("RegSearchEvents", this.eventItemList.length);
+              this.setResultCount("RegSearchSalesListing", this.salesItemList.length);
+              this.loadingResult = false;
+            }
+          } else{
+            console.log("regularSearch error");
+            this.loadingResult = false;
+          } 
+        }
+      }
     }
+    this.loadingResult = false;
   }
 
-  performRegularSearch(request: any) {
-    console.log("performRegularSearch: ", request);
+  performRegularSearch(requestBody: any) {
+    console.log("performRegularSearch: ", requestBody);
     this.loadingResult = true;
-    this._regularSerachService.apiService.regularSearch(request)
+    this._regularSerachService.apiService.regularSearch(requestBody)
+      // this._regularSerachService.regularSearch(requestBody.Filter[0], requestBody.SearchKey)
       .subscribe({
         next: response => {
           console.log("changePassword: Response: ", response);
@@ -241,7 +294,7 @@ export class SearchPage extends BasePage implements OnInit {
             this.postList = response.ResponseData.Posts;
 
             let totalResults = this.freeUserList.length + this.businessUserList.length + this.nonProfitUserList.length + this.salesItemList.length
-            + this.eventItemList.length + this.sevicesAvailableList.length + this.sevicesRequiredList.length + this.postList.length;
+              + this.eventItemList.length + this.sevicesAvailableList.length + this.sevicesRequiredList.length + this.postList.length;
 
             this.setResultCount("all", totalResults);
             this.setResultCount("users", this.freeUserList.length);
@@ -264,7 +317,7 @@ export class SearchPage extends BasePage implements OnInit {
           }
           else {
             this.resetResultCount();
-            let errorMsg = (response.ResponseData && response.ResponseData.Error && response.ResponseData.Error.length > 0)? response.ResponseData.Error : "Error!";
+            let errorMsg = (response.ResponseData && response.ResponseData.Error && response.ResponseData.Error.length > 0) ? response.ResponseData.Error : "Error!";
             // this.errorMsgGrp.password = errorMsg;
             this._regularSerachService.commonService.presentToast(errorMsg);
           }
@@ -296,17 +349,19 @@ export class SearchPage extends BasePage implements OnInit {
   }
 
   getResultCount() {
+    // console.log("result", this.getSelectedFilter().results);
     return this.getSelectedFilter().results;
     //return this.freeUserList.length + this.businessUserList.length + this.nonProfitUserList.length + this.salesItemList.length
     //+ this.eventItemList.length + this.sevicesAvailableList.length + this.sevicesRequiredList.length + this.postList.length;
   }
 
   filterChanged(value: any) {
-    console.log("filterChanged: ", value);
+    // if(value != "") this.searchData(value);
     this.searchFilters.forEach((filterEntry: { selected: boolean; value: any; }) => {
       filterEntry.selected = filterEntry.value === value;
     });
     this.selectedFilter = this.calculateSelectedFilter();
+    console.log("filterChanged: ", this.selectedFilter);
   }
 
   getSelectedFilter() {
@@ -326,25 +381,25 @@ export class SearchPage extends BasePage implements OnInit {
     return selectedFilter;
   }
 
-  userCanViewSection(section: string) : boolean {
-     let selectedFilter = this.getSelectedFilter();
+  userCanViewSection(section: string): boolean {
+    let selectedFilter = this.getSelectedFilter();
 
-      if (section == "users" && (selectedFilter.value == "all" || selectedFilter.value == "users")) {
-        return this.logInfo.UserTypeId == this.appConstants.USER_TYPE.FR_USER || this.logInfo.UserTypeId == this.appConstants.USER_TYPE.ADMIN_USER;
+    if (section == "RegSearchUsers" && (selectedFilter.value == "RegAllSearch" || selectedFilter.value == "RegSearchUsers")) {
+      return this.logInfo.UserTypeId == this.appConstants.USER_TYPE.FR_USER || this.logInfo.UserTypeId == this.appConstants.USER_TYPE.ADMIN_USER;
+    }
+    else {
+      if (selectedFilter.value == "RegAllSearch") {
+        return true;
       }
       else {
-        if (selectedFilter.value == "all") {
-          return true;
-        }
-        else {
-          return section == selectedFilter.value;
-        }
+        return section == selectedFilter.value;
       }
+    }
 
   }
 
   getEventDescription(event: EventItemResponse) {
-      return event.Description;
+    return event.Description;
   }
 
   openEvent(event: EventItemResponse) {//EventItem) {

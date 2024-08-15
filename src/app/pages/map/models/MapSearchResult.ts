@@ -38,6 +38,26 @@ export interface FiniteeUserOnMap {
     About: string | null;
 }
 
+export interface SonarFreeUserSearchRespond {
+  Id?: number;
+  FirstName: string | null;
+  LastName: string | null;
+  UserName: string | null;
+  ProfileImage: string | null;
+  LatLong : LatLong;
+  Traits: Array<string>;
+  ShowLocation: any;
+  PopularityScore: number;
+  TotalPosts: number;
+  TotalConnections: number;
+  IsConnected: boolean;
+}
+
+export interface LatLong {
+  Latitude: number;
+  Longitude: number;
+}
+
 export interface SalesItemResponse {
   Id?: any ;
   Title: string | null;
@@ -46,6 +66,7 @@ export interface SalesItemResponse {
   Price: any | null;
   VisibleTo: string | null;
   SalesItemImages: Array<string>;
+  Image : string;
   CreatedOn: string | null;
   ExpiredOn: string | null;
   ModifiedOn: string | null;
@@ -60,6 +81,42 @@ export interface SalesItemResponse {
   Views: number;
   User: FiniteeUserOnMap | null;
 }
+
+export interface SonarEventSearchRespond {
+  Description: string;
+  Latitude: number;
+  Longitude: number;
+  AddressLine1: string;
+  AddressLine2: string;
+  EndDate: string;
+  Id: string;
+  Title: string;
+  FirstName: string;
+  LastName: string;
+  ProfileImage: string | null;
+  StartDate: string;
+  Image: string | null;
+  EventTraits: string[]; // You may need to adjust this type based on the actual structure of EventTraits
+  Proximity: number;
+}
+
+export interface SonarSalesListingSearchRespond {
+  Description: string;
+  Latitude: number;
+  Longitude: number;
+  Id: string;
+  Title: string;
+  FirstName: string;
+  LastName: string;
+  ProfileImage: string;
+  Image: string;
+  Price: number;
+  CurrencyCode: string;
+  Condition: string;
+  SalesTraits: string[];
+  Proximity: number;
+}
+
 
 export interface EventItemResponse {
   Id?: any;
@@ -83,6 +140,7 @@ export interface EventItemResponse {
   VisibleTo: string | null;
   EventImages: Array<string>;
   EventTraits: Array<string>;
+  Image: string ;
   daysLeft : any;
   Views: number;
   User: FiniteeUserOnMap | null;
@@ -155,4 +213,16 @@ export interface PostResponse {
   BelongsToId: string | null;
   BelongsToNodeName: string | null;
 
+}
+
+export interface RegularSearchUser {
+  Id?: any;
+  UserName: string;
+  FirstName: string;
+  LastName: string;
+  ProfileImage: string;
+  TotalPosts: number;
+  TotalConnections: number;
+  PopularityScore: any;
+  ShowLocation: boolean;
 }

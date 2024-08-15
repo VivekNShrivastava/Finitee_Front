@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="114" height="83" viewBox="0 0 114 83">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f0f5f7;
+      }
+
+      .cls-2 {
+        fill: #03a9f5;
+        font-size: 12px;
+        font-family: SFProDisplay-Regular, SF Pro Display;
+        letter-spacing: 0.016em;
+        opacity: 0.6;
+      }
+
+      .cls-3, .cls-4, .cls-6 {
+        fill: none;
+      }
+
+      .cls-3, .cls-4 {
+        stroke: #62c7f6;
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        stroke-linecap: square;
+      }
+
+      .cls-5 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Group_8728" data-name="Group 8728" transform="translate(-10 -624)">
+    <rect id="Rectangle_107" data-name="Rectangle 107" class="cls-1" width="114" height="83" rx="22" transform="translate(10 624)"/>
+    <g id="Group_8533" data-name="Group 8533" transform="translate(-140 352.977)">
+      <g id="Group_8531" data-name="Group 8531" transform="translate(0 -9)">
+        <text id="Service_required" data-name="Service required" class="cls-2" transform="translate(207 337.047)"><tspan x="-41.903" y="0">Service required</tspan></text>
+      </g>
+      <g id="Group_8532" data-name="Group 8532" transform="translate(3953 -9195)">
+        <g id="_9" data-name="9" transform="translate(-3755 9494)">
+          <g id="Rectangle_1218" data-name="Rectangle 1218" class="cls-3" transform="translate(-2 -1)">
+            <rect class="cls-5" width="22" height="16" rx="2"/>
+            <rect class="cls-6" x="1" y="1" width="20" height="14" rx="1"/>
+          </g>
+        </g>
+        <g id="Rectangle_1219" data-name="Rectangle 1219" class="cls-4" transform="translate(-3751 9489)">
+          <rect class="cls-5" width="10" height="6" rx="1"/>
+          <rect class="cls-6" x="1" y="1" width="8" height="4"/>
+        </g>
+        <line id="Line_201" data-name="Line 201" class="cls-4" x2="21.05" transform="translate(-3756.389 9499.611)"/>
+      </g>
+    </g>
+  </g>
+</svg>

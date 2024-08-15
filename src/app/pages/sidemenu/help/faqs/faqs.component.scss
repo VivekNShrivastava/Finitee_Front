@@ -50,6 +50,7 @@ ion-content {
         & > ion-accordion {
           &:not(:last-child) {
             border-bottom: 1px solid #F2F4F5;
+            margin-bottom: 10px;
           }
 
 
@@ -59,7 +60,7 @@ ion-content {
             padding: 2px 0;
 
             & > ion-label {
-              font: normal normal 600 16px/21px SF Pro Display;
+              font: normal normal 600 18px/21px SF Pro Display;
               letter-spacing: 0.25px;
               color: #285078;
               margin: 0;
@@ -67,10 +68,11 @@ ion-content {
           }
 
           & > div {
-            font: normal normal 300 14px/21px SF Pro Display;
+            font: normal normal 300 16px/21px SF Pro Display;
             letter-spacing: 0.22px;
             color: #285078;
-            padding-left: 10px;
+            font-weight: 400;
+           
           }
         }
 

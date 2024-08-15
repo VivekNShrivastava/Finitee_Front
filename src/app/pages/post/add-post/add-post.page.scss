@@ -10,7 +10,77 @@ ion-textarea.custom-textarea {
     border-radius: 11px;
     opacity: 1;
 }
-  
+
+.post-screen-slide {
+  & ion-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    // min-height: 550px;
+    // max-height: 1400px;
+    box-shadow: none;
+    overflow: visible;
+
+    /*  & ion-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    } */
+  }
+}
+
+.media{
+  background-color: #F0F5F7;
+  width: 100%;
+  // min-height: 550px;
+  // max-height: 1400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-item {
+  margin-bottom: 0;
+
+  & div.favour-n-beam {
+    display: flex;
+
+  }
+
+  & div.stats {
+    h4 {
+      font: normal normal bold 14px/21px SF Pro Display;
+      letter-spacing: 0.04px;
+      color: #1A3253;
+      padding: 0 3px;
+      margin: 0;
+    }
+
+    span {
+      width: 4px;
+      height: 4px;
+      background-color: #1A3253;
+      border-radius: 50%;
+    }
+  }
+}
+
+.postBg {
+  background-color: #285078 !important;
+  min-height: 40%;
+}
+
+.profileBgClass{
+  margin-top: -6px;
+  // background-color: #28507;
+  background: #f0f5f7;
+  padding-top: 0px !important;
+    padding-bottom: 0px !important;
+
+
+}
 
 ion-title {
     color: #285078;
@@ -26,10 +96,14 @@ ion-title {
   ion-content {
     --padding-top: 15px;
     --padding-bottom: 15px;
-    --padding-start: 10px;
-    --padding-end: 10px;
+    // --padding-start: 10px;
+    // --padding-end: 10px;
   
     height: 100%;
+
+    .inner-scroll{
+      padding: 0px;
+    }
 
     p {
       padding: 0;
@@ -215,3 +289,47 @@ ion-title {
     }
   
   }
+
+  .postowner-name{
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 17px/24px var(--unnamed-font-family-sf-pro-display);
+color: var(--unnamed-color-1a3253);
+text-align: left;
+
+letter-spacing: 0.24px;
+color: #1A3253;
+  }
+
+.post-days{
+  font-size: 15px;
+  font-weight: 500;
+     text-align: center;
+
+     letter-spacing: 0.18px;
+     color: #1A3253;
+     opacity: 1;
+      margin-top: 0; 
+      margin-bottom: 2px;
+}
+
+
+  .button-native{
+    padding: 0px !important;
+  }
+  .title.dot::before {
+    content: '•';
+    margin-right: 3px;
+    color: #1A3253; /* same color as the text */
+}
+app-multiple-media-upload .icon-class {
+  margin-right: 10px; /* Adjust the value as needed */
+}
+
+/* If you want the last icon to not have a margin */
+app-multiple-media-upload .icon-class:last-child {
+  margin-right: 0;
+}
+
+
+ion-row > ion-col > ion-buttons{
+  gap: 10px !important;
+}

@@ -44,6 +44,19 @@ ion-header {
   }
 }
 
+.danger{
+  width: 127px !important;
+height: 44px !important;
+background: var(--unnamed-color-03a9f5) 0% 0% no-repeat padding-box !important;
+background: #03A9F5 0% 0% no-repeat padding-box !important;
+border-radius: 22px !important;
+
+}
+
+.alert-button-group.sc-ion-alert-md {
+  justify-content: center !important;
+}
+
 // ion-content {
 
 //   & ion-list {

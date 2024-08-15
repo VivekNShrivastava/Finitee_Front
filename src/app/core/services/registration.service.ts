@@ -49,17 +49,17 @@ export class RegistrationService {
   }
 
 
-  public async updateTempUser(user: any, step: number) {
-    await this.storageService.storeTempUser(user, step);
-  }
+  // public async updateTempUser(user: any, step: number) {
+  //   await this.storageService.storeTempUser(user, step);
+  // }
 
-  public deleteTempUser() {
-    this.storageService.clearTempUser();
-  }
+  // public deleteTempUser() {
+  //   this.storageService.clearTempUser();
+  // }
 
-  public async getTempUser() {
-    return await this.storageService.getTempUser();
-  }
+  // public async getTempUser() {
+  //   return await this.storageService.getTempUser();
+  // }
 
 
 }

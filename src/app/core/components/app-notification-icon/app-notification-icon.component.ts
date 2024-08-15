@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppNotificationIconComponent implements OnInit {
   notifiactionsCount: any = 0;
-  constructor(private commonService: CommonService, private _storageService: StorageService) { }
+  constructor(public commonService: CommonService, private _storageService: StorageService) { }
 
   ngOnInit() {
     this.getAllNotification();

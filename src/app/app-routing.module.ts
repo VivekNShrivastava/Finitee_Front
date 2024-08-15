@@ -131,6 +131,7 @@ const routes: Routes = [
     path: 'events/create-edit-event',
     loadChildren: () => import('./pages/sidemenu/events/create-edit-event/create-edit-event.module').then(m => m.CreateEditEventModule)
   },
+
   {
     path: 'events/event-view/:id',
     loadChildren: () => import('./pages/sidemenu/events/event-view/event-view.module').then(m => m.EventViewModule)

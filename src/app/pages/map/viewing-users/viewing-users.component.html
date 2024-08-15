@@ -7,10 +7,10 @@
     </ion-buttons>
 
     <ion-title *ngIf="viewTemplate == 'Viewing'">
-      Viewing ({{_commonService.viewingUsers.length}})
+      Viewing ({{viewList.names.length}})
     </ion-title>
-    <ion-title *ngIf="viewTemplate == 'Greeting'">
-      Greeting ({{_commonService.greetingWithDetails.length}})
+    <ion-title class="greetingnum" *ngIf="viewTemplate == 'Greeting'">
+      Greeting ({{greetList.length}})
     </ion-title>
 
     <ion-buttons slot="end" style="visibility: hidden;">
@@ -28,38 +28,189 @@
       Ignored
     </ion-button>
   </div>
+ 
+  <div style="display: flex; justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+    <ion-button class="activeclass" shape="round" [ngClass]="{'active': activeOrExpired === 1}" (click)="activeExpiredGreeting(1)">
+      Active
+     
+    </ion-button>
+    <span class="red-dot">{{ activeRequestCount }}</span>
+
+    <ion-button class="activeclass" shape="round" [ngClass]="{'active': activeOrExpired === 2}" (click)="activeExpiredGreeting(2)">
+      Previous
+    </ion-button>
+    <!-- <span class="red-dot1">{{ activeRequestCount1 }}</span> -->
+
+  </div>
+  
+  <div *ngIf="filteredGreetingList.length > 0">
+    <div *ngFor="let greeting of filteredGreetingList">
+      <!-- Customize this part to display your greeting details -->
+      <div>{{ greeting.someProperty }}</div>
+    </div>
+  </div>
+  <div *ngIf="filteredGreetingList.length === 0">
+    <!-- <p>No connections found.</p> -->
+  </div>
+
+  <!-- <div style="justify-content: center; align-items: center;" class="maptab"
+    *ngIf="viewTemplate != 'Viewing'">
+    <ion-button style="width: 152px;
+    height: 34px;
+    background: #F0F5F7 0% 0% no-repeat padding-box;
+    border-radius: 17px;
+    opacity: 1;" class="activeclass" shape="round"
+      [ngClass]="{'active':activeOrExpired == 1}"
+      (click)="activeExpiredGreeting(1)">
+      Active
+    </ion-button>
+
+    <ion-button style="width: 152px;
+    height: 34px;
+    background: #F0F5F7 0% 0% no-repeat padding-box;
+    border-radius: 17px;
+    opacity: 1;" class="activeclass" shape="round"
+      [ngClass]="{'active':activeOrExpired == 2}"
+      (click)="activeExpiredGreeting(2)">
+      Previous
+    </ion-button>
+  </div> -->
+
+  <!-- <div style="justify-content: center; align-items: center;" class="maptab" *ngIf="viewTemplate != 'Viewing'">
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired == 1}"
+      (click)="activeExpiredGreeting(1)">
+      Active
+    </ion-button>
+  
+    <ion-button class="activeclass" shape="round"
+      [ngClass]="{'active': activeOrExpired == 2}"
+      (click)="activeExpiredGreeting(2)">
+      Expired
+    </ion-button>
+  </div> -->
+
 </ion-header>
 <ion-content>
 
   <div class="mapreslist">
     <ion-list style="padding:0px">
       <!-- *ngFor="let user of viewTemplate == 'Viewing'? _commonService.viewingUsers: _commonService.greetingWithDetails ;let i=index"> -->
-      <div
-        *ngFor="let user of viewTemplate == 'Viewing'? viewList.names : _commonService.greetingWithDetails ;let i=index">
-        <div class="lines-bottom ion-padding">
-          <div (click)="openUser(user)" class="display-flex--row flex-align-center">
+      <div *ngFor="let user of viewTemplate == 'Viewing'? viewList.names : filteredGreetingList ;let i=index">
+        <div *ngIf="filteredGreetingList.length > 0 || viewList.names.length > 0" class="lines-bottom ion-padding">
+          <!-- (click)="openUser(user)" -->
+          <div *ngIf="viewTemplate != 'Viewing' " style="gap: 0px !important;"
+            class="display-flex--row flex-align-center">
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
-              <img animation="gradient" src="{{appConstants.mediaPrefix + user.UserProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"
-                alt="User Profile">
+              <img style="width: 59px; height: 59px; border-radius: 50%;" animation="gradient"
+                src="{{appConstants.mediaPrefix + ((user.CreatedBy.ProfileImage) || (user.UserProfilePhoto)) }}"
+                onError="this.src='assets/icons/business/anonymous.svg'" alt="User Profile">
+            </ion-avatar>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+              <div style="display: flex; justify-content: center; align-items: center;" class="font-primary-text"
+                (click)="viewConnection(user)">
+                <!-- <ion-icon style="font-size: 35px !important;"
+                  name="unconnected"></ion-icon> -->
+                <span class="username font-sz-14">{{ (user.CreatedBy.UserName)
+                  || (user.UserName) }}</span>
+              </div>
+              <div *ngIf="user.Status != null"
+                style="text-align: center; justify-content: center; display: flex; align-items: center; margin-left: 6px; gap: 5px;">
+                <ion-icon [name]="changeIcon(user.Status)"></ion-icon>
+                <p [ngStyle]="{'color': textColor}" class="acceptedreq">{{greetStatus}}</p>
+              </div>
+
+              <div style="display: flex; align-items: center; margin-left: auto;">
+                <ion-icon name="chat-3dots" (click)="presentMenuModalForOther(user.CreatedBy.Id)"></ion-icon>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="display: flex;  justify-content: space-between; align-items: center; ">
+            <div style="display: flex; flex-direction: column; ">
+              <p class="postcount" style="margin-bottom: 0px !important; margin-top: 9px;
+              font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+              color: var(--unnamed-color-285078);
+              text-align: left;
+              font: normal normal 600 16px/26px SF Pro Display;
+              letter-spacing: 0.22px;
+              color: #285078;"
+              >
+              200 Posts - 5.2k Connections</p>
+              <div style="display: flex; gap: 10px;">
+                <p class="datetime" style="margin-top: 9px; margin-bottom: 0px;
+                font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 14px/24px var(--unnamed-font-family-sf-pro-display);
+                color: var(--unnamed-color-285078);
+                text-align: left;
+                font: normal normal 600 16px/26px SF Pro Display;
+                letter-spacing: 0.22px;
+                color: #285078;"
+                > 
+                {{_commonService.formatDateToIST(user.ModifiedOn)}}</p>
+                <!-- <p class="datetime" > {{getDateAndTime(user.ModifiedOn, true, false)}}</p> -->
+                <!-- <p class="datetime">{{getDateAndTime(user.ModifiedOn, false, true)}}</p> -->
+              </div>
+            </div>
+
+            <greeting-view *ngIf="viewTemplate != 'Viewing' " [fromUserId]="user.CreatedBy.Id || user.UserId"
+              [fromUserName]="user.CreatedBy.UserName || user.UserName"
+              [fromUserProfile]="(user.CreatedBy.Id + '/' + user.CreatedBy.ProfileImage) || (user.UserId + '/' + user.UserProfilePhoto)"
+              [userInfo]="user" (close)="handleClose($event)">
+            </greeting-view>
+
+          </div>
+
+          <div *ngIf="viewTemplate == 'Viewing'" (click)="openUser(user)" class="display-flex--row flex-align-center">
+            <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
+              <img animation="gradient" src="{{appConstants.mediaPrefix + user.UserProfilePhoto }}"
+                onError="this.src='assets/icons/business/anonymous.svg'" alt="User Profile">
             </ion-avatar>
             <div class="font-primary-text" (click)="viewConnection(user)">
-              <span class="font-sz-14">{{user.DisplayName}}</span>
+              <span class="font-sz-14">{{user.UserName}}</span>
             </div>
           </div>
 
           <div class="display-flex--row flex-align-center">
-            <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user.RangeInKm | number: '1.2-2' }} Miles away </div>
+            <!-- <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">1 Miles away </div> -->
             <div class="action-list">
-              <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon>
-              <greeting-view [fromUserId]="user.UserId" [fromUserName]="user.DisplayName"
-              [fromUserProfile]="user.UserId + '/' + user.UserProfilePhoto"></greeting-view>
-              <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
-              <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon>
+
+              <!-- <ion-icon name="view-on-map" style="font-size: 36px;" (click)="viewUserOnMap(user)"></ion-icon> -->
+              <!-- <ion-icon *ngIf="viewTemplate == 'Viewing' " name="greeting-blink"
+                style="font-size: 36px;"
+                (click)="greetingRecieved(user)"></ion-icon> -->
+              <!-- <greeting-view *ngIf="viewTemplate != 'Viewing' "
+                [fromUserId]="user.CreatedBy.Id || user.UserId"
+                [fromUserName]="user.CreatedBy.UserName || user.UserName"
+                [fromUserProfile]="(user.CreatedBy.Id + '/' + user.CreatedBy.ProfileImage) || (user.UserId + '/' + user.UserProfilePhoto)"
+                [userInfo]="user">
+              </greeting-view> -->
+              <!-- <greeting-view *ngIf="viewTemplate == 'Viewing' "  [fromUserId]="user.UserId" [fromUserName]="user.UserName"
+                [fromUserProfile]="user.UserId + '/' + user.UserProfilePhoto" [userInfo]="user">
+              </greeting-view> -->
+              <!-- <ion-icon name="greeting-blink" style="font-size: 36px;" (click)="greetingRecieved(user)"></ion-icon> -->
+              <!-- <ion-icon name="chat-ignore" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
+              <!-- <ion-icon name="no-profile" style="font-size: 36px;" (click)="blockUser()"></ion-icon> -->
             </div>
           </div>
         </div>
       </div>
+      <div class="no-active-greeting" style=" margin-top: 150px;"
+        *ngIf="!loaded && viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 1">
+        <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
+        <p class="noactive">No Active Greetings!</p>
+      </div>
+      <div class="no-active-greeting" style=" margin-top: 150px;"
+        *ngIf="!loaded && viewTemplate != 'Viewing' && filteredGreetingList.length == 0 && activeOrExpired == 2">
+        <ion-icon style="width: 81px; height: 79px;" name="greeting"></ion-icon>
+        <p class="noactive">No Previous Greeting !</p>
+      </div>
     </ion-list>
+
+    <ng-container *ngIf="loaded">
+      <ion-card>
+        <ion-skeleton-text style="height:60px" animated></ion-skeleton-text>
+      </ion-card>
+    </ng-container>
   </div>
 </ion-content>

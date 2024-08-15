@@ -12,7 +12,7 @@ import { FreeUserCanvasService } from 'src/app/core/services/canvas-home/freeuse
 import { PlacesService } from 'src/app/core/services/places.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
-
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-edit-personal-page',
@@ -33,6 +33,7 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
   selectedState!: any;
   selectedCity!: any
   loaded: boolean = false
+  uploadingImage: boolean = false;
   @ViewChild('selectStateModal') selectStateModal!: IonModal;
   @ViewChild('selectCityModal') selectCityModal!: IonModal;
 
@@ -44,7 +45,8 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
     private alertController: AlertController,
     private authService: AuthService,
     public placeService: PlacesService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private commonService: CommonService
   ) {
     super(authService);
     this.userCanvasProfile = this.router!.getCurrentNavigation()!.extras.state!['data'];
@@ -60,6 +62,7 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
     console.log("onmediaSave...")
     this.subscription = this.attachmentService.getMediaSaveEmitter().subscribe((mediaObj: any) => {
       if (mediaObj != null) {
+        this.uploadingImage = true;
         console.log("mediaObj", mediaObj)
         // this.userProfile.user.ProfileImage = mediaObj.thumbFilePath;
         this.userProfileImgAbt.ProfileImage = mediaObj.thumbFilePath;
@@ -73,7 +76,9 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
     const formData = new FormData();
     formData.append('file', mediaObj.blob, mediaObj.name);
     var response: any = await this.attachmentService.uploadFileToServerv2(formData);
+    // this.uploadingImage = false;
     if (response != "error") {
+      this.uploadingImage = false;
       var responseData = response.ResponseData;
       console.log("responseData", responseData);
       //responseData.forEach(async (photo: { filepath: any; }, index: number) => {
@@ -81,6 +86,10 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
       this.userProfileImgAbt.ProfileImage = responseData[0].thumbFilePath;
 
       //});
+    }else {
+      this.uploadingImage = false;
+      this.commonService.presentToast("Error occured, Please try again");
+      console.log("error while uploading file");
     }
   }
 
@@ -133,22 +142,10 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
       ],
     });
     await alert.present();
-
     event.stopPropagation();
-    console.log("caputing....")
     event.preventDefault();
-
     // await this.attachmentService.openCameraToTakePhoto(true, CameraSource.Prompt);
-
   }
-
-
-
- 
-
-
-
-
 
   validateForm(product: any) {
     var valid = true;
@@ -159,29 +156,6 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
 
     
     return valid;
-  }
-
-  async saveUserProfile() {
-    console.log("saveuser", this.userCanvasProfile.canvasProfile.ProfileImage)
-
-
-    
-    var isFormValid = this.validateForm(this.userCanvasProfile.canvasProfile);
-    if (isFormValid) {
-      if (this.selectedState && this.selectedState.id)
-        this.userProfile.user.Address.StateId = this.selectedState.id
-      if (this.selectedCity && this.selectedCity.id)
-        this.userProfile.user.Address.CityId = this.selectedCity.id
-
-      delete this.userProfile.user.Id;
-      var result = await this.businessCanvasService.saveBusinessUserProfile(this.userProfile.user);
-      if (result) {
-        this.businessCanvasService.businessData.next(this.userProfile);
-        this.navCtrl.pop();
-      }
-    } else {
-
-    }
   }
 
   async saveUserImgAbt() {
@@ -195,14 +169,12 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
     console.log(this.userCanvasProfile.canvasProfile.ProfileImage);
     
     var response = await this.freeUserCanvasService.saveUserImgAbt(this.userProfileImgAbt);    
-    // console.log("imgAbt", response);
     console.log("navgating to canvas...");
     this.router.navigateByUrl('tabs/free-user-canvas');
   }
   
 
   openImage(imagePath: any) {
-    console.log("Opening Image....")
     this.navEx!.state!['data'] = imagePath;
     this.router.navigateByUrl('media-viewer', this.navEx);
   }

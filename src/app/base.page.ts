@@ -20,7 +20,7 @@ export class BasePage {
   };
   constructor(authService: AuthService) {
     this.logInfo = authService.getUserInfo();
-    console.log("a", this.logInfo);
+    // console.log("a", this.logInfo);
   }
 
   getCreatedByData() {

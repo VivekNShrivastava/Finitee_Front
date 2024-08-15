@@ -26,6 +26,7 @@ export class TraitSectionComponent extends BasePage implements OnInit {
     this.userTraitWithPost.UserTrait = this.router!.getCurrentNavigation()!.extras!.state!['data'];
     console.log("this.userTraitWithPost", this.userTraitWithPost);
     this.subscribePostSubject();
+    this.subscribeTraitPostSubject();
   }
 
   async ngOnInit() {
@@ -50,6 +51,32 @@ export class TraitSectionComponent extends BasePage implements OnInit {
     });
   }
 
+  async subscribeTraitPostSubject() {
+    this.postService.postDataSbj.subscribe({
+      next: (result: any) => {
+        console.log(`observerA: ${result}`);
+        if (result.event == "ADD"){
+          this.userTraitWithPost.TraitPosts.unshift(result.data);
+          if(result.isTraitPost)
+          {
+            // this.loaded=false;
+            // this.getUserTraitsWithPost();
+          }
+        }
+        else if (result.event == "DELETE") {
+          var deletedPostId = result.data;
+          // var deletedPostIndex = _.findIndex(this.postList, { Id: deletedPostId });
+          // if(deletedPostIndex != -1){
+            // this.postList.splice(deletedPostIndex, 1);
+          // }
+          
+        }
+      }
+    });
+  }
+
+  
+
   openPostScreen(post: any) {
     this.navEx!.state!['postlist'] = this.userTraitWithPost.TraitPosts;
     this.navEx!.state!['selectedPost'] = post;
@@ -59,7 +86,9 @@ export class TraitSectionComponent extends BasePage implements OnInit {
   }
 
   CreatePostAction() {
-    this.navEx!.state!['data'] = this.userTraitWithPost.UserTrait;
+    // this.navEx!.state!['data'] = this.userTraitWithPost.UserTrait;
+    this.navEx!.state!['data'] = { belongsToId: this.userTraitWithPost.UserTrait.Id, Type: this.appConstants.POST_TYPE.TRAIT, TraitRequest: this.userTraitWithPost.UserTrait };
+
     this.router.navigateByUrl(`post/add-post`, this.navEx);
   }
 

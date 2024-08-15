@@ -4,7 +4,7 @@ export class UserPrivacySetting {
     LocationVisibleTo: string = "A";
     LocationShowAt: string = "H";
     LocationShowOnlyWhenLoggedIn: boolean = true;
-    AvailableForGreetingWhenLoggedIn: boolean = true;
+    AvailableForGreeting: boolean = true;
     OffSetLocation: boolean = false;
     IsMobileBusiness: boolean = false;
 

@@ -6,101 +6,152 @@
       <!-- <app-notification-icon></app-notification-icon> -->
     </ion-buttons>
     <ion-title>Events</ion-title>
-    <ion-buttons slot="end" id="main-content">
+    <!-- <ion-buttons slot="end" id="main-content">
       <ion-menu-button ></ion-menu-button>
-    </ion-buttons> 
+    </ion-buttons>  -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="!laoding">
+  <ng-container *ngIf="!loading">
+
+
+    <!-- New UI Tabs -->
+    <!-- Active and Expired -->
+    <ion-segment [(ngModel)]="selectedTab" (ionChange)="segmentChange($event)">
+      <ion-segment-button class="segment-btn" value="active">
+        <ion-label class="my-label">Upcoming</ion-label>
+      </ion-segment-button>
+      <ion-segment-button class="segment-btn" value="expired">
+        <ion-label class="my-label">Completed</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
     <!--  Upcoming Events-->
     <!-- Upcoming Events - Banner-->
-    <ion-segment>
+    <!-- <ion-segment>
       <ion-text>
         Upcoming
       </ion-text>
-    </ion-segment>
+    </ion-segment> -->
     <!-- Upcoming Events - List-->
-    <ion-grid>
-      <ion-row class="ion-align-items-center" *ngFor="let event of upcomingEventList; let i=index"
-        (click)="openEventViewPage(event.Id)">
-        <ion-col size="4">
-          <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
-        </ion-col>
-        <ion-col size="8">
-          <ion-card button="true">
 
-            <ion-card-content>
-              <ion-text>
-                <h4>{{event.Title}}</h4>
-              </ion-text>
-              <ion-text *ngIf="event.StartDate">
-                <h4>{{event.StartDate | date}}</h4>
-              </ion-text>
-             
-              <ion-text>
-                <h4>{{event.StartDate | date:'shortTime'}} <ng-container
-                    *ngIf="event.StartDate | date  ">to</ng-container> {{event.EndDate | date:'shortTime'}}</h4>
-              </ion-text>
-              <ion-text *ngIf="event.daysLeft >= 0">
-                <h5>({{event.daysLeft}} days left)</h5>
-              </ion-text>
-              <ion-buttons>
-                <ion-button class="fi-delete-btn" shape="round"
-                  (click)="deleteEvent($event,event,i,'upcoming') ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
-                </ion-button>
-                &nbsp;
-                <ion-button class="fi-edit-btn" shape="round"
-                  (click)="editEvent($event,event,i) ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <div *ngIf="selectedTab === 'active' ">
+      <ion-grid value="active">
+        <ion-row class="ion-align-items-center" *ngFor="let event of upcomingEventList; let i=index"
+          (click)="openEventViewPage(event.Id)">
+          <ion-col style="padding-right: 0px;     padding-left: 0px;     display: flex;
+          justify-content: center;" size="4">
+            <!-- <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img> -->
+
+            <img style="border-radius: 10px; width:93%; height:84px;" src="{{appConstants.mediaPrefix+event.EventImages[0]}}" 
+            onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"/>
+          </ion-col>
+          <ion-col style="padding-left: 0px;" size="8" >
+            <ion-card button="true" style="  width: 100%;
+            background: #EAF1F4 0% 0% no-repeat padding-box;
+            border-radius: 22px;
+            height: auto; margin-left: 0px;  box-shadow: none !important;" >
+
+              <ion-card-content style="padding: 6px 16px 6px 16px; ">
+                
+                  <ion-text>
+                    <h4 class="dates">{{event.Title}}</h4>
+                  </ion-text>
+              
+                <ion-text *ngIf="event.StartDate">
+                  <h4 class=" dates">{{event.StartDate | date}} </h4>
+                </ion-text>
+              
+                <ion-text>
+                  <h4 class=" dates">{{event.StartDate | date:'shortTime'}} <ng-container
+                      *ngIf="event.StartDate | date  ">to</ng-container> {{event.EndDate | date:'shortTime'}}</h4>
+                </ion-text>
+              
+                <div style="display: flex;     justify-content: space-between;">
+                  <ion-text *ngIf="event.daysLeft >= 0">
+                    <h5 style="color: #03A9F5; font-size: 16px; font-weight: 600;">({{event.daysLeft}} days left)</h5>
+                  </ion-text>
+                  <ion-buttons>
+                    <ion-button style="padding-left: 0px;background-color: white;
+                    border-radius: 100%; "  class="fi-delete-btn" shape="round"
+                      (click)="deleteEvent($event,event,i,'upcoming') ; $event.stopPropagation();">
+                      <ion-icon style="font-size: 16px;" name="delete"></ion-icon>
+                    </ion-button>
+                    &nbsp;
+                    <ion-button class="fi-edit-btn" style="background-color: white;
+                    border-radius: 100%; " shape="round"
+                      (click)="editEvent($event,event,i) ; $event.stopPropagation();">
+                      <ion-icon style="font-size: 16px;" name="edit"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ng-container *ngIf="upcomingEventList.length==0">
+          <div class="ion-text-center nodata">
+            <img src="assets/imgs/icons/noresults.png">
+            <p> No Active Events Found</p>
+          </div>
+        </ng-container>
+      </ion-grid>
+    </div>
+   
 
     <!--  Completed Events-->
     <!-- Completed Events - Banner-->
-    <ion-segment>
+    <!-- <ion-segment>
       <ion-text>
         Completed
       </ion-text>
-    </ion-segment>
+    </ion-segment> -->
     <!-- Completed Events - List-->
-    <ion-grid>
+    <ion-grid *ngIf="selectedTab == 'expired' ">
       <ion-row class="ion-align-items-center" *ngFor="let event of completedEventList; let i=index">
-        <ion-col size="4">
-          <ion-img *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"></ion-img>
+        <ion-col size="4" style="    display: flex; justify-content: center;">
+          <ion-img style="border-radius: 10px; " 
+          *ngIf="event.EventImages && event.EventImages.length>0" [src]="appConstants.mediaPrefix+event.EventImages[0]"
+          onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"></ion-img>
         </ion-col>
-        <ion-col size="8">
-          <ion-card>
+        <ion-col style="padding-left: 10px;" size="8" >
+          <ion-card button="true" style="  width: 100%;
+          background: #EAF1F4 0% 0% no-repeat padding-box;
+          border-radius: 22px;
+          height: auto;">
 
-            <ion-card-content>
+            <ion-card-content style="padding: 6px 16px 10px 16px; display: flex; flex-direction: column;">
               <ion-text>
-                <h4 class="completed-event">{{event.Title}}</h4>
+                <h4 class="completed-event dates" >{{event.Title}}</h4>
               </ion-text>
               <ion-text>
-                <h4 class="completed-event">{{event.StartDate | date}}</h4>
+                <h4  class="completed-event dates">{{event.StartDate | date}}</h4>
               </ion-text>
               <ion-text>
-                <h4 class="completed-event">{{event.StartDate | date:'shortTime'}} <ng-container
+                <h4 style="margin-bottom: 15px;" class="completed-event dates">{{event.StartDate | date:'shortTime'}} <ng-container
                     *ngIf="event.StartDate != null && event.EndDate != null ">to</ng-container> {{event.EndDate |
                   date:'shortTime'}}</h4>
               </ion-text>
-              <ion-buttons>
-                <ion-button class="fi-delete-btn" shape="round" (click)="deleteEvent($event,event,i,'complete')">
-                  <ion-icon name="delete"></ion-icon>
-                </ion-button>
+              <ion-buttons >
+                <ion-button style="padding-left: 0px;"  class="fi-delete-btn" shape="round"
+                (click)="deleteEvent($event,event,i,'upcoming') ; $event.stopPropagation();">
+                <ion-icon style="font-size: 16px;" name="delete"></ion-icon>
+              </ion-button>
               </ion-buttons>
             </ion-card-content>
           </ion-card>
         </ion-col>
       </ion-row>
+      <ng-container *ngIf="completedEventList.length==0">
+        <div class="ion-text-center nodata">
+          <img src="assets/imgs/icons/noresults.png">
+          <p> No Expired Events Found</p>
+        </div>
+      </ng-container>
     </ion-grid>
+    
   </ng-container>
 
 <!--  
@@ -110,7 +161,7 @@
 
 
     <!-- skeleton -->
-    <ion-list *ngIf="laoding" class="ion-padding" style="margin-top: -20px;">
+    <ion-list *ngIf="loading" class="ion-padding" style="margin-top: -20px;">
       <ion-item *ngFor="let i of [1,2,3,4,5,6,7]" lines="none">
         <ion-thumbnail slot="start">
           <ion-skeleton-text style="border-radius: 10px;" [animated]="true"></ion-skeleton-text>

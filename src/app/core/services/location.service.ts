@@ -3,17 +3,15 @@ import { Capacitor } from "@capacitor/core";
 import { Geolocation, Position } from '@capacitor/geolocation';
 import { Platform } from "@ionic/angular";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { UserLocation } from "src/app/pages/map/models/Location";
 import { AddressMap, Area } from "../models/places/Address";
 import { PlacesService } from "./places.service";
-import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { Currency } from "../models/places/Currency";
 import { PaymentService } from "./payment.service";
-import { config } from '../models';
+// import { config } from '../models';
 import { AppConstants } from "../models/config/AppConstants";
 import { CommonService } from "./common.service";
-import { add } from "lodash";
+import * as config from 'src/app/core/models/config/ApiMethods';
+import { AlertController } from "@ionic/angular";
 
 @Injectable({
   providedIn: 'root'
@@ -37,21 +35,60 @@ export class LocationService {
 
   private geocoder: google.maps.Geocoder;
 
-  constructor(private zone: NgZone, private http: HttpClient, private commonService: CommonService, private paymentService: PaymentService, private platform: Platform, private placesService: PlacesService) {
+  private permResult: any;
+
+  constructor(private zone: NgZone, private http: HttpClient, private commonService: CommonService, private paymentService: PaymentService, private platform: Platform, private placesService: PlacesService,   public alertController: AlertController) {
     this.geocoder = new google.maps.Geocoder();
+    
 
   }
 
   async requestPermissions() {
     if (this.platform.is("android") || this.platform.is("ios")) {
       //  console.log("LocationService: requestPermissions: android or ios")
-      const permResult = await Geolocation.requestPermissions();
-      console.log('Perm request result: ', permResult);
+      const perm_Result = await Geolocation.requestPermissions();
+      console.log('Perm request result: ', perm_Result);
+      this.permResult = perm_Result;
     }
     else {
-      // console.log("LocationService: requestPermissions: desktop:" + this.platform.is("desktop") + " pwa:" +
-      //   this.platform.is("pwa") + " hybrid:" + this.platform.is("hybrid"));
+      console.log("LocationService: requestPermissions: desktop:" + this.platform.is("desktop") + " pwa:" +
+        this.platform.is("pwa") + " hybrid:" + this.platform.is("hybrid"));
     }
+  }
+
+  setPermissionResult(result: any) {
+    this.permResult = result;
+  }
+
+  getPermissionResult() {
+    return this.permResult;
+  }
+
+  async locationPermission() {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      message: 'Enable location services for sonar to work',
+      buttons: [
+        {
+          text: 'Dismiss',
+          cssClass: 'alert-button-cancel',
+          role: 'cancel',
+          handler: async () => {
+
+          },
+        },
+        {
+          text: 'Settings',
+          cssClass: 'alert-button-confirm',
+          role: 'confirm',
+          handler: async () => {
+            console.log("please grant location permission");
+            await Geolocation.requestPermissions();
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
 
@@ -67,14 +104,14 @@ export class LocationService {
         accuracy: data.coords.accuracy
       };
       this.setCurrentPosition(data);
-      console.log('getCurrentCoordinate: ', this.currentCoordinate);
+      // console.log('getCurrentCoordinate: ', this.currentCoordinate);
       if (loadArea) {
         this.currentArea = new Area();
-        this.currentArea.Coordinate = {Latitude: this.currentCoordinate.latitude, Longitude: this.currentCoordinate.longitude };
+        this.currentArea.Coordinate = { Latitude: this.currentCoordinate.latitude, Longitude: this.currentCoordinate.longitude };
         this.getAddressFromLatLng({ lat: this.currentCoordinate.latitude, lng: this.currentCoordinate.longitude }, true);
       }
     }).catch(err => {
-      //  console.error(err);
+       console.error('fetching..', err);
     });
   }
 
@@ -132,6 +169,25 @@ export class LocationService {
     return this.currentArea;
   }
 
+  updateLiveLocation(lat: Number, lng: Number) {
+    const body = {
+      Latitude: lat,
+      Longitude: lng
+    }
+    return new Promise<any>((resolve, reject) => {
+      var url = config.API.SEARCH.UPDATE_LIVE_LOCATION;
+      return this.http.post<any>(url, body).subscribe((response: any) => {
+        resolve(response);
+      },
+        (error) => {
+          console.log("abc error", error.error.text);
+          this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    })
+  }
+
   getLatLngFromAddress(address: any) {
 
     console.log("getLatLngFromAddress: address", address);
@@ -159,7 +215,7 @@ export class LocationService {
   }
 
   getAddressFromLatLng(latLng: any, loadArea?: boolean) {
-    console.log("getAddressFromLatLng: latLng", latLng);
+    // console.log("getAddressFromLatLng: latLng", latLng);
     var geocoder = new google.maps.Geocoder();
     let self = this;
     geocoder.geocode({ 'location': latLng }, async function (results, status) {
@@ -173,7 +229,7 @@ export class LocationService {
           let fAddress = await self.mapAddressFromGoogleResults(results[0], latLng);
           if (loadArea) {
             self.currentArea = new Area();
-            self.currentArea.Coordinate = {Latitude: latLng.lat, Longitude: latLng.lng};
+            self.currentArea.Coordinate = { Latitude: latLng.lat, Longitude: latLng.lng };
             self.currentArea.City = fAddress.CityName;
             self.currentArea.Country = fAddress.CountryName;
             self.currentArea.CountryId = fAddress.CountryId;
@@ -354,14 +410,16 @@ export class LocationService {
   getCurrentLocationCountry(): Promise<string> {
 
     return new Promise((resolve, reject) => {
-const geocoder = new google.maps.Geocoder();
+      const geocoder = new google.maps.Geocoder();
 
       if ("geolocation" in navigator) {
+        console.log("nav", navigator)
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            console.log('pos', position)
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
-             geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+            geocoder.geocode({ location: { lat, lng } }, (results, status) => {
               if (status === google.maps.GeocoderStatus.OK) {
                 if (results) {
                   for (const result of results) {
@@ -382,6 +440,17 @@ const geocoder = new google.maps.Geocoder();
             });
           },
           (error) => {
+            // if(error.PERMISSION_DENIED){
+            //   console.log('this is permission denied')
+            //   this.locationPermission();
+            // }else if(error.message === 'User denied Geolocation'){
+            //   console.log('this is message');
+            //   this.locationPermission();
+            // }
+            if(error.message === 'User denied Geolocation'){
+              console.log('this is message');
+              this.locationPermission();
+            }
             reject(new Error("Error getting current location: " + error.message));
           }
         );
@@ -425,9 +494,11 @@ const geocoder = new google.maps.Geocoder();
             this.commonService.currentCurrency = res;
             this.paymentService.payment.currencyCode = this.commonService.currentCurrency.CurrencyCode
           }
+          return country;
         })
         .catch((error) => {
           console.error('Error:', error.message);
+          return error;
         });
     } catch (error) {
       console.log(error)

@@ -8,7 +8,7 @@ export class FiniteeService {
   Price?: number;
   Currency?: string;
   PriceType: string = '';
-  VisibleTo: string = "";
+  VisibleTo: string = "A";
   Location: string = 'current';
   Latitude?: number;
   Longitude?: number;
@@ -17,7 +17,8 @@ export class FiniteeService {
   CreatedOn: Date = new Date();
   ModifiedOn: Date = new Date();
   DaysLeft: any;
-
+  FirstName: string = '';
+  LastName: string = '';
   IsActive: boolean = true;
 }
 

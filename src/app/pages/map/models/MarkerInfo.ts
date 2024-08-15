@@ -10,5 +10,13 @@ export enum MarkerType {
     Totem = "Totem",
     FreeUser = "FreeUser",
     BusinessNonProfitUser = "BusinessNonProfitUser",
-    Sales = "Sales"
+    Sales = "Sales",
+    Event = "Event",
+    Multiple = "Multiple"
+}
+
+export class MultipleMarkerInfo<T> {
+    data?: any[];
+    MarkerType?: MarkerType;
+    itemIndex: number = -1;
 }

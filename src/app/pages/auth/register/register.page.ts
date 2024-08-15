@@ -163,6 +163,7 @@ export class RegisterPage implements OnInit {
   stepFlow: any = {
     basic: [this.REG_STEP.CHOOSE_ACC, this.REG_STEP.NAME, this.REG_STEP.BIRTHDAY, this.REG_STEP.PHONE_NO, this.REG_STEP.PHONE_OTP, this.REG_STEP.EMAIL]
   }
+  passwordMismatch= false ;
 
   constructor(
     private router: Router,
@@ -186,16 +187,17 @@ export class RegisterPage implements OnInit {
         console.log("REG: ngOnInit: queryParams tempUser: ", this.tempUser);
       }
     });
+    
     this.initForms();
     this.setUserDefaultCountryId();
     if (this.tempUser) {
-      this.currentUser = await this.regService.getTempUser();
+      // this.currentUser = await this.regService.getTempUser();
       this.setUpFormWithTempUser();
     }
     else {
       this.currentUser = new User();//new BasicUser();
       this.nextStep(this.REG_STEP.CHOOSE_ACC);
-      // this.nextStep(this.REG_STEP.ADDRESS);
+      // this.nextStep(this.REG_STEP.PASSWORD);
 
     }
 
@@ -366,8 +368,10 @@ export class RegisterPage implements OnInit {
 
   async setUserDefaultCountryId() {
     let defaultCountryId = this.placesService.getDefaultCountryId();
+    console.log("reg", defaultCountryId);
     this.phoneForm.setValue({ countryId: defaultCountryId, phoneNo: "" });
-    this.selectedCountry = await this.placesService.findCountry({ CountryId: defaultCountryId });
+    this.selectedCountry = await this.placesService.findCountry({ id: defaultCountryId });
+  
     // if (!this.currentUser.CountryId || this.currentUser.CountryId.length == 0) {
     //   this.currentUser.CountryId = this.placesService.getCountryIdFromPhoneCode(AppConstants.DEFAULT_PHONE_CODE);
     //   this.phoneForm.value.countryId = this.currentUser.CountryId ;
@@ -617,20 +621,23 @@ export class RegisterPage implements OnInit {
   }
 
   setPassword() {
-    this.getCurrentUser();
-    if (this.passwordForm.value.password1 != this.passwordForm.value.password2) {
+    console.log('setPassword called');
+    console.log('Password 1:', this.passwordForm.value.password1);
+    console.log('Password 2:', this.passwordForm.value.password2);
+
+    if (this.passwordForm.value.password1 !== this.passwordForm.value.password2) {
+      
+      console.log('Passwords do not match');
       this.regService.commonService.presentToast("Passwords do not match!");
-    }
-    else {
-      // this.registerUser(this.REG_STEP.ADDRESS);
+    } else {
+  
+      console.log('Passwords match');
+      this.getCurrentUser();
       this.currentUser.Password = this.passwordForm.value.password1;
       this.setUpAddressPage();
       this.nextStep(this.REG_STEP.ADDRESS);
     }
-
-    // this.step = this.REG_STEP.ADDRESS;//TEMP STEP
   }
-
   setUpAddressPage() {
     this.stateSearchableInput.listData = this.placesService.states;// await this.placesService.findState(101, {all: true});
   }
@@ -735,7 +742,7 @@ export class RegisterPage implements OnInit {
     if (!avoidStack) {
       this.screenStack.push(this.step);
     }
-    this.regService.updateTempUser(this.currentUser, stepNo);
+    // this.regService.updateTempUser(this.currentUser, stepNo);
   }
 
 
@@ -1012,7 +1019,7 @@ export class RegisterPage implements OnInit {
       .subscribe(async response => {
         this.regService.commonService.hideLoader('registerUser')
         if (response.ResponseData && response.ResponseData.Success) {
-          this.regService.deleteTempUser();
+          // this.regService.deleteTempUser();
           if (nextStep == this.REG_STEP.HOME) {
             // if (this.currentUser.UserTypeId == AppConstants.USER_TYPE.FR_USER) {
             //   // this.router.navigateByUrl('/free-user-canvas-own');
@@ -1247,9 +1254,9 @@ export class RegisterPage implements OnInit {
       message: 'Your privacy settings are set to default. You can modify them in the settings section any time',
       buttons: [
         {
-          text: 'Continue',
+          text: 'Dismiss',
           role: 'cancel',
-          cssClass: 'primary',
+          cssClass: 'infos',
           id: 'submit-button',
           handler: (blah) => {
             console.log('welcome dialog Continue');
@@ -1293,7 +1300,7 @@ export class RegisterPage implements OnInit {
 
     let result = await FilePicker.pickFiles({
       types: AppConstants.FILE_UPLOAD_TYPE.IMG_PDF,
-      multiple: false,
+      // multiple: false,
     });
     if (result && result.files.length > 0) {
       this.selectedFile = result.files[0];

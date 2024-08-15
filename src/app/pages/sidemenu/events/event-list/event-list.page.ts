@@ -11,11 +11,13 @@ import { AlertController, IonMenu } from '@ionic/angular';
   styleUrls: ['./event-list.page.scss'],
 })
 export class EventListPage extends BasePage implements OnInit {
-  laoding: boolean = false;
+  loading: boolean = false;
   upcomingEventList: Array<EventItem> = [];
   completedEventList: Array<EventItem> = [];
   @ViewChild('menu') menu!: IonMenu; 
 
+  selectedTab: any = 'active'
+  loaded: boolean = false;
   
   constructor(
     private router: Router,
@@ -54,11 +56,24 @@ export class EventListPage extends BasePage implements OnInit {
     });
   }
 
+  segmentChange(data: any) {
+    console.log(data);
+    this.loaded = false;
+    switch (data.detail.value) {
+      case 'active':
+        // this.getConnectionRequests();
+        break;
+      case 'expired':
+        // this.getUserBlockList();
+        break;
+    }
+  }
+
   async getAllEvents() {
-    this.laoding = true;
+    this.loading = true;
 
     await this.eventService.getAllEventByUser();
-    this.laoding = false;
+    this.loading = false;
 
     for (var i = 0; i < this.eventService.eventList.length; i++) {
       if (new Date(this.eventService.eventList[i].EndDate) > new Date()) {
@@ -93,10 +108,11 @@ export class EventListPage extends BasePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Delete event',
       message: 'Are you sure you want to delete this event?',
+      cssClass: 'custom-alert-message',
       buttons: [
         {
           text: 'Cancel',
-          cssClass: 'alert-button-cancel',
+          cssClass: 'infos',
           role: 'cancel',
           handler: async () => {
             // Handle cancel action if needed.
@@ -104,7 +120,7 @@ export class EventListPage extends BasePage implements OnInit {
         },
         {
           text: 'Delete',
-          cssClass: 'alert-button-confirm',
+          cssClass: 'dangers',
           role: 'confirm',
           handler: async () => {
             try {

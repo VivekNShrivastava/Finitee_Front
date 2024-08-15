@@ -217,17 +217,17 @@ export class AppConstants {
         {
           subcategory: 'FAQs',
           icon: 'right-menu-faqs',
-          pagelink: 'faa-faq',
+          pagelink: 'help/faqs',
         },
         {
           subcategory: 'Tutorials',
           icon: 'right-menu-tutorials',
-          pagelink: 'faa-tutorial',
+          pagelink: 'help/tutorials',
         },
         {
           subcategory: 'Legal',
           icon: 'right-menu-legal',
-          pagelink: 'faa-legal',
+          pagelink: 'help/legal',
         },
         {
           subcategory: 'Report',
@@ -288,6 +288,29 @@ export class AppConstants {
     YYYYMMDD: 'yyyy-MM-dd',
     TIMESTAMP: 'yyyy-MM-ddTHH:mm:ss',
   };
+
+  public static conditionList = [
+    {
+      key : '1',
+      value: 'New',
+    },
+    {
+      key : '2',
+      value: 'Like new',
+    },
+    {
+      key : '3',
+      value: 'Refurbished',
+    },
+    {
+      key : '4',
+      value: 'Used',
+    },
+    {
+      key : '5',
+      value: 'Not working',
+    }
+  ]
 
   public static GeneralPivacy = [
     {

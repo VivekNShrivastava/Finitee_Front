@@ -29,7 +29,7 @@ export class EventViewPage extends BasePage implements OnInit {
     private eventService: EventsService,
     private authService: AuthService,
     private navCtrl: NavController,
-    private commonService: CommonService
+    public commonService: CommonService
   ) {
     super(authService);
     this.route.params.subscribe((params: any) => {

@@ -19,7 +19,7 @@ ion-title {
   width: 100%;
   height: 100%;
   text-align: center;
-  font: normal normal 600 20px/28px SF Pro Display;
+  font: normal normal 600 19px/27px SF Pro Display;
   letter-spacing: 0.32px;
   color: #285078;
 }
@@ -36,7 +36,7 @@ ion-content {
       padding-bottom: 0;
 
       &>ion-label {
-        font: normal normal 600 13px/24px SF Pro Display;
+        font: normal normal 600 15px/27px SF Pro Display;
         letter-spacing: 0.21px;
         color: #505050;
         margin-left: 19px;
@@ -76,7 +76,7 @@ ion-content {
 
           & ion-label {
             margin-left: 6px;
-            font: normal normal normal 15px/26px SF Pro Display;
+            font: normal normal normal 16px/26px SF Pro Display;
             letter-spacing: 0.24px;
             color: #A8A8A8;
 
@@ -93,7 +93,7 @@ ion-content {
           }
 
           & ion-input {
-            font: normal normal normal 15px/24px SF Pro Display;
+            font: normal normal normal 16px/25px SF Pro Display;
             height: 53px;
             border-radius: 11px !important;
             background: #F0F5F7;
@@ -426,7 +426,7 @@ ion-modal {
 
 
 .input-label{
-  font: normal normal 600 13px/24px SF Pro Display;
+  font: normal normal 600 15px/26px SF Pro Display;
   letter-spacing: 0.21px;
   color: #505050;
   margin-left: 19px;

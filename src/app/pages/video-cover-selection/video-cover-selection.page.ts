@@ -157,7 +157,9 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
       console.log("coverThumb", coverThumb);
       this.attchmentService.onMediaCoverSelction.emit({
         filepath: this.defaultVideoFile,
-        cover: coverThumb
+        cover: coverThumb,
+        width: this._VIDEO.videoWidth,
+        height: this._VIDEO.videoHeight
       })
     
     }, 300);

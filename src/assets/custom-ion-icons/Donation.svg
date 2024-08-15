@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="116" viewBox="0 0 176 116">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #92a6ba;
+        opacity: 0.28;
+      }
+
+      .cls-2 {
+        fill: #f0f5f7;
+        mix-blend-mode: multiply;
+        isolation: isolate;
+      }
+
+      .cls-3 {
+        fill: #03a9f5;
+        font-size: 12px;
+        font-family: SFProDisplay-Regular, SF Pro Display;
+        letter-spacing: 0.016em;
+        opacity: 0.6;
+      }
+
+      .cls-4, .cls-5, .cls-9 {
+        fill: none;
+      }
+
+      .cls-5 {
+        stroke: #62c7f6;
+      }
+
+      .cls-6 {
+        fill: #62c7f6;
+      }
+
+      .cls-7, .cls-8 {
+        stroke: none;
+      }
+
+      .cls-8 {
+        fill: #62c7f6;
+      }
+    </style>
+  </defs>
+  <g id="Group_8731" data-name="Group 8731" transform="translate(-20 -231)">
+    <path id="Rectangle_356" data-name="Rectangle 356" class="cls-1" d="M0,0H176a0,0,0,0,1,0,0V21a10,10,0,0,1-10,10H10A10,10,0,0,1,0,21V0A0,0,0,0,1,0,0Z" transform="translate(20 316)"/>
+    <rect id="Rectangle_1310" data-name="Rectangle 1310" class="cls-2" width="176" height="85" transform="translate(20 231)"/>
+    <g id="Group_8533" data-name="Group 8533" transform="translate(-99.5 -42.463)">
+      <g id="Group_8531" data-name="Group 8531" transform="translate(0 -8)">
+        <text id="Donation" class="cls-3" transform="translate(207 339.047)"><tspan x="-23.473" y="0">Donation</tspan></text>
+      </g>
+      <g id="Group_8536" data-name="Group 8536" transform="translate(44.83 -295.12)">
+        <g id="Group_2904" data-name="Group 2904" transform="translate(151 593)">
+          <g id="Group_2903" data-name="Group 2903">
+            <g id="Path_421" data-name="Path 421" class="cls-4" transform="translate(-798.514 -177.057)">
+              <path class="cls-7" d="M815.664,177.057H803.869a.354.354,0,0,0-.255.114l-4.314,4.473c-.272.282-.1.815.255.815h20.283c.357,0,.526-.525.26-.809l-4.174-4.473A.357.357,0,0,0,815.664,177.057Z"/>
+              <path class="cls-8" d="M 804.1484985351562 178.0570373535156 L 800.86767578125 181.4588470458984 L 818.5525512695312 181.4588470458984 L 815.3787841796875 178.0570373535156 L 804.1484985351562 178.0570373535156 M 803.8692016601562 177.0570373535156 L 815.6641235351562 177.0570373535156 C 815.7601928710938 177.0570373535156 815.8527221679688 177.0993804931641 815.9243774414062 177.1759490966797 L 820.0979614257812 181.6493682861328 C 820.36328125 181.9339447021484 820.19482421875 182.4588470458984 819.8377075195312 182.4588470458984 L 799.554931640625 182.4588470458984 C 799.195068359375 182.4588470458984 799.0277099609375 181.926025390625 799.299560546875 181.6442718505859 L 803.6138305664062 177.1708831787109 C 803.6845703125 177.0973510742188 803.7752685546875 177.0570373535156 803.8692016601562 177.0570373535156 Z"/>
+            </g>
+            <g id="Rectangle_424" data-name="Rectangle 424" class="cls-5" transform="translate(0 6.11)">
+              <rect class="cls-7" width="22.339" height="12.345" rx="2"/>
+              <rect class="cls-9" x="0.5" y="0.5" width="21.339" height="11.345" rx="1.5"/>
+            </g>
+            <path id="Path_48" data-name="Path 48" class="cls-6" d="M969.894,212.407v-.794h1.124v.794a1.617,1.617,0,0,1,1.474,1.752v.226h-1.3v-.3c0-.512-.25-.707-.687-.707s-.687.195-.687.707.25.871,1.174,1.476c1.124.738,1.511,1.3,1.511,2.122a1.636,1.636,0,0,1-1.486,1.763v.784h-1.124v-.784a1.628,1.628,0,0,1-1.486-1.763v-.492h1.3v.564c0,.512.275.7.712.7s.712-.184.712-.7-.25-.882-1.174-1.476c-1.124-.728-1.511-1.3-1.511-2.122A1.619,1.619,0,0,1,969.894,212.407Z" transform="translate(-958.858 -203.796)"/>
+            <rect id="Rectangle_425" data-name="Rectangle 425" class="cls-6" width="6.076" height="1.302" rx="0.651" transform="translate(8.144 2.05)"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

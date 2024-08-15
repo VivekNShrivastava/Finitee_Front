@@ -17,6 +17,7 @@ import {
   PushNotificationSchema,
   Token,
 } from '@capacitor/push-notifications';
+import { isatty } from 'tty';
 
 @Component({
   selector: 'app-tabs',
@@ -26,9 +27,9 @@ import {
 export class TabsPage extends BasePage implements OnInit {
   @ViewChild('menu') menu!: IonMenu;
   @ViewChild('tabs', { static: false }) tabs!: IonTabs;
-  //userType: any;
   selectedTab: any;
   backPressTimeStamp!: any;
+  store: string = '';
   constructor(
     private chatService: ChatsService,
     private router: Router,
@@ -40,6 +41,8 @@ export class TabsPage extends BasePage implements OnInit {
     private _storageService: StorageService
   ) {
     super(authService);
+    // this.setupListener();
+
   }
 
   async ngOnInit() {
@@ -97,6 +100,21 @@ export class TabsPage extends BasePage implements OnInit {
     await alert.present();
   }
 
+  async setupListener() {
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) {
+        console.log("background", isActive)
+        // App went to background
+        // Save anything you fear might be lost
+        this.store = 'saved info';
+      } else {
+        console.log("foreground", isActive)
+        // App went to foreground
+        // restart things like sound playing
+        console.log('store', this.store)
+      }
+    });
+  }
 
   async addListeners() {
     await PushNotifications.addListener('registration', token => {
@@ -110,35 +128,47 @@ export class TabsPage extends BasePage implements OnInit {
 
     await PushNotifications.addListener('pushNotificationReceived', notification => {
       console.log('Push notification received: ', notification);
-      this._storageService.saveNotification(notification, this._commonService.getTodayDate());
+      const time = new Date();
+      this._storageService.saveNotification(notification, this._commonService.getTodayDate(), time);
 
-      if (notification.data && notification.data.title === 'Post Favor') {
-        console.log('Navigating to another page...');
-        // Use the Router service to navigate to the desired path
-        // this.router.navigate(['post/view-post']);
-      } else {
-        // Default action when the notification body is tapped
-        console.log('Default action when notification body is tapped');
-        // Add any additional handling or navigate to a default page
-      }
+      // console.log("performing the action...", notification);
+
+      // if (notification.data && notification.data.title === 'Post Favor') {
+      //   console.log('Navigating to another page...');
+      //   // Use the Router service to navigate to the desired path
+      //   // this.router.navigate(['post/view-post']);
+      // } else {
+      //   console.log('Default action when notification body is tapped');
+      // }
     });
 
-    // await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-    //   console.log('Push notification action performed--', notification.actionId, notification.inputValue);
+    // await PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
+    //   console.log("performing the action...", notification);
+    //   if(notification.actionId === 'tap') console.log('tapped');
+    //   console.log('notii', notification.notification.data.title);
 
-    //   if (notification.actionId === 'navigateToAnotherPage') {
-    //     // Use the Router service to navigate to the desired path
-    //     this.router.navigate(['/another']);
+    //   if(notification.notification.data.title === "Post Favor"){
+    //     this.router.navigateByUrl('post/view-post', this.navEx);//have to add a route which routes to a single post
+    //   }
+
+    //   if(notification.notification.data.title === "Greeting"){
+    //     this.greetingNotification(notification.notification.data);
     //   }
     // });
+  }
 
-    await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-      console.log("performing the action...", notification);
-
-      if(notification.notification.data.title === "Post Favor"){
-        this.router.navigateByUrl('post/view-post', this.navEx);//have to add a route which routes to a single post
+  greetingNotification(notificationData: any){
+    if(notificationData.body.includes('sent') && notificationData.body.title === 'Greeting'){
+      const data = {
+        callFunction: 'viewGreetingDetails'
       }
-    });
+      this.navEx.state = data;
+      console.log('navex', this.navEx);
+      this.router.navigate(['/tabs/map'], this.navEx)
+    }else if(notificationData.body.includes('accepted') && notificationData.body.title === 'Greeting'){
+      console.log("noti accepted");
+      this.router.navigateByUrl('/notifications');
+    }
   }
 
   async registerNotifications() {

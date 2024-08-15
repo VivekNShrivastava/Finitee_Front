@@ -1,3 +1,4 @@
+
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,7 +7,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { MapService } from 'src/app/pages/map/services/map.service';
 import * as config from 'src/app/core/models/config/ApiMethods';
-import { UserLocation } from 'src/app/pages/map/models/Location';
+import { LocationService } from 'src/app/core/services/location.service';
+import { MapLocation } from 'src/app/core/components/mapLocation/mapLocation.component';
+import { EventItem } from 'src/app/core/models/event/event';
+import { AddressMap } from 'src/app/core/models/places/Address';
 
 @Component({
   selector: 'app-map-search',
@@ -14,6 +18,9 @@ import { UserLocation } from 'src/app/pages/map/models/Location';
   styleUrls: ['./map-search.component.scss'],
 })
 export class MapSearchComponent implements OnInit {
+  eventItem: EventItem = new EventItem();
+  eventLocation: any;
+  
   tempOtherSearchTerm = false;
   searchMode: 'N' | 'P' | 'L' = 'N';
   searchTypeString = '';
@@ -27,12 +34,15 @@ export class MapSearchComponent implements OnInit {
     { label: 'Businesses', isChecked: false, value: 'B' },
     { label: 'Service available', isChecked: false, value: 'SA' },
     { label: 'NonProfits', isChecked: false, value: 'N' },
-    { label: 'Promotions', isChecked: false, value: 'P' },
+    // { label: 'Promotions', isChecked: false, value: 'P' },
     { label: 'Totems', isChecked: false, value: 'TT' },
-    { label: 'Finitee specials', isChecked: false, value: 'FS' },
+    // { label: 'Finitee specials', isChecked: false, value: 'FS' },
     { label: 'Buy', isChecked: false, value: 'S' },
-    { label: 'Connected Members', isChecked: false, value: 'C' },
-    { label: 'Individual Users', isChecked: false, value: 'F' }
+    // { label: 'Connected Members', isChecked: false, value: 'C' },
+    // { label: 'Individual Users', isChecked: false, value: 'F' },
+    { label: 'Events', isChecked: false, value: 'E' },
+    // { label: 'Sales', isChecked: false, value: 'SA' }
+
   ];
   pages: any;
   showLevel1 = null;
@@ -43,7 +53,7 @@ export class MapSearchComponent implements OnInit {
     upper: 600
   };
   connType: any = 'All';
-  keyinfo: any = null;
+  keyinfo: any = "";
   ageMinMax = {
     lower: 18,
     upper: 80
@@ -64,6 +74,7 @@ export class MapSearchComponent implements OnInit {
   frequency = 10;
   googleAutocomplete: any;
   autocompleteItems: any[];
+  form: any;
   constructor(
     public httpService: HttpClient,
     public alertController: AlertController,
@@ -72,11 +83,14 @@ export class MapSearchComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public authService: AuthService,
-    public mapService: MapService
+    public mapService: MapService,
+    private locationService: LocationService,
+    
   ) {
     this.mapParams = this.navParams?.data?.['values'];
     this.googleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocompleteItems = [];
+    this.getLatlng();
   }
 
   toggleLevel1(idx: null) {
@@ -118,7 +132,120 @@ export class MapSearchComponent implements OnInit {
     );
     this.searchMode = 'N';
     this.setPingObj = {};
+
+    
   }
+
+  async openMap() {
+    const modal = await this.modalController.create({
+      component: MapLocation,
+    });
+  
+    await modal.present();
+  
+    const { data } = await modal.onDidDismiss();
+  
+    if (data && data.location) {
+      const { latitude, longitude } = data.location;
+  
+      const latLng = {
+        lat: latitude,
+        lng: longitude
+      };
+  
+      console.log("latlng", latLng);
+  
+      this.eventItem.Latitude = latLng.lat;
+      this.eventItem.Longitude = latLng.lng;
+  
+      const res = await this.locationService.getAddressFromLatLng(latLng);
+  
+      let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+        if (address) {
+          this.eventLocation = address.FormattedAddress;
+          const location: string = this.eventLocation;
+          const add1 = location.slice(0, 69);
+          const add2 = location.slice(70, location.length);
+          this.form.controls['AddressLine1'].setValue(add1);
+          this.form.controls['AddressLine1'].markAsTouched();
+          this.form.controls['AddressLine1'].setErrors(null);
+  
+          this.form.controls['AddressLine2'].setValue(add2);
+          this.form.controls['AddressLine2'].markAsTouched();
+          this.form.controls['AddressLine2'].setErrors(null);
+  
+          this.getLatlng(address);
+        }
+      });
+    }
+  }
+  
+
+  
+  triggerSearch() {
+    if (this.eventItem.Latitude && this.eventItem.Longitude) {
+      const latLng = {
+        lat: this.eventItem.Latitude,
+        lng: this.eventItem.Longitude
+      };
+  
+      this.mapService.oneTimeSearch(
+        {
+          geolocation: { latitude: latLng.lat, longitude: latLng.lng },
+          searchKey: this.keyinfo || "",
+          scope: this.radius,
+          age: { lower: this.ageMinMax.lower, upper: this.ageMinMax.upper },
+          freeUser: this.searchType[1].isChecked,
+          Donations: this.searchType[2].isChecked,
+          connections: this.searchType[3].isChecked,
+          businessUser: this.searchType[5].isChecked,
+          nonProfitUser: this.searchType[7].isChecked,
+          events: this.searchType[10].isChecked,
+          serviceReq: this.searchType[4].isChecked,
+          serviceAvailable: this.searchType[6].isChecked,
+        }
+      ).subscribe(
+        response => {
+          console.log('Response received:', response); // Log response
+          this.progressBar = false;
+          this.modalController.dismiss(response);
+        },
+        error => {
+          console.error('Error:', error); // Log error if any
+          this.progressBar = false;
+        }
+      );
+    } else {
+      console.error('Error: Latitude and Longitude are not set');
+    }
+  }
+  
+  
+
+
+
+  getLatlng(add?: any) {
+
+    if(add){
+      this.eventItem.Latitude = add.Latitude;
+      this.eventItem.Longitude = add.Longitude;
+    }else{
+      var addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
+      this.locationService.getLatLngFromAddressType('home', addrress)
+        .then((latLng) => {
+         this.eventItem.Latitude = latLng.lat
+         this.eventItem.Longitude = latLng.lng
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
+  }
+
+
+
+  
   async ionViewDidEnter() {
     if (this.navParams.data['values'].searchCriteria) {
       const searchCriteria = this.navParams.data['values'].searchCriteria;
@@ -185,56 +312,56 @@ export class MapSearchComponent implements OnInit {
   }
 
   setUsPing() {
-    this.setSearchOptions();
-    const currentHours = new Date().getHours();
-    const params = {
-      id: this.mapParams.id,
-      lat: this.mapParams.lat,
-      lng: this.mapParams.lng,
-      key: this.keyinfo == undefined ? null : this.keyinfo,
-      age: {
-        MinAge: +this.ageMinMax.lower,
-        MaxAge: +this.ageMinMax.upper
-      },
-      km: this.radius,
-      type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-      buyorsell: null,
-      dt: new Date(),
-      ustypid: this.logInfo.UserTypeId,
-      flag: 'P',
-      pplr: null,
-      isprt: 0,
-      fdt: new Date(),
-      tdt: new Date(),
-    };
-    let method: string;
-    let isNewPing = false;
-    if (Object.entries(this.setPingObj).length == 0) {
-      method = config.INS_PING_SER;
-      isNewPing = true;
-    } else {
-      method = config.UPD_PING_SER;
-    }
-    // console.log(method, params);
-    this.httpService.post(method, params)
-      .subscribe(async (result: any) => {
-        const obj = {
-          oneTimeSearch: false,
-          key: this.keyinfo == undefined ? null : this.keyinfo,
-          age: {
-            MinAge: +this.ageMinMax.lower,
-            MaxAge: +this.ageMinMax.upper
-          },
-          km: this.radius,
-          type: this.searchTypeString ? this.searchTypeString : 'All',
-          bysl: null,
-          pplr: null,
-          isprt: 0,
-          status: null,
-          frequency: this.frequency,
-          duration: this.duration
-        };
-      });
+    // this.setSearchOptions();
+    // const currentHours = new Date().getHours();
+    // const params = {
+    //   id: this.mapParams.id,
+    //   lat: this.mapParams.lat,
+    //   lng: this.mapParams.lng,
+    //   key: this.keyinfo == undefined ? null : this.keyinfo,
+    //   age: {
+    //     MinAge: +this.ageMinMax.lower,
+    //     MaxAge: +this.ageMinMax.upper
+    //   },
+    //   km: this.radius,
+    //   type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
+    //   buyorsell: null,
+    //   dt: new Date(),
+    //   ustypid: this.logInfo.UserTypeId,
+    //   flag: 'P',
+    //   pplr: null,
+    //   isprt: 0,
+    //   fdt: new Date(),
+    //   tdt: new Date(),
+    // };
+    // let method: string;
+    // let isNewPing = false;
+    // if (Object.entries(this.setPingObj).length == 0) {
+    //   method = config.INS_PING_SER;
+    //   isNewPing = true;
+    // } else {
+    //   method = config.UPD_PING_SER;
+    // }
+    // // console.log(method, params);
+    // this.httpService.post(method, params)
+    //   .subscribe(async (result: any) => {
+    //     const obj = {
+    //       oneTimeSearch: false,
+    //       key: this.keyinfo == undefined ? null : this.keyinfo,
+    //       age: {
+    //         MinAge: +this.ageMinMax.lower,
+    //         MaxAge: +this.ageMinMax.upper
+    //       },
+    //       km: this.radius,
+    //       type: this.searchTypeString ? this.searchTypeString : 'All',
+    //       bysl: null,
+    //       pplr: null,
+    //       isprt: 0,
+    //       status: null,
+    //       frequency: this.frequency,
+    //       duration: this.duration
+    //     };
+    //   });
   }
 
   closeModal() {
@@ -277,13 +404,13 @@ export class MapSearchComponent implements OnInit {
           role: 'activated',
           cssClass: 'isactive',
           handler: (blah) => {
-            this.isActivatePing('1');
+            // this.isActivatePing('1');
           }
         }, {
           text: 'Cancel',
           cssClass: 'isdeactive',
           handler: () => {
-            this.isActivatePing('0');
+            // this.isActivatePing('0');
           }
         }
       ]
@@ -291,88 +418,69 @@ export class MapSearchComponent implements OnInit {
     await alert.present();
   }
 
-  async isActivatePing(flag: '0' | '1') {
+  // async isActivatePing(flag: '0' | '1') {
 
-    const params = {
-      id: this.mapParams.setting.pvid,
-      usrid: this.logInfo.UserId,
-      isactive: flag,
-      lat: this.mapParams.lat,
-      lng: this.mapParams.lng,
-      dt: new Date(),
-      radius: this.mapParams.radius,
-      ustypid: this.logInfo.UserTypeId,
-      flag: 'P'
-    };
-    const method = config.DEC_PING_SER;
-    this.httpService.post(method, params)
-      .subscribe(
-        async (result: any) => {
-          let obj = {
-            oneTimeSearch: false,
-            key: this.keyinfo == undefined ? null : this.keyinfo,
-            age: {
-              MinAge: +this.ageMinMax.lower,
-              MaxAge: +this.ageMinMax.upper
-            },
-            km: this.radius,
-            type: this.searchTypeString ? this.searchTypeString : 'All',
-            bysl: null,
-            pplr: null,
-            isprt: 0,
-            status: null,
-            frequency: this.frequency,
-            duration: this.duration
-          };
-          // console.log(method, result, status);
-          if (flag == '1') {
-            const endTime = Date.now() + (this.duration * 1000);
-          }
-        },
-        error => {
-          this.closeModal();
-          // console.log('deactivate ping - error', error);
-        }
-      );
-  }
+  //   const params = {
+  //     id: this.mapParams.setting.pvid,
+  //     usrid: this.logInfo.UserId,
+  //     isactive: flag,
+  //     lat: this.mapParams.lat,
+  //     lng: this.mapParams.lng,
+  //     dt: new Date(),
+  //     radius: this.mapParams.radius,
+  //     ustypid: this.logInfo.UserTypeId,
+  //     flag: 'P'
+  //   };
+  //   const method = config.DEC_PING_SER;
+  //   this.httpService.post(method, params)
+  //     .subscribe(
+  //       async (result: any) => {
+  //         let obj = {
+  //           oneTimeSearch: false,
+  //           key: this.keyinfo == undefined ? null : this.keyinfo,
+  //           age: {
+  //             MinAge: +this.ageMinMax.lower,
+  //             MaxAge: +this.ageMinMax.upper
+  //           },
+  //           km: this.radius,
+  //           type: this.searchTypeString ? this.searchTypeString : 'All',
+  //           bysl: null,
+  //           pplr: null,
+  //           isprt: 0,
+  //           status: null,
+  //           frequency: this.frequency,
+  //           duration: this.duration
+  //         };
+  //         // console.log(method, result, status);
+  //         if (flag == '1') {
+  //           const endTime = Date.now() + (this.duration * 1000);
+  //         }
+  //       },
+  //       error => {
+  //         this.closeModal();
+  //         // console.log('deactivate ping - error', error);
+  //       }
+  //     );
+  // }
 
   async oneTimeSearch() {
+   
+  
     this.setSearchOptions();
+    
+  
     this.progressBar = true;
-    await this.mapService.oneTimeSearch({
-      age: {
-        MinAge: +this.ageMinMax.lower,
-        MaxAge: +this.ageMinMax.upper
-      },
-      bysl: null,
-      isprt: 0,
-      key: this.keyinfo == undefined ? null : this.keyinfo,
-      km: this.radius,
-      pplr: null,
-      type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-    },
-      this.logInfo,
-      <UserLocation>{
-        lat: this.mapParams.lat,
-        lng: this.mapParams.lng
-      }
-    ).subscribe(response => {
-      this.progressBar = false;
-      const searchTerms = {
-        oneTimeSearch: true,
-        key: this.keyinfo == undefined ? null : this.keyinfo,
-        age: {
-          MinAge: +this.ageMinMax.lower,
-          MaxAge: +this.ageMinMax.upper
-        },
-        km: this.radius,
-        type: this.searchTypeString.length > 0 ? this.searchTypeString : 'All',
-        bysl: null,
-        pplr: null,
-        isprt: 0,
-      };
-      this.modalController.dismiss(searchTerms);
-    });
+    var sonarSearch_location = {
+      lat : 0,
+      lng : 0
+    }
+    const curr_loc = await this.locationService.getCurrentLocationLatLng();
+    if(curr_loc){
+      sonarSearch_location.lat = curr_loc.lat,
+      sonarSearch_location.lng = curr_loc.lng
+      console.log(curr_loc);
+    }
+   
   }
   searchTypeChanged(typeCode: string) {
     if (this.tempOtherSearchTerm) {
@@ -402,9 +510,13 @@ export class MapSearchComponent implements OnInit {
   setSearchOptions() {
     this.searchTypeString = '';
     for (let i = 0; i < this.searchType.length; i++) {
+     
       const element = this.searchType[i];
+    
       if (element.isChecked) {
         this.searchTypeString += this.searchTypeString != '' ? ', ' + element.value : element.value
+        // console.log( this.searchTypeString)
+      
       }
     }
     if (this.searchType.filter(val => val.value == 'All')[0].isChecked) {
@@ -441,7 +553,7 @@ export class MapSearchComponent implements OnInit {
       if (result) {
         if (type == 'existingPing') {
           if (result.flag == 'y') {
-            this.isActivatePing('0');
+            // this.isActivatePing('0');
           }
           if (result.flag == 'n') {
             this.closeModal();
@@ -449,7 +561,7 @@ export class MapSearchComponent implements OnInit {
         }
         if (type == 'newSearch') {
           if (result.flag == 'y') {
-            this.isActivatePing('0');
+            // this.isActivatePing('0');
           }
           if (result.flag == 'n') {
             this.closeModal();

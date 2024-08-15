@@ -468,3 +468,14 @@ ion-input {
 .viewby{
   margin-top: 10px;
 }
+
+
+
+.alert-wrapper.sc-ion-alert-md {
+  --max-width: none !important; /* Set max-width to none to remove the restriction */
+  --height: auto;
+  width: 310px !important;
+}
+.alert-button-group.sc-ion-alert-md{
+  justify-content: center !important;
+}

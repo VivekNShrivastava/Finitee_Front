@@ -16,13 +16,17 @@ export class FirestoreService extends BasePage {
   public viewList$ = this.viewListSubject.asObservable();
   tempStore: any = [];
 
+  private greetingListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  public greetingList$ = this.greetingListSubject.asObservable();
+  tempStoreGreet: any = [];
+
   constructor(public authService: AuthService) {
     super(authService);
     this.initFirestore();
   }
 
   private async initFirestore(): Promise<void> {
-    console.log("Initialzing firebase from firestore service...")
+    // console.log("Initialzing firebase from firestore service...")
     const firebaseApp = initializeApp(environment.firebaseConfig);
 
     try {
@@ -46,65 +50,81 @@ export class FirestoreService extends BasePage {
       cacheSizeBytes: CACHE_SIZE_UNLIMITED,
     });
 
-    const viewingListRef = collection(this.firestoreInstance, 'viewingList');
-    // onSnapshot(viewingListRef, (snapshot) => {
-    //   const updatedData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    //   this.viewListSubject.next(updatedData);
-    //   console.log("udpated", updatedData);
+    //listening to firebase changes for viewingList document
+
+    //removed viewing functionality
+
+    // const viewingListRef = collection(this.firestoreInstance, 'viewingList');
+    // const specificDocumentId = this.logInfo.UserName;
+    // const specificDocumentRef = doc(viewingListRef, specificDocumentId);
+
+    // onSnapshot(specificDocumentRef, (docSnapshot) => {
+    //   if (docSnapshot.exists()) {
+    //     const data = { id: docSnapshot.id, ...docSnapshot.data() };
+    //     this.tempStore = data;
+    //     this.viewListSubject.next(this.tempStore);
+    //   } else {
+    //     console.log('Viewing Document not found');
+    //   }
+    // }, (error) => {
+    //   console.error('Error listening for document changes:', error);
     // });
 
-    const specificDocumentId = this.logInfo.UserName; // Replace with the actual document ID
-    console.log("fireastore-", specificDocumentId)
-    // Reference to the specific document
-    // const specificDocumentRef = viewingListRef.doc(specificDocumentId);
-    const specificDocumentRef = doc(viewingListRef, specificDocumentId);
+    //listening to firebase changes for greetingList document
+    const greetingListRef = collection(this.firestoreInstance, 'greetingList');
+    const specificDocId = "u-" + this.logInfo.UserId;
+    const specificDocRef = doc(greetingListRef, specificDocId);
 
-    // Fetch the data for the specific document
-    onSnapshot(specificDocumentRef, (docSnapshot) => {
+    onSnapshot(specificDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
-        const data = { id: docSnapshot.id, ...docSnapshot.data() };
-        this.tempStore = data;
-        this.viewListSubject.next(this.tempStore);
-        console.log('Real-time data for specific document:', this.tempStore);
-        // Do something with the real-time data
+        const data = {...docSnapshot.data()};
+        console.log('data', data)
+        this.tempStoreGreet = [];
+        for (let key of Object.keys(data)) {
+         this.tempStoreGreet.push(key) 
+        }
+        console.log("onSnap", this.tempStoreGreet)
+        this.greetingListSubject.next(this.tempStoreGreet);        
       } else {
-        console.log('Document not found');
-        // Handle the case where the document doesn't exist
+        console.log('Greeting Document not found');
       }
     }, (error) => {
       console.error('Error listening for document changes:', error);
     });
   }
 
-  deleteFieldFromDocuments(fieldToDelete: string): void {
-    const viewingListRef = collection(this.firestoreInstance, 'viewingList');
-    getDocs(viewingListRef).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const userData = doc.data();
-        if (Array.isArray(userData['names'])) {
-          const updatedNames = userData['names'].filter((nameObject: any) => {
-            // Assuming nameObject is an object with the field to delete
-            return !(nameObject.UserId === fieldToDelete);
-          });
+  //removed viewing functionality 
 
-          const updatedData = { ...userData, names: updatedNames };
+  // deleteFieldFromDocuments(fieldToDelete: string): void {
+  //   const viewingListRef = collection(this.firestoreInstance, 'viewingList');
+  //   getDocs(viewingListRef).then((querySnapshot) => {
+  //     querySnapshot.forEach((doc) => {
+  //       const userData = doc.data();
+  //       if (Array.isArray(userData['names'])) {
+  //         const updatedNames = userData['names'].filter((nameObject: any) => {
+  //           // Assuming nameObject is an object with the field to delete
+  //           console.log(nameObject)
+  //           return !(nameObject.UserId === fieldToDelete);
+  //         });
 
-          updateDoc(doc.ref, updatedData).then(() => {
-            // console.log(`Field '${fieldToDelete}' deleted from document with ID ${doc.id}`);
-          }).catch((error) => {
-            console.error(`Error updating document with ID ${doc.id}:`, error);
-          });
-        }
-      });
-    }).catch((error) => {
-      console.error('Error deleting field from documents:', error);
-    });
-  }
+  //         const updatedData = { ...userData, names: updatedNames };
+
+  //         updateDoc(doc.ref, updatedData).then(() => {
+  //           // console.log(`Field '${fieldToDelete}' deleted from document with ID ${doc.id}`);
+  //         }).catch((error) => {
+  //           console.error(`Error updating document with ID ${doc.id}:`, error);
+  //         });
+  //       }
+  //     });
+  //   }).catch((error) => {
+  //     console.error('Error deleting field from documents:', error);
+  //   });
+  // }
 
   
 
   getFirestoreInstance(): Firestore {
-    console.log("retunring the instance...")
+    // console.log("retunring the instance...")
     return this.firestoreInstance;
   }
 }

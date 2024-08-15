@@ -185,7 +185,7 @@
     <ion-label class="input-label">Viewable by </ion-label>
     <ion-item color="none" class="input" lines="none" id="viewable-by">
       <ion-label>
-        <h3 *ngIf="serviceObj.VisibleTo">{{serviceObj.VisibleTo}}</h3>
+        <h3 *ngIf="serviceObj.VisibleTo">{{commonService.getPrivacyFullValue(serviceObj.VisibleTo)}}</h3>
       </ion-label>
       <ion-buttons>
         <ion-button shape="round">
@@ -203,7 +203,9 @@
     </div>
 
     <!-- location -->
-    <ion-radio-group *ngIf="!isEdit" name="Location" [(ngModel)]="serviceObj.Location" (ionChange)="getLatlng()">
+    <ion-button style="margin-left: 10px;" (click)="openMap()">SET LOCATION</ion-button>
+    <p style="margin-left: 10px; color: red;">{{serviceAvailableLocation || "Location not set!!" }}</p>
+    <!-- <ion-radio-group *ngIf="!isEdit" name="Location" [(ngModel)]="serviceObj.Location" (ionChange)="getLatlng()">
       <ion-item lines="none" class="ion-no-margin">
         <ion-label class="locationInput">Location:</ion-label>
         <ion-radio value="current"></ion-radio>
@@ -211,10 +213,10 @@
         <ion-radio value="home"></ion-radio>
         <ion-label style="font-size: 14px;">&nbsp;Home location</ion-label>
       </ion-item>
-    </ion-radio-group>
+    </ion-radio-group> -->
 
     <!-- ofset location -->
-    <div *ngIf="!isEdit" style="margin-left: 12px;">
+    <!-- <div *ngIf="!isEdit" style="margin-left: 12px;">
       <ion-item color="none" lines="none" class="ion-no-margin">
         <ion-checkbox [disabled]="isEdit" name="locationOffset" [(ngModel)]="serviceObj.LocationOffset"> </ion-checkbox>
         <ion-label>&nbsp; Offset location</ion-label>
@@ -228,7 +230,7 @@
         <ng-container *ngIf="!serviceObj.LocationOffset">Disabled</ng-container>
         <ng-container *ngIf="serviceObj.LocationOffset">Enabled</ng-container>
       </ion-label>
-    </div>
+    </div> -->
 
 
     <ion-button style="text-transform: none;" [disabled]="!form.valid" expand="block" shape="round" color="primary"
@@ -258,8 +260,8 @@
     <ion-list>
       <ion-radio-group [value]="serviceObj.VisibleTo" [(ngModel)]="serviceObj.VisibleTo" mode="md">
 
-        <ion-item lines="none" *ngFor="let i of GeneralPrivacy">
-          <ion-label [ngClass]="{'selected': (serviceObj.VisibleTo==i.value)}">{{i.value}}</ion-label>
+        <ion-item lines="none" *ngFor="let i of privacyTypes">
+          <ion-label [ngClass]="{'selected': (serviceObj.VisibleTo==i.value)}">{{i.title}}</ion-label>
           <ion-radio slot="start" value="{{i.value}}"></ion-radio>
         </ion-item>
       </ion-radio-group>

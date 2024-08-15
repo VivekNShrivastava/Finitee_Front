@@ -2,7 +2,7 @@ export interface UserPrivacySetting {
     LocationVisibleTo: string;
     LocationShowAt: string;
     LocationShowOnlyWhenLoggedIn: boolean;
-    AvailableForGreetingWhenLoggedIn: boolean;
+    AvailableForGreeting: boolean;
     OffSetHomeLocation: boolean;
     OffSetLocation: boolean;
     IsMobileBusiness: boolean;

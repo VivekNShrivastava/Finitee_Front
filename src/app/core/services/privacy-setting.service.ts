@@ -21,7 +21,7 @@ export class PrivacySettingService {
   ) {
     _authService.authState.subscribe(state => {
       if (state) {
-        this.loadPrivacySettings();
+        // this.loadPrivacySettings();
       }
     })
   }
@@ -52,6 +52,7 @@ export class PrivacySettingService {
   }
 
   updateSonarPrivacySetting(traitOrProductId: any) {
+    console.log(traitOrProductId);
     return new Promise<any>((resolve, reject) => {
       this.commonService.showLoader();
       var url = config.API.USER_PROFILE.PRIVACY_SETTING.UPDATE_SONAR_SETTING;

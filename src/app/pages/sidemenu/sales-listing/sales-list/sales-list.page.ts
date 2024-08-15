@@ -43,13 +43,17 @@ export class SalesListPage extends BasePage implements OnInit {
     this.loading = true;
     try {
       var res = await this.salesListingService.getAllSalesItemByUser();
+     
+      
       if (res) {
         const activeItemCount = this.salesListingService.salesItemList.filter(a => a.IsActive).length;
         this.isShowAddButton = activeItemCount < 5;
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
         this.salesListingService.salesItemList.forEach(element => {
-          const expiryDate = new Date(element.ExpiredOn);
+         
+          const expiryDate = new Date(element.ExpireOn);
+          console.log("janviiii",element.Condition)
           expiryDate.setHours(0, 0, 0, 0);
           const timeDiff = expiryDate.getTime() - currentDate.getTime();
           element.daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
@@ -64,7 +68,8 @@ export class SalesListPage extends BasePage implements OnInit {
 
   // navigate to item view page
   viewItem(slId: any) {
- this.salesListingService.id = slId;
+    this.salesListingService.id = slId;
+    
     this.router.navigateByUrl(`/sales-listing/sales-item-view/${slId}`);
   }
 
@@ -87,13 +92,10 @@ export class SalesListPage extends BasePage implements OnInit {
       header: "Delete",
       message: "Are you sure you want to delete this sales listing?",
       buttons: [
-        {
-          text: "Keep",
-          cssClass: "info",
-        },
+        
         {
           text: "Delete",
-          cssClass: "danger",
+          cssClass: "dangers",
           handler: async () => {
             try {
               const res = await this.salesListingService.deleteSLItem(obj.Id);
@@ -106,6 +108,10 @@ export class SalesListPage extends BasePage implements OnInit {
               // Handle errors if needed
             }
           },
+        },
+        {
+          text: "Keep",
+          cssClass: "infos",
         },
       ],
     });

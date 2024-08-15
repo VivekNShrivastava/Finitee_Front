@@ -59,7 +59,7 @@ export class PostService {
         resolve(response.ResponseData.PostId);
       },
         (error) => {
-          //this.commonService.hideLoader();
+          this.commonService.hideLoader();
           console.log("abc error", error.error.text);
           this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
           reject(false);

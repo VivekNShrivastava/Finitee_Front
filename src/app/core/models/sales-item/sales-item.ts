@@ -3,12 +3,13 @@ export class SalesItem {
   Title: string = "";
   Description: string = "";
   SalesTraits: Array<string> = [];
-  Condition: string = "New";
+  Condition: number = 1;
   Price: any;
-  VisibleTo: string = "All Finitee users";
+  VisibleTo: string = "A";
   SalesItemImages: Array<string> = [];
   CreatedOn: Date = new Date();
-  ExpiredOn: Date = new Date();;
+  ExpireOn: Date = new Date();CreatedBy: any;
+;
   ModifiedOn: Date = new Date();
   Location: string = "current";
   Latitude? : number

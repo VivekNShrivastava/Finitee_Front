@@ -22,10 +22,12 @@
   <!-- Active list -->
   <ion-grid>
     <ng-container *ngFor="let i of salesListingService.salesItemList; let j=index">
-      <ion-row class="ion-align-items-center" (click)="viewItem(i.Id)" *ngIf="i.daysLeft >= 0">
+      <!-- *ngIf="i.daysLeft >= 0" -->
+      <ion-row class="ion-align-items-center" (click)="viewItem(i.Id)">
         <ion-col size="4" >
-          <ion-img [src]="appConstants.mediaPrefix+i.SalesItemImages[0]">
-          </ion-img>
+          <!-- <ion-img [src]="appConstants.mediaPrefix+i.SalesItemImages[0]"></ion-img> -->
+          <img style="border-radius: 22px;" src="{{appConstants.mediaPrefix+i.SalesItemImages[0]}}" 
+            onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
         </ion-col>
         <ion-col size="8" >
           <ion-card class="ion-no-padding" >
@@ -42,11 +44,11 @@
               </ion-label>
               <ion-buttons>
                 <ion-button class="fi-delete-btn" shape="round" (click)="deleteItem(i) ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+                  <ion-icon style="font-size: 16px;" name="delete"></ion-icon>
                 </ion-button>
                 &nbsp;
                 <ion-button class="fi-edit-btn" shape="round" (click)="editItem(i,j) ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
+                  <ion-icon style="font-size: 16px;" name="edit"></ion-icon>
                 </ion-button>
               </ion-buttons>
             </ion-card-content>
@@ -87,7 +89,7 @@
     <ng-container *ngFor="let i of salesListingService.salesItemList; let j=index">
       <ion-row class="ion-align-items-center" (click)="viewItem(i.Id)" *ngIf="i.daysLeft < 0 && i.daysLeft > -8" >
         <ion-col size="4">
-          <ion-img  *ngIf="i.SalesItemImages[0].length>0" [src]="appConstants.mediaPrefix+i.SalesItemImages[0]">
+          <ion-img style="border-radius: 22px;"  *ngIf="i.SalesItemImages[0].length>0" [src]="appConstants.mediaPrefix+i.SalesItemImages[0]">
           </ion-img>
         </ion-col>
         <ion-col size="8">
@@ -105,11 +107,11 @@
               </ion-label>
               <ion-buttons>
                 <ion-button class="fi-delete-btn" shape="round" (click)="deleteItem(i) ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="delete"></ion-icon>
+                  <ion-icon style="font-size: 16px;" name="delete"></ion-icon>
                 </ion-button>
                 &nbsp;
                 <ion-button class="fi-edit-btn" shape="round" (click)="editItem(i,j) ; $event.stopPropagation();">
-                  <ion-icon style="font-size: 13px;" name="edit"></ion-icon>
+                  <ion-icon style="font-size: 16px;" name="edit"></ion-icon>
                 </ion-button>
               </ion-buttons>
             </ion-card-content>
@@ -124,8 +126,11 @@
   <div *ngIf="salesListingService.salesItemList.length == 0 && !loading" class="ion-text-center nodata"
     style="margin-top: 150px;">
     <img style="margin-top: 20px;" src="assets/imgs/new/NoData.png">
-    <h4>You have no sales listings at this time.</h4>
-    <h4> Create a sales listing to sell items you are no longer using.</h4>
+    <div style="margin: 0px 20px 0px 20px ;">
+      <h4>You have no sales listings at this time.</h4>
+      <h4> Create a sales listing to sell items you are no longer using.</h4>
+    </div>
+   
   </div>
 
   <br>
