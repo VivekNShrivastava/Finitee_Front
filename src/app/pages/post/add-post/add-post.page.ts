@@ -167,6 +167,9 @@ export class AddPostPage extends BasePage implements OnInit {
   }
 
   async addPost() {
+  //   if(!this.post.PostImages) {
+  //     this.post.PostImages = [];
+  // }
 
     if(this.paramsData.Type === 'USER'){
       const media = new Media();
@@ -185,6 +188,11 @@ export class AddPostPage extends BasePage implements OnInit {
       });
 
       
+      media.images.forEach((image) => {
+        const temp = image.imageFile.name;; // Extract the name or URL depending on your structure
+        this.post.PostImages.push(temp);
+        console.log("temp",temp)
+    });
       this.sendPost = {
         post : this.post,
         media: media
@@ -200,6 +208,7 @@ export class AddPostPage extends BasePage implements OnInit {
 
   
       this.sendPost.media.images?.forEach((image: any) => {
+        
         if(image.imageFile.name.includes('mp4')){
           formData.append('file', image.imageFile.blob, image.imageFile.name);
           formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
@@ -216,8 +225,11 @@ export class AddPostPage extends BasePage implements OnInit {
         console.log('done')
         const res = await this.postService.createPost(formData);
         console.log(res);
+
         this.router.navigateByUrl('free-user-canvas')
         this.postService.postDataSbj.next({ event: "ADD", data: this.sendPost, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
+
+
         this.navCtrl.pop();
       } catch (error) {
         console.error('Error creating post:', error);

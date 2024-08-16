@@ -4,7 +4,7 @@ import { ActionSheetController, AlertController, NavController } from '@ionic/an
 import * as _ from 'lodash';
 import { BasePage } from 'src/app/base.page';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
-import { Post } from 'src/app/core/models/post/post';
+import { Media, Post } from 'src/app/core/models/post/post';
 import { UserTrait, UserTraitWithPost } from 'src/app/core/models/post/userTrait';
 import { UserCanvasProfile, UserProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -102,7 +102,9 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
         console.log(`observerA: ${result}`);
         console.log(result.data);
         if (result.event == "ADD"){
-          this.postList.unshift(result.data);
+       
+          this.postList.unshift(result.data.post);
+          console.log("posList",this.postList)
           if(result.isTraitPost)
           {
             // this.loaded=false;
@@ -475,12 +477,12 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     if (obj) {
       this.traitInput = "";
       this.selectedTraitObj = obj;
-    }else this.selectedTraitObj = "";
+    }
   }
 
 
   async saveUserTrait(action: any) {
-    if (action === "EDIT") {
+    if (action == "EDIT") {
       this.editUserTrait.Trait = this.editTraitInput;
       var res = await this._postService.saveUserTrait(this.editUserTrait);
       if (res) {
@@ -495,10 +497,10 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       }
     }
     else {
-      if (this.traitInput !== "" && this.userTraitList.length > 0) {
+      if (this.traitInput != "" && this.userTraitList.length > 0) {
         var t = this.traitInput;
         var traitIndex = _.findIndex(this.userTraitList, function (o) { return o.Trait.toLowerCase() == t.toLowerCase(); });
-        if (traitIndex !== -1) {
+        if (traitIndex != -1) {
           this.commonService.presentToast("You have already created trait for same name");
           return;
         }
@@ -507,14 +509,16 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       
       console.log("selectedTrait -", this.selectedTraitObj);
       console.log("inpit -", this.traitInput);
-      if(this.traitInput !== "" || this.selectedTraitObj !== ""){
+      if(this.traitInput != "" || this.selectedTraitObj != ""){
         setTimeout(() => {
-          if (this.traitInput !== "") {
+          if (this.traitInput != "") {
             this.navEx.state!['traitInput'] = this.traitInput;
             this.router.navigateByUrl('create-trait', this.navEx);
             // var userTrait: UserTrait = new UserTrait();
             // userTrait.Trait = this.traitInput;
             // this.addPost(userTrait);
+  
+  
           } else {
             this.addPost(this.selectedTraitObj);
           }
@@ -523,6 +527,8 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
         this.isTraitModalOpen = true;
         this.commonService.presentToast('Choose a Trait, or create new one');
       }
+      
+      
     }
   }
 
@@ -686,7 +692,6 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       this.navEx!.state!['data'] = { belongsToId: this.userId, Type: this.appConstants.POST_TYPE.USER };
     this.router.navigateByUrl(`post/add-post`, this.navEx);
     this.traitInput = "";
-    this.selectedTraitObj = "";
   }
 
   traitPostsSection(userTrait: UserTraitWithPost) {

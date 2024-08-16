@@ -139,8 +139,9 @@ export class MapSearchComponent implements OnInit {
   async openMap() {
     const modal = await this.modalController.create({
       component: MapLocation,
+      
     });
-  
+  console.log("Maplocation",MapLocation)
     await modal.present();
   
     const { data } = await modal.onDidDismiss();
@@ -206,7 +207,7 @@ export class MapSearchComponent implements OnInit {
         }
       ).subscribe(
         response => {
-          console.log('Response received:', response); // Log response
+          console.log('Response received:', response); // Log response  
           this.progressBar = false;
           this.modalController.dismiss(response);
         },
@@ -230,9 +231,12 @@ export class MapSearchComponent implements OnInit {
       this.eventItem.Latitude = add.Latitude;
       this.eventItem.Longitude = add.Longitude;
     }else{
+      console.log(this.eventItem,"eventitem")
       var addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
+      console.log(addrress,"addrress")
       this.locationService.getLatLngFromAddressType('home', addrress)
         .then((latLng) => {
+          console.log(latLng.lat,"latLng.lat")
          this.eventItem.Latitude = latLng.lat
          this.eventItem.Longitude = latLng.lng
         })
@@ -240,7 +244,7 @@ export class MapSearchComponent implements OnInit {
           console.error('Error:', error);
         });
     }
-    console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
+    // console.log("get", add, this.eventItem.Latitude, this.eventItem.Longitude)
   }
 
 
