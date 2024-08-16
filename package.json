@@ -66,6 +66,7 @@
     "moment": "^2.29.4",
     "ng-otp-input": "^1.8.5",
     "ng-recaptcha": "^11.0.0",
+    "ngx-image-compress": "^18.1.5",
     "ngx-image-cropper": "^7.2.1",
     "rxjs": "~7.5.0",
     "swiper": "^11.1.8",

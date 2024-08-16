@@ -105,7 +105,7 @@
                 <ion-icon range-right name="pause"></ion-icon>
               </ion-range> -->
 
-              <ion-img id="{{post.Id}}-img" *ngIf="!postImage.includes('VIDEO')" (ionImgDidLoad)="ionImgDidLoad($event)"
+              <ion-img style="width: 100%; height: 100%;" id="{{post.Id}}-img" *ngIf="!postImage.includes('VIDEO')" (ionImgDidLoad)="ionImgDidLoad($event)"
                 [src]="appConstants.mediaPrefix + postImage">
               </ion-img>
             </ion-card>
