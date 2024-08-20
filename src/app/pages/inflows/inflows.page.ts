@@ -17,6 +17,8 @@ export class InflowsPage extends BasePage implements OnInit {
   paramsData: any = { postlist: [] };
   filter: string = "ALL";
   filterUserTypeId: number = 0;
+  week: number = 0;
+  part: number = 0;
 
   constructor(private inflowsService: InflowsService,
     private actionSheetCtrl: ActionSheetController,
@@ -48,17 +50,24 @@ export class InflowsPage extends BasePage implements OnInit {
     this.filterUserTypeId = userTypeId;
     this.loaded = false;
     console.log(value, userTypeId);
-    var postList = await this.inflowsService.getInflows(value, userTypeId);
-    if (postList?.length > 0) {
-      this.paramsData['postlist'] = postList;
-      this.paramsData['selectedPost'] = postList[0];
+    this.week = 1;
+    this.part = 1;
+    const res = await this.inflowsService.getInflows(value, this.week, this.part);
+    if (res.postList?.length > 0) {
+      this.paramsData['postlist'] = res.postList;
+      this.paramsData['selectedPost'] = res.postList[0];
     }
     else {
       this.paramsData['postlist'] = [];
       this.paramsData['selectedPost'] = new Post();
     }
+    if(res.complete){this.week = this.week + 1}
+    else {this.part = this.part + 1;}
     this.paramsData['postViewType'] = this.appConstants.POST_VIEW_TYPE.INSTA;
     this.paramsData['postCommentViewType'] = this.appConstants.POST_COMMENT_VIEW_TYPE.POPUP;
+    this.paramsData['value'] = this.filter;
+    this.paramsData['week'] = this.week;
+    this.paramsData['part'] = this.part;
     this.loaded = true;
   }
 

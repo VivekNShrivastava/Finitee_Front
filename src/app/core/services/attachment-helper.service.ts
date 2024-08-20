@@ -1,25 +1,21 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { Diagnostic } from '@awesome-cordova-plugins/diagnostic/ngx';
-/* import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx'; */
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 import { CaptureVideoOptions, MediaCapture } from '@awesome-cordova-plugins/media-capture/ngx';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { NavController, Platform } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import { FileUploadRequest, FileUploadRequestNew } from 'src/app/core/models/FileUploadRequest';
 import * as config from 'src/app/core/models/config/ApiMethods';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { AuthService } from './auth.service';
-import { ERR_PLUGIN_NOT_INSTALLED } from '@awesome-cordova-plugins/core/decorators/common';
-import { Plugin } from '@awesome-cordova-plugins/core';
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from '../components/image-cropper/image-cropper.component';
+import { File } from '@awesome-cordova-plugins/file/ngx';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,11 +52,12 @@ export class AttachmentHelperService {
   async captureMedia(mediaType: Number, sourceType: Number) {
     this.user = await this.authService.getUserInfo();
     if(mediaType === AppConstants.MEDIA_PICTURE && sourceType === AppConstants.SOURCE_CAMERA)       
-      this.openCameraToTakePhoto(false, CameraSource.Camera);
+      return this.openCameraToTakePhoto(false, CameraSource.Camera);
     else if (mediaType === AppConstants.MEDIA_VIDEO && sourceType === AppConstants.SOURCE_CAMERA)
       this.openCameraToRecordVideo();
     else if (sourceType === AppConstants.SOURCE_PHOTOLIBRARY)
       this.selectMediaFromGallery("post");
+    return;
   }
 
 
@@ -69,28 +66,59 @@ export class AttachmentHelperService {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: true,
-      resultType: CameraResultType.Base64,
-      source: source // Camera, Photos or Prompt!
-      // source: CameraSource.Prompt,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera// Camera, Photos or Prompt!
     });
-    if (image) {
-      // Open the image cropper modal
-      const modal = await this.modalController.create({
-        component: ImageCropperComponent,
-        componentProps: {
-          imageUri: image.base64String,
-        },
-      });
+
+    
+    console.log(image, "cam");
+    const dimensions = await this.getImageDimensions(image.dataUrl);
+    console.log('Width:', dimensions.width, 'Height:', dimensions.height);
+
+    const aspectRatio = dimensions.height / dimensions.width;
+    console.log('Aspect Ratio:', aspectRatio);
+
+    this.saveMedia(image.dataUrl, "I", dimensions.width, dimensions.height, aspectRatio);
+
+    // if (image) {
+      
+    //   const modal = await this.modalController.create({
+    //     component: ImageCropperComponent,
+    //     componentProps: {
+    //       imageUri: image.dataUrl,
+    //     },
+    //   });
   
-      // Present the modal
-      await modal.present();
+    //   // Present the modal
+    //   await modal.present();
 
-      const { data } = await modal.onDidDismiss();
+    //   const { data } = await modal.onDidDismiss();
 
-      if (data) {
-        this.saveMedia(data, "I")
-      }
-    }
+    //   if (data) {
+
+    //     console.log(data, "updated");
+    //     const dimensions = await this.getImageDimensions(data);
+    //     console.log('Width:', dimensions.width, 'Height:', dimensions.height);
+
+    //     const aspectRatio = dimensions.height / dimensions.width;
+    //     console.log('Aspect Ratio:', aspectRatio)
+
+    //     this.saveMedia(data, "I", dimensions.width, dimensions.height, aspectRatio);
+    //     console.log(data);
+    //   }
+    // }
+  }
+
+
+  async getImageDimensions(imageSrc: any): Promise<{width: number, height: number}> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        };
+        img.onerror = reject;
+        img.src = imageSrc;
+    });
   }
 
   async openCameraToRecordVideo() {
@@ -108,40 +136,81 @@ export class AttachmentHelperService {
 
     if(media === "profilePic"){
       const mediafileArray = await FilePicker.pickImages({
-        multiple: false,
+        readData: true
       });
       // console.log(mediafileArray, mediafileArray.files[0]);
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafileProfile = mediafileArray.files[0];
         if(mediafileProfile){
           // console.log("profilepic", mediafileProfile);
-          this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
+          const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path);
+          const dimensions = await this.getImageDimensions(filePath);
+          const aspectRatio = dimensions.width / dimensions.height;
+          // this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
+          this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
         }
       }
     }else{
-      const mediafileArray: any = await FilePicker.pickMedia({
-        multiple: false
-      });
-      // console.log(mediafileArray, mediafileArray.files[0]);
+      // const mediafileArray: any = await FilePicker.pickMedia({
+      //   readData: true,
+      //   limit: 0,
+      //   ordered: true,
+      //   skipTranscoding: true
+      // });
+
+      const typeAllowed : string[] = ['image/*', 'video/mp4']
+      const mediafileArray: any = await FilePicker.pickFiles({
+        types: typeAllowed,
+        readData: true,
+        limit: 0
+      })
+      
+      // console.log('media files ...');
+      // console.log(mediafileArray, "length", mediafileArray.files.length);
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
-        if (mediafile) {
-          // console.log("Post")
+        if (mediafileArray.files) {
           if (mediafile.mimeType.indexOf("video") != -1) {//video
-            this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.path));
+            const fileURL = 'data:' + mediafile.mimeType + ';base64,' + mediafile.data;
+            // const fileURL = this.createURLFromBase64(mediafile.data, mediafile.mimeType);
+            this.openVideoCoverSelectionPage(fileURL);
+            // this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.data));
           }
           else {//image 
-            this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafile.path), "I");
+            if(mediafileArray.files.length > 1){
+              for(let i=0; i<mediafileArray.files.length; i++){
+                console.log(mediafileArray.files[i]);
+                const filePath = 'data:' + mediafileArray.files[i].mimeType + ';base64,' + mediafileArray.files[i].data;
+                // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileArray.files[i].path);
+                const dimensions = await this.getImageDimensions(filePath);
+                const aspectRatio = dimensions.width / dimensions.height;
+                console.log("filepath", filePath, dimensions); 
+                this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
+              }
+            }else{
+              // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafile.path);
+              const filePath = 'data:' + mediafileArray.files[0].mimeType + ';base64,' + mediafileArray.files[0].data;
+              const dimensions = await this.getImageDimensions(filePath);
+              const aspectRatio = dimensions.width / dimensions.height;
+              // console.log("filepath", filePath, dimensions); 
+              this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);  
+            }
           }
         }
       }
     }
-    
-
-
   }
 
-
+  createURLFromBase64(base64Data: string, mimeType: string): string {
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: mimeType });
+    return URL.createObjectURL(blob);
+  }
 
   openVideoCoverSelectionPage(filepath: any) {
     this.selectedVideoPath = filepath;
@@ -153,21 +222,35 @@ export class AttachmentHelperService {
   }
 
 
-  async saveMedia(filepath: any, ImageOrVideo: any, thumbNailBase64?: any) {
+  async saveMedia(filepath: any, ImageOrVideo: any, width: number, height: number, aspectRatio: number, thumbNailBase64?: any) {
+    // console.log("filePath - attachService", filepath)
+    // console.log("IoV", ImageOrVideo)
+    // console.log("b64", thumbNailBase64)
     const response = await fetch(filepath);
-    const fileBlob = await response.blob();
+    let fileBlob = await response.blob();
+    // console.log('blob tyoe', fileBlob.type)
+    if(fileBlob.type === 'application/octet-stream'){
+      let newBlob;
+      if(filepath.includes('video')){
+        newBlob = new Blob([fileBlob], { type: 'video/mp4' });
+        // console.log('newBolb', newBlob);
+        fileBlob = newBlob!;
+      } 
+      // console.log("updated fileblob", fileBlob);
+    }
 
     var filename = "";
     var thumbfilename = "";
     var thumbFilepath = "";
     var thumbfileBlob: any = "";
-    if (ImageOrVideo == "V") {
+    if (ImageOrVideo === "V") {
       filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".mp4";
       thumbfilename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
-      thumbFilepath = this.win.Ionic.WebView.convertFileSrc(thumbNailBase64);
+      // thumbFilepath = this.win.Ionic.WebView.convertFileSrc(thumbNailBase64);
+      thumbFilepath = thumbNailBase64;
       thumbfileBlob = this.b64toBlob(thumbNailBase64);
     }
-    else if (ImageOrVideo == "I") {
+    else if (ImageOrVideo === "I") {
       filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
       thumbFilepath = filepath;
     }
@@ -178,9 +261,12 @@ export class AttachmentHelperService {
       filePath: filepath,
       thumbName: "Thumb_" + thumbfilename,
       thumbBlob: thumbfileBlob,
-      thumbFilePath: thumbFilepath
+      thumbFilePath: thumbFilepath,
+      width: width,
+      height: height,
+      aspectRatio: aspectRatio
     };
-    console.log(obj);
+    // console.log(obj);
     this.onMediaSave.emit(obj);
   }
 
@@ -210,6 +296,7 @@ export class AttachmentHelperService {
   uploadFileToServerv2(formData: any, noToken?: boolean) {
     return new Promise((resolve, reject) => {
       this.progress = "0";
+      console.log(formData)
       let url = noToken ? config.COMMON_UPLOAD_WO_TOKEN : config.COM_URL_NEW + this.user?.UserId + "&module=TT";
       this.httpService.post(url, formData, {
         reportProgress: true,

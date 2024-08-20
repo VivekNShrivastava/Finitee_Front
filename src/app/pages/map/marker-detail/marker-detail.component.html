@@ -9,19 +9,15 @@
     src="{{appConstants.mediaPrefix + (currentItem.Image) }}"
     onError="this.src='assets/custom-ion-icons/Event_thumbnail.svg'"/> -->
 
-    <img *ngIf="currentItem.entity !== 'U'" 
-    (click)="open(currentItem)"
-    [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}"
-    class="userimg"
-    [src]="appConstants.mediaPrefix + (currentItem.Image)"
-    (error)="onError($event, currentItem.entity)" />
+  <img *ngIf="currentItem.entity !== 'U'" (click)="open(currentItem)"
+    [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}" class="userimg"
+    [src]="appConstants.mediaPrefix + (currentItem.Image)" (error)="onError($event, currentItem.entity)" />
 
 
 
 
-  <ion-icon name="close-icon" class="closecross"
-    (click)="closeDetails()"></ion-icon>
- 
+  <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
+
 
 </ion-row>
 
@@ -51,22 +47,20 @@
       </ion-text>
       <ion-card-subtitle class="fi-multiline-truncate username">
         <!-- <div>
-  Device height: {{ countedheight }} px
-</div> -->
+          Device height: {{ countedheight }} px
+        </div> -->
 
-        @{{currentItem.UserName.length > 15 ? (currentItem.UserName | slice:0:15) + '...' : currentItem.UserName}} | {{currentItem2.InflowsCount || 0}} Inflows
+        @{{currentItem.UserName.length > 15 ? (currentItem.UserName | slice:0:15) + '...' : currentItem.UserName}} |
+        {{currentItem2.InflowsCount || 0}} Inflows
       </ion-card-subtitle>
-      
+
     </ion-card-header>
 
     <ion-card-content>
 
       <ion-row class="header-card-details" style="display: flex; margin-bottom: 5px;">
 
-        <ion-button  style="width: 107px !important; height: 32px;
-        
-        " shape="round" size="small" color="light" 
-          class="endorsement-btn">
+        <ion-button style="width: 107px !important; height: 32px;" shape="round" size="small" color="light" class="endorsement-btn">
           {{currentItem.TotalPosts}} Posts
         </ion-button>
 
@@ -104,9 +98,9 @@
             Chat Now
           </div> -->
 
-          <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3" style="display: flex; align-items: center; justify-content: center;">
-            <ion-button shape="round" size="small"
-              class="primary-button" (click)="startChat(currentItem)">
+          <div *ngIf="currentItem.IsConnected === 1 || currentItem.Greeting === 3"
+            style="display: flex; align-items: center; justify-content: center;">
+            <ion-button shape="round" size="small" class="primary-button" (click)="startChat(currentItem)">
               <ion-icon style="margin-right: 6px;" name="chaticoninchat" class="icon-40"></ion-icon>
               Chat now
             </ion-button>
@@ -122,20 +116,24 @@
     <ion-text>My Traits</ion-text>
   </div>
 
-  <ion-card class="header-card" *ngIf="currentItem.entity=='U' " style="background-color:  #EAF1F4; height: auto; width: 307px; padding-bottom: 20px;">
+  <ion-card class="header-card" *ngIf="currentItem.entity=='U' "
+    style="background-color:  #EAF1F4; height: auto; width: 307px; padding-bottom: 20px;">
     <div *ngIf="currentItem.entity == 'U' && currentItem.Traits.length > 0" class="alltraits">
       <ion-chip *ngFor="let trait of currentItem.Traits" class="person_trait" color="primary">
         {{ trait }}
       </ion-chip>
     </div>
-    <ion-icon *ngIf="currentItem.Traits.length === 0" name="no-traits-icon" style="width: 100%; margin-top: 29px; font-size: 50px;"></ion-icon>
-    <p *ngIf="currentItem.Traits.length === 0" style="color: #6F8BA5; display: flex; justify-content: center; align-items: center; font: var(--unnamed-font-style-normal) normal medium 19px/25px var(--unnamed-font-family-sf-pro-display); font-size: 19px">No traits setup</p>
-   
+    <ion-icon *ngIf="currentItem.Traits.length === 0" name="no-traits-icon"
+      style="width: 100%; margin-top: 29px; font-size: 50px;"></ion-icon>
+    <p *ngIf="currentItem.Traits.length === 0"
+      style="color: #6F8BA5; display: flex; justify-content: center; align-items: center; font: var(--unnamed-font-style-normal) normal medium 19px/25px var(--unnamed-font-family-sf-pro-display); font-size: 19px">
+      No traits setup</p>
+
   </ion-card>
 
-  <ion-icon *ngIf="showPrevious" name="chevron-back-circle-outline" class="back"
-    (click)="loadNextItem(true)">
-  </ion-icon>
+  <ion-icon *ngIf="showPrevious" [name]="prevIconName" class="back" (click)="loadNextItem(true)"></ion-icon>
+
+  <ion-icon *ngIf="showNext" [name]="nextIconName" class="front" (click)="loadNextItem(false)"></ion-icon>
 
   <!-- Business -->
   <ion-card class="header-card" *ngIf="currentItem.entity=='U' && currentItem.UserTypeId==2">
@@ -174,9 +172,7 @@
       </ion-row>
     </ion-card-content>
   </ion-card>
-  <ion-icon *ngIf="showNext" name="chevron-forward-circle-outline" class="front"
-    (click)="loadNextItem(false)">
-  </ion-icon>
+  
 
 </ion-row>
 
@@ -200,8 +196,7 @@
 
           <div *ngIf="currentItem.entity === 'SA' || currentItem.entity === 'SL' || currentItem.entity === 'SR'"
             style="font-size:27px; color: #1A3253; display: flex; text-align: center; justify-content: center; align-items: center;">
-            <p
-              class="price">
+            <p class="price">
               ${{currentItem.Price}} {{currentItem.PriceType}}</p>
           </div>
           <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
@@ -229,11 +224,12 @@
                 to 2 pm</p>
             </div>
           </div>
-   
+
           <div>
             <p style="font-size: 17px; text-align: center; color: #285078;">
-              {{currentItem.Description.length > 120 ? (currentItem.Description | slice:0:120) + '...' : currentItem.Description}}</p>
-           
+              {{currentItem.Description.length > 120 ? (currentItem.Description | slice:0:120) + '...' :
+              currentItem.Description}}</p>
+
           </div>
 
           <div *ngIf="currentItem.entity === 'SR'"
@@ -273,10 +269,10 @@
     </ion-row>
   </ion-card>
 
-  <ion-icon *ngIf="showPrevious && currentItem.entity !='U'" name="chevron-back-circle-outline" class="back2"
+  <ion-icon *ngIf="showPrevious && currentItem.entity !='U'" [name]="prevIconName" class="back2"
     (click)="loadNextItem(true)">
   </ion-icon>
-  <ion-icon *ngIf="showNext && currentItem.entity !='U'" name="chevron-forward-circle-outline" class="front2"
+  <ion-icon *ngIf="showNext && currentItem.entity !='U'" [name]="nextIconName" class="front2"
     (click)="loadNextItem(false)">
   </ion-icon>
 

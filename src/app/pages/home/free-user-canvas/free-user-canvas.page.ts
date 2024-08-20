@@ -4,7 +4,7 @@ import { ActionSheetController, AlertController, NavController } from '@ionic/an
 import * as _ from 'lodash';
 import { BasePage } from 'src/app/base.page';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
-import { Post } from 'src/app/core/models/post/post';
+import { Media, Post } from 'src/app/core/models/post/post';
 import { UserTrait, UserTraitWithPost } from 'src/app/core/models/post/userTrait';
 import { UserCanvasProfile, UserProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -102,7 +102,9 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
         console.log(`observerA: ${result}`);
         console.log(result.data);
         if (result.event == "ADD"){
-          this.postList.unshift(result.data);
+       
+          this.postList.unshift(result.data.post);
+          console.log("posList",this.postList)
           if(result.isTraitPost)
           {
             // this.loaded=false;

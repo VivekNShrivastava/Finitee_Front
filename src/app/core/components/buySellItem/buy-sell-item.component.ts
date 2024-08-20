@@ -5,7 +5,7 @@ import { NavigationExtras } from "@angular/router";
 import {AlertController, IonicModule, ModalController, NavController} from "@ionic/angular";
 import { FiniteeUser } from "../../models/user/FiniteeUser";
 import { AuthService } from "../../services/auth.service";
-import { BuysellService } from "../../services/buysell/buysell.service";
+// import { BuysellService } from "../../services/buysell/buysell.service";
 
 @Component({
   standalone:true,
@@ -31,7 +31,7 @@ export class BuySellItemComponent implements OnInit {
   dollarsym = false;
   constructor(
     private modalController: ModalController,
-    private _buysell: BuysellService,
+    // private _buysell: BuysellService,
     private nav: NavController,
     public authService: AuthService
   ) { }
@@ -59,7 +59,7 @@ export class BuySellItemComponent implements OnInit {
           text: "Delete",
           cssClass: "dangers",
           handler: () => {
-            this._buysell.deleteSalesPost(this.data.id);
+            // this._buysell.deleteSalesPost(this.data.id);
             this.refreshList.emit(true);
           },
         },

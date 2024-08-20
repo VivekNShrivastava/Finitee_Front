@@ -80,7 +80,8 @@ export class ReportComponent extends BasePage implements OnInit {
         this.post.Type = this.paramsData.Type;
       }
       console.log(this.post);
-      var result = await this.postService.createPost(this.post);
+      var result 
+      // = await this.postService.createPost(this.post);
       if (result) {
         this.post["Id"] = result;
         this.post.CreatedBy = this.getCreatedByData();

@@ -13,7 +13,8 @@
     <ion-card>
       <ion-card-header>
         <ion-avatar>
-          <img [src]="userProfile.user.ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" />
+          <img src="{{appConstants.mediaPrefix + userCanavasProfile.canvasProfile.ProfileImage}}"
+          onError="this.src='assets/icons/business/anonymous.svg'" onError="this.src='assets/icons/business/anonymous.svg'" />
         </ion-avatar>
         <ion-thumbnail *ngIf="scanString">
           <qrcode [qrdata]="scanString" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
