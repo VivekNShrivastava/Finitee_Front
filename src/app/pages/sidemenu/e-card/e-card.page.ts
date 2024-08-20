@@ -48,8 +48,9 @@ export class ECardPage extends BasePage implements OnInit {
   async ngOnInit() {
     // this.userProfile = await this._userProfileService.getUserProfile(this.UserId, this.logInfo.UserId)
     var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId)
-    this.userProfile = res;
+     this.userProfile = res;
     this.userCanavasProfile = res;
     this.scanString = config.SACN_QRCODE + this.userProfile.user.Id!;
+    console.log(this.scanString)
   }
 }

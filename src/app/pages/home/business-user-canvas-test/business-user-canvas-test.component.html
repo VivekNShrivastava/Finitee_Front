@@ -2,8 +2,8 @@
   <!-- heading bar -->
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button *ngIf="userId!=logInfo.UserId"></ion-back-button>
-      <app-notification-icon *ngIf="userId==logInfo.UserId"></app-notification-icon>
+      <ion-back-button></ion-back-button>
+      <app-notification-icon></app-notification-icon>
     </ion-buttons>
     <ion-title *ngIf="loaded">
       <img class="business-logo" src="{{appConstants.mediaPrefix + userProfile.user.ProfileImage}}"
@@ -16,22 +16,18 @@
       </span>
     </ion-title>
     <ion-buttons slot="end" class="fi-header-buttons">
-       <ion-button shape="round" class="fi-announcement-btn1" (click)="announcementAction()" expand="block" *ngIf="userId!=logInfo.UserId && announcements.length>0 && announcements[0].IsActive">
-        <ion-icon name="announcement">
-        </ion-icon>
+      <ion-button shape="round" class="fi-announcement-btn1" expand="block" *ngIf="userId != logInfo.UserId && announcements.length > 0 && announcements[0].IsActive">
+        <ion-icon name="announcement"></ion-icon>
       </ion-button>
-      <!-- anouncement button for business home screen own -->
-      <ion-button class="fi-announcement-btn" (click)="announcementAction()">
-        <ion-icon name="announcement-blue">
-        </ion-icon>
+      <!-- announcement button for business home screen own -->
+      <ion-button class="fi-announcement-btn">
+        <ion-icon name="announcement-blue"></ion-icon>
       </ion-button>
-      <ion-button shape="round" class="fi-edit-btn" (click)="editProfile()" *ngIf="userId==logInfo.UserId">
+      <ion-button shape="round" class="fi-edit-btn" *ngIf="userId == logInfo.UserId">
         <ion-icon slot="end" name="edit"></ion-icon>
       </ion-button>
-      <ion-button shape="round" class="three-dots-menu" (click)="presentMenuModalForOther()" expand="block"
-        *ngIf="userId!=logInfo.UserId">
-        <ion-icon name="dots">
-        </ion-icon>
+      <ion-button shape="round" class="three-dots-menu" expand="block" *ngIf="userId != logInfo.UserId">
+        <ion-icon name="dots"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -45,55 +41,49 @@
     <ion-text>{{userProfile.InflowsCount}} inflows</ion-text>
     <ion-card-content>
       <!-- row for business home own -->
-      <ion-row class="header-card-details" *ngIf="userId==logInfo.UserId">
-        <ion-button shape="round" size="small" (click)="viewConnectedMembers()">
+      <ion-row class="header-card-details" *ngIf="userId == logInfo.UserId">
+        <ion-button shape="round" size="small">
           {{userProfile.ConnectedUserCount}} Connected members
         </ion-button>
-        <ion-button shape="round" size="small" color="light" class="endorsement-btn" (click)="endorseBusiness()">
+        <ion-button shape="round" size="small" color="light" class="endorsement-btn">
           {{userProfile.EndorsementCount}} Endorsements
         </ion-button>
       </ion-row>
       <!-- row for business home other -->
-      <ion-row class="header-card-details1" *ngIf="userId!=logInfo.UserId ">
-        <ion-button shape="round" size="small" class="connected-members" (click)="sendConnectionReqPopup()">
+      <ion-row class="header-card-details1" *ngIf="userId != logInfo.UserId">
+        <ion-button shape="round" size="small" class="connected-members">
           <ion-icon size="large" [name]="getConnectionIcon()"></ion-icon>
-
         </ion-button>
-        <ion-button shape="round" size="small" (click)="viewConnectedMembers()">
+        <ion-button shape="round" size="small">
           <span> {{userProfile.ConnectedUserCount}} Connections </span>
-
         </ion-button>
-        <ion-button shape="round" size="small" class="endorsement-btn" color="light" (click)="endorseBusiness()">
+        <ion-button shape="round" size="small" class="endorsement-btn" color="light">
           <span> {{userProfile.EndorsementCount}} Endorsements</span>
         </ion-button>
-        <ion-button shape="round" size="small" class="connected-members-chat" (click)="startChat()">
+        <ion-button shape="round" size="small" class="connected-members-chat">
           <ion-icon name="connected-members-chat"></ion-icon>
         </ion-button>
       </ion-row>
     </ion-card-content>
   </ion-card>
 
-  <!--banner-->
+  <!-- banner -->
   <ion-card class="thumbnail-card" *ngIf="userProfile.user.Banner">
-    <ion-img  src="{{appConstants.mediaPrefix + userProfile.user.Banner}}"></ion-img>
+    <ion-img src="{{appConstants.mediaPrefix + userProfile.user.Banner}}"></ion-img>
   </ion-card>
 
-  <!--business profile details-->
+  <!-- business profile details -->
   <ion-card class="contact-details" *ngIf="userProfile.user.About">
     <ion-card-content style="padding: 10px;">
       <ion-row>
         <ion-col size="12" class="contact-details-items">
-          <ion-icon name="business-location">
-          </ion-icon>
+          <ion-icon name="business-location"></ion-icon>
           <ion-text>
-            {{CityName}},
-            {{StateName}},
-            {{CountryName}}
+            {{CityName}}, {{StateName}}, {{CountryName}}
           </ion-text>
         </ion-col>
         <ion-col size="12" class="contact-details-items">
-          <ion-icon name="business-email">
-          </ion-icon>
+          <ion-icon name="business-email"></ion-icon>
           <ion-text>
             {{userProfile.user.Email}}
           </ion-text>
@@ -152,7 +142,7 @@
       </ion-row>
       <ion-row class="expand">
         <ion-buttons>
-          <ion-button shape="round" (click)="ShowMoreProfileDetails=!ShowMoreProfileDetails">
+          <ion-button shape="round" (click)="ShowMoreProfileDetails = !ShowMoreProfileDetails">
             <ion-icon [name]="ShowMoreProfileDetails ? 'see-less' : 'see-more'"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -160,12 +150,12 @@
     </ion-card-content>
   </ion-card>
 
-  <!--menu list items-->
+  <!-- menu list items -->
   <ion-accordion-group>
     <ion-accordion value="item list" toggleIcon="see-more">
       <ion-item slot="header" color="light">
         <ion-label>Item list/Menu</ion-label>
-        <ion-buttons slot="end" (click)="editMenuItem()" *ngIf="userId==logInfo.UserId">
+        <ion-buttons slot="end">
           <ion-button shape="round">
             <ion-icon name="edit" class="fd-edit"></ion-icon>
           </ion-button>
@@ -173,18 +163,17 @@
       </ion-item>
       <div class="ion-padding list-items" slot="content">
         <ion-row>
-          <ion-col size="4" *ngFor="let menuItem of menuItemList">
+          <!-- <ion-col size="4" *ngFor="let menuItem of menuItemList">
             <div class="fi-tab-height"
               [ngStyle]="{'background': 'url('+ appConstants.mediaPrefix + menuItem + ') no-repeat 0 0 / cover'}">
             </div>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
       </div>
     </ion-accordion>
   </ion-accordion-group>
 
-
-  <!--product list-->
+  <!-- product list -->
   <ion-segment>
     <ion-text>
       Products
@@ -195,17 +184,14 @@
       <ng-container *ngFor="let product of products; let i=index">
         <ion-col size="6" *ngIf="productPrivacy(product)">
           <ion-card class="products-list-card">
-            <ion-img  (click)="productScreen(product,i)"
-              [src]="appConstants.mediaPrefix + product.ProductImages[0]"></ion-img>
-            <ion-buttons class="products-list-card--extra-icon" (click)="openProductOption(product,i)"
-              *ngIf="userId==logInfo.UserId">
+            <ion-img [src]="appConstants.mediaPrefix + product.ProductImages[0]"></ion-img>
+            <ion-buttons class="products-list-card--extra-icon" *ngIf="userId == logInfo.UserId">
               <ion-button shape="round">
                 <ion-icon name="dots"></ion-icon>
               </ion-button>
             </ion-buttons>
             <ion-card-header class="products-list-card--header">
               <ion-card-title class="fi-truncate">{{product.Title}}</ion-card-title>
-              <!-- <ion-card-subtitle>{{product.TitleDescription}}</ion-card-subtitle> -->
             </ion-card-header>
           </ion-card>
         </ion-col>
@@ -213,8 +199,8 @@
     </ion-row>
   </div>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="userId==logInfo.UserId">
-    <ion-fab-button color="primary" size="small" (click)="addProduct()">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="userId == logInfo.UserId">
+    <ion-fab-button color="primary" size="small">
       <ion-icon class="add-post-icon" name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -226,29 +212,28 @@
           <ion-card-title>
             Announcement
             <ion-buttons style="float:right">
-              <ion-button shape="round" (click)="closeAnnouncement()">
+              <ion-button shape="round">
                 <ion-icon name="close"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-img class="thumbnail-img" *ngIf="announcements[0].Images[0]"
-            [src]="appConstants.mediaPrefix + announcements[0].Images[0]"></ion-img>
+          <ion-img class="thumbnail-img" *ngIf="announcements[0].Images[0]" [src]="appConstants.mediaPrefix + announcements[0].Images[0]"></ion-img>
           <ion-card-subtitle>{{announcements[0].AnnouncementTitle}} </ion-card-subtitle>
           <p>
             {{announcements[0].AnnouncementDescription}}
           </p>
         </ion-card-content>
-        <ion-row *ngIf="userId==logInfo.UserId">
+        <ion-row *ngIf="userId == logInfo.UserId">
           <ion-col>
-            <ion-button fill="outline" color="danger" shape="round" expand="full" (click)="enableDisableAnnouncement()">
+            <ion-button fill="outline" color="danger" shape="round" expand="full">
               <span *ngIf="announcements[0].IsActive">Disable</span>
               <span *ngIf="!announcements[0].IsActive">Enable</span>
             </ion-button>
           </ion-col>
           <ion-col>
-            <ion-button class="bold" shape="round" expand="full" (click)="editAnnouncement()">
+            <ion-button class="bold" shape="round" expand="full">
               <ion-icon name="announcement-edit"></ion-icon>
               Edit
             </ion-button>
@@ -270,13 +255,13 @@
       <ion-skeleton-text style="height:100px" animated></ion-skeleton-text>
     </ion-card-content>
   </ion-card>
-  <!--banner-->
+  <!-- banner -->
   <ion-card class="contact-details">
     <ion-card-content>
       <ion-skeleton-text style="height:100px" animated></ion-skeleton-text>
     </ion-card-content>
   </ion-card>
-  <!--business profile details-->
+  <!-- business profile details -->
   <ion-card class="contact-details">
     <ion-card-content>
       <ion-skeleton-text style="height:80px" animated></ion-skeleton-text>
@@ -291,7 +276,7 @@
         <ion-card-title>
           Announcement
           <ion-buttons style="float:right">
-            <ion-button shape="round" (click)="closeAnnouncement()">
+            <ion-button shape="round">
               <ion-icon name="close"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -304,15 +289,15 @@
           {{announcements[0].AnnouncementDescription}}
         </p>
       </ion-card-content>
-      <ion-row *ngIf="userId==logInfo.UserId">
+      <ion-row *ngIf="userId == logInfo.UserId">
         <ion-col>
-          <ion-button fill="outline" color="danger" shape="round" expand="full" (click)="enableDisableAnnouncement()">
+          <ion-button fill="outline" color="danger" shape="round" expand="full">
             <span *ngIf="announcements[0].IsActive">Disable</span>
             <span *ngIf="!announcements[0].IsActive">Enable</span>
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button class="bold" shape="round" expand="full" (click)="editAnnouncement()">
+          <ion-button class="bold" shape="round" expand="full">
             <ion-icon name="announcement-edit"></ion-icon>
             Edit
           </ion-button>

@@ -228,6 +228,10 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
   }
 
+  businessPage() {
+    this.router.navigateByUrl('/business-user-canvas-test');
+  }
+
   ionViewDidEnter () {
     console.log("ionViewDidEnter");
     const navigation = this.router.getCurrentNavigation();

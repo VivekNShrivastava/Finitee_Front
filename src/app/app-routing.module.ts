@@ -174,6 +174,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/business-user-canvas/business-canvas.module').then((m) => m.BusinessCanvasPageModule),
   },
   {
+    path: 'business-user-canvas',
+    loadChildren: () => import('./pages/home/business-user-canvas/business-canvas.module').then((m) => m.BusinessCanvasPageModule),
+  },
+  {
+    path: 'business-user-canvas-test',
+    loadChildren: () => import('./pages/home/business-user-canvas-test/business-user-canvas-test.module').then(m => m.BusinessUserCanvasTestModule),
+  },
+  {
     path: 'business/edit-business-user-profile',
     loadChildren: () => import('./pages/home/business-user-canvas/edit-profile/edit-profile.module').then((m) => m.EditProfileModule),
   },
