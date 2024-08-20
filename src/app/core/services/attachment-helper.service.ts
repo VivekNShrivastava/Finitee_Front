@@ -165,13 +165,16 @@ export class AttachmentHelperService {
         limit: 0
       })
       
-      console.log('media files ...');
-      console.log(mediafileArray, "length", mediafileArray.files.length);
+      // console.log('media files ...');
+      // console.log(mediafileArray, "length", mediafileArray.files.length);
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
         if (mediafileArray.files) {
           if (mediafile.mimeType.indexOf("video") != -1) {//video
-            this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.path));
+            const fileURL = 'data:' + mediafile.mimeType + ';base64,' + mediafile.data;
+            // const fileURL = this.createURLFromBase64(mediafile.data, mediafile.mimeType);
+            this.openVideoCoverSelectionPage(fileURL);
+            // this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.data));
           }
           else {//image 
             if(mediafileArray.files.length > 1){
@@ -189,7 +192,7 @@ export class AttachmentHelperService {
               const filePath = 'data:' + mediafileArray.files[0].mimeType + ';base64,' + mediafileArray.files[0].data;
               const dimensions = await this.getImageDimensions(filePath);
               const aspectRatio = dimensions.width / dimensions.height;
-              console.log("filepath", filePath, dimensions); 
+              // console.log("filepath", filePath, dimensions); 
               this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);  
             }
           }
@@ -198,7 +201,16 @@ export class AttachmentHelperService {
     }
   }
 
-
+  createURLFromBase64(base64Data: string, mimeType: string): string {
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: mimeType });
+    return URL.createObjectURL(blob);
+  }
 
   openVideoCoverSelectionPage(filepath: any) {
     this.selectedVideoPath = filepath;
@@ -211,19 +223,20 @@ export class AttachmentHelperService {
 
 
   async saveMedia(filepath: any, ImageOrVideo: any, width: number, height: number, aspectRatio: number, thumbNailBase64?: any) {
-    console.log("filePath", filepath)
+    // console.log("filePath - attachService", filepath)
+    // console.log("IoV", ImageOrVideo)
+    // console.log("b64", thumbNailBase64)
     const response = await fetch(filepath);
-    console.log("response", response)
     let fileBlob = await response.blob();
-    console.log("fileBlob", fileBlob);
+    // console.log('blob tyoe', fileBlob.type)
     if(fileBlob.type === 'application/octet-stream'){
       let newBlob;
       if(filepath.includes('video')){
         newBlob = new Blob([fileBlob], { type: 'video/mp4' });
-        console.log('newBolb', newBlob);
+        // console.log('newBolb', newBlob);
         fileBlob = newBlob!;
       } 
-      console.log("updated fileblob", fileBlob);
+      // console.log("updated fileblob", fileBlob);
     }
 
     var filename = "";
@@ -233,7 +246,8 @@ export class AttachmentHelperService {
     if (ImageOrVideo === "V") {
       filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".mp4";
       thumbfilename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
-      thumbFilepath = this.win.Ionic.WebView.convertFileSrc(thumbNailBase64);
+      // thumbFilepath = this.win.Ionic.WebView.convertFileSrc(thumbNailBase64);
+      thumbFilepath = thumbNailBase64;
       thumbfileBlob = this.b64toBlob(thumbNailBase64);
     }
     else if (ImageOrVideo === "I") {
@@ -252,7 +266,7 @@ export class AttachmentHelperService {
       height: height,
       aspectRatio: aspectRatio
     };
-    console.log(obj);
+    // console.log(obj);
     this.onMediaSave.emit(obj);
   }
 

@@ -1,6 +1,6 @@
 // image-cropper.component.ts
-import { Component, ViewChild, Input, ElementRef, HostListener, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ImageCropperModule, ImageTransform } from 'ngx-image-cropper';
+import { Component, ViewChild, Input, ElementRef, HostListener, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter } from '@angular/core';
+import { ImageCropperModule, ImageTransform, LoadedImage } from 'ngx-image-cropper';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IonicModule, LoadingController, ModalController } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
@@ -17,14 +17,14 @@ import { CommonModule } from '@angular/common';
 export class ImageCropperComponent {
     @ViewChild('cropper', { static: false }) cropper: any;
     @Input() imageUri: any[] = [];
-    // @ViewChild(ImageCropperComponent) imageCropper!: ImageCropperComponent;
     @ViewChild(IonSlides, { static: false }) slides!: IonSlides;
+    
 
     imageUrl: string = '';
     imageChangedEvent: any = '';
     croppedImage: any = '';
     myImage: any;
-    aspectRatio: number = 1 / 1;
+    aspectRatio: number = 0.509;
 
     cropArea_topLeft_X: number = 0;
     cropArea_topLeft_Y: number = 0;
@@ -47,7 +47,7 @@ export class ImageCropperComponent {
     image_bottomRight_Y: number = 0;
 
     sliderOpts = {
-        allowTouchMove: true
+        allowTouchMove: false
        
     }
 
@@ -61,6 +61,8 @@ export class ImageCropperComponent {
 
     staticCropperWidth = window.innerWidth;
 
+    croppedImagesList : any = [];
+
     @ViewChild('imageElement', { static: false }) imageElement!: ElementRef;
     @ViewChild('cropArea', { static: false }) cropArea!: ElementRef;
     newImageElement: HTMLImageElement | null = null; 
@@ -70,11 +72,23 @@ export class ImageCropperComponent {
     private start = { x: 0, y: 0 };
     private panning = false;
 
+    currentIndex: number = 0;
+
+    public croppedImageMap: Map<number, any> = new Map();
+    @Output() croppedImageMapChange = new EventEmitter<Map<number, any>>();
+
+    initialImageAspectRatio: number = 0;
+
+    isArLocked: boolean = false;
+
+    @Output() isAr_Locked = new EventEmitter<boolean>;
+
+
     constructor(
         private sanitizer: DomSanitizer,
         private loadingController: LoadingController,
         private modalController: ModalController,
-    ) { }
+    ) {}
 
 
     ngOnInit() {
@@ -84,7 +98,190 @@ export class ImageCropperComponent {
         }
     }
 
+    dismiss() {
+        this.modalController.dismiss();
+    }
 
+    lockAr(){
+        if(this.isArLocked) this.isArLocked = false;
+        else this.isArLocked = true;
+        this.isAr_Locked.emit(this.isArLocked);
+    }
+
+    back(){
+        if(this.currentIndex !== 0){
+            this.currentIndex = this.currentIndex - 1;
+            this.slideToIndex(this.currentIndex);
+        }
+    } 
+
+    front(){
+        if(this.currentIndex !== this.myImage.length - 1){
+            this.currentIndex = this.currentIndex + 1;
+            this.slideToIndex(this.currentIndex)
+        }
+    }
+
+    maintainAspectRatio(){
+        if(!this.isArLocked) return false;
+        else return true;
+    }
+
+    aspect_Ratio(image: any){
+
+        if(this.isArLocked){
+            // console.log("Locked", this.initialImageAspectRatio);
+            return this.initialImageAspectRatio;
+        }else{
+            // console.log("Initial AR");
+            return 0;
+        }
+        
+        // if(image.width < image.height){
+        //     const res = 1.29;
+        //     return res;
+        // } 
+        // else {
+        //     const res = 1.29;
+        //     return res;
+        // }
+    }
+
+    maxHeightCropper(image?: any){
+        // console.log("maxHeightCropper", image)
+        if(image.width < image.height){
+            const res = image.width * 1.29;
+            // console.log(res);
+            return res;
+        } 
+        return image.height;
+    }
+
+    maxWidthCropper(image?: any){
+        // console.log("maxWidthCropper", image)
+        if(image.width > image.height){
+            const res = image.height / 0.509;
+            // console.log(res);
+            return res;
+        }
+        return image.width;
+    }
+
+    minWidthCropper(image:any, minWidth?: number){
+        if(minWidth){
+            return minWidth;
+        }
+        else return image.height / 1.29;
+    }
+
+    minHeightCropper(image:any, minHeight?: number){
+        if(minHeight) return minHeight;
+        else return image.width * 0.509;
+    }
+
+    slideToIndex(index: number) {
+        if (this.slides && index >= 0 && index < this.imageUri.length) {
+          this.slides.slideTo(index, 500);
+        } else {
+          console.error('Index out of range');
+        }
+    }
+
+    async slideChanged() {
+        this.currentIndex = await this.slides.getActiveIndex();
+        console.log('Current slide index:', this.currentIndex);
+    }
+
+    fileChangeEvent(event: any): void {
+        // this.imageUrl = this.imageUri;
+        // console.log("fileChangeEvent", event);
+    }
+
+    startCropImage(){
+        // console.log('startCropImage')
+    }
+
+    imageCropped(event: any) {
+        // this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl);
+        this.croppedImage = event.objectUrl ? this.sanitizer.bypassSecurityTrustUrl(event.objectUrl) : '';
+        console.log("imageCropped", event);
+        
+        if(!this.isArLocked){
+            const minWidth = event.height / 1.29;
+            const minHeight = event.width * 0.509;
+            this.minHeightCropper(event, minHeight)
+            this.minWidthCropper(event, minWidth)
+            this.initialImageAspectRatio = event.width/event.height;
+
+        }
+        
+        this.newBlobFunction(event.base64, event.height, event.width)
+    }
+
+    cropperReady(event: any){
+        // console.log("cropperReady", event)
+    }
+
+    imageLoaded(image: LoadedImage) {
+        // console.log("imageLoaded", image);
+        this.slideToIndex(this.myImage.length - 1)
+        console.log('image', this.myImage);
+        
+        if(this.currentIndex < this.myImage.length - 1) this.currentIndex = this.myImage.length - 1;
+        this.croppedImageMap.set(this.currentIndex, this.myImage[this.currentIndex]);
+        
+        console.log('Current imageUri Map:', Array.from(this.croppedImageMap.entries()));
+        
+        this.croppedImageMapChange.emit(this.croppedImageMap);
+    }
+
+    loadImageFailed() {
+        // show message
+        // console.log("loadImageFailed");
+    }
+
+    saveCroppedImage() {
+        // this.croppedImage.changingThisBreaksApplicationSecurity
+        // console.log("saveCroppedImage", this.croppedImage.changingThisBreaksApplicationSecurity);
+        this.modalController.dismiss(this.croppedImage.changingThisBreaksApplicationSecurity);
+    }
+
+    async newBlobFunction(filepath: any, height: number, width: number){
+        const response = await fetch(filepath);
+        let fileBlob = await response.blob();
+
+        let temp_list;
+
+        const croppedImageObj = {
+            aspectRatio : width/height,
+            blob: fileBlob,
+            filePath: filepath,
+            height: height,
+            width: width,
+            index: this.currentIndex
+        }
+
+        temp_list = this.croppedImageMap.get(this.currentIndex)
+        if (!temp_list) {
+            this.croppedImageMap.set(this.currentIndex, this.myImage[this.currentIndex]);
+            // console.log('New entry added:', this.croppedImageMap.get(this.currentIndex));
+            temp_list = this.croppedImageMap.get(this.currentIndex);
+        }
+    
+        // Update the entry with the new cropped image object
+        temp_list = {
+            ...temp_list,
+            ...croppedImageObj
+        };
+    
+        // Set the updated entry back in the map
+        this.croppedImageMap.set(this.currentIndex, temp_list);
+        // console.log('Entry updated:', this.croppedImageMap.get(this.currentIndex));
+        
+        this.croppedImageMapChange.emit(this.croppedImageMap);
+    }
+
+    
     showImage(){
         if (this.imageElement) {
             // Wait for Angular to complete the initial rendering
@@ -241,57 +438,4 @@ export class ImageCropperComponent {
     //         }
     //     }
     // }
-
-    dismiss() {
-        this.modalController.dismiss();
-    }
-
-
-    fileChangeEvent(event: any): void {
-        // this.imageUrl = this.imageUri;
-        console.log("fileChangeEvent", event);
-    }
-
-    startCropImage(){
-        console.log('startCropImage')
-    }
-
-    imageCropped(event: any) {
-        // this.croppedImage = this.sanitizer.bypassSecurityTrustUrl(event.objectUrl);
-        this.croppedImage = event.objectUrl ? this.sanitizer.bypassSecurityTrustUrl(event.objectUrl) : '';
-        console.log("imageCropped", event);
-        // event.blob can be used to upload the cropped image   
-    }
-
-    cropperReady(event: any){
-        console.log("cropperReady", event)
-        // event.height = 400;
-        // console.log(this.imageCropper)
-    }
-
-    imageLoaded() {
-        // show cropper
-        // image = Loaded..
-        // this.loadingController.dismiss();
-        console.log("imageLoaded");
-        const img = new Image();
-        img.src = this.myImage;
-        img.onload = () => {
-            const isLandscape = img.width > img.height;
-            this.aspectRatio = isLandscape ? 1.29 / 1 : 1 / 1.29;
-        };
-        // this.showImage();
-    }
-
-    loadImageFailed() {
-        // show message
-        console.log("loadImageFailed");
-    }
-
-    saveCroppedImage() {
-        // this.croppedImage.changingThisBreaksApplicationSecurity
-        console.log("saveCroppedImage", this.croppedImage.changingThisBreaksApplicationSecurity);
-        this.modalController.dismiss(this.croppedImage.changingThisBreaksApplicationSecurity);
-
-    }
 }

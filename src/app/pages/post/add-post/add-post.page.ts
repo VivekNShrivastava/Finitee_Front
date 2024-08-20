@@ -8,8 +8,8 @@ import { BusinessCanvasService } from 'src/app/core/services/canvas-home/busines
 import { PostService } from 'src/app/core/services/post.service';
 import _ from 'lodash';
 import { CommonService } from 'src/app/core/services/common.service';
-import { FormsModule } from '@angular/forms';
-
+import { ModalController } from '@ionic/angular';
+import { PreviewPostComponent } from '../preview-post/preview-post.component';
 
 @Component({
   selector: 'app-add-product',
@@ -30,17 +30,21 @@ export class AddPostPage extends BasePage implements OnInit {
     initialSlide: 0
   };
   slideHeight: string = "";
+  croppedImageMap: Map<number, any> = new Map();
+  isArLocked: boolean = false;
+
   constructor(
     private router: Router,
     private navCtrl: NavController,
     private authService: AuthService,
     private businessService: BusinessCanvasService,
     public _commonService: CommonService,
-    private postService: PostService) {
-    super(authService);
-    this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
+    private postService: PostService,
+    private modalController: ModalController) {
 
-    console.log("data", this.paramsData)
+    super(authService);
+
+    this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
 
     if (this.post.Privacy)
       this.post.Privacy = this._commonService.getPrivacyFullValue(this.post.Privacy);
@@ -52,6 +56,21 @@ export class AddPostPage extends BasePage implements OnInit {
     this.subscribePostTraitsSubject();
     this.updateSlideHeight();
 
+  }
+
+
+  onCroppedImageMapChange(event: Map<number, any>) {
+    this.croppedImageMap = event;
+    for (const [key, value] of this.croppedImageMap.entries()) {
+      // console.log(key, value);
+    }
+
+    // console.log('Updated croppedImageMap:', Array.from(this.croppedImageMap.entries()));
+  }
+
+  onArChange(event: boolean){
+    console.log("ev", event);
+    this.isArLocked = event;
   }
 
   updateFontSize() {
@@ -155,12 +174,19 @@ export class AddPostPage extends BasePage implements OnInit {
     if(this.paramsData.Type === 'USER'){
       const media = new Media();
       media.images = [];
-  
-      for(let i=0; i<this.fileToUpload.length; i++){
-        media.images.push({
-          imageFile: this.fileToUpload[i],
-        })
-      }
+
+      // for(let i=0; i<this.fileToUpload.length; i++){
+      //   media.images.push({
+      //     imageFile: this.fileToUpload[i],
+      //   })
+      // }
+
+      this.croppedImageMap.forEach((value: any, key: any) => {
+        media?.images?.push({
+            imageFile: value,
+        });
+      });
+
       
       media.images.forEach((image) => {
         const temp = image.imageFile.name;; // Extract the name or URL depending on your structure
@@ -172,9 +198,14 @@ export class AddPostPage extends BasePage implements OnInit {
         media: media
       }
   
+      // const formData = new FormData();
+      // formData.append('Post', JSON.stringify(this.sendPost.post));
+      // formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
+
       const formData = new FormData();
       formData.append('Post', JSON.stringify(this.sendPost.post));
-      formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
+      formData.append('AspectRatio', Array.from(this.croppedImageMap.values())[0].aspectRatio.toString());
+
   
       this.sendPost.media.images?.forEach((image: any) => {
         
@@ -191,11 +222,14 @@ export class AddPostPage extends BasePage implements OnInit {
       }
   
       try {
+        console.log('done')
         const res = await this.postService.createPost(formData);
         console.log(res);
-        // const temp =  media.images
-        // this.post.PostImages.push(temp)
-        this.postService.postDataSbj.next({event: "ADD", data: this.sendPost, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
+
+        this.router.navigateByUrl('free-user-canvas')
+        this.postService.postDataSbj.next({ event: "ADD", data: this.sendPost, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
+
+
         this.navCtrl.pop();
       } catch (error) {
         console.error('Error creating post:', error);
@@ -204,6 +238,43 @@ export class AddPostPage extends BasePage implements OnInit {
 
     }
     
-}
+  }
+
+  async openPreviewModal() {
+    console.log("this", this.fileToUpload.length < 2,this.isArLocked);
+    if(this.fileToUpload.length < 2 || this.isArLocked){
+      if(this.fileToUpload.length > this.croppedImageMap.size){
+        this.fileToUpload.forEach((e, index) => {
+          if(!this.croppedImageMap.has(index)){
+            this.croppedImageMap.set(index, e)
+          }
+        });
+      }
+      const modal = await this.modalController.create({
+        component: PreviewPostComponent,
+        componentProps: {
+          post: this.croppedImageMap,
+          paramsData: this.paramsData
+        }
+      });
+  
+      modal.onDidDismiss().then((data) => {
+        if(data.data === 'post'){
+          this.fileToUpload = [];
+          this.navCtrl.pop;
+        } 
+        
+      });
+  
+      return await modal.present();
+    }else{
+      this._commonService.presentToast('Lock the Aspect Ratio')
+    }
+    
+  }
+    
+
+    
+  
 
 }
