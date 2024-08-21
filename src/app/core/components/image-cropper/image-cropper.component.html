@@ -1,29 +1,64 @@
 <!-- image-cropper.component.html -->
 
 <!-- [options]="sliderOpts" zoom -->
-<ion-slides *ngIf="imageUri && imageUri.length > 0" [pager]="true" [options]="sliderOpts">
-  <ion-slide *ngFor="let photo of imageUri" class="slide-container">
-    <!-- [maintainAspectRatio]="true"
-      [aspectRatio]="aspectRatio" -->
+
       
       <!-- #cropArea #imageElement -->
-    <div class="swiper-zoom-container" >
-      <image-cropper
-      (cropperReady)="cropperReady($event)"
-      [imageBase64]="photo.filePath"
-      [transform]="transform"
-      format="png"
-      [imageQuality]="100"
-      (imageCropped)="imageCropped($event)"
-      (imageLoaded)="imageLoaded()"
-      (startCropImage)="startCropImage()"
-      (loadImageFailed)="loadImageFailed()"
-      [cropperMaxHeight]="420"
-      class="img"
-      ></image-cropper>
-    </div>
+<ion-slides *ngIf="imageUri && imageUri.length > 0" [pager]="true" [options]="sliderOpts" (ionSlideDidChange)="slideChanged()">
+  <ion-slide *ngFor="let photo of imageUri" class="slide-container">
+
+      <div class="swiper-zoom-container" *ngIf="photo['mediaType'] !== 'V' " >
+        <!-- style="height: 500px;" -->
+        <!-- 
+        [maintainAspectRatio]="true" -->
+        <image-cropper
+        (imageLoaded)="imageLoaded($event)"
+        (cropperReady)="cropperReady($event)"
+        [cropperMaxHeight]="maxHeightCropper(photo)"
+        [cropperMaxWidth]="maxWidthCropper(photo)"
+        [cropperMinWidth]="minWidthCropper(photo)"
+        [cropperMinHeight]="minHeightCropper(photo)"
+        [aspectRatio]="aspect_Ratio(photo)"
+        [maintainAspectRatio]="maintainAspectRatio()" 
+        [imageBase64]="photo.thumbFilePath"
+        [transform]="transform"
+        format="png"
+        output="base64"
+        [imageQuality]="100"
+        (imageCropped)="imageCropped($event)"
+        (startCropImage)="startCropImage()"
+        (loadImageFailed)="loadImageFailed()"
+        class="img"
+        
+        ></image-cropper>
+        
+        <!-- style="height: 500px;" -->
+        
+      </div>
+      
+      
+      <video *ngIf="photo['mediaType'] === 'V' " controls style="width: 100%; height: 500px;">
+        <source [src]="photo.filePath" type="video/mp4">
+      </video>
+      
+
   </ion-slide>
 </ion-slides>
+
+<div *ngIf="imageUri.length > 1" style="display: flex; justify-content: space-between;">
+  <ion-buttons slot="start" style="padding: 10px;" (click)="back()">
+    <ion-icon name="chevron-back-circle-outline"></ion-icon>
+  </ion-buttons>
+
+  <ion-button *ngIf="!isArLocked" (click)="lockAr()">Lock AR</ion-button>
+
+  <ion-button *ngIf="isArLocked" (click)="lockAr()">Unlock AR</ion-button>
+  
+  <ion-buttons slot="start" style="padding: 10px;" (click)="front()">
+    <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+  </ion-buttons>
+</div>
+
 
 <!-- [(transform)]="transform" -->
       <!-- [allowMoveImage]="true" -->

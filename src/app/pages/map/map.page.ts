@@ -452,22 +452,22 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.intervalTimer = interval(60000);
   }
 
-  async ngAfterViewInit() {
-    setTimeout(() => {
-      const buttons = document.querySelectorAll('.gm-style .gm-style-iw-c button');
-      buttons.forEach(button => {
-        (button as HTMLElement).style.display = 'none';
-      });
-    }, 1000)
-    console.log('ngAfterViewInit');
-    await this.platform.ready();
-    console.log('conn', this.userConnectionActive);
-    // if (this.userConnectionActive) await this.printCurrentPosition();
-    // await this.printCurrentPosition();
-    // this.loadMap();
-    // this.fetchCurrentArea();
-    // this.locationService.getCurrencyByCountry();
-  }
+    async ngAfterViewInit() {
+      setTimeout(() => {
+        const buttons = document.querySelectorAll('.gm-style .gm-style-iw-c button');
+        buttons.forEach(button => {
+          (button as HTMLElement).style.display = 'none';
+        });
+      }, 1000)
+      console.log('ngAfterViewInit');
+      await this.platform.ready();
+      console.log('conn', this.userConnectionActive);
+      // if (this.userConnectionActive) await this.printCurrentPosition();
+      // await this.printCurrentPosition();
+      // this.loadMap();
+      // this.fetchCurrentArea();
+      // this.locationService.getCurrencyByCountry();
+    }
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -662,8 +662,11 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
             styles: [{
               "featureType": "poi",
               "stylers": [{
-                "visibility": "off"
-              }]
+                "visibility": "on",
+                
+              },
+            ],
+              
             }]
           }
         );
@@ -972,6 +975,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
           // this.mapBoundsToFitMarker(this.advanceMarkers)
           this.advanceMarkers = [];
           this.markersMap.clear();
+          this.clearMap();
           this.searchResultUpdate();
         } else {
           this.clearMap();
@@ -990,9 +994,14 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
   //Search Result
   async searchResultUpdate() {
+    this.removeAdvanceMarkerFromMap();
+    //  this.removeSearchResultFromMap();
     this.clearMap();
     this.markersMap.clear();
     this.clusterMap.clear();
+
+    // this.clearResults(true);
+    console.log("mainList",this.mapService.mainList)
     let sonarResults = this.mapService.mainList;
     const userId = this.logInfo.UserId
     let results = sonarResults.filter((x: any) => x.Id !== userId)
@@ -2345,10 +2354,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       initialBreakpoint:getheightforsonar() ,
       handle: false,
       componentProps: { values: obj }
+      
     });
 
     modal.onDidDismiss().then(result => {
       console.log('res', result);
+      console.log(result.data.status)
       this.mapSearchObj = result?.data?.sonarSearch;
       // this.markers.splice(0, this.markers.length);
       // this.clearResults();
@@ -2370,6 +2381,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
           }
           if (result.data) {
             // result.data[`location`] = this.location;
+
             this.searchResultUpdate();
           } else {
             // this.clearMap();
@@ -2386,7 +2398,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       }
     });
     return await modal.present();
-  }
+  }///////////
 
   getheightforsonar(): number {
     throw new Error('Method not implemented.');
@@ -2564,6 +2576,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.removeCluster();
     // this.refreshMap()
   }
+  
   calcBoundsForCenter(bounds: any[], center: any): any[] {
     let result: any = [];
     return result;
