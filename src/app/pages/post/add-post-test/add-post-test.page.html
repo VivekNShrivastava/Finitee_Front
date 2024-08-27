@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>add-post-test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="fileToUpload && fileToUpload.length > 0" style="width: 100%;">
+    <app-new-image-cropper
+    [imageUri]="fileToUpload">
+    </app-new-image-cropper>
+  </div>
+
+
+  <app-multiple-media-upload 
+    [postLimit]="post.PostImages.length"
+    [mediaFiles]="post.PostImages"
+    (filePathEvent)="addMedia($event)"
+    (imagePath)="imagePathMedia($event)"
+    (fileToUpload)="fileToUploadToServer($event)"
+    class="icon-class"
+    style="display: flex;
+    flex-direction: column;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;"
+    >
+  </app-multiple-media-upload>
+</ion-content>

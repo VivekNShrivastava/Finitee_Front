@@ -79,7 +79,6 @@ export class CanvasPage implements OnInit {
   }
 
   saveUserPrivacy() {
-    console.log("ab", this.privacySetting);
     this._userPrivacyServivce.saveUserPrivacySetting(this.privacySetting);
   }
 

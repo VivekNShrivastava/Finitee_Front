@@ -85,7 +85,6 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   async subscribePostSubject() {
     this._postService.traitList.subscribe({
       next: (result: any) => {
-        console.log(`observerA: ${result}`);
         if (result.event == "ADD"){
           // result.data.Thumbnail = null;
           this.userTraitPostList.unshift(result.data);
@@ -99,8 +98,6 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   async subscribeTraitPostSubject() {
     this._postService.postDataSbj.subscribe({
       next: (result: any) => {
-        console.log(`observerA: ${result}`);
-        console.log(result.data);
         if (result.event == "ADD"){
        
           this.postList.unshift(result.data.post);
@@ -408,7 +405,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   }
 
 
-  async CreatePostAction() {
+  async CreatePostAction(DisplayName: string) {
     
     if (this.userId == this.logInfo.UserId) {
       const actionSheet = await this.actionSheetCtrl.create({
@@ -432,11 +429,14 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       await actionSheet.present();
       const result = await actionSheet.onDidDismiss();
       if (result.data == 'Post') {
-        this.addPost();
+        this.addPost(DisplayName);
       } else if (result.data == 'TraitPost') {
-        this.traitInput = "";
-        this.isTraitModalOpen = true;
-        this.userTraitList = await this._postService.getUserTrait(this.userId);
+
+        this.addPostTest(DisplayName);
+        //removed for testing
+        // this.traitInput = "";
+        // this.isTraitModalOpen = true;
+        // this.userTraitList = await this._postService.getUserTrait(this.userId);
       }
     }
     else {
@@ -685,11 +685,17 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     this.router.navigateByUrl('recommend-user', this.navEx);
   }
 
-  addPost(trait?: UserTrait) {
+  //testing
+  addPostTest(DisplayName:string){
+    this.navEx!.state!['data'] = { belongsToId: this.userId, Type: this.appConstants.POST_TYPE.USER, DisplayName: DisplayName };
+    this.router.navigateByUrl(`post/add-post-test`, this.navEx);
+    }
+
+  addPost(DisplayName:string, trait?: UserTrait) {
     if (trait)
-      this.navEx!.state!['data'] = { belongsToId: trait.Id, Type: this.appConstants.POST_TYPE.TRAIT, TraitRequest: trait };
+      this.navEx!.state!['data'] = { belongsToId: trait.Id, Type: this.appConstants.POST_TYPE.TRAIT, DisplayName: DisplayName ,TraitRequest: trait };
     else
-      this.navEx!.state!['data'] = { belongsToId: this.userId, Type: this.appConstants.POST_TYPE.USER };
+      this.navEx!.state!['data'] = { belongsToId: this.userId, Type: this.appConstants.POST_TYPE.USER, DisplayName: DisplayName };
     this.router.navigateByUrl(`post/add-post`, this.navEx);
     this.traitInput = "";
   }

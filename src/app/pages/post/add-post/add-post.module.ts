@@ -10,8 +10,6 @@ import { AddPostPage } from './add-post.page';
 import { ImageCropperComponent } from 'src/app/core/components/image-cropper/image-cropper.component';
 
 
-
-
 @NgModule({
   imports: [
     IonicModule,
