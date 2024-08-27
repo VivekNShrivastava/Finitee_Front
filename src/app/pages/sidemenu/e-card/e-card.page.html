@@ -24,8 +24,8 @@
         </ion-thumbnail> -->
       </ion-card-header>
       <ion-card-content>
-        <h3>{{userProfile.user.DisplayName}}</h3>
-        <h5>{{userProfile.user.About}}</h5>
+        <h3>{{eCard.Name}}</h3>
+        <!-- <h5>{{eCard.About}}</h5> -->
       </ion-card-content>
     </ion-card>
     <ion-item>
@@ -33,7 +33,7 @@
         Phone
       </ion-text>
       <h3>
-        {{userProfile.user.Phone}}
+        {{eCard.PhoneNumber}}
       </h3>
       <!--   <ion-buttons slot="end">
         <ion-button shape="round" (click)="presentPopover($event)">
@@ -46,7 +46,7 @@
         Email
       </ion-text>
       <h3>
-        {{userProfile.user.Email}}
+        {{eCard.Email}}
       </h3>
 
     </ion-item>
@@ -55,39 +55,39 @@
         Website
       </ion-text>
       <h3>
-        {{userProfile.user.Website}}
+        {{eCard.Website}}
       </h3>
     </ion-item>
-    <ion-item>
+    <!-- <ion-item>
       <ion-text>
-        Address 1
+        Company
       </ion-text>
       <h3>
-        {{userProfile.user.Address.AddressLine1}}
+        {{eCard.CustomFields?.['Company']}}
       </h3>
-    </ion-item>
-    <ion-item>
+    </ion-item> -->
+    <!-- <ion-item>
       <ion-text>
-        Address 2
+        Services
       </ion-text>
       <h3>
-        {{userProfile.user.Address.AddressLine2}}
+        {{eCard.CustomFields?.['Services']}}
       </h3>
-    </ion-item>
-    <ion-item>
+    </ion-item> -->
+    <!-- <ion-item>
       <ion-text>
-        City
+        YouTube
       </ion-text>
       <h3>
-        {{userProfile.user.Address.CityId}}
+         {{eCard.CustomFields?.['YouTube']}}
       </h3>
-    </ion-item>
-    <ion-item>
+    </ion-item> -->
+    <!-- <ion-item>
       <ion-text>
         State
       </ion-text>
       <h3>
-        {{userProfile.user.Address.StateId}}
+        {{eCard.Address.StateId}}
       </h3>
     </ion-item>
     <ion-item>
@@ -95,25 +95,25 @@
         Zip
       </ion-text>
       <h3>
-        {{userProfile.user.Address.ZipCode}}
+        {{eCard.Address.ZipCode}}
       </h3>
-    </ion-item>
-    <ion-item>
+    </ion-item> -->
+    <!-- <ion-item>
       <ion-text>
         Country
       </ion-text>
       <h3>
-        {{userProfile.user.Address.CountryId}}
+        {{eCard.Address.CountryId}}
       </h3>
-    </ion-item>
-    <ion-item>
+    </ion-item> -->
+    <!-- <ion-item>
       <ion-text>
         Contact Person
       </ion-text>
       <h3 style="margin-left: 50px;">
-        {{userProfile.user.FullName}}
+        {{eCard.FullName}}
       </h3>
-    </ion-item>
+    </ion-item> -->
   </ion-list>
 </ion-content>
 <!-- <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">

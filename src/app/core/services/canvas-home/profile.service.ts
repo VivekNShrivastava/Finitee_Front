@@ -50,7 +50,7 @@ export class ProfileService {
     });
   }
 
-  getUserCanvas(userId: string, loggedInUserId: string) {
+   getUserCanvas(userId: string, loggedInUserId: string) {
     return new Promise<any>((resolve, reject) => {
       var url = config.API.USER_PROFILE.GETUSERCANVAS + "/" + loggedInUserId;
       if (userId != loggedInUserId)

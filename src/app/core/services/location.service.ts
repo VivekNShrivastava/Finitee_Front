@@ -355,7 +355,7 @@ export class LocationService {
             .catch((error) => reject(error.message));
           break;
         case 'home':
-          const address = 'FW88+3JQ, Corinthians Club Internal Rd, Nyati County, Undri, Pune, Maharashtra 411060';
+          const address = 'Korslet, Kasarvadavali, Thane West, Thane, Maharashtra, India';
           this._getLatLngFromAddress(address)
             .then((latLng) => resolve(latLng))
             .catch((error) => reject(error.message));
