@@ -59,14 +59,13 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   @ViewChild('sonarSettingModal') sonarSettingModal?: IonModal;
   @ViewChild('markerDetailModal') markerDetailModal?: IonModal;
   // @ViewChild(IonModal) sonarSettingModal?: IonModal;
-
   public mapWindow: google.maps.InfoWindow = new google.maps.InfoWindow();
   public map?: google.maps.Map = undefined;
   public location: UserLocation = new UserLocation();
   public homeLocation: UserLocation = new UserLocation();
 
+  showIcons: boolean = false; 
   currentPageHref!: any;
-
   currentLocationMarker: any;
   businessLocationMarker: any;
   resultCount = 0;
@@ -139,8 +138,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   mixedArray: any = [];
   changedArray: any = [];
 
-  receivedData: any;
-
+  receivedData: any; 
   mapSearchObj: any = [];
   isPrompt: boolean = true;
 
@@ -368,8 +366,6 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     console.log('Network status:', status);
     return status.connected;
   };
-
-
 
   async ngOnInit() {
     console.log("OnInit");
@@ -2311,6 +2307,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       serviceReq: true,
       serviceAvailable: false,
     };
+    this.showIcons=true
     const screenWidth = window.innerWidth;
 
     let breakpoints: number[];
@@ -2358,6 +2355,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
 
     modal.onDidDismiss().then(result => {
+      this.showIcons=false
       console.log('res', result);
       console.log(result.data.status)
       this.mapSearchObj = result?.data?.sonarSearch;

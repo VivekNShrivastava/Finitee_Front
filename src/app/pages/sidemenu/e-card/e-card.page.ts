@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BasePage } from 'src/app/base.page';
-import { UserProfile, UserCanvasProfile } from 'src/app/core/models/user/UserProfile';
+import { UserProfile, UserCanvasProfile,ECard } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
 
 import * as config from 'src/app/core/models/config/ApiMethods';
+import { ECardService } from 'src/app/core/services/e-card/e-card.service';
 
 
 @Component({
@@ -15,14 +16,16 @@ import * as config from 'src/app/core/models/config/ApiMethods';
 })
 export class ECardPage extends BasePage implements OnInit {
   UserId: string = "";
-  userProfile: UserProfile = new UserProfile();
+  eCard:ECard=new ECard();
   userCanavasProfile: UserCanvasProfile = new UserCanvasProfile();
   scanString: string = "";
 
   constructor(
     private authService: AuthService,
     private _activatedRoute: ActivatedRoute,
-    private _userProfileService: ProfileService) {
+    private _userProfileService: ProfileService,
+    private _EcardService: ECardService
+  ) {
     super(authService);
     if (this._activatedRoute.snapshot.params["UserId"]){
       this.UserId = this._activatedRoute.snapshot.params["UserId"];
@@ -50,7 +53,19 @@ export class ECardPage extends BasePage implements OnInit {
     var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId)
     // this.userProfile = res;
     this.userCanavasProfile = res;
-    this.scanString = config.SACN_QRCODE + this.userProfile.user.Id!;
+    this.scanString = config.SACN_QRCODE + this.userCanavasProfile.canvasProfile.Id!;
     console.log(this.appConstants.mediaPrefix + this.userCanavasProfile.canvasProfile.ProfileImage);
   }
+  async ionViewWillEnter() {
+    console.log("ionViewWillEnter");
+    await this.getEcard();
+  }
+
+  async getEcard() {
+    var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
+    this.eCard=res.Ecard;
+    console.log(this.eCard.Name)
+  }
 }
+
+

@@ -20,7 +20,7 @@ import { AddressMap } from 'src/app/core/models/places/Address';
 export class MapSearchComponent implements OnInit {
   eventItem: EventItem = new EventItem();
   eventLocation: any;
-  
+  showIcons: boolean = true;
   tempOtherSearchTerm = false;
   searchMode: 'N' | 'P' | 'L' = 'N';
   searchTypeString = '';
@@ -93,6 +93,13 @@ export class MapSearchComponent implements OnInit {
     this.getLatlng();
   }
 
+  OnEnd() {
+    this.showIcons=false
+    this.modalController.dismiss().then(() => {
+      console.log('Modal dismissed');
+      
+    })
+}
   toggleLevel1(idx: null) {
     if (this.isLevel1Shown(idx)) {
       this.showLevel1 = null;

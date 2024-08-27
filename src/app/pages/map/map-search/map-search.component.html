@@ -6,8 +6,8 @@
     <ion-segment>
       <div>
         <ion-title value="N" class="searchsonar" >Search</ion-title>
-        <ion-buttons slot="end" style="position: absolute;right: 5px;">
-          <ion-button>
+        <ion-buttons  slot="end" style="position: absolute;right: 5px;">
+          <ion-button (click)="OnEnd()">
             <img style="padding-right: 7px; padding-bottom: 7px; width: 20px; height: 20px;" src="assets/icon/fin/close.png">
           </ion-button>
         </ion-buttons>
@@ -20,7 +20,20 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content overflow-scroll="true">
+<!-- <ion-content overflow-scroll="true"> -->
+
+  <!-- <div class="ion-container" *ngIf="showIcons"style="display: flex; flex-direction: column;">
+
+            <ion-icon style="font-size: 60px;" name="sonar-event"></ion-icon>
+
+            <ion-icon style="font-size: 60px;" name="sonar-donation"></ion-icon>
+
+          </div> -->
+          <div  *ngIf="showIcons" style="display: flex; justify-content: space-between; align-items: center;">
+            <img class="sonareventimg" src="assets/custom-ion-icons/sonar_event.svg" style="font-size: 60px;">
+            <img class="sonardonationimg" src="assets/custom-ion-icons/sonar_donations.svg" style="font-size: 60px;">
+          </div>
+  
   <ion-list lines="none" style="  margin-top: 20px;">
     <div class="ele">
       <div style="padding: 0px 15px;">
@@ -72,6 +85,7 @@
           </Tr>
         </table>
       </div>
+    
       <div class="ele" style="padding: 10px 25px 0px;" *ngIf="searchMode=='N'">
         <table class="medbf" style="width: 100%;font-weight: 500;">
           <Tr *ngIf="logInfo && logInfo.UserTypeId ==1">
@@ -115,4 +129,4 @@
       </ion-button>
     </div>
   </ion-list>
-</ion-content>
+<!-- </ion-content> -->
