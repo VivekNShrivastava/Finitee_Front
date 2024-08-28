@@ -14,7 +14,9 @@
   </ion-slides>
 </div>
 
-<div class="resizable-handle" (mousedown)="onMouseDown($event, imageElement.nativeElement, imageContainer.nativeElement)"></div>
-
+<div class="resizable-handle" 
+     (mousedown)="onMouseDown($event, imageElement.nativeElement, imageContainer.nativeElement)"
+     (touchstart)="onMouseDown($event, imageElement.nativeElement, imageContainer.nativeElement)">
+</div>
 
 
