@@ -15,7 +15,9 @@ import { GestureController } from '@ionic/angular';
 })
 export class NewImageCropperComponent{
   @Input() imageUri: any[] = [];
-  sliderHeight: number = 300;
+  sliderHeight: number = 0;
+  sliderHeightMin: number = 0;
+  sliderHeightMax: number = 0;
   sliderOpts = {
     allowTouchMove: false
   };
@@ -41,6 +43,9 @@ export class NewImageCropperComponent{
     if (this.imageUri) {
       console.log('Image URI:', this.imageUri);
     }
+    this.sliderHeightMax = window.innerWidth * 1.29;
+    this.sliderHeightMin = window.innerWidth * 0.509;
+    this.sliderHeight = window.innerWidth * 1;
   }
 
   calculateCropArea(img: HTMLImageElement, container: HTMLElement) {
@@ -112,25 +117,47 @@ export class NewImageCropperComponent{
   //   this.sliderHeight = event.detail.value; // Access the value from the event
   // }
 
-  onMouseDown(event: MouseEvent, imageElement: HTMLImageElement, containerElement: HTMLElement) {
+  onMouseDown(event: MouseEvent | TouchEvent, imageElement: HTMLImageElement, containerElement: HTMLElement) {
+    event.preventDefault(); // Prevent default behavior (e.g., scrolling) on touch devices
+  
+    // Distinguish between mouse and touch events
+    const clientY = (event instanceof MouseEvent) ? event.clientY : event.touches[0].clientY;
+  
     this.calculateCropArea(imageElement, containerElement);
     this.isResizing = true;
-    this.startingY = event.clientY;
+    this.startingY = clientY;
     this.initialHeight = this.sliderHeight;
-
+  
+    // Add event listeners for both mouse and touch
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('mouseup', this.onMouseUp.bind(this));
+  
+    document.addEventListener('touchmove', this.onTouchMove.bind(this));
+    document.addEventListener('touchend', this.onMouseUp.bind(this)); // Reuse onMouseUp for touchend
   }
-
+  
   onMouseMove(event: MouseEvent) {
     if (!this.isResizing) return;
     const dy = event.clientY - this.startingY;
-    this.sliderHeight = Math.min(500, Math.max(200, this.initialHeight + dy));
+    this.sliderHeight = Math.min(this.sliderHeightMax, Math.max(this.sliderHeightMin, this.initialHeight + dy));
   }
-
+  
+  onTouchMove(event: TouchEvent) {
+    if (!this.isResizing) return;
+    const dy = event.touches[0].clientY - this.startingY;
+    this.sliderHeight = Math.min(this.sliderHeightMax, Math.max(this.sliderHeightMin, this.initialHeight + dy));
+  }
+  
   onMouseUp() {
     this.isResizing = false;
+  
+    // Remove mouse event listeners
     document.removeEventListener('mousemove', this.onMouseMove.bind(this));
     document.removeEventListener('mouseup', this.onMouseUp.bind(this));
+  
+    // Remove touch event listeners
+    document.removeEventListener('touchmove', this.onTouchMove.bind(this));
+    document.removeEventListener('touchend', this.onMouseUp.bind(this));
   }
+  
 }
