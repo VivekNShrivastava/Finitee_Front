@@ -16,7 +16,7 @@ import { ECardService } from 'src/app/core/services/e-card/e-card.service';
 export class ECardPage extends BasePage implements OnInit {
   UserId: string = "";
   eCard:ECard=new ECard();
-  userCanavasProfile: UserCanvasProfile = new UserCanvasProfile();
+  userCanvasProfile: UserCanvasProfile = new UserCanvasProfile();
   scanString: string = "";
 
   constructor(
@@ -50,15 +50,15 @@ export class ECardPage extends BasePage implements OnInit {
     // this.userProfile = await this._userProfileService.getUserProfile(this.UserId, this.logInfo.UserId)
     var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId)
     // this.userProfile = res;
-    this.userCanavasProfile = res;
-    this.scanString = config.SACN_QRCODE + this.userProfile.user.Id!;
+    this.userCanvasProfile = res;
+    this.scanString = config.SACN_QRCODE + this.userCanvasProfile.canvasProfile.Id!;
   }
 
   editecard(){
     this.router.navigateByUrl('/edit-e-card');
   }
   openGmail() {
-    const recipient = 'recipient@example.com'; // Replace with the recipient email address
+    const recipient = 'recipient@example.com';
     const subject = 'Your Subject Here';
     const body = 'Your message here.';
     
@@ -67,13 +67,13 @@ export class ECardPage extends BasePage implements OnInit {
     window.open(gmailUrl, '_blank');
   }
   openPhoneDialer() {
-    window.open('tel:' + this.userProfile.user.Phone, '_self');
+    window.open('tel:' + this.userCanvasProfile.canvasProfile, '_self');
   }
   shareContent() {
     if (navigator.share) {
       navigator.share({
         title: 'Check out this e-Card',
-        text: `View the e-Card for ${this.userProfile.user.DisplayName}.`,
+        text: `View the e-Card for ${this.userCanvasProfile.canvasProfile.DisplayName}.`,
         url: window.location.href // Replace with the specific URL you want to share
       }).then(() => {
         console.log('Content shared successfully');
@@ -85,16 +85,16 @@ export class ECardPage extends BasePage implements OnInit {
     }
 
   }
-  async ionViewWillEnter() {
-    console.log("ionViewWillEnter");
-    await this.getEcard();
-  }
+  // async ionViewWillEnter() {
+  //   console.log("ionViewWillEnter");
+  //   await this.getEcard();
+  // }
 
-  async getEcard() {
-    var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
-    this.eCard=res.Ecard;
-    console.log(this.eCard.Name)
-  }
+  // async getEcard() {
+  //   var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
+  //   this.eCard=res.Ecard;
+  //   console.log(this.eCard.Name)
+  // }
 }
 
 
