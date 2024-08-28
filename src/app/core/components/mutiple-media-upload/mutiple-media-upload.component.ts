@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AppConstants } from '../../models/config/AppConstants';
 import { AttachmentHelperService } from '../../services/attachment-helper.service';
-
+import { Photo } from '@capacitor/camera';
 
 @Component({
   standalone: true,
@@ -15,13 +15,15 @@ import { AttachmentHelperService } from '../../services/attachment-helper.servic
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule
+    FormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MultipleMediaUploadComponent implements OnInit {
   @Input() mediaFiles: Array<string> = [];
   @Output() filePathEvent = new EventEmitter<string>();
+  @Output() imagePath = new EventEmitter<string>() ;
+  @Output() fileToUpload = new EventEmitter<any>();
   mediaSaveSubscription!: Subscription;
   mediaCoverSubscription!: Subscription;
   readonly appConstants: any = AppConstants;
@@ -32,7 +34,9 @@ export class MultipleMediaUploadComponent implements OnInit {
   @Input() photoLibrary: number = 0;
   @Input() traitPost: number = 0;
   response: boolean = false;
-  constructor(public attachmentService: AttachmentHelperService) {
+  images: any[] = [];
+  constructor(public attachmentService: AttachmentHelperService,
+  ) {
     this.mediaSaveCallBack();
   }
 
@@ -51,14 +55,17 @@ export class MultipleMediaUploadComponent implements OnInit {
     }
     this.mediaSaveSubscription = this.attachmentService.onMediaSave.subscribe(mediaObj => {
       if (mediaObj != null) {
-        this.filePathEvent.emit(mediaObj.thumbFilePath);
+        // this.filePathEvent.emit(mediaObj.thumbFilePath);
+        this.imagePath.emit(mediaObj);
+        this.fileToUpload.emit(mediaObj);
         console.log("mediaObj", mediaObj)
-        this.uploadFileToserver(mediaObj);
+        // this.uploadFileToserver(mediaObj);
       }
     })
     this.mediaCoverSubscription = this.attachmentService.onMediaCoverSelction.subscribe((mediaObj: any) => {
       if (mediaObj != null) {
-        this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.cover);
+        const aspectRatio = mediaObj.height/mediaObj.width;
+        this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.width, mediaObj.height, aspectRatio, mediaObj.cover);
       }
     })
   }
@@ -67,7 +74,11 @@ export class MultipleMediaUploadComponent implements OnInit {
     event.stopPropagation();
     event.preventDefault();
     console.log(MediaType + "  --  " + SourceType);
-    await this.attachmentService.captureMedia(MediaType, SourceType);
+    const res = await this.attachmentService.captureMedia(MediaType, SourceType);
+    // if(res){
+    //   console.log(res)
+    //   this.imagePath.emit(res)
+    // } 
   }
 
 
@@ -75,8 +86,10 @@ export class MultipleMediaUploadComponent implements OnInit {
     this.isUploadDisabled = true;
     const formData = new FormData();
     formData.append('file', mediaObj.blob, mediaObj.name);
-    if (mediaObj.mediaType == "V")
+    
+    if (mediaObj.mediaType === "V")
       formData.append('file', mediaObj.thumbBlob, mediaObj.thumbName);
+    
     var response: any = await this.attachmentService.uploadFileToServerv2(formData);
     if (response != "error") {
       this.response = true;
@@ -106,5 +119,4 @@ export class MultipleMediaUploadComponent implements OnInit {
       this.mediaSaveSubscription.unsubscribe();
     }
   }
-
 }

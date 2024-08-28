@@ -49,6 +49,20 @@
         </ion-button>
       </ion-buttons>
     </ion-item> -->
+
+    <div class="ion-text-center post-screen-slide">
+      <ion-slides *ngIf="fileToUpload.length > 0" class="post-screen-slide">
+        <ion-slide  *ngFor="let photo of fileToUpload" style="display: block;">
+          <ion-card>
+            <ion-img style="width: 100%;" id="{{post.Id}}-img" [src]="photo.thumbFilePath"></ion-img>   
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+      <ion-card *ngIf="fileToUpload.length <= 0" class="media">
+        <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+      </ion-card>
+    </div>
+
     <ion-popover trigger="viewable-by" side="bottom" alignment="end" [dismissOnSelect]="true" triggerAction="click">
       <ng-template>
         <ion-list>
@@ -70,6 +84,7 @@
       [videoRecDisable]="11"
       [photoLibrary]="11"
       (filePathEvent)="addMedia($event)"
+      (fileToUpload)="fileToUploadToServer($event)"
       [traitPost]="post.PostImages.length">
     </app-multiple-media-upload>
 
@@ -82,7 +97,7 @@
 <ion-footer class="create-btn">
   <ion-button shape="round" expand="block"
     [color]="(post.PostDescription=='' && post.PostImages.length==0) ? 'medium' : 'primary'" 
-    (click)="savePost()"
+    (click)="addPost()"
     [disabled]="saveClicked">
     Create
   </ion-button>

@@ -20,30 +20,35 @@
         <!-- user data -->
         <ion-item lines="none" class="profileBg" style="--overflow:visible;">
           <ng-container slot="start" style="position: relative;">
-            <ion-avatar [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px':'45px' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px' : '45px'}">
+            <ion-avatar
+              [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px':'45px' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px' : '45px'}">
               <img class="business-logo" [src]="appConstants.mediaPrefix + post.CreatedBy!.ProfileImage"
-                   onError="this.src='assets/icons/business/anonymous.svg'" [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%':'100%' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%' : '100%' }"/>
-          </ion-avatar>
-            <ion-label class="fi-name-label" [ngStyle]="{'position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '95px' : 'initial' ,'top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '0px' : 'initial'}">
+                onError="this.src='assets/icons/business/anonymous.svg'"
+                [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%':'100%' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%' : '100%' }" />
+            </ion-avatar>
+            <ion-label class="fi-name-label"
+              [ngStyle]="{'position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '95px' : 'initial' ,'top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '0px' : 'initial'}">
               <h3>{{post.CreatedBy!.UserName}}</h3>
-              <p>3 mins ago <span *ngIf="post.IsEdited === true">(edited)</span></p>
+              <p>{{post.updatedCreatedOn}}<span *ngIf="post.IsEdited === true">(edited)</span></p>
             </ion-label>
             <!-- <ion-icon  size="large"  [name]="beamicon" [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '168px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '-10px' : 'initial'}">
              
             </ion-icon> -->
-             <ion-icon size="large" name="beam-post" [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '165px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '1px' : 'initial'}"></ion-icon>
-            
+            <ion-icon size="large" name="beam-post"
+              [ngStyle]="{'display': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'block' : 'none','position': (post.BeamedFromUser && post.BeamedFromUser.Id) ? 'absolute' : 'relative', 'right': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '165px' : 'initial','top': (post.BeamedFromUser && post.BeamedFromUser.Id) ? '1px' : 'initial'}"></ion-icon>
+
             <ng-contianer *ngIf="post.BeamedFromUser && post.BeamedFromUser.Id" style="display: contents;">
               <ion-avatar style="position: absolute; left: 21px; top: 23px; width: 40px; height: 40px;">
                 <img class="business-logo" [src]="appConstants.mediaPrefix + post.BeamedFromUser!.ProfileImage"
-                     onError="this.src='assets/icons/business/anonymous.svg'" style="width: 35px; height: 35px;" />
+                  onError="this.src='assets/icons/business/anonymous.svg'" style="width: 35px; height: 35px;" />
               </ion-avatar>
-              <ion-label class="fi-name-label" style="position: absolute; left: 72px; width: 88px; height: auto; top: 1px;">
+              <ion-label class="fi-name-label"
+                style="position: absolute; left: 72px; width: 88px; height: auto; top: 1px;">
                 <h3>{{post.BeamedFromUser!.UserName}}</h3>
               </ion-label>
             </ng-contianer>
           </ng-container>
-          
+
           <ion-buttons *ngIf="post.CreatedBy.Id==logInfo.UserId" slot="end" (click)="openPostOption(post)">
             <ion-button shape="round">
               <ion-icon name="three-dots"></ion-icon>
@@ -63,12 +68,14 @@
           <p>{{post.PostDescription}}</p>
         </div>
         <div *ngIf="post.PostDescription.length > 500">
-          <p *ngIf="!post.showFullDescription" (click)="toggleDescription(post)">{{ post.PostDescription.slice(0, 500) }} ...See more</p>
-          <p *ngIf="post.showFullDescription" (click)="toggleDescription(post)">{{ post.PostDescription }}...See less</p>
+          <p *ngIf="!post.showFullDescription" (click)="toggleDescription(post)">{{ post.PostDescription.slice(0, 500)
+            }} ...See more</p>
+          <p *ngIf="post.showFullDescription" (click)="toggleDescription(post)">{{ post.PostDescription }}...See less
+          </p>
         </div>
       </ion-text>
-      
-      
+
+
       <!-- images or video slide -->
       <div class="ion-text-center  post-screen-slide">
         <ion-slides [pager]="post.PostImages.length>1 ? true : false"
@@ -98,7 +105,7 @@
                 <ion-icon range-right name="pause"></ion-icon>
               </ion-range> -->
 
-              <ion-img id="{{post.Id}}-img" *ngIf="!postImage.includes('VIDEO')" (ionImgDidLoad)="ionImgDidLoad($event)"
+              <ion-img style="width: 100%; height: 100%;" id="{{post.Id}}-img" *ngIf="!postImage.includes('VIDEO')" (ionImgDidLoad)="ionImgDidLoad($event)"
                 [src]="appConstants.mediaPrefix + postImage">
               </ion-img>
             </ion-card>
@@ -114,6 +121,7 @@
           </p>
         </ion-text> -->
       </div>
+      
       <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
         <div class="favour-n-beam">
           <ion-buttons>
@@ -144,18 +152,32 @@
       <!-- <hr style="background-color:  lightgray; margin-top: 5px; margin-bottom: 0px;"> -->
     </ion-list>
   </ng-container>
+  <ng-container *ngIf="!inflowsLoaded">
+    <ion-card class="header-card">
+      <ion-card-header>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-card-header>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-card-content>
+        <ion-skeleton-text style="height:100px" animated></ion-skeleton-text>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+  <ion-infinite-scroll *ngIf="isInflows" threshold="5000px" (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content loadingText="Loading more data..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ng-container>
 <ng-container *ngIf="postViewType==appConstants.POST_VIEW_TYPE.PINTREST">
   <ion-slides [options]="slideOptions">
     <ion-slide *ngFor="let post of postList" style="display: block;">
       <div class="ion-text-center  post-screen-slide postBg">
         <ion-slides [pager]="post.PostImages.length>1 ? true : false" class="post-screen-slide"
-          *ngIf="post.PostImages && post.PostImages.length>0">
+          *ngIf="post.PostImages && post.PostImages.length>0" [style.height]="slideHeight">
           <ion-slide *ngFor="let postImage of post.PostImages">
             <!--  <ion-card>
               <ion-img [src]="appConstants.mediaPrefix + postImage"></ion-img>
             </ion-card> -->
-            <ion-card>
+            <ion-card [style.height]="slideHeight">
               <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
                 {{post.BelongsToNodeName}}
               </span>
@@ -401,8 +423,9 @@
                     <span></span>
                     <!-- <h4 (click)="replyComment(comment)">Reply</h4> -->
                     <h4 (click)="repliesForComment('replyToComment' ,comment)">Reply</h4>
-                    <h4 *ngIf="comment.CommentReplyCount > 0" (click)="topThreeReplies(comment)">{{comment.CommentReplyCount}} Replies</h4>
-                  </div>                        
+                    <h4 *ngIf="comment.CommentReplyCount > 0" (click)="topThreeReplies(comment)">
+                      {{comment.CommentReplyCount}} Replies</h4>
+                  </div>
                 </ion-item>
                 <!-- replies -->
                 <!-- <ion-list class="replies" *ngIf=" comment.showReply === 'true' + (comment?.Id?.toString() || '') && IsReplySectionOpen"> -->
@@ -479,7 +502,7 @@
           <ion-avatar slot="start">
             <!-- <img *ngIf="logInfo.UserId === selectedPost.CreatedBy.Id" [src]="appConstants.mediaPrefix + selectedPost.CreatedBy!.ProfileImage"
               onError="this.src='assets/icons/business/anonymous.svg'" /> -->
-            <img  [src]="appConstants.mediaPrefix + logInfo.UserProfilePhoto"
+            <img [src]="appConstants.mediaPrefix + logInfo.UserProfilePhoto"
               onError="this.src='assets/icons/business/anonymous.svg'" />
           </ion-avatar>
           <ion-input #commentOrReplyInputelm placeholder="Write a comment" autocapitalize="on"
@@ -523,13 +546,15 @@
                     [src]="appConstants.mediaPrefix + commentForReplySection[0].CreatedBy!.ProfileImage"
                     onError="this.src='assets/icons/business/anonymous.svg'" />
                 </ion-avatar>
-              </div>  
+              </div>
               <ion-list>
                 <div>
                   <ion-item lines="none">
                     <ion-label>
-                      <h3 (click)="openUser(commentForReplySection[0].CreatedBy)">{{commentForReplySection[0].CreatedBy!.UserName}}</h3>
-                      <p>2 mins ago commented <span *ngIf="commentForReplySection[0].IsEdited === true">(edited)</span> </p>
+                      <h3 (click)="openUser(commentForReplySection[0].CreatedBy)">
+                        {{commentForReplySection[0].CreatedBy!.UserName}}</h3>
+                      <p>2 mins ago commented <span *ngIf="commentForReplySection[0].IsEdited === true">(edited)</span>
+                      </p>
                       <!-- <p *ngIf="comment.IsEdited === true">(edited)</p> -->
                     </ion-label>
                     <ion-buttons slot="end">
@@ -561,7 +586,7 @@
                   </ion-item>
                 </div>
                 <!-- replies -->
-                <ion-list class="replies" >
+                <ion-list class="replies">
                   <ion-item lines="none" *ngFor="let reply of repliesList">
                     <ion-avatar slot="start">
                       <img (click)="openUser(reply.CreatedBy)"
@@ -616,8 +641,8 @@
             <!-- <img [src]="appConstants.mediaPrefix + logInfo.UserProfilePhoto"
               onError="this.src='assets/icons/business/anonymous.svg'" /> -->
           </ion-avatar>
-          <ion-input #commentOrReplyInputelm placeholder="Write a comment" autocapitalize="on" [(ngModel)]="commentOrReplyInput"
-          (ionChange)="onCommentOrReplyInputChange($event)"></ion-input>
+          <ion-input #commentOrReplyInputelm placeholder="Write a comment" autocapitalize="on"
+            [(ngModel)]="commentOrReplyInput" (ionChange)="onCommentOrReplyInputChange($event)"></ion-input>
           <ion-buttons slot="end" class="marginLeftRight">
             <ion-button style="margin-right: -10px;" (click)="addUpdateComment()">
               <img [src]="commentOrReplyInput=='' ? 'assets/icon/fin/fa.png' : 'assets/icon/fin/fa1.png'" />

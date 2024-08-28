@@ -1,20 +1,23 @@
 <ion-content style="border-radius: 100px 100px 0 0;">
   <div style="width: 100%;height:100%;" class="whiteblue">
-    <div *ngIf="!isPrompt" class="mapclass" style="position: relative;height: 100%;width:100%; overflow: hidden;">
-      <div class="top-result-container">
-        <div class="c-fab-button" *ngIf="searchCriteria">
-          <div (click)="showSonarSearchResultInListView(true)" > {{resultCount}} results </div>
+    <div *ngIf="!isPrompt" class="mapclass"
+      style="position: relative;height: 100%;width:100%; overflow: hidden;">
+      <div class="top-result-container" style="width: 95%;">
+        <div class="c-fab-button" *ngIf="searchCriteria" style="width: 290px;">
+          <div (click)="showSonarSearchResultInListView(true)"> {{resultCount}}
+            results </div>
           <div style="line-height: 11px;">
-            <ion-icon style="font-size: 24px;" name="refresh-outline" (click)="refreshMarkerOne()"></ion-icon>
+            <ion-icon style="font-size: 24px;" name="refresh-outline"
+              (click)="refreshMarkerOne()"></ion-icon>
           </div>
           <div style="line-height: 5px;">
-            <ion-icon style="font-size: 16px;margin-right: 10px;" name="close-icon" (click)="clearResults(true)"></ion-icon>
+            <ion-icon style="font-size: 16px;margin-right: 10px;"
+              name="close-icon" (click)="clearResults(true)"></ion-icon>
           </div>
         </div>
-        <ion-button (click)="businessPage()">click me</ion-button>
 
         <!-- *ngIf="_commonService?.viewingUsers?.length" -->
-        
+
         <!--removed viewing functionality  -->
         <!-- <div (click)="onViewingClick()" class="c-fab-button" *ngIf="viewListNumber">
           <ion-icon style="width: 25px;height: 19px;" name="viewing-binoculars"></ion-icon>
@@ -23,38 +26,79 @@
             <ion-icon style="font-size: 22px;padding-right: 5px;" name="chevron-forward-outline"></ion-icon>
           </div>
         </div> -->
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+          <div class="greet-container">
+            <div (click)="viewGreetingDetails()" class="c-fab-button">
+              <ion-icon style="font-size: 26px;"
+                name="greeting-no-circle"></ion-icon>
+              <div *ngIf="greetListNumber > 0"></div>
+              <div style="line-height: 5px;">
+                <ion-icon style="font-size: 22px;padding-right: 5px;"
+                  name="chevron-forward-outline"></ion-icon>
+              </div>
+            </div>
+            <div class="greetNumberDot"><p class="greetNumber">{{greetListNumber}} </p></div>  
+          </div>
+          
 
-        <div (click)="viewGreetingDetails()" class="c-fab-button">
-          <ion-icon style="font-size: 26px;" name="greeting-no-circle"></ion-icon>
-          <div *ngIf="greetListNumber > 0"> {{greetListNumber}} </div>
-          <div style="line-height: 5px;">
-            <ion-icon style="font-size: 22px;padding-right: 5px;" name="chevron-forward-outline"></ion-icon>
+          <div style="display: flex; flex-direction: column;">
+
+            <ion-icon style="font-size: 60px;" name="sonar-event"></ion-icon>
+
+            <ion-icon style="font-size: 60px;" name="sonar-donation"></ion-icon>
+
           </div>
         </div>
 
-
       </div>
-      <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; align-items: center;" *ngIf="!isLocationTurnedOn && isNativeLocationOn == true">
-        <img src="../../../assets/icons/screen-wise-icons/Sonar icons/Sonar service not available icon.svg">
+      <div
+        style="height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; align-items: center;"
+        *ngIf="!isLocationTurnedOn && isNativeLocationOn == true">
+        <img
+          src="../../../assets/icons/screen-wise-icons/Sonar icons/Sonar service not available icon.svg">
         <p>Sonar Service is not available</p>
       </div>
       <div id="map_canvas" #map_canvas style="height:100%;"> </div>
 
-      <div *ngIf="isLocationTurnedOn" class="icons-list" style="display: flex;flex-direction: column;gap: 10px;align-items: center;">
+      <div
+        style="display: flex;flex-direction: column;gap: 10px;align-items: center;">
+        <ion-fab-button *ngIf="isBackEnabled && user?.UserTypeId == '1'"
+          class="map-fab-button2">
+          <ion-icon style="font-size: 30px;" name="sonar_event"></ion-icon>
+        </ion-fab-button>
 
-        <ion-fab-button (click)="openSonarSetting()" *ngIf="isBackEnabled && user?.UserTypeId == '1'"
+        <ion-fab-button *ngIf="isBackEnabled && user?.UserTypeId == '1'"
+          class="map-fab-button2">
+          <ion-icon style="font-size: 30px;" name="sonar_donations"></ion-icon>
+        </ion-fab-button>
+      </div>
+
+      <div *ngIf="isLocationTurnedOn" class="icons-list"
+        style="display: flex;flex-direction: column;gap: 10px;align-items: center;">
+
+        <!-- <ion-fab-button  *ngIf="isBackEnabled && user?.UserTypeId == '1'"
+          class="map-fab-button2">
+          <ion-icon style="font-size: 30px;" name="sonar-event"></ion-icon>
+        </ion-fab-button> -->
+
+        <ion-fab-button (click)="openSonarSetting()"
+          *ngIf="isBackEnabled && user?.UserTypeId == '1'"
           class="map-fab-button2">
           <ion-icon style="font-size: 30px;" name="sonar-setting"></ion-icon>
         </ion-fab-button>
 
         <!-- Visibe Icon -->
-        <ion-fab-button (click)="applySetting()" *ngIf="isBackEnabled && user?.UserTypeId == '1'"
+        <ion-fab-button (click)="applySetting()"
+          *ngIf="isBackEnabled && user?.UserTypeId == '1'"
           class="map-fab-button2">
-          <ion-icon style="font-size: 30px;" name="sonar-make-invisible"></ion-icon>
+          <ion-icon style="font-size: 30px;"
+            name="sonar-make-invisible"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button (click)="applySetting()" *ngIf="!isBackEnabled && user?.UserTypeId == '1'"
+        <ion-fab-button (click)="applySetting()"
+          *ngIf="!isBackEnabled && user?.UserTypeId == '1'"
           class="map-fab-button2">
-          <ion-icon style="font-size: 30px;" name="sonar-make-visible"></ion-icon>
+          <ion-icon style="font-size: 30px;"
+            name="sonar-make-visible"></ion-icon>
         </ion-fab-button>
         <!-- Visibe Icon -->
 
@@ -76,13 +120,15 @@
           <ion-icon name="bluemenu"></ion-icon>
         </ion-fab-button> -->
 
-        <ion-fab-button (click)="onClickGetCurrentPosition()" class="map-fab-button2">
+        <ion-fab-button (click)="onClickGetCurrentPosition()"
+          class="map-fab-button2">
           <ion-icon style="font-size: 35px;" name="bluecur"></ion-icon>
         </ion-fab-button>
 
         <!-- sonar search icon -->
         <ion-fab-button size="large" color="primary"
-          style="height: 62px;width: 62px;margin: auto;--box-shadow: 2px 2px 7px #0B113157;" (click)="searchMap()" [disabled]="!isBackEnabled">
+          style="height: 62px;width: 62px;margin: auto;--box-shadow: 2px 2px 7px #0B113157;"
+          (click)="searchMap()" [disabled]="!isBackEnabled">
           <ion-icon name="bluesearch" style="font-size: 35px;"></ion-icon>
         </ion-fab-button>
 
@@ -90,30 +136,38 @@
     </div>
     <div *ngIf="isNativeLocationOn == false">
       <div class="permission-message">
-        <p class="darkbf" style="margin-bottom: 0px;">To see places near you, turn on location services.</p>
-        <p class="darkbf" style="margin-top: 9px;">You can also search friends with greetings.</p>
-        <ion-button color="secondary" style="text-transform: capitalize;" (click)="openNativeLocation()">
+        <p class="darkbf" style="margin-bottom: 0px;">To see places near you,
+          turn on location services.</p>
+        <p class="darkbf" style="margin-top: 9px;">You can also search friends
+          with greetings.</p>
+        <ion-button color="secondary" style="text-transform: capitalize;"
+          (click)="openNativeLocation()">
           Turn on Location Service
         </ion-button>
       </div>
     </div>
   </div>
 
-  <ion-modal id="sonarSettingModal" #sonarSettingModal [initialBreakpoint]="0.36" [breakpoints]="[0, 0.36]" >
+  <ion-modal id="sonarSettingModal" #sonarSettingModal
+    [initialBreakpoint]="0.36" [breakpoints]="[0, 0.36]">
     <ng-template>
       <sonar-settings (onCloseSetting)="closeSetting()"></sonar-settings>
     </ng-template>
   </ion-modal>
 
-  <ion-modal #markerDetailModal [initialBreakpoint]="countedHeight"    [breakpoints]="[0, countedHeight, 0.70]" handle="false">
+  <ion-modal #markerDetailModal [initialBreakpoint]="countedHeight"
+    [breakpoints]="[0, countedHeight, 0.70]" handle="false">
     <ng-template>
-      <div (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
-        <app-marker-detail [markerCurrentIndex]="markerCurrentIndex" [markerList]="markerListMainResult"
-          (onCloseDetails)="closeMarkerDetails()" (onShowPrevious)="onShowPreviousMarker($event)" (onShowNext)="onShowNextMarker($event)"
+      <div (touchstart)="swipe($event, 'start')"
+        (touchend)="swipe($event, 'end')">
+        <app-marker-detail [markerCurrentIndex]="markerCurrentIndex"
+          [markerList]="markerListMainResult"
+          (onCloseDetails)="closeMarkerDetails()"
+          (onShowPrevious)="onShowPreviousMarker($event)"
+          (onShowNext)="onShowNextMarker($event)"
           (panMapToCurrLoc)="panMapToCurrLoc($event)">
         </app-marker-detail>
       </div>
     </ng-template>
   </ion-modal>
 </ion-content>
-

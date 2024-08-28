@@ -279,6 +279,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sidemenu/e-card/e-card.module').then((m) => m.ECardModule),
   },
   {
+  path: 'edit-e-card',
+  loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then((m) => m.EditECardPageModule),
+},
+  {
     path: 'media-viewer',
     loadChildren: () => import('./pages/media-viewer/media-viewer.module').then((m) => m.MediaViewerPageModule),
   },
@@ -361,7 +365,12 @@ const routes: Routes = [
   { 
     path: 'edit-trait',
     loadChildren: () => import('./pages/home/free-user-canvas/edit-trait-page/edit-trait-page.component.module').then( m => m.EditTraitModule)
+  },
+  {
+    path: 'edit-e-card',
+    loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then( m => m.EditECardPageModule)
   }
+
 
 
 

@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { BasePage } from 'src/app/base.page';
 import { UserProfile, UserCanvasProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
-
 import * as config from 'src/app/core/models/config/ApiMethods';
 
 
@@ -22,7 +21,8 @@ export class ECardPage extends BasePage implements OnInit {
   constructor(
     private authService: AuthService,
     private _activatedRoute: ActivatedRoute,
-    private _userProfileService: ProfileService) {
+    private _userProfileService: ProfileService,
+    private router: Router) {
     super(authService);
     if (this._activatedRoute.snapshot.params["UserId"]){
       this.UserId = this._activatedRoute.snapshot.params["UserId"];
@@ -48,9 +48,39 @@ export class ECardPage extends BasePage implements OnInit {
   async ngOnInit() {
     // this.userProfile = await this._userProfileService.getUserProfile(this.UserId, this.logInfo.UserId)
     var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId)
-     this.userProfile = res;
+    // this.userProfile = res;
     this.userCanavasProfile = res;
     this.scanString = config.SACN_QRCODE + this.userProfile.user.Id!;
-    console.log(this.scanString)
+  }
+
+  editecard(){
+    this.router.navigateByUrl('/edit-e-card');
+  }
+  openGmail() {
+    const recipient = 'recipient@example.com'; // Replace with the recipient email address
+    const subject = 'Your Subject Here';
+    const body = 'Your message here.';
+    
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    window.open(gmailUrl, '_blank');
+  }
+  openPhoneDialer() {
+    window.open('tel:' + this.userProfile.user.Phone, '_self');
+  }
+  shareContent() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Check out this e-Card',
+        text: `View the e-Card for ${this.userProfile.user.DisplayName}.`,
+        url: window.location.href // Replace with the specific URL you want to share
+      }).then(() => {
+        console.log('Content shared successfully');
+      }).catch((error) => {
+        console.error('Error sharing content:', error);
+      });
+    } else {
+      console.error('Web Share API not supported in this browser.');
+    }
   }
 }

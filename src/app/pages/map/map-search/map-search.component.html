@@ -62,7 +62,7 @@
             </Td>
           </Tr>
           <Tr>
-            <ion-button class="locationsearch" shape="round"> Set Location</ion-button>
+            <ion-button class="locationsearch" shape="round"(click)="openMap()"> Set Location</ion-button>
             <!-- <Td>
               Location
             </Td>
@@ -110,7 +110,7 @@
       </ion-button>
     </div> -->
     <div style="padding:20px">
-      <ion-button *ngIf="searchMode=='N'" class="search-button" expand="full" shape="round" (click)="oneTimeSearch()">
+      <ion-button *ngIf="searchMode=='N'" class="search-button" expand="full" shape="round" (click)="triggerSearch()">
         Search
       </ion-button>
     </div>

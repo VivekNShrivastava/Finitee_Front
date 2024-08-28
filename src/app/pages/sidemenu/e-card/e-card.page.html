@@ -5,116 +5,86 @@
       </ion-back-button>
     </ion-buttons>
     <ion-title>e-Card</ion-title>
+    <ion-buttons slot="end">
+      <ion-edit-button slot="end" (click)="editecard()" style="margin: 15px;">
+        <img src="../../../../assets/icons/eCard icons/Edit icon.svg" alt="" style="height: 20px">
+      </ion-edit-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <ion-list  >
     <ion-card>
       <ion-card-header>
         <ion-avatar>
-          <img [src]="userProfile.user.ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" />
+          <div>
+            <img src="{{appConstants.mediaPrefix + userCanavasProfile.canvasProfile.ProfileImage}}" style="width: 100%; height:100%; object-fit: cover;"
+            onError="this.src='assets/icons/business/anonymous.svg'" onError="this.src='assets/icons/business/anonymous.svg'" />
+          </div>
         </ion-avatar>
+        
         <ion-thumbnail *ngIf="scanString">
-          <qrcode [qrdata]="scanString" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
+          <qrcode [qrdata]="scanString" [width]="100" [colorDark]="'#000000'" [colorLight]="'#E8F7FE'" [errorCorrectionLevel]="'M'"></qrcode>
         </ion-thumbnail>
+        
         <!-- <ion-thumbnail>
           <img src="assets/qr.png" alt="eCard QR" />
         </ion-thumbnail> -->
       </ion-card-header>
       <ion-card-content>
-        <h3>{{userProfile.user.DisplayName}}</h3>
-        <h5>{{userProfile.user.About}}</h5>
+        <h1>OgreOgre</h1>
+        <h2 style="font-weight: bold; margin: -7px; margin-right: 1px;">Ogre123</h2>
+        <!-- <h3>{{userProfile.user.DisplayName}}</h3>
+        <h5>{{userProfile.user.About}}</h5> -->
       </ion-card-content>
     </ion-card>
-    <ion-item>
-      <ion-text>
-        Phone
-      </ion-text>
-      <h3>
-        {{userProfile.user.Phone}}
-      </h3>
-        <!-- <ion-buttons slot="end">
-        <ion-button shape="round" (click)="presentPopover($event)">
-          <ion-icon style="font-size: 15px" name="three-dots"></ion-icon>
-        </ion-button>
-      </ion-buttons> -->
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        Email
-      </ion-text>
-      <h3>
-        {{userProfile.user.Email}}
-      </h3>
-
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        Website
-      </ion-text>
-      <h3>
-        {{userProfile.user.Website}}
-      </h3>
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        Address 1
-      </ion-text>
-      <h3>
-        {{userProfile.user.Address.AddressLine1}}
-      </h3>
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        Address 2
-      </ion-text>
-      <h3>
-        {{userProfile.user.Address.AddressLine2}}
-      </h3>
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        City
-      </ion-text>
-      <h3>
-        {{userProfile.user.Address.CityId}}
-      </h3>
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        State
-      </ion-text>
-      <h3>
-        {{userProfile.user.Address.StateId}}
-      </h3>
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        Zip
-      </ion-text>
-      <h3>
-        {{userProfile.user.Address.ZipCode}}
-      </h3>
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        Country
-      </ion-text>
-      <h3>
-        {{userProfile.user.Address.CountryId}}
-      </h3>
-    </ion-item>
-    <ion-item>
-      <ion-text>
-        Contact Person
-      </ion-text>
-      <h3 style="margin-left: 50px;">
-        {{userProfile.user.FullName}}
-      </h3>
-    </ion-item>
+    <ion-icons>
+      <div class="icons-container">
+        <div class="icon-style">
+            <img src="../../../../assets/icons/eCard icons/Email icon dark.svg" alt="Phone Icon" (click)="openGmail()">
+        </div>
+        <div class="icon-style">
+          <img src="../../../../assets/icons/eCard icons/Website icon light.svg" alt="Location Icon">
+        </div>
+        <div class="icon-style">
+          <img src="../../../../assets/icons/eCard icons/Phone icon light.svg" alt="Phone Icon" (click)="openPhoneDialer()">
+        </div>     
+        <div class="icon-style">
+          <img src="../../../../assets/icons/eCard icons/Refer icon light.svg" alt="Share Icon" (click)="shareContent()">
+        </div>        
+      </div>
+    </ion-icons>
+    
+      <ion-item >
+        <ion-text>Phone</ion-text>
+        <!-- <h3>{{userProfile.user.Phone}}</h3> -->
+         <h3>02228545164</h3>
+      </ion-item>
+      <ion-item>
+        <ion-text>Email</ion-text>
+        <!-- <h3>{{userProfile.user.Email}}</h3> -->
+         <h3>OgreOgre3rd2gmail.com</h3>
+      </ion-item>
+      <ion-item >
+        <ion-text>Website</ion-text>
+        <!-- <h3>{{userProfile.user.Website}}</h3> -->
+         <h3>www.finitee.com</h3>
+      </ion-item>
+      <ion-item >
+        <ion-text>LinkedIn</ion-text>
+        <!-- <h3>{{userProfile.user.LinkedIn}}</h3> -->
+         <h3>www.Linkedin.com</h3>
+      </ion-item>
+      <ion-item >
+        <ion-text></ion-text>
+        <!-- <h3>{{userProfile.user.LinkedIn}}</h3> -->
+      </ion-item>
+      
   </ion-list>
+  
 </ion-content>
+
 <!-- <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
     <ion-text>Visible to</ion-text>

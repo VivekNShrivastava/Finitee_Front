@@ -122,9 +122,11 @@ export class GreetingViewComponent implements OnInit, OnDestroy {
 
   getGreetingIcon(userInfo: any, icon?: string){
     var iconName = "greeting";
-    // console.log(userInfo.Id);
-    if(userInfo.Id.includes('sent')){
-      console.log('true');
+    if(userInfo?.Status === null){
+      iconName = 'greeting-blink'
+    }
+    else if(userInfo?.CreatedBy?.Id.includes('sent')){
+      // console.log('true');
       iconName = 'greeting-sent';
     } 
     else if(icon && icon === "greeting-sent"){
