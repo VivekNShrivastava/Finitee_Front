@@ -41,13 +41,13 @@
           </div>
           
 
-          <div style="display: flex; flex-direction: column;">
+          <!-- <div class="iccon-ontainer" *ngIf="showIcons"style="display: flex; flex-direction: column;">
 
             <ion-icon style="font-size: 60px;" name="sonar-event"></ion-icon>
 
             <ion-icon style="font-size: 60px;" name="sonar-donation"></ion-icon>
 
-          </div>
+          </div> -->
         </div>
 
       </div>
@@ -156,18 +156,18 @@
   </ion-modal>
 
   <ion-modal #markerDetailModal [initialBreakpoint]="countedHeight"
-    [breakpoints]="[0, countedHeight, 0.70]" handle="false">
-    <ng-template>
-      <div (touchstart)="swipe($event, 'start')"
-        (touchend)="swipe($event, 'end')">
-        <app-marker-detail [markerCurrentIndex]="markerCurrentIndex"
-          [markerList]="markerListMainResult"
-          (onCloseDetails)="closeMarkerDetails()"
-          (onShowPrevious)="onShowPreviousMarker($event)"
-          (onShowNext)="onShowNextMarker($event)"
-          (panMapToCurrLoc)="panMapToCurrLoc($event)">
-        </app-marker-detail>
-      </div>
-    </ng-template>
-  </ion-modal>
+  [breakpoints]="[0, countedHeight, 0.70]" handle="false">
+  <ng-template>
+    <div (touchstart)="swipe($event, 'start')"
+      (touchend)="swipe($event, 'end')">
+      <app-marker-detail [markerCurrentIndex]="markerCurrentIndex"
+        [markerList]="markerListMainResult"
+        (onCloseDetails)="closeMarkerDetails()"
+        (onShowPrevious)="onShowPreviousMarker($event)"
+        (onShowNext)="onShowNextMarker($event)"
+        (panMapToCurrLoc)="panMapToCurrLoc($event)">
+      </app-marker-detail>
+    </div>
+  </ng-template>
+</ion-modal>
 </ion-content>

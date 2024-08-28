@@ -207,6 +207,7 @@ ion-modal {
 ion-modal::part(backdrop) {
   background: rgba(40, 80, 120, 1);
   opacity: 1;
+ 
 }
 
 /* ion-modal ion-toolbar {
@@ -968,8 +969,18 @@ ion-modal>.ion-page {
   margin-top: 14px;
   --background:#F6F6F6;
 
+}
 
+.custom-search-modal>.ion-page{
+  overflow: visible;
+}
 
+.custom-search-modal{
+  overflow: visible;
+}
+
+.custom-search-modal .modal-wrapper{
+  overflow: visible;
 }
 
 .modal-wrapper,

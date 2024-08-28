@@ -1,0 +1,20 @@
+<p>starts here</p>
+<div class="flexible-div" [style.height.px]="sliderHeight">
+  <ion-slides [options]="sliderOpts" [style.height.px]="sliderHeight">
+    <ion-slide *ngFor="let image of imageUri; let i = index">
+      <div class="image-container" #imageContainer>
+        <img 
+          [src]="image.filePath"
+          class="movable-image"
+          #imageElement
+          (load)="calculateCropArea(imageElement, imageContainer)"
+        />
+      </div>
+    </ion-slide>
+  </ion-slides>
+</div>
+
+<div class="resizable-handle" (mousedown)="onMouseDown($event, imageElement.nativeElement, imageContainer.nativeElement)"></div>
+
+
+

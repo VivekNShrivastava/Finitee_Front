@@ -17,6 +17,10 @@ export const COMMON_ROUTE = `${environment.baseUrl}Common/`;
 
 //Login
 export const API = {
+
+    ECARD_ROLODEX:{
+        GETECARD: `${environment.baseUrl}EcardRolodex/GetEcard`,
+    },
     USER_PROFILE: {
         GET: `${environment.baseUrl}User/UserProfile`,
         GETUSERDETAILSASPRIVACY: `${environment.baseUrl}User/GetUserDetailsAsPerPrivacy`,

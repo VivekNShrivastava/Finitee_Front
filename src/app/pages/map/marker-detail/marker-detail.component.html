@@ -13,11 +13,7 @@
     [ngClass]="{'userimg': currentItem.entity !== 'U', 'userimgevent': currentItem.entity !== 'U'}" class="userimg"
     [src]="appConstants.mediaPrefix + (currentItem.Image)" (error)="onError($event, currentItem.entity)" />
 
-
-
-
   <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>
-
 
 </ion-row>
 
@@ -25,12 +21,12 @@
     <ion-card-header [ngClass]="{'followeruser': currentItem.entity !== 'U', 'followeruserevent': currentItem.entity === 'E'}"  style="background-color:  #EAF1F4;">
       <ion-text class="ion-text-center name">{{currentItem.Title}}</ion-text>
       <ion-card-subtitle class="fi-multiline-truncate username">@{{currentItem.Description}} | 100 Followers</ion-card-subtitle>
-    </ion-card-header>
+    < /ion-card-header>
   </ion-row> -->
 
 <ion-row class="firstrow">
 
-  <img *ngIf="currentItem.entity=='U' " (click)="openUser(currentItem)" class="userimg"
+ <img *ngIf="currentItem.entity=='U' " (click)="openUser(currentItem)" class="userimg"
     src="{{appConstants.mediaPrefix + (currentItem.ProfileImage || currentItem.UserProfileImage) }}"
     onError="this.src='assets/icons/business/anonymous.svg'" />
   <ion-icon name="close-icon" class="closecross" (click)="closeDetails()"></ion-icon>

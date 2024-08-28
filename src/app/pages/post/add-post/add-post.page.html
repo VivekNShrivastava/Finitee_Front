@@ -26,7 +26,7 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
     <div style=" display: flex; flex-direction: column; text-align: center; margin-top: 5px;">
       <ion-label class="fi-name-label postowner-name">
          
-        <h3 style="font-size: 16px; font-weight: 600;">Nisarg Barot</h3>
+        <h3 style="font-size: 16px; font-weight: 600;">{{paramsData.DisplayName}}</h3>
         
      </ion-label>
      <p class="post-days">1 day ago</p>
@@ -190,7 +190,7 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
 
 
     <!--privacy-->
-
+    <!-- this is used only for donation post -->
     <ion-item lines="none" id="viewable-by" class="item-selection" *ngIf="paramsData.isDonationPost">
       <ion-input placeholder="Privacy" value="{{_commonService.getPrivacyFullValue(post.Privacy)}}"
         [(ngModel)]="post.Privacy"></ion-input>

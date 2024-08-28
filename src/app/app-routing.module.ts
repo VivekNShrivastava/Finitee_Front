@@ -166,20 +166,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/post/add-post/add-post.module').then(m => m.AddPostModule)
   },
   {
+    path: 'post/add-post-test',
+    loadChildren: () => import('./pages/post/add-post-test/add-post-test.module').then(m => m.AddPostTestPageModule)
+  },
+  {
     path: 'post/update-post',
     loadChildren: () => import('./pages/post/update-post/update-post.module').then(m => m.UpdatePostModule)
   },
   {
     path: 'business-user-canvas-other',
     loadChildren: () => import('./pages/home/business-user-canvas/business-canvas.module').then((m) => m.BusinessCanvasPageModule),
-  },
-  {
-    path: 'business-user-canvas',
-    loadChildren: () => import('./pages/home/business-user-canvas/business-canvas.module').then((m) => m.BusinessCanvasPageModule),
-  },
-  {
-    path: 'business-user-canvas-test',
-    loadChildren: () => import('./pages/home/business-user-canvas-test/business-user-canvas-test.module').then(m => m.BusinessUserCanvasTestModule),
   },
   {
     path: 'business/edit-business-user-profile',
@@ -279,10 +275,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sidemenu/e-card/e-card.module').then((m) => m.ECardModule),
   },
   {
-  path: 'edit-e-card',
-  loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then((m) => m.EditECardPageModule),
-},
-  {
     path: 'media-viewer',
     loadChildren: () => import('./pages/media-viewer/media-viewer.module').then((m) => m.MediaViewerPageModule),
   },
@@ -367,6 +359,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/free-user-canvas/edit-trait-page/edit-trait-page.component.module').then( m => m.EditTraitModule)
   },
   {
+    path: 'add-post-test',
+    loadChildren: () => import('./pages/post/add-post-test/add-post-test.module').then( m => m.AddPostTestPageModule)
+  },
+  {
     path: 'edit-e-card',
     loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then( m => m.EditECardPageModule)
   }
@@ -386,3 +382,4 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule { }
+
