@@ -361,6 +361,10 @@ const routes: Routes = [
   {
     path: 'add-post-test',
     loadChildren: () => import('./pages/post/add-post-test/add-post-test.module').then( m => m.AddPostTestPageModule)
+  },
+  {
+    path: 'edit-e-card',
+    loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then( m => m.EditECardPageModule)
   }
 
 
@@ -378,3 +382,4 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule { }
+

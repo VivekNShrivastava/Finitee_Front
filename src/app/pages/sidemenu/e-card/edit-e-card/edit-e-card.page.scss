@@ -1,0 +1,81 @@
+/* edit-e-card.page.scss */
+
+.edit-card-container {
+  padding: 16px;
+
+  ion-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border:1.75px solid #707070;
+    background: #F0F5F7;
+  }
+
+  ion-card-content {
+    padding: 0;
+    
+    
+    ion-grid {
+      width: 100%;
+      
+      .table-row {
+        display: flex;
+        align-items: center;
+        border-bottom: 1.75px solid #707070; /* Border between rows */
+        &:last-child {
+          border-bottom: none; /* No border for the last row */
+        }
+      }
+
+      .table-cell {
+        display: flex;
+        padding: 12px;
+        border-right: 1.75px solid #707070;
+        // border-right: 1px solid #707070; 
+        height: 50px;        
+        &:last-child {
+          border-right: none; /* No border for the last cell in the row */
+        }
+        
+        ion-label {
+          // font-weight: bold;
+          display: block;
+        }
+
+        ion-input {
+          width: 100%;
+          --padding-start: 0;
+          --padding-end: 0;
+          --background: transparent;
+        }
+         
+        .delete-icon {
+          width: 30px;
+          height: 15px;
+          margin-left: 10px;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+ion-content{
+.action-buttons {
+  margin-top: 280px;
+  text-align: center;
+
+  ion-button {
+    width: 90%;
+    height: 53px;
+    border: 0;
+    --border-radius: 30px;
+  }
+}
+ion-input{
+  color: #285078;
+  font-weight: 700;
+}
+ion-label{
+  color: #285078;
+  // font-weight: 700;
+}
+}
