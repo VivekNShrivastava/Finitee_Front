@@ -213,7 +213,7 @@
 
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="userId === logInfo.UserId">
-    <ion-fab-button (click)="CreatePostAction()">
+    <ion-fab-button (click)="CreatePostAction(userCanvasProfile.canvasProfile.DisplayName)">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

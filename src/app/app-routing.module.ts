@@ -166,6 +166,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/post/add-post/add-post.module').then(m => m.AddPostModule)
   },
   {
+    path: 'post/add-post-test',
+    loadChildren: () => import('./pages/post/add-post-test/add-post-test.module').then(m => m.AddPostTestPageModule)
+  },
+  {
     path: 'post/update-post',
     loadChildren: () => import('./pages/post/update-post/update-post.module').then(m => m.UpdatePostModule)
   },
@@ -353,7 +357,16 @@ const routes: Routes = [
   { 
     path: 'edit-trait',
     loadChildren: () => import('./pages/home/free-user-canvas/edit-trait-page/edit-trait-page.component.module').then( m => m.EditTraitModule)
+  },
+  {
+    path: 'add-post-test',
+    loadChildren: () => import('./pages/post/add-post-test/add-post-test.module').then( m => m.AddPostTestPageModule)
+  },
+  {
+    path: 'edit-e-card',
+    loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then( m => m.EditECardPageModule)
   }
+
 
 
 
@@ -369,3 +382,4 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule { }
+

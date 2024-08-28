@@ -42,7 +42,7 @@ export class AddPostPage extends BasePage implements OnInit {
     private postService: PostService,
     private modalController: ModalController) {
 
-    super(authService);
+    super(authService);  
 
     this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
 
