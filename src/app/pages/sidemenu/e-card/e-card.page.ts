@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'; 
 import { BasePage } from 'src/app/base.page';
-import { UserProfile, UserCanvasProfile,ECard } from 'src/app/core/models/user/UserProfile';
+import { UserProfile, UserCanvasProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
 import * as config from 'src/app/core/models/config/ApiMethods';
 import { ECardService } from 'src/app/core/services/e-card/e-card.service';
+import { ECard } from 'src/app/core/models/ecard/ecard';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ECardPage extends BasePage implements OnInit {
   scanString: string = "";
 
   constructor(
+    private _EcardService: ECardService,
     private authService: AuthService,
     private _activatedRoute: ActivatedRoute,
     private _userProfileService: ProfileService,
@@ -55,16 +57,20 @@ export class ECardPage extends BasePage implements OnInit {
   }
 
   editecard(){
-    this.router.navigateByUrl('/edit-e-card');
+    this.router.navigateByUrl(`/edit-e-card/${this.UserId}`)
   }
   openGmail() {
-    const recipient = 'recipient@example.com';
+    const recipient = this.eCard.Email
     const subject = 'Your Subject Here';
     const body = 'Your message here.';
     
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
     window.open(gmailUrl, '_blank');
+  }
+  openWebsite(){
+    const websiteUrl = this.eCard.Website
+    window.open(websiteUrl,"_blank")
   }
   openPhoneDialer() {
     window.open('tel:' + this.userCanvasProfile.canvasProfile, '_self');
@@ -85,16 +91,16 @@ export class ECardPage extends BasePage implements OnInit {
     }
 
   }
-  // async ionViewWillEnter() {
-  //   console.log("ionViewWillEnter");
-  //   await this.getEcard();
-  // }
+  async ionViewWillEnter() {
+    console.log("ionViewWillEnter");
+    await this.getEcard();
+  }
 
-  // async getEcard() {
-  //   var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
-  //   this.eCard=res.Ecard;
-  //   console.log(this.eCard.Name)
-  // }
+  async getEcard() {
+    var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
+    this.eCard=res.Ecard;
+    console.log(this.eCard.Name)
+  }
 }
 
 

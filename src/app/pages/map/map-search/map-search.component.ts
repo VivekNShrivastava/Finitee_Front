@@ -191,6 +191,7 @@ export class MapSearchComponent implements OnInit {
 
   
   triggerSearch() {
+    // searchTriggered:boolean=true;
     if (this.eventItem.Latitude && this.eventItem.Longitude) {
       const latLng = {
         lat: this.eventItem.Latitude,

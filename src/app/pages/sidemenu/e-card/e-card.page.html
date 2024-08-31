@@ -19,6 +19,7 @@
       <ion-card-header>
         <ion-avatar>
           <div>
+            <!-- <img [src]="userProfile.user.ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" /> -->
             <img src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}" style="width: 100%; height:100%; object-fit: cover;"
             onError="this.src='assets/icons/business/anonymous.svg'" onError="this.src='assets/icons/business/anonymous.svg'" />
           </div>
@@ -33,8 +34,8 @@
         </ion-thumbnail> -->
       </ion-card-header>
       <ion-card-content>
-        <h1>OgreOgre</h1>
-        <h2 style="font-weight: bold; margin: -7px; margin-right: 1px;">Ogre123</h2>
+        <h1>{{eCard.Name}}</h1>
+        <h2 style="font-weight: bold; margin: -7px; margin-right: 1px;">{{eCard.Name}} 123</h2>
         <!-- <h3>{{userProfile.user.DisplayName}}</h3>
         <h5>{{userProfile.user.About}}</h5> -->
       </ion-card-content>
@@ -42,13 +43,20 @@
     <ion-icons>
       <div class="icons-container">
         <div class="icon-style">
-            <img src="../../../../assets/icons/eCard icons/Email icon dark.svg" alt="Phone Icon" (click)="openGmail()">
+          <img [src]="eCard?.Email ? '../../../../assets/icons/eCard icons/Email icon light.svg' : '../../../../assets/icons/eCard icons/Email icon dark.svg'"
+           alt="Email Icon" 
+           (click)="eCard?.Email ? openGmail() : null">
+            <!-- <img src="../../../../assets/icons/eCard icons/Email icon dark.svg" alt="Phone Icon" (click)="openGmail()"> -->
         </div>
         <div class="icon-style">
-          <img src="../../../../assets/icons/eCard icons/Website icon light.svg" alt="Location Icon">
+          <img [src]="eCard?.Website ? '../../../../assets/icons/eCard icons/Website icon light.svg' : '../../../../assets/icons/eCard icons/Website icon dark.svg'"
+           alt="Website Icon" 
+           (click)="eCard?.Website ? openWebsite() : null">
         </div>
         <div class="icon-style">
-          <img src="../../../../assets/icons/eCard icons/Phone icon light.svg" alt="Phone Icon" (click)="openPhoneDialer()">
+          <img [src]="eCard?.PhoneNumber ? '../../../../assets/icons/eCard icons/Phone icon light.svg' : '../../../../assets/icons/eCard icons/Phone icon dark.svg'"
+           alt="Phone Icon" 
+           (click)="eCard?.PhoneNumber ? openPhoneDialer() : null">
         </div>     
         <div class="icon-style">
           <img src="../../../../assets/icons/eCard icons/Refer icon light.svg" alt="Share Icon" (click)="shareContent()">
@@ -58,28 +66,28 @@
     
       <ion-item >
         <ion-text>Phone</ion-text>
-        <!-- <h3>{{userProfile.user.Phone}}</h3> -->
-         <h3>02228545164</h3>
+        <h3>{{eCard.PhoneNumber}}</h3>
+         <!-- <h3>02228545164</h3> -->
       </ion-item>
       <ion-item>
         <ion-text>Email</ion-text>
-        <!-- <h3>{{userProfile.user.Email}}</h3> -->
-         <h3>OgreOgre3rd2gmail.com</h3>
+        <h3>{{eCard.Email}}</h3>
+         <!-- <h3>OgreOgre3rd2gmail.com</h3> -->
       </ion-item>
       <ion-item >
         <ion-text>Website</ion-text>
-        <!-- <h3>{{userProfile.user.Website}}</h3> -->
-         <h3>www.finitee.com</h3>
+        <h3>{{eCard.Website}}</h3>
+         <!-- <h3>www.finitee.com</h3> -->
       </ion-item>
       <ion-item >
         <ion-text>LinkedIn</ion-text>
-        <!-- <h3>{{userProfile.user.LinkedIn}}</h3> -->
-         <h3>www.Linkedin.com</h3>
+        <h3>{{eCard.CustomFields['LinkedIn']}}</h3>
+         <!-- <h3>www.Linkedin.com</h3> -->
       </ion-item>
-      <ion-item >
+      <!-- <ion-item >
         <ion-text></ion-text>
-        <!-- <h3>{{userProfile.user.LinkedIn}}</h3> -->
-      </ion-item>
+        <h3>{{userProfile.user.LinkedIn}}</h3>
+      </ion-item> -->
       
 
   </ion-list>

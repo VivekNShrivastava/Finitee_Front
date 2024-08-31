@@ -36,7 +36,8 @@
                   <ion-label>Name</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="nameInput" [(ngModel)]="nameValue" readonly></ion-input>
+                  {{eCard.Name}}
+                  <ion-input id="nameInput" readonly></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -45,7 +46,8 @@
                   <ion-label>Email</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="emailInput" [(ngModel)]="emailValue" readonly></ion-input>
+                  {{eCard.Email}}
+                  <ion-input id="emailInput" readonly></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -54,7 +56,8 @@
                   <ion-label>Phone No.</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="phoneInput" [(ngModel)]="phoneValue" readonly></ion-input>
+                  {{eCard.PhoneNumber}}
+                  <ion-input id="phoneInput"readonly></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -63,7 +66,8 @@
                   <ion-label>Website</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="websiteInput" [(ngModel)]="websiteValue" readonly></ion-input>
+                  {{eCard.Website}}
+                  <ion-input id="websiteInput" readonly></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -73,15 +77,17 @@
                   <ion-input
                     placeholder="Field"
                     [(ngModel)]="row.field"
-                    (ngModelChange)="onInputChange(i)"
+                   
                     style="color: #28507880;"
                   ></ion-input>
                 </ion-col>
+                
                 <ion-col size="8.5" class="table-cell">
+                  
                   <ion-input
                     placeholder="Value"
                     [(ngModel)]="row.value"
-                    (ngModelChange)="onInputChange(i)"
+                    
                     style="color: #28507880;"
                   ></ion-input>
                   <ion-button fill="clear" color="danger" class="delete-icon" (click)="deleteDynamicRow(i)">
@@ -96,7 +102,7 @@
   </div>
   
   
-  <div class="action-buttons">
+  <div class="action-buttons" (click)="addRow()">
     <ion-button color="primary" style="border-radius: 20px;">Save</ion-button>
   </div>
 </ion-content>

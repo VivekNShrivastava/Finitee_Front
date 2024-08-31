@@ -26,7 +26,7 @@
             <ion-icon style="font-size: 22px;padding-right: 5px;" name="chevron-forward-outline"></ion-icon>
           </div>
         </div> -->
-        <div style="display: flex; justify-content: space-between; width: 100%;">
+        <div style="display: flex; justify-content: space-between; width: 100%;"*ngIf="searchTriggered">
           <div class="greet-container">
             <div (click)="viewGreetingDetails()" class="c-fab-button">
               <ion-icon style="font-size: 26px;"

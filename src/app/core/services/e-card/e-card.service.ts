@@ -28,5 +28,24 @@ export class ECardService {
       );
     });
   }
+  
+  addOrUpdateEcard(eCardData: any) {
+    return new Promise<any>((resolve, reject) => {
+      this.commonService.showLoader();
+      return this.http.post<any>(config.API.ECARD_ROLODEX.ADD_OR_UPDATE_ECARD,eCardData).subscribe(
+        (response: any) => {
+          this.commonService.hideLoader();
+          this.commonService.presentToast(AppConstants.TOAST_MESSAGES.ECARD_UPDATED);
+          resolve(response.ResponseData); // Adjust based on your API response structure
+        },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("Error:", error.error.text);
+          this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    });
+  }
 
 }
