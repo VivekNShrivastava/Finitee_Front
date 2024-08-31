@@ -33,7 +33,7 @@ ion-content {
     // padding:  20px ;
     margin: 20px;
     border:2.5px solid #03A9F5;
-    border-radius:40px;
+    border-radius:25px;
     background:#E8F7FE;
     padding: 0px ;
 
@@ -263,7 +263,117 @@ ion-content{
   ion-list{
     ion-item{
       --background:#E8F7FE;
-      padding: 0px 10px 0px 10px;
+      padding: 10px;
     }
   }
 }
+
+.note-collapsed-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // margin: 16px;
+  padding: 8px 16px;
+  background-color: #e8f7fe; // Light blue background color as shown in the image
+  border-radius: 12px; // Rounded corners for the box
+  border: 1px solid #0096d1; // Border color to match the design
+  max-width: 90%; // Limiting the max width for a better look on various devices
+  margin: 0 auto; // Center align the container
+
+  .note-collapsed-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0; // Remove default padding
+  }
+
+  .note-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #0096d1; // Text color matching the image
+    background-color: #e8f7fe;
+    // padding: 15px;
+  }
+
+  .add-icon-button {
+    background-color: #e8f7fe;
+    margin-left: auto; // Push the icon button to the right
+    // padding: 0; // No padding around the button
+
+    .add-icon {
+      font-size: 24px;
+      color: #0096d1; // Color for the "+" icon
+    }
+  }
+}
+
+.note-container {
+  // padding: 16px;
+  background-color: #e8f7fe;
+  border-radius: 12px;
+  margin: 16px auto;
+  max-width: 90%;
+  border: 1.75px solid #0096d1; 
+
+  .note-card {
+    // background-color:#e8f7fe ;
+    // box-shadow: none;
+
+    .note-title {
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #0096d1;
+      margin-bottom: 8px;
+      margin-left: 100px;
+
+
+      .icon-group{
+        margin-left: auto;
+        display: flex;
+      }
+      .edit-icon {
+        cursor: pointer;
+        margin-right: 10px;
+      }
+    }
+
+    ion-textarea {
+      background-color: white;
+      border-radius: 8px;
+      // padding: 12px;
+      border: 1px solid black;
+      // margin-bottom: 12px;
+      width: 100%;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      // padding-bottom: 25px;
+    }
+
+    .note-actions {
+      display: flex;
+      justify-content: space-between;
+
+      // .note-cancel-button,
+      // .note-save-button {
+      //   width: 48%;
+      //   border-radius: 8px;
+      // }
+
+      .note-cancel-button {
+        background-color: #ffffff;
+        color: #0096d1;
+        border: 1px solid #0096d1;
+        border-radius: 20%;
+      }
+
+      .note-save-button {
+        background-color: #0096d1;
+        color: #ffffff;
+        border-radius: 20%;
+      }
+    }
+  }
+}
+
