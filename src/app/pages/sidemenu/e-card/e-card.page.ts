@@ -15,11 +15,13 @@ import { ECard } from 'src/app/core/models/ecard/ecard';
   styleUrls: ['./e-card.page.scss'],
 })
 export class ECardPage extends BasePage implements OnInit {
+
   UserId: string = "";
   eCard:ECard=new ECard();
   userCanvasProfile: UserCanvasProfile = new UserCanvasProfile();
   scanString: string = "";
-
+  dynamicRows: Array<{ field: string; value: string }> = [{ field: '', value: '' }];
+  loaded: boolean = false;
   constructor(
     private _EcardService: ECardService,
     private authService: AuthService,
@@ -49,12 +51,22 @@ export class ECardPage extends BasePage implements OnInit {
   }
 
   async ngOnInit() {
+    this.getEcard();
     // this.userProfile = await this._userProfileService.getUserProfile(this.UserId, this.logInfo.UserId)
     var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId)
     // this.userProfile = res;
     this.userCanvasProfile = res;
     this.scanString = config.SACN_QRCODE + this.userCanvasProfile.canvasProfile.Id!;
   }
+  addRow() {
+    this.dynamicRows.push({ field: '', value: '' });
+    this.eCard.CustomFields = this.dynamicRows.reduce((fields, row) => {
+    if (row.field && row.value) {
+      fields[row.field] = row.value;
+    }
+    return fields;
+  }, {} as { [key: string]: string });
+}
 
   editecard(){
     this.router.navigateByUrl(`/edit-e-card/${this.UserId}`)
@@ -69,7 +81,10 @@ export class ECardPage extends BasePage implements OnInit {
     window.open(gmailUrl, '_blank');
   }
   openWebsite(){
-    const websiteUrl = this.eCard.Website
+    let websiteUrl = this.eCard.Website
+    if (websiteUrl && !websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+      websiteUrl = 'https://' + websiteUrl;
+    }
     window.open(websiteUrl,"_blank")
   }
   openPhoneDialer() {
@@ -93,13 +108,19 @@ export class ECardPage extends BasePage implements OnInit {
   }
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
-    await this.getEcard();
+    
   }
 
   async getEcard() {
     var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
     this.eCard=res.Ecard;
     console.log(this.eCard.Name)
+    if (this.eCard.CustomFields) {
+      this.dynamicRows = Object.keys(this.eCard.CustomFields).map((key) => {
+        return { field: key, value: this.eCard.CustomFields[key] };
+      });
+    }
+    this.loaded = true;
   }
 }
 

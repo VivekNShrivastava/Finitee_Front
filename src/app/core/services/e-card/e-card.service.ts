@@ -35,7 +35,7 @@ export class ECardService {
       return this.http.post<any>(config.API.ECARD_ROLODEX.ADD_OR_UPDATE_ECARD,eCardData).subscribe(
         (response: any) => {
           this.commonService.hideLoader();
-          this.commonService.presentToast(AppConstants.TOAST_MESSAGES.ECARD_UPDATED);
+          // this.commonService.presentToast(AppConstants.TOAST_MESSAGES.ECARD_UPDATED);
           resolve(response.ResponseData); // Adjust based on your API response structure
         },
         (error) => {
