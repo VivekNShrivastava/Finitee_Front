@@ -50,19 +50,19 @@ export class AppComponent {
 
   //new
   async initializeApp() {
-    // await SplashScreen.show({
-    //   autoHide: false,
-    // });
-    // await SplashScreen.show({
-    //   showDuration: 1500,
-    //   autoHide: true,
-    // });
+    await SplashScreen.show({
+      autoHide: false,
+    });
+    await SplashScreen.show({
+      showDuration: 1500,
+      autoHide: true,
+    });
 
     const res = this.getPlatformName();
     console.log(res);
     if (Capacitor.isNativePlatform()) {
       this.setTextZoom();
-      // await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
+      await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
     }
 
 
@@ -85,9 +85,9 @@ export class AppComponent {
           this.router.navigate([''], {replaceUrl: true});
         }
 
-        // if (Capacitor.isNativePlatform()) {
-        //   await SplashScreen.hide(); // Hide splash screen once initialization is complete
-        // }
+        if (Capacitor.isNativePlatform()) {
+          await SplashScreen.hide(); // Hide splash screen once initialization is complete
+        }
       });
     }
   }

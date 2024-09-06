@@ -1,8 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button icon="back-button" slot="start"></ion-back-button>
+      <ion-button class="backbutton" (click)="handleBackButtonClick()" slot="start">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
+    
     <ion-buttons slot="end">
       <app-notification-icon></app-notification-icon>
     </ion-buttons>
@@ -10,7 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true"*ngIf="loaded">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Edit eCard</ion-title>
@@ -36,7 +39,7 @@
                   <ion-label>Name</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="nameInput" [(ngModel)]="nameValue" readonly></ion-input>
+                  <ion-input [(ngModel)]="eCard.Name" id="nameInput"></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -45,7 +48,7 @@
                   <ion-label>Email</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="emailInput" [(ngModel)]="emailValue" readonly></ion-input>
+                  <ion-input [(ngModel)]="eCard.Email" id="emailInput"></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -54,7 +57,7 @@
                   <ion-label>Phone No.</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="phoneInput" [(ngModel)]="phoneValue" readonly></ion-input>
+                  <ion-input [(ngModel)]="eCard.PhoneNumber" id="phoneInput"></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -63,28 +66,22 @@
                   <ion-label>Website</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input id="websiteInput" [(ngModel)]="websiteValue" readonly></ion-input>
+                  <ion-input [(ngModel)]="eCard.Website" id="websiteInput"></ion-input>
                 </ion-col>
               </ion-row>
   
               <!-- Dynamic Rows -->
               <ion-row class="table-row" *ngFor="let row of dynamicRows; let i = index">
                 <ion-col size="3.5" class="table-cell">
-                  <ion-input
-                    placeholder="Field"
-                    [(ngModel)]="row.field"
-                    (ngModelChange)="onInputChange(i)"
-                    style="color: #28507880;"
-                  ></ion-input>
+                  <ion-textarea [(ngModel)]="row.field" id="fieldTextarea" placeholder="Field"(ngModelChange)="onInputChange(i)"></ion-textarea>
+                  
+                  <!-- <ion-input [(ngModel)]="row.field" placeholder="Field"></ion-input> -->
                 </ion-col>
+                
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input
-                    placeholder="Value"
-                    [(ngModel)]="row.value"
-                    (ngModelChange)="onInputChange(i)"
-                    style="color: #28507880;"
-                  ></ion-input>
-                  <ion-button fill="clear" color="danger" class="delete-icon" (click)="deleteDynamicRow(i)">
+                  <ion-input [(ngModel)]="row.value" placeholder="Value" (ngModelChange)="onInputChange(i)"></ion-input>
+                  
+                  <ion-button fill="clear" color="danger" class="delete-icon" *ngIf="i !== dynamicRows.length - 1" (click)="deleteDynamicRow(i)">
                     <ion-icon style="margin-right: -17px;" slot="icon-only" name="trash-outline"></ion-icon>
                   </ion-button>
                 </ion-col>
@@ -95,8 +92,8 @@
     </ion-card>
   </div>
   
-  
-  <div class="action-buttons">
+  <div class="action-buttons" (click)="addECard()">
     <ion-button color="primary" style="border-radius: 20px;">Save</ion-button>
   </div>
 </ion-content>
+

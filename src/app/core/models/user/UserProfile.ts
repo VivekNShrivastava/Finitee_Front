@@ -78,6 +78,7 @@ export class User {
     Email: string = "";
     Phone: string = "";//why duplicate?
     Website: string = "";
+    LinkedIn:string ="";
     About: string = "";
     SonarDescription: string = "";
     ProfileImage: string = "";
@@ -212,11 +213,4 @@ export class EditUserPersonal{
     Religion: string = "";
     Website: string = "";
     Traits: Array<string> = [];
-}
-export class ECard{
-  Name: string= "";
-  Email: string="";
-  Website:string="";
-  PhoneNumber: string="";
-  CustomFields?: { [key: string]: string } = { }  
 }

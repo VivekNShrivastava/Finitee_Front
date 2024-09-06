@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
 import * as config from 'src/app/core/models/config/ApiMethods';
 import { ECardService } from 'src/app/core/services/e-card/e-card.service';
+import { ECard } from 'src/app/core/models/ecard/ecard';
 
 @Component({
   selector: 'app-e-card',
@@ -14,6 +15,7 @@ import { ECardService } from 'src/app/core/services/e-card/e-card.service';
   styleUrls: ['./e-card.page.scss'],
 })
 export class ECardPage extends BasePage implements OnInit {
+
   UserId: string = "";
   eCard: ECard = new ECard();
   userCanvasProfile: UserCanvasProfile = new UserCanvasProfile();
@@ -23,8 +25,10 @@ export class ECardPage extends BasePage implements OnInit {
   noteContent: string = ''; // Stores the content of the note
   showDeleteIcon: boolean = false; // Controls delete icon visibility
   showPlaceholder: boolean = true; // Controls placeholder visibility
-
+  dynamicRows: Array<{ field: string; value: string }> = [{ field: '', value: '' }];
+  loaded: boolean = false;
   constructor(
+    private _EcardService: ECardService,
     private authService: AuthService,
     private _activatedRoute: ActivatedRoute,
     private _userProfileService: ProfileService,
@@ -50,10 +54,24 @@ export class ECardPage extends BasePage implements OnInit {
   }
 
   async ngOnInit() {
-    var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId);
+
+    this.getEcard();
+    // this.userProfile = await this._userProfileService.getUserProfile(this.UserId, this.logInfo.UserId)
+    var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId)
+    // this.userProfile = res;
     this.userCanvasProfile = res;
     this.scanString = config.SACN_QRCODE + this.userCanvasProfile.canvasProfile.Id!;
   }
+  addRow() {
+    this.dynamicRows.push({ field: '', value: '' });
+    this.eCard.CustomFields = this.dynamicRows.reduce((fields, row) => {
+    if (row.field && row.value) {
+      fields[row.field] = row.value;
+    }
+    return fields;
+  }, {} as { [key: string]: string });
+}
+
 
   toggleNoteSection() {
     this.isNoteVisible = !this.isNoteVisible; // Toggle the visibility of the note section
@@ -117,19 +135,26 @@ export class ECardPage extends BasePage implements OnInit {
     this.noteContent = event.target.value; // Update note content
     this.showDeleteIcon = this.noteContent.length > 0; // Show delete icon if there is content
   }
-
-  editecard() {
-    this.router.navigateByUrl('/edit-e-card');
+  editecard(){
+    this.router.navigateByUrl(`/edit-e-card/${this.UserId}`)
   }
 
   openGmail() {
-    const recipient = 'recipient@example.com';
+    const recipient = this.eCard.Email
     const subject = 'Your Subject Here';
     const body = 'Your message here.';
     
     const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
     window.open(gmailUrl, '_blank');
+  }
+
+  openWebsite(){
+    let websiteUrl = this.eCard.Website
+    if (websiteUrl && !websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+      websiteUrl = 'https://' + websiteUrl;
+    }
+    window.open(websiteUrl,"_blank")
   }
 
   openPhoneDialer() {
@@ -150,5 +175,22 @@ export class ECardPage extends BasePage implements OnInit {
     } else {
       console.error('Web Share API not supported in this browser.');
     }
+  }
+
+  async ionViewWillEnter() {
+    console.log("ionViewWillEnter");
+    
+  }
+
+  async getEcard() {
+    var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
+    this.eCard=res.Ecard;
+    console.log(this.eCard.Name)
+    if (this.eCard.CustomFields) {
+      this.dynamicRows = Object.keys(this.eCard.CustomFields).map((key) => {
+        return { field: key, value: this.eCard.CustomFields[key] };
+      });
+    }
+    this.loaded = true;
   }
 }
