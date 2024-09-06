@@ -24,7 +24,7 @@ export class ConnectedMembersPage extends BasePage implements OnInit {
 
   async ionViewWillEnter() {
     this.userId = history.state!['data'];
-    this.userConnections = await this.connectionService.getUserConnections();
+    this.userConnections = await this.connectionService.getUserConnections(this.userId);
 
     // this.userConnections = await this.connectionService.getUserConnections(this.userId);
     this.loaded = true;

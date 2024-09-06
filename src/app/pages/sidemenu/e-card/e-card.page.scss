@@ -35,7 +35,7 @@ ion-content {
     border:2.5px solid #03A9F5;
     border-radius:25px;
     background:#E8F7FE;
-    padding: 0px ;
+    padding-bottom: 40px ;
 
     & > ion-card {
       box-shadow: none !important;
@@ -135,7 +135,7 @@ ion-content {
     //       }
     // }
     & > ion-icons {
-      width: 100%;
+      width: auto;
       display: flex;
       justify-content: center;
     
@@ -146,7 +146,7 @@ ion-content {
         width: 100%;
         padding: 15px;
         background-color: #03A9F5; 
-        
+
       }
     
       & > .icons-container > .icon-style {
@@ -263,7 +263,7 @@ ion-content{
   ion-list{
     ion-item{
       --background:#E8F7FE;
-      padding: 10px;
+      padding-left: 10px;
     }
   }
 }
@@ -276,7 +276,7 @@ ion-content{
   padding: 8px 16px;
   background-color: #e8f7fe; // Light blue background color as shown in the image
   border-radius: 12px; // Rounded corners for the box
-  border: 1px solid #0096d1; // Border color to match the design
+  border: 2.5px solid #0096d1; // Border color to match the design
   max-width: 90%; // Limiting the max width for a better look on various devices
   margin: 0 auto; // Center align the container
 
@@ -292,6 +292,7 @@ ion-content{
     font-weight: bold;
     color: #0096d1; // Text color matching the image
     background-color: #e8f7fe;
+    padding-top: 10px;
     // padding: 15px;
   }
 
