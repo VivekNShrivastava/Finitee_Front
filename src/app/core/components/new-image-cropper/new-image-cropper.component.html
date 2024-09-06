@@ -7,7 +7,14 @@
           [src]="image.filePath"
           class="movable-image"
           #imageElement
-          (load)="calculateCropArea(imageElement, imageContainer)"
+          (load)="calculatePixelToScreen(imageElement)"
+          (mousedown)="onTouchImageStart($event)"
+          (mousemove)="onTouchImageMove($event)"
+          (mouseup)="onTouchImageEnd($event)"
+          (touchstart)="onTouchImageStart($event)"
+          (touchmove)="onTouchImageMove($event)"
+          (touchend)="onTouchImageEnd($event)"
+          (wheel)="onMouseWheel($event)"
         />
       </div>
     </ion-slide>
@@ -19,4 +26,9 @@
      (touchstart)="onMouseDown($event, imageElement.nativeElement, imageContainer.nativeElement)">
 </div>
 
+<div>
+  <button (click)="OnZoom(true)">zoom in</button>
+  <br><br>
+  <button (click)="OnZoom(false)">zoom out</button>
+</div>
 

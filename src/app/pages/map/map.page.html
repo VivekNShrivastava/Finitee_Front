@@ -148,8 +148,10 @@
     </div>
   </div>
 
-  <ion-modal id="sonarSettingModal" #sonarSettingModal
-    [initialBreakpoint]="0.36" [breakpoints]="[0, 0.36]">
+  <!-- <ion-modal id="sonarSettingModal" #sonarSettingModal -->
+    <!-- [initialBreakpoint]="0.36" [breakpoints]="[0, 0.36]"> -->
+    <ion-modal id="sonarSettingModal" #sonarSettingModal
+    [initialBreakpoint]="0.26">
     <ng-template>
       <sonar-settings (onCloseSetting)="closeSetting()"></sonar-settings>
     </ng-template>

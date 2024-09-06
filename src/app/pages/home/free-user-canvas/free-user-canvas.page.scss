@@ -42,96 +42,223 @@ ion-content {
     }
   }
     
-  ion-card.header-card {
-    background: #f0f5f7;
-    display: flex;
-    flex-direction: column;
-    border-radius: 30px !important;
-    min-height: 280px;
+  // ion-card.header-card {
+  //   background: #f0f5f7;
+  //   display: flex;
+  //   flex-direction: column;
+  //   border-radius: 30px !important;
+  //   min-height: 280px;
 
-    ion-card-header {
-      text-align: center;
-      padding-bottom: 0;
+  //   ion-card-header {
+  //     text-align: center;
+  //     padding-bottom: 0;
      
 
-      .fi-user-img {
-        // width: 116px;
-        width: 140px;
-        // height: 116px;
-        height: 140px;
-        border: 4px solid #fff;
-        border-radius: 50%;
-        object-fit: cover;
-      }
+  //     .fi-user-img {
+  //       // width: 116px;
+  //       width: 140px;
+  //       // height: 116px;
+  //       height: 140px;
+  //       border: 4px solid #fff;
+  //       border-radius: 50%;
+  //       object-fit: cover;
+  //     }
 
-      &>ion-img {
-        padding: 5px;
-        border-radius: 50%;
-        background: #ffffff;
-        height: 116px;
-        width: 116px;
-        margin: 0px auto;
-      }
+  //     &>ion-img {
+  //       padding: 5px;
+  //       border-radius: 50%;
+  //       background: #ffffff;
+  //       height: 116px;
+  //       width: 116px;
+  //       margin: 0px auto;
+  //     }
 
-      &>ion-card-title {
-        font: normal normal 600 28px/35px SF Pro Display;
-        letter-spacing: 0.45px;
-        color: #285078;
-        text-transform: capitalize;
-      }
+  //     &>ion-card-title {
+  //       font: normal normal 600 28px/35px SF Pro Display;
+  //       letter-spacing: 0.45px;
+  //       color: #285078;
+  //       text-transform: capitalize;
+  //     }
 
-      &>ion-card-subtitle {
-        font: normal normal normal 18px/22px SF Pro Display !important;
-        letter-spacing: -0.1px;
-        color: #285078;
-        margin: 3px 0px 10px 0px;
-      }
+  //     &>ion-card-subtitle {
+  //       font: normal normal normal 18px/22px SF Pro Display !important;
+  //       letter-spacing: -0.1px;
+  //       color: #285078;
+  //       margin: 3px 0px 10px 0px;
+  //     }
 
-      &>ion-buttons {
-        margin-top: 10px;
-        margin-bottom: 10px;
+  //     &>ion-buttons {
+  //       margin-top: 10px;
+  //       margin-bottom: 10px;
 
-        &>ion-button {
-          background: #03a9f5;
-          margin: 0 auto;
-          text-transform: none;
-          padding: 5px;
+  //       &>ion-button {
+  //         background: #03a9f5;
+  //         margin: 0 auto;
+  //         text-transform: none;
+  //         padding: 5px;
 
-          &>ion-label {
-            letter-spacing: -0.08px;
-            font: normal normal normal 13px/16px;
-            color: #ffffff;
+  //         &>ion-label {
+  //           letter-spacing: -0.08px;
+  //           font: normal normal normal 13px/16px;
+  //           color: #ffffff;
 
-            &>ion-text {
-              font-weight: bold;
-            }
-          }
-        }
-      }
+  //           &>ion-text {
+  //             font-weight: bold;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   ion-card-content {
+  //     &>ul {
+  //       padding: 0 15px;
+
+  //       &>li {
+  //         color: #285078;
+  //         font-size: 16px;
+
+  //         &>h3 {
+  //           font: normal normal 600 18px/24px SF Pro Display;
+  //           letter-spacing: 0.22px;
+  //           color: #285078;
+  //         }
+
+  //         &>p {
+  //           font: normal normal normal 17px/17px SF Pro Display;
+  //           letter-spacing: 0.21px;
+  //           color: #505050;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+  /* Container for the header card */
+
+  .profile-header {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+  }
+
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .top-buttons {
+    position: absolute;
+    top: 15px; /* Adjusted for proper spacing */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px; /* Adjust padding for spacing from edges */
+    z-index: 10;
+  }
+  
+  .back-button,
+  .menu-button {
+    color: white;
+    background: rgba(0, 0, 0, 0.5); /* Slight background for better visibility */
+    border-radius: 50%;
+  }
+  
+  .bottom-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    z-index: 1;
+    background: linear-gradient(to top, rgb(0, 0, 0, 9.9), rgba(51, 49, 49, 0.1))
     }
 
-    ion-card-content {
-      &>ul {
-        padding: 0 15px;
 
-        &>li {
-          color: #285078;
-          font-size: 16px;
+  
+  .title {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0;
+    // opacity: 0.8;
 
-          &>h3 {
-            font: normal normal 600 18px/24px SF Pro Display;
-            letter-spacing: 0.22px;
-            color: #285078;
-          }
+  }
+  
+  .subtitle {
+    font-size: 16px;
+    margin: 5px; /* Added margin for spacing */
+    // opacity: 0.8;
+    font-weight: bold;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Adjusted gap between buttons */
+    margin-top: 10px;
+  }
+  
+  .about-section {
+    margin-top: 10px;
+    text-align: start; /* Center-align the about section */
+    color: white;
+    margin-left: 20px;
 
-          &>p {
-            font: normal normal normal 17px/17px SF Pro Display;
-            letter-spacing: 0.21px;
-            color: #505050;
-          }
-        }
-      }
-    }
+  } 
+  
+  .about-section ul {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .about-section p {
+    margin: 0;
+    font-size: 14px;
+    // opacity: 0.8;
+    font-weight: bold;
+
+  }
+  // .translucent-button {
+  //   --background: rgba(0, 0, 0, 0);
+  //   --border-color: white;
+  //   --border-width: 2px;
+  //   color: white;
+  // }
+  .connected-members-other,
+  .connected-members-chat-other {
+    width: 43px;
+    height: 35px;
+  }
+  .translucent-button {
+    display: flex;
+    --background: rgba(255, 255, 255, 0.6); /* Translucent black background */
+    --border-color: white;             /* White border */
+    --border-width: 2px;               /* 2px border */
+    --border-style: solid; 
+    color: white;                      /* White text/icon */
+    margin: 0 5px;                     /* Add margin between buttons */
+    border-radius: 20px;               /* Make the button rounded */
+  }
+  .translucent-button2  {
+    display: flex;
+    --background: rgba(255, 255, 255, 0.7); /* Translucent black background */
+    --border-color: white;             /* White border */
+    // --border-width: 2px;
+    --border-style: solid;
+    --border-radius:50%; 
+    color: white;                    
+    width: 43px;
+    height: 43px;
   }
 
   ion-segment {
@@ -140,6 +267,7 @@ ion-content {
       letter-spacing: 0.22px;
       --color: #285078;
       --indicator-height: 2px;
+      --indicator-color: black;
     }
   }
 
@@ -172,6 +300,7 @@ ion-content {
       height: 35px;
       margin: 0px 10px;
       width: 137px;
+      
     }
 
     ion-icon {

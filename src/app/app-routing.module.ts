@@ -182,7 +182,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/business-user-canvas/edit-profile/edit-profile.module').then((m) => m.EditProfileModule),
   },
   {
-    path: 'tabs/free-user-canvas/connected-members',
+    path: 'tabs/free-user-canvas/connected-members/:userId',
     loadChildren: () => import('./pages/connections/connected-members/connected-members.module').then((m) => m.ConnectedMembersModule),
   },
   {
