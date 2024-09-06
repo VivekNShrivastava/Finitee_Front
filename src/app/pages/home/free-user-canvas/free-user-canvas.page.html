@@ -1,4 +1,4 @@
-<ion-header class="ion-no-border">
+<!-- <ion-header class="ion-no-border">
   <ion-toolbar class="display-flex ion-justify-content-center ion-align-items-center">
     <ion-buttons slot="start">
       <ion-back-button *ngIf="userId!=logInfo.UserId"></ion-back-button>
@@ -16,7 +16,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -24,54 +24,106 @@
       refreshingSpinner="circles" refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-card class="header-card">
-    <ion-card-header>
-      
-      <!-- <div class="image_container" style="height: 160px; width: 160px; border-radius: 50%; position: relative; display: inline-block; overflow: hidden; border: 5px solid white;">
-        <img  style="width: 100%; height: 100%;" src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}"
-        onError="this.src='assets/icons/business/anonymous.svg'" />
-      </div> -->
-
-      <div class="image_container">
-        <img  class="fi-user-img" src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}"
-        onError="this.src='assets/icons/business/anonymous.svg'" (click)="openImage(userCanvasProfile.canvasProfile.ProfileImage)"/>
+  <div class="profile-header">
+    <!-- Profile Image and Buttons Overlay -->
+    <div class="image-container">
+        
+        <img class="cover-image" src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}"
+          onError="this.src='assets/icons/business/anonymous.svg'"
+          (click)="openImage(userCanvasProfile.canvasProfile.ProfileImage)" />
+        
+      <!-- Top Buttons (Back and Three Dots) -->
+      <div class="top-buttons">
+        <ion-buttons slot="start">
+          <ion-button class="translucent-button2">
+            <app-notification-icon style="margin-left: -7px;" *ngIf="userId === logInfo.UserId"></app-notification-icon>  
+            <ion-back-button icon="back-button" class="translucent-button2" slot="start" *ngIf="userId !== logInfo.UserId"></ion-back-button>      
+          </ion-button>
+        </ion-buttons>
+       <ion-buttons slot="end">
+          <ion-button 
+            shape="round" 
+            style="margin-left: -7px;"
+            class="translucent-button2" 
+            (click)="editPersonal()" 
+            *ngIf="userId === logInfo.UserId">
+            <ion-icon slot="end" name="edit"></ion-icon>
+          </ion-button>
+          
+          <ion-button 
+            shape="round" 
+            class="translucent-button2" 
+            (click)="presentMenuModalForOther()" 
+            expand="block"
+            *ngIf="userId !== logInfo.UserId">
+            <ion-icon name="dots"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </div>
       
-      <ion-card-title> {{userCanvasProfile.canvasProfile.DisplayName}}</ion-card-title>
-      <ion-card-subtitle> @{{userCanvasProfile.canvasProfile.UserName}} | {{userCanvasProfile.InflowsCount}} Inflows</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <!-- row for business home own -->
-      <ion-row class="header-card-details" *ngIf="userId==logInfo.UserId">
-        <ion-button shape="round" size="small" (click)="viewConnectedMembers()">
-          <span class="fi-bold-text"> {{userCanvasProfile.ConnectedUserCount}} </span>&nbsp; Connections
-        </ion-button>
-      </ion-row>
-      <!-- row for business home other -->
-      <ion-row class="header-card-details" *ngIf="userId!=logInfo.UserId ">
-        <ion-button shape="round" size="small" class="connected-members" (click)="sendConnectionReqPopup()">
-          <ion-icon size="large" [name]="getConnectionIcon()"></ion-icon>
-        </ion-button>
-        
-        <ion-button shape="round" size="small" (click)="viewConnectedMembers()">
-          <span> <span class="fi-bold-text"> {{userCanvasProfile.ConnectedUserCount}} </span>&nbsp; Connections </span>
-        </ion-button>
-        <ion-button *ngIf="loadPrivateUser != true" shape="round" size="small" class="connected-members-chat" (click)="startChat()">
-          <ion-icon  name="connected-members-chat"></ion-icon>
-        </ion-button>
-      </ion-row>
-      <ng-container *ngIf="userId === logInfo.UserId">
-        <ul>
-          <li>
-            <h3>About</h3>
-            <!-- class="fi-multiline-truncate" -->
-            <p >{{userCanvasProfile.canvasProfile.About}}</p>
-          </li>
-        </ul>
-      </ng-container>
-      
-    </ion-card-content>
-  </ion-card>
+  
+      <!-- Bottom Content Overlay -->
+      <div class="bottom-content">
+        <h1 class="title">{{userCanvasProfile.canvasProfile.DisplayName}}</h1>
+        <h2 class="subtitle">@{{userCanvasProfile.canvasProfile.UserName}} | {{userCanvasProfile.InflowsCount}} Inflows</h2>
+  
+        <!-- Connections and Actions -->
+        <div class="actions">
+          <!-- <ion-button style="width: 40px; height: 100%; border-radius: 50%;" shape="round" size="small" (click)="sendConnectionReqPopup()" *ngIf="userId!=logInfo.UserId">
+            <ion-icon size="small" [name]="getConnectionIcon()"></ion-icon>
+          </ion-button>
+           -->
+          <!-- row for business home own -->
+        <ion-row class="header-card-details" *ngIf="userId==logInfo.UserId">
+          <ion-button class="translucent-button"  shape="round" size="small" (click)="viewConnectedMembers()">
+            <span class="fi-bold-text"> {{userCanvasProfile.ConnectedUserCount}} </span>&nbsp; Connections
+          </ion-button>
+        </ion-row>
+          <!-- row for business home other -->
+          <ion-row class="header-card-details" *ngIf="userId!=logInfo.UserId">
+            <!-- Connection request button -->
+            <ion-button  
+            style="width: 43px;height: 35px;"
+              class="translucent-button"
+              shape="round" 
+              size="small" 
+              (click)="sendConnectionReqPopup()">
+              <ion-icon size="large" [name]="getConnectionIcon()"></ion-icon>
+            </ion-button>
+          
+            <!-- View connected members button -->
+            <ion-button
+              class="translucent-button"
+              shape="round" 
+              size="small" 
+              (click)="viewConnectedMembers()">
+              <span><span class="fi-bold-text">{{userCanvasProfile.ConnectedUserCount}}</span>&nbsp; Connections</span>
+            </ion-button>
+          
+            <!-- Start chat button -->
+            <ion-button 
+              *ngIf="loadPrivateUser != true" 
+              style="width: 43px;height: 35px;"
+              class="translucent-button"
+              shape="round" 
+              size="small" 
+              (click)="startChat()">
+              <ion-icon name="connected-members-chat"></ion-icon>
+            </ion-button>
+          </ion-row>
+          
+        </div>
+        <!-- About Section -->
+        <div class="about-section">
+          <ul>
+            <li style="margin-left: -43px;">About</li>
+          </ul>
+         <p>{{userCanvasProfile.canvasProfile.About}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+   
 
   <ng-container *ngIf="loadPrivateUser == false">
     <ion-segment [(ngModel)]="selectedTab" (ionChange)="segmentChange($event)">

@@ -81,7 +81,6 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     this.subscribePostSubject();
     this.subscribeTraitPostSubject();
   }
-  
   async subscribePostSubject() {
     this._postService.traitList.subscribe({
       next: (result: any) => {
@@ -379,13 +378,13 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       iconName = 'free-user-recieved-white-icon';
     else if (this.userCanvasProfile.IsRequestExits)
       iconName = 'free-user-pending-white-icon';
-    
+      
     return iconName
   }
 
   viewConnectedMembers() {
     this.navEx!.state!['data'] = this.userId;
-    this.navCtrl.navigateForward('tabs/free-user-canvas/connected-members', this.navEx);
+    this.router.navigateByUrl(`tabs/free-user-canvas/connected-members/${this.userId}`, this.navEx);
     // this.navCtrl.navigateForward('connected-members');
 
     /*     this.router.navigate(['connected-members'], this.navEx); */
