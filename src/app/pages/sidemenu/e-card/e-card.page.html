@@ -41,7 +41,7 @@
         <h5>{{userProfile.user.About}}</h5> -->
       </ion-card-content>
     </ion-card>
-    <ion-icons>
+    <ion-icons style="border: 2px #03A9F5;">
       <div class="icons-container">
         <div class="icon-style">
           <img [src]="eCard?.Email ? '../../../../assets/icons/eCard icons/Email icon light.svg' : '../../../../assets/icons/eCard icons/Email icon dark.svg'"
@@ -88,8 +88,50 @@
       
 
   </ion-list>
-  
+
+
+
+  <!-- Collapsed Note View -->
+<div class="note-collapsed-container" *ngIf="!isNoteVisible">
+  <ion-item lines="none" class="note-collapsed-item">
+    <div style="background-color: #e8f7fe; display: flex; width: 100%;padding: 10px;">
+      <ion-label class="note-label">Note</ion-label>
+      <ion-button fill="clear" class="add-icon-button" (click)="toggleNoteSection()">
+        <ion-icon name="add-circle-outline" class="add-icon"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-item>
+</div>
+
+<!-- Expanded Note View -->
+<div class="note-container" *ngIf="isNoteVisible">
+  <div class="note-card" style="padding: 12px; background-color: #e8f7fe; border-radius: 12px;">
+    <div>
+      <div class="note-title">
+        Note
+        <div class="icon-group">
+          <ion-icon name="pencil-outline" class="edit-icon" (click)="toggleEditMode()"></ion-icon>
+          <br>
+          <ion-icon name="trash-outline" color="danger" class="delete-icon" *ngIf="showDeleteIcon" (click)="presentDeleteAlert()"></ion-icon>
+        </div>
+      </div>
+      <ion-textarea placeholder="Add a personal touch by sharing a special note about the recipient. Doing so will make this e-card more meaningful and memorable!!" 
+                    (focus)="onTextareaFocus()" 
+                    (ionInput)="onTextareaInput($event)" 
+                    style="width: 100%; height: 85px; background-color: #e8f7fe;">
+      </ion-textarea>
+    </div>
+    <div>
+      <div class="note-actions" *ngIf="isEditMode">
+        <ion-button color="primary" (click)="toggleEditMode()" style="border-radius: 20%; margin: auto;">Cancel</ion-button>
+        <ion-button color="primary" (click)="saveNote()" style="border-radius: 20%; margin:auto;width: 100px;">Save</ion-button>
+      </div>
+    </div>
+  </div>
+</div>
 </ion-content>
+
+
 
 <!-- <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
   <ng-template>
