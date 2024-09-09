@@ -208,7 +208,15 @@ ion-content {
     } 
   }
 }
-
+.backbutton{
+  ion-button {
+    --background: none;
+    --color: var(--ion-color-primary);
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+  
+}
 
 // ion-popover {
 //   --max-width: 183px;
@@ -258,6 +266,7 @@ ion-content {
 //   }
 
 // }
+
 
 ion-content{
   ion-list{

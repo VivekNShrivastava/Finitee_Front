@@ -1,8 +1,9 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button icon="back-button" slot="start">
-      </ion-back-button>
+      <ion-button class="backbutton" (click)="OnEcardBack()" slot="start">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>e-Card</ion-title>
     <ion-buttons slot="end">
@@ -64,25 +65,24 @@
       </div>
     </ion-icons>
     
-      <ion-item >
-        <ion-text>Phone</ion-text>
-        <h3>{{eCard.PhoneNumber}}</h3>
-         <!-- <h3>02228545164</h3> -->
-      </ion-item>
-      <ion-item>
-        <ion-text>Email</ion-text>
-        <h3>{{eCard.Email}}</h3>
-         <!-- <h3>OgreOgre3rd2gmail.com</h3> -->
-      </ion-item>
-      <ion-item >
-        <ion-text>Website</ion-text>
-        <h3>{{eCard.Website}}</h3>
-         <!-- <h3>www.finitee.com</h3> -->
-      </ion-item>
+    
+    <ion-item>
+      <ion-text>Email</ion-text>
+      <h3>{{ truncateText(eCard.Email) }}</h3>
+    </ion-item>
+    <ion-item>
+      <ion-text>Phone</ion-text>
+      <h3>{{ truncateText(eCard.PhoneNumber) }}</h3>
+    </ion-item>
+   
+    <ion-item>
+      <ion-text>Website</ion-text>
+      <h3>{{ truncateText(eCard.Website) }}</h3>
+    </ion-item>
       <ng-container *ngFor="let row of dynamicRows">
         <ion-item>
-          <ion-text>{{ row.field }}</ion-text>
-          <h3>{{ row.value }}</h3>
+          <ion-text>{{ truncateTextField(row.field) }}</ion-text>
+          <h3>{{ truncateText (row.value) }}</h3>
         </ion-item>
       </ng-container>
       

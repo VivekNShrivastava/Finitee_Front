@@ -15,6 +15,7 @@ import { ECard } from 'src/app/core/models/ecard/ecard';
   styleUrls: ['./e-card.page.scss'],
 })
 export class ECardPage extends BasePage implements OnInit {
+[x: string]: any;
 
   UserId: string = "";
   eCard:ECard=new ECard();
@@ -58,6 +59,19 @@ export class ECardPage extends BasePage implements OnInit {
     this.userCanvasProfile = res;
     this.scanString = config.SACN_QRCODE + this.userCanvasProfile.canvasProfile.Id!;
   }
+  // In your TypeScript component file (e.g., `your-page.ts`)
+truncateText(text: string, maxLength: number = 25): string {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
+  }
+  return text;
+}
+truncateTextField(text: string, maxLength: number = 10): string {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
+  }
+  return text;
+}
   addRow() {
     this.dynamicRows.push({ field: '', value: '' });
     this.eCard.CustomFields = this.dynamicRows.reduce((fields, row) => {
@@ -121,6 +135,9 @@ export class ECardPage extends BasePage implements OnInit {
       });
     }
     this.loaded = true;
+  }
+  OnEcardBack(){
+    this.router.navigateByUrl('tabs/map');
   }
 }
 
