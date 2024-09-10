@@ -64,6 +64,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   public location: UserLocation = new UserLocation();
   public homeLocation: UserLocation = new UserLocation();
 
+  searchTriggered:boolean=true;
   showIcons: boolean = false; 
   currentPageHref!: any;
   currentLocationMarker: any;
