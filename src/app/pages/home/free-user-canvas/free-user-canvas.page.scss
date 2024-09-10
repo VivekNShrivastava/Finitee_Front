@@ -172,19 +172,21 @@ ion-content {
   }
   
   .bottom-content {
-    position: absolute;
+    padding-top: 200px;
+    }
+
+    .all-in{
+      position: absolute;
+      height: 100%;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 20px;
+    // padding: 20px;
     color: white;
     text-align: center;
     z-index: 1;
-    background: linear-gradient(to top, rgb(0, 0, 0, 9.9), rgba(51, 49, 49, 0.1))
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.01) 73%);
     }
-
-
-  
   .title {
     font-size: 30px;
     font-weight: bold;
