@@ -164,8 +164,10 @@ onPrimaryFieldChange() {
     console.log(this.eCard)  
 
   // Initialize dynamicRows with the Name field
-  this.dynamicRows = [{ field: "Name", value: this.eCard["Name"] }];
-
+  // this.dynamicRows = [{ field: "Name", value: this.eCard["Name"] }];
+  // this.dynamicRows = [{ field: "Email", value: this.eCard["Email"] }];
+  // this.dynamicRows = [{ field: "PhoneNumber", value: this.eCard["PhoneNumber"] }];
+  // this.dynamicRows = [{ field: "Website", value: this.eCard["Website"] }];
   // Append CustomFields to dynamicRows if they exist
   if (this.eCard.CustomFields) {
     this.dynamicRows = this.dynamicRows.concat(
