@@ -20,6 +20,7 @@ export const API = {
 
     ECARD_ROLODEX:{
         GETECARD: `${environment.baseUrl}EcardRolodex/GetEcard`,
+        ADD_OR_UPDATE_ECARD:`${environment.baseUrl}EcardRolodex/AddOrUpdateEcard`,
     },
     USER_PROFILE: {
         GET: `${environment.baseUrl}User/UserProfile`,

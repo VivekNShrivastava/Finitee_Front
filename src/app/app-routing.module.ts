@@ -182,7 +182,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/business-user-canvas/edit-profile/edit-profile.module').then((m) => m.EditProfileModule),
   },
   {
-    path: 'tabs/free-user-canvas/connected-members',
+    path: 'tabs/free-user-canvas/connected-members/:userId',
     loadChildren: () => import('./pages/connections/connected-members/connected-members.module').then((m) => m.ConnectedMembersModule),
   },
   {
@@ -363,7 +363,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/post/add-post-test/add-post-test.module').then( m => m.AddPostTestPageModule)
   },
   {
-    path: 'edit-e-card',
+    path: 'edit-e-card/:UserId',
     loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then( m => m.EditECardPageModule)
   }
 

@@ -26,6 +26,7 @@ export class NewImageCropperComponent{
   @ViewChild('imageElement', { static: false }) imageElement!: ElementRef;
 
   //up,right,bottom,left
+  noZoomHeight: number = 0;
   areaAvailable: number[] = [0,0,0,0];
   k: number=0;
   scale: number=1;
@@ -183,10 +184,10 @@ export class NewImageCropperComponent{
   
   onTouchImageEnd(event: MouseEvent | TouchEvent) {
     event.preventDefault();
-    console.log("end")
     this.isDragging=false;
-    this.imagePositionX += this.currentX - this.startX;
-    this.imagePositionY += this.currentY - this.startY;
+    //this.imagePositionX += this.currentX - this.startX;
+    //this.imagePositionY += this.currentY - this.startY;
+    console.log("when ends",this.imagePositionY)
   }
  
   // ngAfterViewInit() {
@@ -202,18 +203,24 @@ export class NewImageCropperComponent{
 
   //need to do for >1, <1 and =1
   //also check for already zoomed images
-  changeAvailableSpace(){
+  changeAvailableSpaceForZoomSlider(){
     const naturalWidth = this.imageElement.nativeElement.naturalWidth;
     const naturalHeight = this.imageElement.nativeElement.naturalHeight;
     if(naturalHeight/naturalWidth>1){
-      const ToChange = window.innerWidth/(this.manualScale-this.scale+1);
-      let upBottom = (this.initialBoundingClient[0]-ToChange)/2;
+    //   const ToChange = this.sliderHeight/(this.manualScale-this.scale+1);
+    //   console.log(ToChange, "=", window.innerWidth,"/",this.manualScale,"-",this.scale,"+1");
+      // let upBottom = (this.initialBoundingClient[0]-ToChange)/2;
+      //slider-window works for
+      let upBottom = ((this.initialBoundingClient[0]-(this.sliderHeight-window.innerWidth))-this.initialBoundingClient[1])/2;
+      console.log(this.initialBoundingClient[0], this.initialBoundingClient[1],this.sliderHeight,window.innerWidth,this.manualScale);
       if(naturalWidth<window.innerWidth){upBottom+=(window.innerWidth-naturalWidth)/2}
       console.log("zoom change space", upBottom);
       this.areaAvailable[0] = upBottom;
       this.areaAvailable[2] = upBottom;
-      this.areaAvailable[1] = upBottom - this.initialSpaces;
-      this.areaAvailable[3] = upBottom - this.initialSpaces;
+      this.areaAvailable[1] = upBottom - (this.initialBoundingClient[0]-this.sliderHeight)/2;
+      this.areaAvailable[3] = upBottom - (this.initialBoundingClient[0]-this.sliderHeight)/2;
+      console.log("calculations", this.initialSpaces, this.sliderHeight, this.imageElement.nativeElement.getBoundingClientRect().height)
+
     }
     else if(naturalHeight/naturalWidth<1){
       const ToChange = this.initialBoundingClient[0]/(this.manualScale/this.scale);
@@ -224,6 +231,87 @@ export class NewImageCropperComponent{
       this.areaAvailable[0] = rightLeft - this.initialSpaces;
       this.areaAvailable[2] = rightLeft - this.initialSpaces;
     }
+  }
+
+  changeAvailableSpace(type: boolean){
+    const naturalWidth = this.imageElement.nativeElement.naturalWidth;
+    const naturalHeight = this.imageElement.nativeElement.naturalHeight;
+    if(naturalHeight/naturalWidth>1){
+    //   const ToChange = this.sliderHeight/(this.manualScale-this.scale+1);
+    //   console.log(ToChange, "=", window.innerWidth,"/",this.manualScale,"-",this.scale,"+1");
+      // let upBottom = (this.initialBoundingClient[0]-ToChange)/2;
+      //slider-window works for
+      let tryThis = ((this.initialBoundingClient[0]*(this.manualScale-this.scale+1)-this.sliderHeight)/2)-(window.innerWidth-this.initialBoundingClient[1]*(this.manualScale-this.scale+1))/2
+      // let availableUpAndDown = (this.initialBoundingClient[0]-this.sliderHeight);
+      // let init = (this.initialBoundingClient[0] - availableUpAndDown)*(this.manualScale-1-0.1)/2;
+      // let  upBottom= availableUpAndDown/2 + init;
+
+      const ToChange = this.sliderHeight/(this.manualScale-this.scale+1);
+      let upBottom = (this.initialBoundingClient[0]-ToChange)/2;
+      console.log("real calculations", tryThis, upBottom);
+      console.log("availablespace", this.areaAvailable[0]);
+      // console.log(this.initialBoundingClient[0], this.initialBoundingClient[1],this.sliderHeight,window.innerWidth,this.manualScale);
+      if(naturalWidth<window.innerWidth){upBottom+=(window.innerWidth-naturalWidth)/2}
+      console.log("zoom change space", upBottom);
+      this.areaAvailable[0] = upBottom;
+      this.areaAvailable[2] = upBottom;
+      // this.areaAvailable[1] = upBottom - (this.initialBoundingClient[0]-window.innerWidth)/2;
+      // this.areaAvailable[3] = upBottom - (this.initialBoundingClient[0]-window.innerWidth)/2;  //solve this
+      this.areaAvailable[1] = ((this.manualScale-1)*window.innerWidth)/(this.manualScale*2);
+      this.areaAvailable[3] = ((this.manualScale-1)*window.innerWidth)/(this.manualScale*2);
+      console.log("calculations", this.initialSpaces, this.sliderHeight, this.imageElement.nativeElement.getBoundingClientRect().height)
+
+    }
+    else if(naturalHeight/naturalWidth<1){
+      const ToChange = this.initialBoundingClient[0]/(this.manualScale/this.scale);
+      let rightLeft = (window.innerWidth-ToChange)/2;
+      console.log("zoom change space", rightLeft);
+      this.areaAvailable[1] = rightLeft;
+      this.areaAvailable[3] = rightLeft;
+      this.areaAvailable[0] = ((this.manualScale-this.scale)*this.initialBoundingClient[0])/(this.manualScale*2);  //solve this too
+      this.areaAvailable[2] = ((this.manualScale-this.scale)*this.initialBoundingClient[0])/(this.manualScale*2);
+    }
+    console.log(this.sliderHeight,this.areaAvailable);
+  }
+
+  adjustOnSliderZoomOut(){
+    if(this.imagePositionX<0 && (this.areaAvailable[1] + this.imagePositionX) < 10){
+      this.imagePositionX = -this.areaAvailable[1];
+    }
+    else if(this.imagePositionX>0 && (this.areaAvailable[1] - this.imagePositionX) < 10){
+      this.imagePositionX = this.areaAvailable[1];
+    }
+        
+    const imgElement = this.imageElement.nativeElement;
+    imgElement.style.transition = `transform 0s` 
+    imgElement.style.transform = `translate(${this.imagePositionX}px, ${this.imagePositionY}px)`;
+    setTimeout(() => {
+      imgElement.style.transition = `transform 0.1s ease`;
+  }, 0);  }
+
+  adjustOnZoomOut(){
+    
+    if(this.imagePositionX<0 && (this.areaAvailable[1] + this.imagePositionX) < 10){
+      this.imagePositionX = -this.areaAvailable[1];
+    }
+    else if(this.imagePositionX>0 && (this.areaAvailable[1] - this.imagePositionX) < 10){
+      this.imagePositionX = this.areaAvailable[1];
+    }
+
+    if(this.imagePositionY<0 && (this.areaAvailable[0] + this.imagePositionY) < 10){
+      this.imagePositionY = -this.areaAvailable[0];
+    }
+    else if(this.imagePositionY>0 && (this.areaAvailable[0] - this.imagePositionY) < 10){
+      this.imagePositionY = this.areaAvailable[0];
+    }
+
+    
+    const imgElement = this.imageElement.nativeElement;
+    imgElement.style.transition = `transform 0s` 
+    imgElement.style.transform = `translate(${this.imagePositionX}px, ${this.imagePositionY}px)`;
+    setTimeout(() => {
+      imgElement.style.transition = `transform 0.1s ease`;
+  }, 0);
   }
 
   //zooming
@@ -238,20 +326,23 @@ export class NewImageCropperComponent{
 
   OnZoom(type:boolean){
     if(type){
-      if(this.manualScale>=10){
+      if(this.manualScale>=5){
         return;
       }
       this.manualScale += 0.1;
     }else{
-      if(this.manualScale <= this.scale){
+      console.log(this.manualScale, this.scale, this.areaAvailable[0],this.areaAvailable[1])
+      if(this.manualScale <= this.scale || this.areaAvailable[0]<=0 || this.areaAvailable[1]<=0){
         return;
       }
       this.manualScale -= 0.1; 
     }
+    console.log("zoom prev",  this.imageElement.nativeElement.getBoundingClientRect().height, "initial", this.initialBoundingClient[0])
     const imgElement = this.imageElement.nativeElement;
     imgElement.style.scale = this.manualScale;
-    this.changeAvailableSpace()
-
+    console.log("zoom after", this.imageElement.nativeElement.getBoundingClientRect().height)
+    this.changeAvailableSpace(type);
+    if(!type){ this.adjustOnZoomOut()}
   }
 
 
@@ -275,14 +366,30 @@ export class NewImageCropperComponent{
   
   onMouseMove(event: MouseEvent) {
     if (!this.isResizing) return;
-    const dy = event.clientY - this.startingY;
-    this.sliderHeight = Math.min(this.sliderHeightMax, Math.max(this.sliderHeightMin, this.initialHeight + dy));
+    let dy = event.clientY - this.startingY;
+    this.imageElement.nativeElement.style.transition = `transform 0s` 
+    let oldSliderHeight = this.sliderHeight;
+    const intermediateHeight = Math.min(this.sliderHeightMax, Math.max(this.sliderHeightMin, this.initialHeight + dy));
+    if(intermediateHeight-oldSliderHeight!=0){
+      
+      this.sliderChangeHandle(intermediateHeight-oldSliderHeight, intermediateHeight);
+    }
+    this.sliderHeight = intermediateHeight
+    setTimeout(() => {
+      this.imageElement.nativeElement.style.transition = `transform 0.1s ease`;
+  }, 0);  
   }
   
   onTouchMove(event: TouchEvent) {
     if (!this.isResizing) return;
     const dy = event.touches[0].clientY - this.startingY;
-    this.sliderHeight = Math.min(this.sliderHeightMax, Math.max(this.sliderHeightMin, this.initialHeight + dy));
+    let oldSliderHeight = this.sliderHeight;
+    const intermediateHeight = Math.min(this.sliderHeightMax, Math.max(this.sliderHeightMin, this.initialHeight + dy));
+    if(intermediateHeight-oldSliderHeight!=0){
+      this.sliderChangeHandle(intermediateHeight-oldSliderHeight, intermediateHeight);
+    }
+    this.sliderHeight = intermediateHeight
+
   }
   
   onMouseUp() {
@@ -304,7 +411,72 @@ export class NewImageCropperComponent{
   //if slider height is decreasing
   //if scaled previously unscale until the original
   //if uncovered originally 
-  sliderChangeHandle(){
+
+  sliderChangeHandle(dy: number, intermediateHeight:number){
+    console.log("dy",dy);
+
+    const imgElement = this.imageElement.nativeElement;
+    let newImagePositionY = 0;
+
+    //when imagePositionY==0 ?
+    // console.log("manual scale prev", this.manualScale, imgElement.getBoundingClientRect().height, this.sliderHeight);
+    //if(imgElement.getBoundingClientRect().height <= this.sliderHeight)
+    if(this.areaAvailable[0]==0){
+      let toScale = intermediateHeight/(this.initialBoundingClient[0]);
+      if(dy<1){this.adjustOnSliderZoomOut()}
+        this.scale = toScale;
+        imgElement.style.scale = this.scale;
+        this.manualScale =this.scale;
+        this.changeAvailableSpaceForZoomSlider();
+        this.areaAvailable[0] = 0;
+        this.areaAvailable[2] = 0;
+        // console.log("manual scale", this.manualScale, imgElement.getBoundingClientRect().height, this.sliderHeight);
+        return;
+    }
+    // else if( Math.abs(imgElement.getBoundingClientRect().height - this.sliderHeight)<2){
+    //   if(dy<0 && this.manualScale>1){
+    //     this.manualScale -= 0.01;
+    //     imgElement.style.scale = this.manualScale;
+    //     this.changeAvailableSpace();
+    //     this.areaAvailable[0] = 0;
+    //     this.areaAvailable[2] = 0;
+    //     console.log("manual scale down", this.manualScale, imgElement.getBoundingClientRect().height, this.sliderHeight);
+    //     return;
+    //   }
+    // }
+
+    // this.areaAvailable[0] = Math.max(0,this.areaAvailable[0]-((this.manualScale-this.scale+1)*dy/2));
+    // this.areaAvailable[2] = Math.max(0,this.areaAvailable[2]-((this.manualScale-this.scale+1)*dy/2));
+    
+    
+    this.areaAvailable[0] = Math.max(0,this.areaAvailable[0]-(dy/(2*(this.manualScale-this.scale+1))));
+    this.areaAvailable[2] = Math.max(0,this.areaAvailable[2]-(dy/(2*(this.manualScale-this.scale+1))));
+    
+    if(this.imagePositionY<0 && Math.abs(this.imagePositionY)>=this.areaAvailable[2]){
+        newImagePositionY = this.imagePositionY + dy;
+        if(Math.abs(newImagePositionY) > this.areaAvailable[2] ){
+          if(newImagePositionY<0){newImagePositionY = -this.areaAvailable[2]}
+          else{newImagePositionY = this.areaAvailable[2]}
+        }
+        imgElement.style.transform = `translate(0px, ${newImagePositionY}px)`;
+        this.imagePositionY = newImagePositionY;  
+    }
+    else if(this.imagePositionY>0 && Math.abs(this.imagePositionY)>=this.areaAvailable[0]){
+      newImagePositionY = this.imagePositionY - dy;
+      if(Math.abs(newImagePositionY) > this.areaAvailable[2] ){
+        if(newImagePositionY<0){newImagePositionY = -this.areaAvailable[2]}
+        else{newImagePositionY = this.areaAvailable[2]}
+      }
+      imgElement.style.transform = `translate(0px, ${newImagePositionY}px)`;
+      this.imagePositionY = newImagePositionY;  
+    }
+
+    console.log("imagePosition",this.imagePositionY,dy, this.areaAvailable);
+
+
+    //this.imagePositionY = newImagePositionY;
+    // const imgElement = this.imageElement.nativeElement;
+    // imgElement.style.transform = `translate(0px, ${this.imagePositionY}px)`;  
 
   }
 }
