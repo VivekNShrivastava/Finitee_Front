@@ -317,7 +317,7 @@ export class NewImageCropperComponent{
       }
       this.manualScale += 0.1;
     }else{
-      if(this.manualScale <= this.sliderScale || this.areaAvailable[0]<=0 || this.areaAvailable[1]<=0){
+      if(this.manualScale == this.sliderScale || this.areaAvailable[0]<=0 || this.areaAvailable[1]<=0){
         return;
       }
       this.manualScale -= 0.1; 
@@ -387,13 +387,6 @@ export class NewImageCropperComponent{
     document.removeEventListener('touchend', this.onMouseUp.bind(this));
   }
   
-  // if slider height is increasing
-  //if height is more uncover the image itslef
-  //if height ends start scaling
-
-  //if slider height is decreasing
-  //if scaled previously unscale until the original
-  //if uncovered originally 
 
   sliderChangeHandle(dy: number, intermediateHeight:number){
     console.log("dy",dy);
@@ -401,9 +394,7 @@ export class NewImageCropperComponent{
     const imgElement = this.currentMediaElement.nativeElement;
     let newImagePositionY = 0;
 
-    //when imagePositionY==0 ?
-    // console.log("manual scale prev", this.manualScale, imgElement.getBoundingClientRect().height, this.sliderHeight);
-    //if(imgElement.getBoundingClientRect().height <= this.sliderHeight)
+
     if(this.areaAvailable[0]==0){
       let toScale = intermediateHeight/(this.initialBoundingClient[0]);
       if(dy<1){this.adjustOnSliderZoomOut()}
