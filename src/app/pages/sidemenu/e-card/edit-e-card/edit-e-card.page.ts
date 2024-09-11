@@ -14,6 +14,7 @@ import { ActionSheetController, AlertController, IonicModule, IonInput, NavContr
   styleUrls: ['./edit-e-card.page.scss'],
 })
 export class EditECardPage extends BasePage implements OnInit {
+  hasUnsavedChanges:boolean=false;
   loaded: boolean = false;
   userCanvasProfile: UserCanvasProfile = new UserCanvasProfile();
   eCard: ECard = new ECard();
@@ -21,8 +22,9 @@ export class EditECardPage extends BasePage implements OnInit {
   // Array to hold dynamic rows
   dynamicRows: Array<{ field: string; value: string }> = [{ field: '', value: '' }];
   UserId: string="";
-  originalECard: ECard = new ECard();
-
+  originalECard:ECard = new ECard();
+  originalECard1:Array<{ field: string; value: string }> = [{ field: '', value: '' }];
+  
   constructor(private alertController: AlertController,
     private eCardService:ECardService,
     private _activatedRoute: ActivatedRoute,
@@ -40,110 +42,162 @@ export class EditECardPage extends BasePage implements OnInit {
 }
 
 addRow() {
-  if (this.dynamicRows.length < 15) {
+  if (this.dynamicRows.length < 10) {
     this.dynamicRows.push({ field: '', value: '' });
+    
     console.log("Adding row")
   }
-  
+
 }
-addECard() {
+ // Handle Save button click
+ addECard() {
   // Transform dynamicRows into eCard.CustomFields
   this.eCard.CustomFields = {};
 
   this.dynamicRows.forEach(row => {
     if (row.field && row.value) {
       this.eCard.CustomFields[row.field] = row.value;
-      
     }
   });
 
   // Now proceed with saving the eCard
   this.eCardService.addOrUpdateEcard(this.eCard).then(
     (response) => {
-      alert("E-Card updated successfully");
+     // alert("E-Card updated successfully");
       console.log('E-Card updated successfully:', response);
       
+      // Reset hasUnsavedChanges after successful save
+      this.hasUnsavedChanges = false;
+      
+      // Update originalECard to match the saved eCard
+      this.originalECard = JSON.parse(JSON.stringify(this.eCard));
     },
     (error) => {
       console.error('Error updating eCard:', error);
       // Handle error
     }
   );
+this.router.navigateByUrl(`e-card/${this.UserId}`);
+}
+async ngOnInit() {
+
 }
 
-async ngOnInit() {
-  this.getEcard();
+onPrimaryFieldChange() {
+  this.hasUnsavedChanges = this.hasChanges();
 }
 
   // Method to handle input changes and add a new row if needed
   onInputChange(index: number) {
     const row = this.dynamicRows[index];
-  
-    // Sync dynamicRows with eCard.CustomFields
-    if (row.field && row.value) {
-      this.eCard.CustomFields[row.field] = row.value;
-    } else if (!row.field || !row.value) {
-      // Remove empty fields from eCard.CustomFields
-      delete this.eCard.CustomFields[row.field];
+    
+    if (this.hasChanges()==true) {
+     this.hasUnsavedChanges=true
+      console.log('Changes detected!');
+    } else {
+      this.hasUnsavedChanges=false
+      console.log('No changes detected.');
     }
-  
-    // Add a new row if the last row has content and the number of rows is less than 15
-    if (index === this.dynamicRows.length - 1 && this.dynamicRows.length < 15) {
+    
+    
+    
+    this.hasUnsavedChanges = this.hasChanges();
+
+    // Add a new row if the last row has content and the number of rows is less than 10
+    if (index === this.dynamicRows.length - 1 && this.dynamicRows.length < 10) {
       if (row.field || row.value) {
         this.addRow();
       }
     }
   }
-  
+
+  hasChanges(): boolean {
+    console.log(this.dynamicRows);
+    console.log(this.originalECard1);
+    
+    return JSON.stringify(this.dynamicRows) !== JSON.stringify(this.originalECard1);
+    
+  }
   
   // Method to delete a dynamic row
-  deleteDynamicRow(index: number) {
-    this.dynamicRows.splice(index,1); // Remove the row at the specified index
-
-    this.eCard.CustomFields = {};
-
-    this.dynamicRows.forEach(row => {
-      if (row.field && row.value) {
-        this.eCard.CustomFields[row.field] = row.value;
-      }
-    });
+    deleteDynamicRow(index: number) {
+    const deletedRow = this.dynamicRows[index];
+    this.dynamicRows.splice(index, 1); // Remove the row at the specified index
     
-   
-  }
+    const wasRowInOriginalECard = this.originalECard1.some(
+      row => row.field === deletedRow.field && row.value === deletedRow.value
+    );
+    
+    // If the row was part of the original eCard (not a newly added row)
+    if (wasRowInOriginalECard) {
+        this.hasUnsavedChanges = true;  // Enable the save button
+    } else {
+        // If the row was not part of the original eCard, check if there are still unsaved changes
+        this.hasUnsavedChanges =   this.originalECard1.some(
+          row => row.field === deletedRow.field && row.value === deletedRow.value
+        );
+        this.hasUnsavedChanges=false
+    }
+      this.eCard.CustomFields = {};
+
+      this.dynamicRows.forEach(row => {
+        if (row.field && row.value) {
+          this.eCard.CustomFields[row.field] = row.value;
+        }
+      });
+     
+    
+    
+    }
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
-  
+    this.loaded=true
+    this.getEcard();
+    this.hasUnsavedChanges = false;
+    this.loaded=false
   }
   async getEcard() {
     
     var res = await this.eCardService.getEcard(this.UserId, this.logInfo.UserId)
     this.eCard=res.Ecard;
-    console.log(this.eCard.Name)  
+    
+    console.log(this.eCard)  
 
-    if (this.eCard.CustomFields) {
-      this.dynamicRows = Object.keys(this.eCard.CustomFields).map((key) => {
+  // Initialize dynamicRows with the Name field
+  this.dynamicRows = [{ field: "Name", value: this.eCard["Name"] }];
+
+  // Append CustomFields to dynamicRows if they exist
+  if (this.eCard.CustomFields) {
+    this.dynamicRows = this.dynamicRows.concat(
+      Object.keys(this.eCard.CustomFields).map((key) => {
         return { field: key, value: this.eCard.CustomFields[key] };
-      });
-    }
-    this.addRow();
-    this.loaded = true;
-     this.originalECard = JSON.parse(JSON.stringify(this.eCard));
-  }
-  hasChanges(): boolean {
-    return JSON.stringify(this.eCard) !== JSON.stringify(this.originalECard);
+      })
+    );
     
   }
+
+    this.addRow();
+    this.loaded = true;
+     this.originalECard1 = JSON.parse(JSON.stringify(this.dynamicRows));
+     
+    //  console.log(this.originalECard1)
+     
+  }
+ 
 
   // Handle back button click
   async handleBackButtonClick() {
     if (this.hasChanges()) {
       // Show confirmation popup if there are unsaved changes
       const alert = await this.alertController.create({
-        message: 'Are you sure you want to exit without saving your changes?',
+        
+        header: 'Are you sure you want to exit without saving your changes?',
+        cssClass: 'add-user-alert',
         buttons: [
           {
             text: 'No',
             role: 'cancel',
+            cssClass: 'add-user-alert-send-button',
             handler: () => {
               // Stay on the page
             },
@@ -151,18 +205,18 @@ async ngOnInit() {
           {
             text: 'Yes',
             role: 'confirm',
+            cssClass: 'add-user-alert-send-without-button',
             handler: () => {
-              // Reset eCard to original state
+              // Reset eCard and dynamicRows to original state
               this.eCard = JSON.parse(JSON.stringify(this.originalECard));
-              
-              // Also reset dynamicRows based on originalECard
               this.dynamicRows = Object.keys(this.originalECard.CustomFields || {}).map(key => {
                 return { field: key, value: this.originalECard.CustomFields[key] };
               });
               this.addRow();
-  
+              
               // Navigate back to eCard page
               this.router.navigateByUrl(`e-card/${this.UserId}`);
+              this.hasUnsavedChanges = false;
             },
           },
         ],
