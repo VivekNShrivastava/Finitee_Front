@@ -16,6 +16,7 @@ import { ActionSheetController, AlertController, IonicModule, IonInput, NavContr
 export class EditECardPage extends BasePage implements OnInit {
   hasUnsavedChanges:boolean=false;
   loaded: boolean = false;
+  paramsData: any;
   userCanvasProfile: UserCanvasProfile = new UserCanvasProfile();
   eCard: ECard = new ECard();
   userProfile: UserProfile = new UserProfile();
@@ -33,6 +34,7 @@ export class EditECardPage extends BasePage implements OnInit {
     private router:Router
   ) {
     super(authService);
+    this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
     if (this._activatedRoute.snapshot.params["UserId"]){
       this.UserId = this._activatedRoute.snapshot.params["UserId"];
       if(this.UserId === 'loggedInUser'){
@@ -44,8 +46,6 @@ export class EditECardPage extends BasePage implements OnInit {
 addRow() {
   if (this.dynamicRows.length < 10) {
     this.dynamicRows.push({ field: '', value: '' });
-    
-    console.log("Adding row")
   }
 
 }
@@ -53,12 +53,19 @@ addRow() {
  addECard() {
   // Transform dynamicRows into eCard.CustomFields
   this.eCard.CustomFields = {};
+  this.eCard.Name = this.dynamicRows[0].value;
+  this.eCard.PhoneNumber = this.dynamicRows[1].value;
+  this.eCard.Email = this.dynamicRows[2].value;
+  this.eCard.Website = this.dynamicRows[3].value;
 
-  this.dynamicRows.forEach(row => {
-    if (row.field && row.value) {
-      this.eCard.CustomFields[row.field] = row.value;
-    }
-  });
+
+  if (this.dynamicRows.length >= 5) {
+    this.dynamicRows.slice(4).forEach(row => {
+      if (row.field && row.value) {
+        this.eCard.CustomFields[row.field] = row.value;
+      }
+    });
+  }
 
   // Now proceed with saving the eCard
   this.eCardService.addOrUpdateEcard(this.eCard).then(
@@ -112,9 +119,6 @@ onPrimaryFieldChange() {
   }
 
   hasChanges(): boolean {
-    console.log(this.dynamicRows);
-    console.log(this.originalECard1);
-    
     return JSON.stringify(this.dynamicRows) !== JSON.stringify(this.originalECard1);
     
   }
@@ -151,34 +155,30 @@ onPrimaryFieldChange() {
     }
   async ionViewWillEnter() {
     console.log("ionViewWillEnter");
-    this.loaded=true
     this.getEcard();
     this.hasUnsavedChanges = false;
-    this.loaded=false
   }
   async getEcard() {
     
-    var res = await this.eCardService.getEcard(this.UserId, this.logInfo.UserId)
-    this.eCard=res.Ecard;
+    // var res = await this.eCardService.getEcard(this.UserId, this.logInfo.UserId)
+      this.eCard= this.paramsData;
+        this.dynamicRows = [{ field: "Name", value: this.eCard["Name"] },
+        { field: "PhoneNumber", value: this.eCard["PhoneNumber"] },
+        { field: "Email", value: this.eCard["Email"] },
+        { field: "Website", value: this.eCard["Website"] }];
     
-    console.log(this.eCard)  
+        // Append CustomFields to dynamicRows if they exist
 
-  // Initialize dynamicRows with the Name field
-  this.dynamicRows = [{ field: "Name", value: this.eCard["Name"] }];
-
-  // Append CustomFields to dynamicRows if they exist
-  if (this.eCard.CustomFields) {
-    this.dynamicRows = this.dynamicRows.concat(
-      Object.keys(this.eCard.CustomFields).map((key) => {
-        return { field: key, value: this.eCard.CustomFields[key] };
-      })
-    );
-    
-  }
+        if (this.eCard.CustomFields && Object.keys(this.eCard.CustomFields).length > 0) {
+          this.dynamicRows = this.dynamicRows.concat(
+            Object.keys(this.eCard.CustomFields).map((key) => {
+              return { field: key, value: this.eCard.CustomFields[key] };
+            })
+          );}
 
     this.addRow();
     this.loaded = true;
-     this.originalECard1 = JSON.parse(JSON.stringify(this.dynamicRows));
+    this.originalECard1 = JSON.parse(JSON.stringify(this.dynamicRows));
      
     //  console.log(this.originalECard1)
      
