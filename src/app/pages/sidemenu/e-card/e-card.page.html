@@ -44,20 +44,20 @@
     <ion-icons style="border: 2px #03A9F5;">
       <div class="icons-container">
         <div class="icon-style">
-          <img [src]="eCard?.Email ? '../../../../assets/icons/eCard icons/Email icon light.svg' : '../../../../assets/icons/eCard icons/Email icon dark.svg'"
+          <img [src]="eCard.Email ? '../../../../assets/icons/eCard icons/Email icon light.svg' : '../../../../assets/icons/eCard icons/Email icon dark.svg'"
            alt="Email Icon" 
-           (click)="eCard?.Email ? openGmail() : null">
+           (click)="eCard.Email ? openGmail() : null">
             <!-- <img src="../../../../assets/icons/eCard icons/Email icon dark.svg" alt="Phone Icon" (click)="openGmail()"> -->
         </div>
         <div class="icon-style">
-          <img [src]="eCard?.Website ? '../../../../assets/icons/eCard icons/Website icon light.svg' : '../../../../assets/icons/eCard icons/Website icon dark.svg'"
+          <img [src]="eCard.Website ? '../../../../assets/icons/eCard icons/Website icon light.svg' : '../../../../assets/icons/eCard icons/Website icon dark.svg'"
            alt="Website Icon" 
-           (click)="eCard?.Website ? openWebsite() : null">
+           (click)="eCard.Website ? openWebsite() : null">
         </div>
         <div class="icon-style">
-          <img [src]="eCard?.PhoneNumber ? '../../../../assets/icons/eCard icons/Phone icon light.svg' : '../../../../assets/icons/eCard icons/Phone icon dark.svg'"
+          <img [src]="eCard.PhoneNumber ? '../../../../assets/icons/eCard icons/Phone icon light.svg' : '../../../../assets/icons/eCard icons/Phone icon dark.svg'"
            alt="Phone Icon" 
-           (click)="eCard?.PhoneNumber ? openPhoneDialer() : null">
+           (click)="eCard.PhoneNumber ? openPhoneDialer() : null">
         </div>     
         <div class="icon-style">
           <img src="../../../../assets/icons/eCard icons/Refer icon light.svg" alt="Share Icon" (click)="shareContent()">
