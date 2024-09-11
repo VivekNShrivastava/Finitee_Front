@@ -3,8 +3,5 @@ export class ECard{
     Email: string="";
     Website:string="";
     PhoneNumber: string="";
-    LinkedIn:string="";
     CustomFields: { [key: string]: string } = {};
-  forEach: any;
-      
   }
