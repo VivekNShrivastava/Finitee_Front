@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'; 
 import { AlertController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
-import { UserProfile, UserCanvasProfile, ECard } from 'src/app/core/models/user/UserProfile';
+import { UserProfile, UserCanvasProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
 import * as config from 'src/app/core/models/config/ApiMethods';

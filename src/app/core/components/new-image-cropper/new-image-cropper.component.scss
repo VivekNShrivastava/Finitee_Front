@@ -38,3 +38,29 @@
     margin-bottom: 20px;
     position: relative;
   }
+
+
+  //video controls
+
+
+  
+  .controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+  }
+  
+  ion-button {
+    margin: 5px;
+    --background: #444;
+  }
+  
+  ion-range {
+    width: 80%;
+    margin: 10px 0;
+  }
+  
