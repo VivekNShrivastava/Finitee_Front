@@ -96,7 +96,8 @@ onPrimaryFieldChange() {
 
   // Method to handle input changes and add a new row if needed
   onInputChange(index: number) {
-    const row = this.dynamicRows[index];
+    const row = this.dynamicRows[index+4];
+    console.log(row);
     
     if (this.hasChanges()==true) {
      this.hasUnsavedChanges=true
@@ -111,7 +112,7 @@ onPrimaryFieldChange() {
     this.hasUnsavedChanges = this.hasChanges();
 
     // Add a new row if the last row has content and the number of rows is less than 10
-    if (index === this.dynamicRows.length - 1 && this.dynamicRows.length < 10) {
+    if (index+4 === this.dynamicRows.length - 1 && this.dynamicRows.length < 10) {
       if (row.field || row.value) {
         this.addRow();
       }
