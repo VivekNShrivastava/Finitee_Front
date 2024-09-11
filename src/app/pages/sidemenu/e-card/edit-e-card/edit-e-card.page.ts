@@ -126,8 +126,8 @@ onPrimaryFieldChange() {
   
   // Method to delete a dynamic row
     deleteDynamicRow(index: number) {
-    const deletedRow = this.dynamicRows[index];
-    this.dynamicRows.splice(index, 1); // Remove the row at the specified index
+    const deletedRow = this.dynamicRows[index+4];
+    this.dynamicRows.splice(index+4, 1); // Remove the row at the specified index
     
     const wasRowInOriginalECard = this.originalECard1.some(
       row => row.field === deletedRow.field && row.value === deletedRow.value

@@ -26,7 +26,7 @@ export class ECardPage extends BasePage implements OnInit {
   noteContent: string = ''; // Stores the content of the note
   showDeleteIcon: boolean = false; // Controls delete icon visibility
   showPlaceholder: boolean = true; // Controls placeholder visibility
-  dynamicRows: Array<{ field: string; value: string }> = [{ field: '', value: '' }];
+  dynamicRows: Array<{ field: string; value: string }> = [];
   loaded: boolean = false;
   constructor(
     private _EcardService: ECardService,
