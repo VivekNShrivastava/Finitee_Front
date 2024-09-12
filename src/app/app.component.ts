@@ -50,47 +50,34 @@ export class AppComponent {
 
   //new
   async initializeApp() {
-    await SplashScreen.show({
-      autoHide: false,
-    });
-    await SplashScreen.show({
-      showDuration: 1500,
-      autoHide: true,
-    });
-
+    await SplashScreen.show({ autoHide: false });
+  
     const res = this.getPlatformName();
     console.log(res);
+  
     if (Capacitor.isNativePlatform()) {
       this.setTextZoom();
-      await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
     }
-
-
+  
     const temp = localStorage.getItem('firstLaunch');
-    // console.log('ls', temp);
     if (localStorage.getItem('firstLaunch') === null) {
       localStorage.clear();
       localStorage.setItem('firstLaunch', 'true');
-      this.router.navigate([''], {replaceUrl: true});
-    }else{
-      this.authService.authState.subscribe(async (state) => { 
-        // console.log("Initialzing app", state);
+      this.router.navigate([''], { replaceUrl: true });
+    } else {
+      this.authService.authState.subscribe(async (state) => {
         if (state) {
-          // console.log("state");
-          // this.locationService.getCurrencyByCountry();
-          // console.log("state - coming...");
-          this.router.navigate(['tabs/map'], {replaceUrl: true}); 
-        } else if(!state){
-          // console.log("auth false");
-          this.router.navigate([''], {replaceUrl: true});
+          this.router.navigate(['tabs/map'], { replaceUrl: true });
+        } else {
+          this.router.navigate([''], { replaceUrl: true });
         }
-
         if (Capacitor.isNativePlatform()) {
           await SplashScreen.hide(); // Hide splash screen once initialization is complete
         }
       });
     }
   }
+  
 
   getPlatformName(): string {
     if (this.platform.is('cordova')) {
