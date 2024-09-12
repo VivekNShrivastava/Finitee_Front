@@ -48,6 +48,7 @@ export class NewImageCropperComponent{
   currentY = 0;
   imagePositionX = 0;
   imagePositionY = 0;
+  isVideo: boolean = false;
 
   constructor() {}
 
@@ -78,6 +79,7 @@ export class NewImageCropperComponent{
     } else if (media instanceof HTMLVideoElement) {
       this.naturalHeight = media.videoHeight;
       this.naturalWidth = media.videoWidth;
+      this.isVideo = true;
     }
 
     this.initialBoundingClient[0]= this.currentMediaElement.nativeElement.getBoundingClientRect().height;
@@ -451,11 +453,18 @@ isPlaying: boolean = false;
 isMuted: boolean = false;
 volumeValue: number = 1;
 seekValue: number = 0;
+intervalId: any = null;
+isUserInteracting: boolean= true;
+
 
 togglePlayPause() {
+  
   if (this.currentMediaElement.nativeElement.paused) {
     this.currentMediaElement.nativeElement.play();
     this.isPlaying = true;
+    this.intervalId = setInterval(() => {
+      this.updateSeekValue();
+    }, 200);
   } else {
     this.currentMediaElement.nativeElement.pause();
     this.isPlaying = false;
@@ -475,18 +484,21 @@ changeVolume(event: any) {
 }
 
 seekVideo(event: any) {
-  const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
-  const seekTime = (event.detail.value / 100) * video.duration;
-  video.currentTime = seekTime;
+  if(this.isUserInteracting){
+    const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
+    const seekTime = (event.detail.value / 100) * video.duration;
+    video.currentTime = seekTime;
+  }
+  this.isUserInteracting=true;
 }
 
-updateSeekBar() {
+updateSeekValue() {
+  this.isUserInteracting = false;
+  
   const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
-  this.seekValue = (video.currentTime / video.duration) * 100;
-}
-
-ionViewDidEnter() {
-  const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
-  video.addEventListener('timeupdate', () => this.updateSeekBar());
+    const seekProgress = (video.currentTime / video.duration) * 100;
+  
+  // Update the seekValue
+  this.seekValue = seekProgress;
 }
 }
