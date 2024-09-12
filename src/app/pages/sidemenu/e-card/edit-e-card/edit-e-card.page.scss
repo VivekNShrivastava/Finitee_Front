@@ -27,7 +27,7 @@
       .table-row {
         display: flex;
         align-items: center;
-        border-bottom: 1.75px solid #707070; /* Border between rows */
+        border-bottom: 1.75px solid #28507880; /* Border between rows */
         &:last-child {
           border-bottom: none; /* No border for the last row */
         }
@@ -38,7 +38,7 @@
         align-items: center;
         margin-top: 10px; /* Aligns content vertically in the center */
         padding: 12px;
-        border-right: 1.75px solid #707070;
+        border-right: 1.75px solid #285078;
         height: 50px;
         &:last-child {
           border-right: none; /* No border for the last cell in the row */
@@ -46,14 +46,14 @@
 
         ion-label {
           display: block;
-          color: #17138c;
+          color: #285078;
            /* Color for Field labels */
           // font-weight: 700;
         }
 
         ion-input {
           width: 100%;
-          color: #555555; /* Color for Value fields */
+          color: #285078; /* Color for Value fields */
           font-weight: 700;
           --padding-start: 0;
           --padding-end: 0;
@@ -64,7 +64,7 @@
 
         /* Specific styling for Field column in dynamic rows */
         .ion-field {
-          color: #17138c; /* Apply Field color */
+          color: #285078; /* Apply Field color */
         }
 
         .delete-icon {
@@ -92,7 +92,7 @@ ion-content {
   }
 
   .placeholder-input {
-    color: #17138c; /* Apply the same color as the labels */
+    color: #285078; /* Apply the same color as the labels */
     font-weight: 700;
     ::placeholder {
       color: #bb5668; /* Set the same color for the placeholder text */
@@ -101,7 +101,7 @@ ion-content {
   }
 
   ion-label {
-    color: #17138c; /* Apply the same color as the labels */
+    color: #285078; /* Apply the same color as the labels */
     font-weight: 700;
   }
 }

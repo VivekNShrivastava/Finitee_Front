@@ -19,11 +19,11 @@
     <ion-card>
       <ion-card-header>
         <ion-avatar>
-          <div>
+        
             <!-- <img [src]="userProfile.user.ProfileImage" onError="this.src='assets/icons/business/anonymous.svg'" /> -->
             <img src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}"style="width: 100%; height:100%; object-fit: cover;"
             onError="this.src='assets/icons/business/anonymous.svg'" onError="this.src='assets/icons/business/anonymous.svg'" />
-          </div>
+          
         </ion-avatar>
         
         <ion-thumbnail *ngIf="scanString">

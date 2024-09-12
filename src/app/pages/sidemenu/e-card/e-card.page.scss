@@ -35,7 +35,7 @@ ion-content {
     border:2.5px solid #03A9F5;
     border-radius:25px;
     background:#E8F7FE;
-    padding-bottom: 40px ;
+    padding-bottom: 60px ;
 
     & > ion-card {
       box-shadow: none !important;
@@ -272,7 +272,8 @@ ion-content{
   ion-list{
     ion-item{
       --background:#E8F7FE;
-      padding-left: 10px;
+      padding-left: 5px;
+      padding-right: 5px;
     }
   }
 }
