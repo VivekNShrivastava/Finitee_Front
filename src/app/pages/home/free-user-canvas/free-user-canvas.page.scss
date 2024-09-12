@@ -243,19 +243,22 @@ ion-content {
   }
   .translucent-button {
     display: flex;
-    --background: rgba(255, 255, 255, 0.6); /* Translucent black background */
+    --background: rgba(255, 255, 255, 0.2); /* Light black background with 30% opacity */
     --border-color: white;             /* White border */
-    --border-width: 2px;               /* 2px border */
+    --border-width: 1.5px;               /* 2px border */
     --border-style: solid; 
     color: white;                      /* White text/icon */
     margin: 0 5px;                     /* Add margin between buttons */
     border-radius: 20px;               /* Make the button rounded */
-  }
+    background: var(--background);     /* Apply the background */
+    border: var(--border-width) var(--border-style) var(--border-color); /* Apply border */
+}
+
   .translucent-button2  {
     display: flex;
-    --background: rgba(255, 255, 255, 0.7); /* Translucent black background */
+    --background: rgba(240, 240, 240, 0.5); /* Light black background with 30% opacity */
     --border-color: white;             /* White border */
-    // --border-width: 2px;
+    --border-width: 2.2px; 
     --border-style: solid;
     --border-radius:50%; 
     color: white;                    
@@ -267,9 +270,9 @@ ion-content {
     & ion-segment-button {
       font: normal normal normal 14px/28px SF Pro Display;
       letter-spacing: 0.22px;
-      --color: #285078;
+      --color:gray;
       --indicator-height: 2px;
-      --indicator-color: black;
+      --color-checked: black;
     }
   }
 
@@ -516,5 +519,9 @@ ion-modal {
 }
 
 .traitBg {
-z-index: 1;
+  z-index: 1;
+  top: 13px;
+  left: 15px;
+  width: 75px;
+  height: auto;
 }

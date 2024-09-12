@@ -1,18 +1,19 @@
 
-/* ion-tab-bar {
-  --background: #f0f5f7;
+ ion-tab-bar {
+  --color-selected: #000000;
+  --color-checked: black;
 }
 
-ion-tab-button {
-  color: #181e3c;
+// ion-tab-button {
+//   color: #181e3c;
 
-  &.tab-selected {
-    --background: #ffffff;
-    color: #03a9f5;
-  }
+//   &.tab-selected {
+//     --background: #ffffff;
+//     color: #03a9f5;
+//   }
 
 
-} */
+// } 
 
 ion-header ion-toolbar ion-title {
   position: absolute;
