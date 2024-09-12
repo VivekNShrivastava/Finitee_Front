@@ -48,6 +48,7 @@ export class NewImageCropperComponent{
   currentY = 0;
   imagePositionX = 0;
   imagePositionY = 0;
+  isVideo: boolean = false;
 
   constructor() {}
 
@@ -78,17 +79,13 @@ export class NewImageCropperComponent{
     } else if (media instanceof HTMLVideoElement) {
       this.naturalHeight = media.videoHeight;
       this.naturalWidth = media.videoWidth;
+      this.isVideo = true;
     }
-
 
     this.initialBoundingClient[0]= this.currentMediaElement.nativeElement.getBoundingClientRect().height;
     this.initialBoundingClient[1]= this.currentMediaElement.nativeElement.getBoundingClientRect().width;
-    if(this.naturalHeight/this.naturalWidth>1){
-      // const imageHeight = window.innerWidth;
-      // console.log("calculate height", imageHeight, "real height", this.currentMediaElement.nativeElement.getBoundingClientRect().height)
-      // const upBottom = (img.naturalHeight-imageHeight)/2;
-      // this.areaAvailable[0] = upBottom / this.k;
-      // this.areaAvailable[2] = upBottom / this.k;
+
+    if(this.naturalHeight/this.naturalWidth>=1){
       this.initialScale = window.innerWidth/this.currentMediaElement.nativeElement.offsetWidth
       const ToChange = this.sliderHeight/(this.initialScale);
       let upBottom = (this.initialBoundingClient[0]-ToChange)/2;
@@ -100,7 +97,14 @@ export class NewImageCropperComponent{
     
     }else if(this.naturalHeight/this.naturalWidth<1){
       this.initialScale = window.innerWidth/this.currentMediaElement.nativeElement.offsetHeight
-      let rightLeft = (window.innerWidth-this.initialBoundingClient[0])/2;
+      let rightLeft;
+      if (media instanceof HTMLImageElement) {
+        rightLeft = (window.innerWidth-this.initialBoundingClient[0])/2;
+      }else{
+        rightLeft = ((this.initialBoundingClient[1]-window.innerWidth)*this.initialScale)/2
+      }
+
+      
       //doesn't get affected but check once
       //if(img.naturalHeight<window.innerHeight){rightLeft=(window.innerWidth-this.imageElement.nativeElement.getBoundingClientRect().height)/2}
       this.areaAvailable[1] = rightLeft;
@@ -243,7 +247,7 @@ export class NewImageCropperComponent{
 
   changeAvailableSpace(){
   
-    if(this.naturalHeight/this.naturalWidth>1){
+    if(this.naturalHeight/this.naturalWidth>=1){
       const ToChange = this.sliderHeight/(this.manualScale);
       let upBottom = (this.initialBoundingClient[0]-ToChange)/2;
       console.log("availablespace", this.areaAvailable[0]);
@@ -317,10 +321,13 @@ export class NewImageCropperComponent{
       }
       this.manualScale += 0.1;
     }else{
-      if(this.manualScale == this.sliderScale || this.areaAvailable[0]<=0 || this.areaAvailable[1]<=0){
-        return;
-      }
+      // if(this.manualScale == this.sliderScale || this.areaAvailable[0]<=0 || this.areaAvailable[1]<=0){
+      //   return;
+      // }
       this.manualScale -= 0.1; 
+      if(this.manualScale<this.sliderScale){
+        this.manualScale = this.sliderScale;
+      }
     }
     const imgElement = this.currentMediaElement.nativeElement;
     imgElement.style.scale = this.manualScale;
@@ -397,22 +404,19 @@ export class NewImageCropperComponent{
 
     if(this.areaAvailable[0]==0){
       let toScale = intermediateHeight/(this.initialBoundingClient[0]);
-      if(dy<1){this.adjustOnSliderZoomOut()}
+      if(toScale>=this.initialScale){
+        if(dy<1){this.adjustOnSliderZoomOut()}
         this.sliderScale = toScale;
         imgElement.style.scale = this.sliderScale;
         this.manualScale =this.sliderScale;
         this.changeAvailableSpace();
-        // this.areaAvailable[0] = 0;
-        // this.areaAvailable[2] = 0;
-        // console.log("manual scale", this.manualScale, imgElement.getBoundingClientRect().height, this.sliderHeight);
         return;
+      }
     }
     
-    
-    
-    // this.areaAvailable[0] = Math.max(0,this.areaAvailable[0]-(dy/(2*(this.manualScale-this.sliderScale+1))));
-    // this.areaAvailable[2] = Math.max(0,this.areaAvailable[2]-(dy/(2*(this.manualScale-this.sliderScale+1))));
-    this.changeAvailableSpace();
+     this.areaAvailable[0] = Math.max(0,this.areaAvailable[0]-(dy/(2*this.manualScale)));
+     this.areaAvailable[2] = Math.max(0,this.areaAvailable[2]-(dy/(2*this.manualScale)));
+    //this.changeAvailableSpace();
 
     if(this.imagePositionY<0 && Math.abs(this.imagePositionY)>=this.areaAvailable[2]){
         newImagePositionY = this.imagePositionY + dy;
@@ -449,11 +453,18 @@ isPlaying: boolean = false;
 isMuted: boolean = false;
 volumeValue: number = 1;
 seekValue: number = 0;
+intervalId: any = null;
+isUserInteracting: boolean= true;
+
 
 togglePlayPause() {
+  
   if (this.currentMediaElement.nativeElement.paused) {
     this.currentMediaElement.nativeElement.play();
     this.isPlaying = true;
+    this.intervalId = setInterval(() => {
+      this.updateSeekValue();
+    }, 200);
   } else {
     this.currentMediaElement.nativeElement.pause();
     this.isPlaying = false;
@@ -473,18 +484,21 @@ changeVolume(event: any) {
 }
 
 seekVideo(event: any) {
-  const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
-  const seekTime = (event.detail.value / 100) * video.duration;
-  video.currentTime = seekTime;
+  if(this.isUserInteracting){
+    const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
+    const seekTime = (event.detail.value / 100) * video.duration;
+    video.currentTime = seekTime;
+  }
+  this.isUserInteracting=true;
 }
 
-updateSeekBar() {
+updateSeekValue() {
+  this.isUserInteracting = false;
+  
   const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
-  this.seekValue = (video.currentTime / video.duration) * 100;
-}
-
-ionViewDidEnter() {
-  const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
-  video.addEventListener('timeupdate', () => this.updateSeekBar());
+    const seekProgress = (video.currentTime / video.duration) * 100;
+  
+  // Update the seekValue
+  this.seekValue = seekProgress;
 }
 }

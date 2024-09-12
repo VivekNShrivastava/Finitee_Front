@@ -20,7 +20,7 @@
        
           <video 
           #mediaElement
-          (canplay)="calculatePixelToScreen(mediaElement)"
+          (loadedmetadata)="calculatePixelToScreen(mediaElement)"
           (mousedown)="onTouchImageStart($event)"
           (mousemove)="onTouchImageMove($event)"
           (mouseup)="onTouchImageEnd($event)"
@@ -35,12 +35,30 @@
       </div>
     </ion-slide>
   </ion-slides>
+  <div class="video-controls" *ngIf="isVideo">
+    <div class="playpause" (click)="togglePlayPause()">
+      <ion-icon *ngIf="isPlaying" name="pause"></ion-icon>
+      <ion-icon *ngIf="!isPlaying" name="play"></ion-icon>
+    </div>
+  
+    <div class="control-area" (click)="toggleMute()">
+      <ion-icon *ngIf="isMuted" name="volume-mute"></ion-icon>
+      <ion-icon *ngIf="!isMuted" name="volume-high"></ion-icon>
+  
+      <ion-range min="0" max="100" [(ngModel)]="seekValue" (ionChange)="seekVideo($event)">
+        <ion-icon slot="start" name="play-back-outline"></ion-icon>
+        <ion-icon slot="end" name="play-forward-outline"></ion-icon>
+      </ion-range>
+    </div>
+  </div>
 </div>
 
 <div class="resizable-handle" 
      (mousedown)="onMouseDown($event)"
      (touchstart)="onMouseDown($event)">
 </div>
+
+
 
 <!-- <div class="controls">
   <ion-button (click)="togglePlayPause()">{{ isPlaying ? 'Pause' : 'Play' }}</ion-button>
