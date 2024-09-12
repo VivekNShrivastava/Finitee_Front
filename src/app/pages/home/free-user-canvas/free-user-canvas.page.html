@@ -55,13 +55,14 @@
             class="translucent-button2" 
             (click)="presentMenuModalForOther()" 
             expand="block"
-            *ngIf="userId !== logInfo.UserId">
+            *ngIf="userId != logInfo.UserId">
             <ion-icon name="dots"></ion-icon>
           </ion-button>
         </ion-buttons>
       </div>
+      </div>
       
-  
+      <div class="all-in">
       <!-- Bottom Content Overlay -->
       <div class="bottom-content">
         <h1 class="title">{{userCanvasProfile.canvasProfile.DisplayName}}</h1>
@@ -102,7 +103,7 @@
           
             <!-- Start chat button -->
             <ion-button 
-              *ngIf="loadPrivateUser != true" 
+              *ngIf="loadPrivateUser !== true" 
               style="width: 43px;height: 35px;"
               class="translucent-button"
               shape="round" 
