@@ -28,7 +28,7 @@ export class AppComponent {
     private platform: Platform
   ) {
     addIcons(finiteeIconMapper);
-    this.initializeApp();
+    //this.initializeApp();
   }
 
   //old
@@ -49,74 +49,74 @@ export class AppComponent {
   // }
 
   //new
-  async initializeApp() {
-    await SplashScreen.show({
-      autoHide: false,
-    });
-    await SplashScreen.show({
-      showDuration: 1500,
-      autoHide: true,
-    });
+  // async initializeApp() {
+  //   await SplashScreen.show({
+  //     autoHide: false,
+  //   });
+  //   await SplashScreen.show({
+  //     showDuration: 1500,
+  //     autoHide: true,
+  //   });
 
-    const res = this.getPlatformName();
-    console.log(res,"res");
-    if (Capacitor.isNativePlatform()) {
-      this.setTextZoom();
-      await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
-    }
+  //   const res = this.getPlatformName();
+  //   console.log(res,"res");
+  //   if (Capacitor.isNativePlatform()) {
+  //     this.setTextZoom();
+  //     await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
+  //   }
 
 
-    const temp = localStorage.getItem('firstLaunch');
-    console.log('ls', temp);
-    if (localStorage.getItem('firstLaunch') === null) {
-      localStorage.clear();
-      localStorage.setItem('firstLaunch', 'true');
-      this.router.navigate([''], {replaceUrl: true});
-    }else{
-      this.authService.authState.subscribe(async (state) => { 
-         console.log("Initialzing app", state);
-        if (state) {
-           console.log("state");
-          // this.locationService.getCurrencyByCountry();
-           console.log("state - coming...");
-          this.router.navigate(['tabs/map'], {replaceUrl: true}); 
-        } else if(!state){
-           console.log("auth false");
-          this.router.navigate([''], {replaceUrl: true});
-        }
+  //   const temp = localStorage.getItem('firstLaunch');
+  //   console.log('ls', temp);
+  //   if (localStorage.getItem('firstLaunch') === null) {
+  //     localStorage.clear();
+  //     localStorage.setItem('firstLaunch', 'true');
+  //     this.router.navigate([''], {replaceUrl: true});
+  //   }else{
+  //     this.authService.authState.subscribe(async (state) => { 
+  //        console.log("Initialzing app", state);
+  //       if (state) {
+  //          console.log("state");
+  //         // this.locationService.getCurrencyByCountry();
+  //          console.log("state - coming...");
+  //         this.router.navigate(['tabs/map'], {replaceUrl: true}); 
+  //       } else if(!state){
+  //          console.log("auth false");
+  //         this.router.navigate([''], {replaceUrl: true});
+  //       }
 
-        if (Capacitor.isNativePlatform()) {
-          await SplashScreen.hide(); // Hide splash screen once initialization is complete
-        }
-      });
-    }
-  }
+  //       if (Capacitor.isNativePlatform()) {
+  //         await SplashScreen.hide(); // Hide splash screen once initialization is complete
+  //       }
+  //     });
+  //   }
+  // }
 
-  getPlatformName(): string {
-    if (this.platform.is('cordova')) {
-      return 'Cordova';
-    } else if (this.platform.is('capacitor')) {
-      return 'Capacitor';
-    } else if (this.platform.is('android')) {
-      return 'Android';
-    } else if (this.platform.is('ios')) {
-      return 'iOS';
-    } else if (this.platform.is('desktop')) {
-      return 'Desktop';
-    } else if (this.platform.is('mobileweb')) {
-      return 'Mobile Web';
-    } else if (this.platform.is('pwa')) {
-      return 'PWA';
-    } else {
-      return 'Unknown';
-    }
-  }
+  // getPlatformName(): string {
+  //   if (this.platform.is('cordova')) {
+  //     return 'Cordova';
+  //   } else if (this.platform.is('capacitor')) {
+  //     return 'Capacitor';
+  //   } else if (this.platform.is('android')) {
+  //     return 'Android';
+  //   } else if (this.platform.is('ios')) {
+  //     return 'iOS';
+  //   } else if (this.platform.is('desktop')) {
+  //     return 'Desktop';
+  //   } else if (this.platform.is('mobileweb')) {
+  //     return 'Mobile Web';
+  //   } else if (this.platform.is('pwa')) {
+  //     return 'PWA';
+  //   } else {
+  //     return 'Unknown';
+  //   }
+  // }
   
  
-  setTextZoom() {
-    var options: SetOptions = {
-      value: parseFloat("1.0.0")
-    }
-    TextZoom.set(options);
-  }
+  // setTextZoom() {
+  //   var options: SetOptions = {
+  //     value: parseFloat("1.0.0")
+  //   }
+  //   TextZoom.set(options);
+  // }
 }
