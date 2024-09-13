@@ -82,7 +82,7 @@
           *ngIf="post.PostImages && post.PostImages.length>0">
           <ion-slide *ngFor="let postImage of post.PostImages">
             <ion-card>
-              <span style="top: 70px;" *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
+              <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
                 {{post.BelongsToNodeName}}
               </span>
               <video class="video" *ngIf="postImage.includes('VIDEO')" [poster]="appConstants.mediaPrefix + postImage"

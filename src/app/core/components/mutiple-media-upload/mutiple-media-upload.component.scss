@@ -61,15 +61,59 @@
 
 //   }
 // }
-@media screen and (max-width: 1024px) {
+// @media screen and (max-width: 1024px) {
   /* Insert your mobile-specific styles here */
-  ion-card{
-    height: 192px !important;
+//   ion-card{
+//     height: 192px !important;
+//   }
+// }
+// @media screen and (max-width: 652px) {
+  /* Insert your mobile-specific styles here */
+//   ion-card{
+//     height: 96px !important;
+//   }
+// }
+/* Base CSS for the container and circular buttons */
+.button-container {
+  display: flex;
+  height: 70px; /* Adjust based on button size */
+  gap: 10px; /* Adjust gap between circles */
+}
+
+.circular-button {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Add additional styles if needed */
+}
+
+.circular-button img {
+  width: 60%;
+  height: 60%;
+}
+
+.disabled {
+  /* Define styles for disabled state, e.g., opacity or pointer events */
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1024px) {
+  /* Adjust button size or container height if needed */
+  .button-container {
+    height: 60px; /* Example adjustment */
   }
 }
+
 @media screen and (max-width: 652px) {
-  /* Insert your mobile-specific styles here */
-  ion-card{
-    height: 96px !important;
+  /* Further adjustments for smaller screens */
+  .button-container {
+    height: 50px; /* Example adjustment */
   }
 }
