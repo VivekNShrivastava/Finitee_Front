@@ -50,13 +50,13 @@ export class AppComponent {
 
   //new
   async initializeApp() {
-    await SplashScreen.show({
-      autoHide: false,
-    });
-    await SplashScreen.show({
-      showDuration: 1500,
-      autoHide: true,
-    });
+    // await SplashScreen.show({
+    //   autoHide: false,
+    // });
+    // await SplashScreen.show({
+    //   showDuration: 1500,
+    //   autoHide: true,
+    // });
 
     const res = this.getPlatformName();
     console.log(res);
