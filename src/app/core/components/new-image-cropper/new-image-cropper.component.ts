@@ -3,7 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { GestureController } from '@ionic/angular';
+import { IonSlides } from '@ionic/angular';
 
 @Component({
   standalone: true,
@@ -15,6 +15,10 @@ import { GestureController } from '@ionic/angular';
 })
 export class NewImageCropperComponent{
   @Input() imageUri: any[] = [];
+  @ViewChild(IonSlides, { static: false }) slides!: IonSlides;
+
+  currentIndex: number = 0;
+
   sliderHeight: number = 0;
   sliderHeightMin: number = 0;
   sliderHeightMax: number = 0;
@@ -22,16 +26,12 @@ export class NewImageCropperComponent{
     allowTouchMove: false
   };
 
-  @ViewChild('imageContainer') imageContainer!: ElementRef<HTMLElement>;
   @ViewChild('mediaElement', { static: false }) currentMediaElement!: ElementRef;
-  @ViewChild('videoElement', { static: false }) videoElement!: ElementRef;
 
   //up,right,bottom,left
-  noZoomHeight: number = 0;
   naturalHeight = 0;
   naturalWidth = 0;
   areaAvailable: number[] = [0,0,0,0];
-  k: number=0;
   initialScale: number = 1;
   sliderScale: number=1;
   manualScale: number = 1;
@@ -101,7 +101,9 @@ export class NewImageCropperComponent{
       if (media instanceof HTMLImageElement) {
         rightLeft = (window.innerWidth-this.initialBoundingClient[0])/2;
       }else{
-        rightLeft = ((this.initialBoundingClient[1]-window.innerWidth)*this.initialScale)/2
+        //rightLeft = ((this.initialBoundingClient[1]-window.innerWidth)*this.initialScale)/2
+        rightLeft = (this.initialBoundingClient[1]-(window.innerWidth/this.initialScale))/2
+
       }
 
       
@@ -208,42 +210,7 @@ export class NewImageCropperComponent{
       this.areaAvailable[3] = ((this.manualScale-this.initialScale)*this.initialBoundingClient[1])/(this.manualScale*2);
   }
 
-  changeAvailableSpaceForRest(){
 
-    if(this.manualScale === this.sliderScale){
-      this.areaAvailable[0] = ((this.manualScale-this.initialScale)*this.initialBoundingClient[0])/(this.manualScale*2);
-      this.areaAvailable[2] = ((this.manualScale-this.initialScale)*this.initialBoundingClient[0])/(this.manualScale*2);
-      this.areaAvailable[1] = ((this.manualScale-this.initialScale)*this.initialBoundingClient[1])/(this.manualScale*2);
-      this.areaAvailable[3] = ((this.manualScale-this.initialScale)*this.initialBoundingClient[1])/(this.manualScale*2);
-    }
-    else if(this.manualScale === this.initialScale){
-      if(this.naturalHeight/this.naturalWidth>1){
-        const ToChange = this.sliderHeight/(this.initialScale);
-        let upBottom = (this.initialBoundingClient[0]-ToChange)/2;
-        this.areaAvailable[0] = upBottom;
-        this.areaAvailable[2] = upBottom;
-        this.areaAvailable[1] = 0;
-        this.areaAvailable[3] = 0;
-      }else if(this.naturalHeight === this.naturalWidth){
-        this.areaAvailable[0] = 0;
-        this.areaAvailable[1] = 0;
-        this.areaAvailable[2] = 0;
-        this.areaAvailable[3] = 0;
-      }else{
-        let rightLeft = (window.innerWidth-this.initialBoundingClient[0])/2;
-        this.areaAvailable[1] = rightLeft;
-        this.areaAvailable[3] = rightLeft;
-        this.areaAvailable[0] = 0;
-        this.areaAvailable[2] = 0;
-      }
-
-    }else{
-      this.areaAvailable[0] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[0])/(this.manualScale*2);
-      this.areaAvailable[2] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[0])/(this.manualScale*2);
-      this.areaAvailable[1] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[1])/(this.manualScale*2);
-      this.areaAvailable[3] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[1])/(this.manualScale*2);
-    }
- }
 
   changeAvailableSpace(){
   
@@ -262,8 +229,12 @@ export class NewImageCropperComponent{
 
     }
     else if(this.naturalHeight/this.naturalWidth<1){
-      const ToChange = this.initialBoundingClient[0]/(this.manualScale/this.initialScale);
+      const ToChange = window.innerWidth/(this.manualScale);
       let rightLeft = (window.innerWidth-ToChange)/2;
+
+      if(this.isVideo){
+        rightLeft = (this.initialBoundingClient[1]-(window.innerWidth/this.manualScale))/2
+      }
       console.log("zoom change space", rightLeft);
       this.areaAvailable[1] = rightLeft;
       this.areaAvailable[3] = rightLeft;
@@ -321,12 +292,18 @@ export class NewImageCropperComponent{
       }
       this.manualScale += 0.1;
     }else{
-      // if(this.manualScale == this.sliderScale || this.areaAvailable[0]<=0 || this.areaAvailable[1]<=0){
-      //   return;
-      // }
-      this.manualScale -= 0.1; 
-      if(this.manualScale<this.sliderScale){
-        this.manualScale = this.sliderScale;
+      if(this.sliderScale<this.manualScale){
+        if(this.initialBoundingClient[0]*(this.manualScale-0.1)>=this.sliderHeight){
+            this.manualScale -= 0.1; 
+            console.log(this.manualScale, this.sliderScale)
+            if(this.manualScale<this.sliderScale){
+              this.manualScale = this.sliderScale;
+            }
+        }else{
+          let toScale = this.sliderHeight/(this.initialBoundingClient[0]);
+          this.sliderScale = toScale; 
+          this.manualScale = toScale;
+        }
       }
     }
     const imgElement = this.currentMediaElement.nativeElement;
@@ -424,7 +401,7 @@ export class NewImageCropperComponent{
           if(newImagePositionY<0){newImagePositionY = -this.areaAvailable[2]}
           else{newImagePositionY = this.areaAvailable[2]}
         }
-        imgElement.style.transform = `translate(0px, ${newImagePositionY}px)`;
+        imgElement.style.transform = `translate(${this.imagePositionX}px, ${newImagePositionY}px)`;
         this.imagePositionY = newImagePositionY;  
     }
     else if(this.imagePositionY>0 && Math.abs(this.imagePositionY)>=this.areaAvailable[0]){
@@ -433,7 +410,7 @@ export class NewImageCropperComponent{
         if(newImagePositionY<0){newImagePositionY = -this.areaAvailable[2]}
         else{newImagePositionY = this.areaAvailable[2]}
       }
-      imgElement.style.transform = `translate(0px, ${newImagePositionY}px)`;
+      imgElement.style.transform = `translate(${this.imagePositionX}px, ${newImagePositionY}px)`;
       this.imagePositionY = newImagePositionY;  
     }
 
@@ -501,4 +478,33 @@ updateSeekValue() {
   // Update the seekValue
   this.seekValue = seekProgress;
 }
+
+
+
+  // sliding
+
+  
+  slideToIndex(index: number) {
+    if (this.slides && index >= 0 && index < this.imageUri.length) {
+      this.slides.slideTo(index, 500);
+    } else {
+      console.error('Index out of range');
+    }
+}
+
+
+back(){
+    if(this.currentIndex !== 0){
+        this.currentIndex = this.currentIndex - 1;
+        this.slideToIndex(this.currentIndex);
+    }
+} 
+
+front(){
+    if(this.currentIndex !== this.imageUri.length - 1){
+        this.currentIndex = this.currentIndex + 1;
+        this.slideToIndex(this.currentIndex)
+    }
+}
+
 }
