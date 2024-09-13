@@ -1,6 +1,7 @@
 <p>starts here</p>
 <div class="flexible-div" [style.height.px]="sliderHeight">
-  <ion-slides [options]="sliderOpts" [style.height.px]="sliderHeight">
+  <!-- <ion-slides *ngIf="imageUri && imageUri.length > 0" [pager]="true" [options]="sliderOpts" (ionSlideDidChange)="slideChanged()"> -->
+  <ion-slides [options]="sliderOpts" [pager] ="true" [style.height.px]="sliderHeight">
     <ion-slide *ngFor="let image of imageUri; let i = index">
       <div class="image-container" #imageContainer>
         <img 
@@ -72,6 +73,16 @@
     <ion-icon slot="end" name="volume-high-outline"></ion-icon>
   </ion-range>
 </div> -->
+
+<div *ngIf="imageUri.length > 1" style="display: flex; justify-content: space-between;">
+  <ion-buttons slot="start" style="padding: 10px;" (click)="back()">
+    <ion-icon name="chevron-back-circle-outline"></ion-icon>
+  </ion-buttons>
+
+  <ion-buttons slot="start" style="padding: 10px;" (click)="front()">
+    <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+  </ion-buttons>
+</div>
 
 <div>
   <button (click)="OnZoom(true)">zoom in</button>

@@ -3,6 +3,7 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { IonSlides } from '@ionic/angular';
 import { GestureController } from '@ionic/angular';
 
 @Component({
@@ -15,6 +16,10 @@ import { GestureController } from '@ionic/angular';
 })
 export class NewImageCropperComponent{
   @Input() imageUri: any[] = [];
+  @ViewChild(IonSlides, { static: false }) slides!: IonSlides;
+
+  currentIndex: number = 0;
+
   sliderHeight: number = 0;
   sliderHeightMin: number = 0;
   sliderHeightMax: number = 0;
@@ -501,4 +506,33 @@ updateSeekValue() {
   // Update the seekValue
   this.seekValue = seekProgress;
 }
+
+
+
+  // sliding
+
+  
+  slideToIndex(index: number) {
+    if (this.slides && index >= 0 && index < this.imageUri.length) {
+      this.slides.slideTo(index, 500);
+    } else {
+      console.error('Index out of range');
+    }
+}
+
+
+back(){
+    if(this.currentIndex !== 0){
+        this.currentIndex = this.currentIndex - 1;
+        this.slideToIndex(this.currentIndex);
+    }
+} 
+
+front(){
+    if(this.currentIndex !== this.imageUri.length - 1){
+        this.currentIndex = this.currentIndex + 1;
+        this.slideToIndex(this.currentIndex)
+    }
+}
+
 }
