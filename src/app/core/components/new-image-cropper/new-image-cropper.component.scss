@@ -59,8 +59,60 @@
     --background: #444;
   }
   
-  ion-range {
-    width: 80%;
-    margin: 10px 0;
+  // ion-range {
+  //   width: 80%;
+  //   margin: 10px 0;
+  // }
+  
+
+  .video-controls {
+    position: absolute;
+    bottom: 0; /* Position it at the bottom of the video, or adjust as needed */
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
+  
+  .playpause {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Add background to make it stand out */
+    padding: 10px;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  
+  .control-area {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .control-area ion-icon {
+    margin-right: 10px; /* Space between the mute/unmute icon and range slider */
+    z-index: 2;
+  }
+  
+  ion-range {
+    flex: 1; /* Make the range slider take up remaining space */
+  }
+  
+  ion-range .range-slider {
+    width: 100%;
+  }
+  
+  .playpause ion-icon, .control-area ion-icon {
+    font-size: 30px; /* Adjust the size of the icons */
+    color: white; /* Set icon color */
+  }
+  
   
