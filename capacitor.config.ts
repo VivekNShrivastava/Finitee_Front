@@ -10,8 +10,8 @@ const config: CapacitorConfig = {
       presentationOptions: ["badge", "sound", "alert"],
     },
     SplashScreen: {
-      launchShowDuration: 2000, // Show splash screen for 2 seconds
-      launchAutoHide: true, // Auto-hide after duration
+      launchShowDuration: 0, 
+      launchAutoHide: false, 
 
       launchFadeOutDuration: 1000,
       backgroundColor: "#ffffffff",
