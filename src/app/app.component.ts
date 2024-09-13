@@ -62,7 +62,7 @@ export class AppComponent {
     console.log(res,"res");
     if (Capacitor.isNativePlatform()) {
       this.setTextZoom();
-      await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
+      //await SplashScreen.show({ showDuration: 2000, autoHide: false }); // Show splash screen
     }
 
 
@@ -86,7 +86,7 @@ export class AppComponent {
         }
 
         if (Capacitor.isNativePlatform()) {
-          await SplashScreen.hide(); // Hide splash screen once initialization is complete
+          //await SplashScreen.hide(); // Hide splash screen once initialization is complete
         }
       });
     }
