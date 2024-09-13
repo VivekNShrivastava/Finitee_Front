@@ -221,8 +221,8 @@ export class NewImageCropperComponent{
       // console.log(this.initialBoundingClient[0], this.initialBoundingClient[1],this.sliderHeight,window.innerWidth,this.manualScale);
       //if(naturalWidth<window.innerWidth){upBottom+=(window.innerWidth-this.initialBoundingClient[1])/2}
       console.log("zoom change space", upBottom);
-      this.areaAvailable[0] = upBottom;
-      this.areaAvailable[2] = upBottom;
+      this.areaAvailable[0] = Math.max(0, upBottom);
+      this.areaAvailable[2] = Math.max(0, upBottom);
       this.areaAvailable[1] = ((this.manualScale-this.initialScale)*this.initialBoundingClient[1])/(this.manualScale*2);
       this.areaAvailable[3] = ((this.manualScale-this.initialScale)*this.initialBoundingClient[1])/(this.manualScale*2);
       console.log("calculations", this.initialSpaces, this.sliderHeight, this.currentMediaElement.nativeElement.getBoundingClientRect().height)
@@ -236,10 +236,18 @@ export class NewImageCropperComponent{
         rightLeft = (this.initialBoundingClient[1]-(window.innerWidth/this.manualScale))/2
       }
       console.log("zoom change space", rightLeft);
-      this.areaAvailable[1] = rightLeft;
-      this.areaAvailable[3] = rightLeft;
-      this.areaAvailable[0] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[0])/(this.manualScale*2);  //solve this too
-      this.areaAvailable[2] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[0])/(this.manualScale*2);
+      this.areaAvailable[1] = Math.max(0 , rightLeft);
+      this.areaAvailable[3] = Math.max(0 , rightLeft);
+
+      const ToChange2 = this.sliderHeight/(this.manualScale);
+      let upBottom = (this.initialBoundingClient[0]-ToChange2)/2;   
+
+      this.areaAvailable[0] = Math.max(0, upBottom);
+      this.areaAvailable[2] = Math.max(0, upBottom);
+      // this.areaAvailable[0] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[0])/(this.manualScale*2);  //solve this too
+      // this.areaAvailable[2] = ((this.manualScale-this.sliderScale)*this.initialBoundingClient[0])/(this.manualScale*2);
+
+      console.log(upBottom,"upbottom") 
     }
     console.log(this.sliderHeight,this.areaAvailable);
   }
@@ -287,7 +295,7 @@ export class NewImageCropperComponent{
 
   OnZoom(type:boolean){
     if(type){
-      if(this.manualScale>=5){
+      if(this.manualScale>=10){
         return;
       }
       this.manualScale += 0.1;
@@ -381,19 +389,23 @@ export class NewImageCropperComponent{
 
     if(this.areaAvailable[0]==0){
       let toScale = intermediateHeight/(this.initialBoundingClient[0]);
+      console.log(toScale, this.initialScale, "scale compare");
       if(toScale>=this.initialScale){
         if(dy<1){this.adjustOnSliderZoomOut()}
         this.sliderScale = toScale;
         imgElement.style.scale = this.sliderScale;
         this.manualScale =this.sliderScale;
         this.changeAvailableSpace();
+        //here i had to make them zero as the above function needs the value of sliderheight to be updated first which cant be done
+        this.areaAvailable[0]=0;
+        this.areaAvailable[2]=0;
         return;
       }
     }
     
-     this.areaAvailable[0] = Math.max(0,this.areaAvailable[0]-(dy/(2*this.manualScale)));
-     this.areaAvailable[2] = Math.max(0,this.areaAvailable[2]-(dy/(2*this.manualScale)));
-    //this.changeAvailableSpace();
+    //this.areaAvailable[0] = Math.max(0,this.areaAvailable[0]-(dy/(2*this.manualScale)));
+    //this.areaAvailable[2] = Math.max(0,this.areaAvailable[2]-(dy/(2*this.manualScale)));
+    this.changeAvailableSpace();
 
     if(this.imagePositionY<0 && Math.abs(this.imagePositionY)>=this.areaAvailable[2]){
         newImagePositionY = this.imagePositionY + dy;
