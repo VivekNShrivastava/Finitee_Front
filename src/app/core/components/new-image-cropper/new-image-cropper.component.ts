@@ -475,6 +475,7 @@ seekVideo(event: any) {
     const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
     const seekTime = (event.detail.value / 100) * video.duration;
     video.currentTime = seekTime;
+    if(event.detail.value == 100){this.isPlaying = false;} 
   }
   this.isUserInteracting=true;
 }
@@ -484,6 +485,7 @@ updateSeekValue() {
   
   const video: HTMLVideoElement = this.currentMediaElement.nativeElement;
     const seekProgress = (video.currentTime / video.duration) * 100;
+    if(seekProgress == 100){this.isPlaying = false;} 
   
   // Update the seekValue
   this.seekValue = seekProgress;
