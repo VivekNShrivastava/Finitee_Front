@@ -97,14 +97,10 @@ export class NewImageCropperComponent{
     
     }else if(this.naturalHeight/this.naturalWidth<1){
       this.initialScale = window.innerWidth/this.currentMediaElement.nativeElement.offsetHeight
-      let rightLeft;
-      if (media instanceof HTMLImageElement) {
-        rightLeft = (window.innerWidth-this.initialBoundingClient[0])/2;
-      }else{
-        //rightLeft = ((this.initialBoundingClient[1]-window.innerWidth)*this.initialScale)/2
-        rightLeft = (this.initialBoundingClient[1]-(window.innerWidth/this.initialScale))/2
 
-      }
+      //rightLeft = ((this.initialBoundingClient[1]-window.innerWidth)*this.initialScale)/2
+      let rightLeft = (this.initialBoundingClient[1]-(window.innerWidth/this.initialScale))/2
+
 
       
       //doesn't get affected but check once
@@ -230,7 +226,9 @@ export class NewImageCropperComponent{
     }
     else if(this.naturalHeight/this.naturalWidth<1){
       const ToChange = window.innerWidth/(this.manualScale);
-      let rightLeft = (window.innerWidth-ToChange)/2;
+      let rightLeft2 = (window.innerWidth-ToChange)/2;
+      let rightLeft = (this.initialBoundingClient[1] - (window.innerWidth/this.manualScale))/2
+      let rightLeft3 = (this.initialBoundingClient[1] - (this.initialBoundingClient[0]/this.manualScale))/2
 
       if(this.isVideo){
         rightLeft = (this.initialBoundingClient[1]-(window.innerWidth/this.manualScale))/2
