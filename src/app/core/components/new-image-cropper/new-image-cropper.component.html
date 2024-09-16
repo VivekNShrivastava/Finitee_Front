@@ -42,9 +42,9 @@
       <ion-icon *ngIf="!isPlaying" name="play"></ion-icon>
     </div>
   
-    <div class="control-area" (click)="toggleMute()">
-      <ion-icon *ngIf="isMuted" name="volume-mute"></ion-icon>
-      <ion-icon *ngIf="!isMuted" name="volume-high"></ion-icon>
+    <div class="control-area" >
+      <ion-icon *ngIf="isMuted" name="volume-mute" (click)="toggleMute()"></ion-icon>
+      <ion-icon *ngIf="!isMuted" name="volume-high" (click)="toggleMute()"></ion-icon>
   
       <ion-range min="0" max="100" [(ngModel)]="seekValue" (ionChange)="seekVideo($event)">
         <ion-icon slot="start" name="play-back-outline"></ion-icon>
