@@ -414,8 +414,8 @@ export class NewImageCropperComponent{
       let newImagePositionY = 0;
   
   
-      if(this.initialBoundingClient[this.currentIndex][0]*this.initialScale[this.currentIndex]<intermediateHeight
-        ||this.initialBoundingClient[this.currentIndex][0]*this.manualScale[this.currentIndex]<intermediateHeight){
+      if((this.initialBoundingClient[this.currentIndex][0]*this.manualScale[this.currentIndex]<intermediateHeight && dy>0) ||
+      (this.initialBoundingClient[this.currentIndex][0]*this.initialScale[this.currentIndex]<intermediateHeight && dy<0)){
         let toScale = intermediateHeight/(this.initialBoundingClient[i][0]);
         console.log(toScale, this.initialScale, "scale compare");
         if(toScale>=this.initialScale[i]){
@@ -604,6 +604,122 @@ updateSeekValue() {
           this.currentMediaElements.toArray()[this.currentIndex].nativeElement.style.transform = `translate(${this.imagePositionX[this.currentIndex]}px, ${this.imagePositionY[this.currentIndex]}px)`;
           this.slideToIndex(this.currentIndex)
       }
+  }
+
+  //cropping processing
+  @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
+
+  async cropAndUploadImage(){
+    const image = this.currentMediaElements.toArray()[this.currentIndex].nativeElement;
+    const canvas = this.canvasElement.nativeElement;
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = this.sliderHeight;
+
+    const TheBoundingScale = this.naturalHeight[this.currentIndex]/this.initialBoundingClient[this.currentIndex][0]
+
+    let imageStartWidth = (-this.imagePositionX[this.currentIndex]+this.areaAvailable[this.currentIndex][1])*TheBoundingScale;
+    let imageStartHeight = (-this.imagePositionY[this.currentIndex]+this.areaAvailable[this.currentIndex][0])*TheBoundingScale;
+
+    let widthOfCroppedArea = (this.initialBoundingClient[this.currentIndex][1]- (2 * this.areaAvailable[this.currentIndex][1]))*TheBoundingScale;
+    let heightOfCroppedArea = (this.initialBoundingClient[this.currentIndex][0]- (2 * this.areaAvailable[this.currentIndex][0]))*TheBoundingScale;
+
+    // Draw cropped frame on canvas
+    ctx!.drawImage(
+      image,
+      imageStartWidth, imageStartHeight,
+      widthOfCroppedArea, heightOfCroppedArea, //4. The width of the cropped area in the video
+      0, 0,
+      window.innerWidth, this.sliderHeight,  // 8. The width of the image on the canvas
+    );
+
+    console.log(-this.imagePositionX[this.currentIndex]+this.areaAvailable[this.currentIndex][1], -this.imagePositionY[this.currentIndex]+this.areaAvailable[this.currentIndex][0])
+    console.log(imageStartHeight, imageStartWidth);
+
+    let croppedImage = canvas.toDataURL('image/png');
+    console.log(croppedImage);
+
+
+  }
+
+  async cropAndUploadVideo() {
+    const video = this.currentMediaElements.toArray()[this.currentIndex].nativeElement;
+    const canvas = this.canvasElement.nativeElement;
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth/this.manualScale[this.currentIndex];
+    canvas.height = this.sliderHeight/this.manualScale[this.currentIndex];
+
+    // Set video to the start
+    video.currentTime = 0;
+
+    const recorder = this.createMediaRecorder(canvas);
+
+    // Wait until video is ready to be played
+      const duration = video.duration;
+      
+      // Start recording
+      recorder.start();
+
+      const cropFrames = () => {
+        if (video.currentTime >= duration) {
+          recorder.stop();
+          return;
+        }
+
+        // Draw cropped frame on canvas
+        ctx!.drawImage(
+          video,
+          -this.imagePositionX[this.currentIndex]+this.areaAvailable[this.currentIndex][1], -this.imagePositionY[this.currentIndex]+this.areaAvailable[this.currentIndex][0],
+          this.naturalWidth[this.currentIndex]-2*this.areaAvailable[this.currentIndex][1], this.naturalHeight[this.currentIndex]-2*this.areaAvailable[this.currentIndex][0], //4. The width of the cropped area in the video
+          0, 0,
+          window.innerWidth, this.sliderHeight,  // 8. The width of the image on the canvas
+        );
+
+        // Move to the next frame
+        video.currentTime += 0.033; // Move video ahead by ~1 frame (~30fps)
+        
+        requestAnimationFrame(cropFrames);
+      };
+
+      cropFrames();  // Start cropping frames
+  }
+
+  createMediaRecorder(canvas: HTMLCanvasElement) {
+    const chunks: Blob[] = [];
+
+    const stream = canvas.captureStream(30); // Capture canvas stream at 30fps
+    const mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) {
+        chunks.push(e.data);
+      } else {
+        console.log('Empty data chunk received.');
+      }
+    };
+
+    mediaRecorder.onstop = async () => {
+      if (chunks.length > 0) {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const formData = new FormData();
+        formData.append('croppedVideo', blob, 'cropped-video.webm');
+    
+            // Check FormData entries
+    // Use forEach to iterate over FormData entries
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
+
+        // this.uploadVideo(formData);
+      } else {
+        console.log('No data to append.');
+      }
+    };
+    
+
+    return mediaRecorder;
   }
 
 }
