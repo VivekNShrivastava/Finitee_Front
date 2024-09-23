@@ -56,8 +56,8 @@
             (click)="presentMenuModalForOther()" 
             expand="block"
             *ngIf="userId != logInfo.UserId">
-            <!-- <ion-icon name="dots"></ion-icon> -->
-             <img src="../../../../assets/icons/canvas/3 dot icon with circle.svg" alt="">
+            <ion-icon name="dots"></ion-icon>
+             <!-- <img src="../../../../assets/icons/canvas/3 dot icon with circle.svg" alt=""> -->
           </ion-button>
         </ion-buttons>
       </div>
@@ -139,7 +139,7 @@
         <ion-label>BEAMS</ion-label>
       </ion-segment-button>
     </ion-segment>
-    <div *ngIf="selectedTab == 'all'">
+    <div *ngIf="selectedTab == 'all'"> 
       <ion-grid value="all" *ngIf="loaded && postList && postList.length>0">
         <ion-row>
           <ion-col size="6" *ngFor="let post of postList" (click)="openPostScreen(post)">
