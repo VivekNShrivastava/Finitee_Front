@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>preview-post-test</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">preview-post-test</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="flexible-div" [style.height.px]="sliderHeight">
+    <!-- <ion-slides *ngIf="imageUri && imageUri.length > 0" [pager]="true" [options]="sliderOpts" (ionSlideDidChange)="slideChanged()"> -->
+    <ion-slides [options]="sliderOpts" [pager] ="true" [style.height.px]="sliderHeight">
+      <ion-slide *ngFor="let image of imageUri; let i = index">
+        <div class="image-container" #imageContainer>
+          <img 
+            *ngIf="!isVideoList[i]"
+            [src]="image"
+            class="movable-image"
+            #mediaElement
+          />
+         
+            <video 
+            #mediaElement
+            *ngIf="isVideoList[i]" 
+            class="movable-image"
+            autoplay
+            >
+              <source [src]="image" type="video/mp4">
+            </video>
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <!-- <div class="video-controls" *ngIf="isVideo">
+      <div class="playpause" (click)="togglePlayPause()">
+        <ion-icon *ngIf="isPlaying" name="pause"></ion-icon>
+        <ion-icon *ngIf="!isPlaying" name="play"></ion-icon>
+      </div>
+    
+      <div class="control-area" >
+        <ion-icon *ngIf="isMuted" name="volume-mute" (click)="toggleMute()"></ion-icon>
+        <ion-icon *ngIf="!isMuted" name="volume-high" (click)="toggleMute()"></ion-icon>
+    
+        <ion-range min="0" max="100" [(ngModel)]="seekValue" (ionChange)="seekVideo($event)">
+          <ion-icon slot="start" name="play-back-outline"></ion-icon>
+          <ion-icon slot="end" name="play-forward-outline"></ion-icon>
+        </ion-range>
+      </div>
+    </div> -->
+  </div>
+
+</ion-content>
