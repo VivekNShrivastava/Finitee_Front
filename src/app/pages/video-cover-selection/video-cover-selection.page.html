@@ -10,7 +10,10 @@
 <ion-content>
   <ng-container >
     <div class="video-container">
-      <video #mainVideo [height]="pageheight/2">
+      <video #mainVideo 
+      [height]="pageheight/2"
+      (canplay)="onCanPlay($event)"
+      >
         <source type="video/mp4">
       </video>
     </div>

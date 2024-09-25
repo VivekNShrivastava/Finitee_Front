@@ -10,6 +10,16 @@
     position: relative;
     overflow: visible;
   }
+
+  .movable-image {
+    position: relative;
+    z-index: 1; /* Ensure images are on top */
+  }
+  
+  // video.movable-image {
+  //   z-index: 2; /* Ensure videos are on top */
+  // }
+  
   
   // .movable-image {
   //   cursor: move;
@@ -31,7 +41,7 @@
   }
 
   .resizable-handle {
-    height: 5px;
+    height: 15px;
     background-color: gray;
     cursor: ns-resize;
     width: 100%;
@@ -91,7 +101,7 @@
   .control-area {
     display: flex;
     position: absolute;
-    bottom: 0;
+    bottom: 12px;
     align-items: center;
     justify-content: center;
     width: 100%;
