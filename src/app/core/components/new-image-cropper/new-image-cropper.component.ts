@@ -7,10 +7,8 @@ import { IonSlides } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { createFFmpeg } from '@ffmpeg/ffmpeg';
 import { VideoCroppingArgs } from 'src/app/core/models/post/post';
-
-// import workerUrl from '@ffmpeg/ffmpeg/dist/esm/worker.js';
+import { VideoCropper }  from 'video-cropper-processor';
 
 @Component({
   standalone: true,
@@ -57,8 +55,6 @@ export class NewImageCropperComponent extends BasePage{
   imagePositionY: number[] = [];
   isVideoList: boolean[] = [false];
   isVideo: boolean = false;
-  ffmpeg: any;
-  isFFmpegLoaded = false;
   videoArgs: VideoCroppingArgs = new VideoCroppingArgs;
 
 
@@ -67,7 +63,6 @@ export class NewImageCropperComponent extends BasePage{
     private router: Router,
     private authService: AuthService ) {
     super(authService);
-    this.ffmpeg = createFFmpeg({ log: true });
    }
 
 
@@ -80,21 +75,7 @@ export class NewImageCropperComponent extends BasePage{
     this.sliderHeight = window.innerWidth * 1;
   }
 
-  ngOnDestroy() {
-    if (this.ffmpeg) {
-      this.ffmpeg = null; // Release worker and resources
-    }
-  }
-
-  async loadFFmpeg() {
-    if (!this.isFFmpegLoaded) {
-      await this.ffmpeg.load();
-      this.isFFmpegLoaded = true;
-    }
-  }
-  // Set FFmpeg to null initially
-  videoURL = "";
-  message = "";
+ 
  
 
   resizeMediaToFit(media: HTMLVideoElement | HTMLImageElement){
@@ -641,8 +622,6 @@ updateSeekValue() {
 
   async MainCroppingFunction(){
     let i = 0;
-    await this.loadFFmpeg();
-    console.log("loaded")
     for (const flag of this.isVideoList) {
       if (flag) {
         await this.cropVideo(i);
@@ -720,8 +699,11 @@ updateSeekValue() {
       height: 90,
       width: 120
     } 
+    console.log(await VideoCropper.getContacts('anyways'));
 
   }
+
+
 
 
 }

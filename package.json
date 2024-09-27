@@ -72,7 +72,7 @@
     "rxjs": "~7.5.0",
     "swiper": "^11.1.8",
     "tslib": "^2.3.0",
-    "video-cropper-processor": "file:video-cropper-processor",
+    "video-cropper-processor": "file:../video-cropper-processor",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
