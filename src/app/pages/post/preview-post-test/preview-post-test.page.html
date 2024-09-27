@@ -27,14 +27,13 @@
             #mediaElement
             *ngIf="isVideoList[i]" 
             class="movable-image"
-            autoplay
             >
               <source [src]="image" type="video/mp4">
             </video>
         </div>
       </ion-slide>
     </ion-slides>
-    <!-- <div class="video-controls" *ngIf="isVideo">
+    <div class="video-controls" *ngIf="isVideo">
       <div class="playpause" (click)="togglePlayPause()">
         <ion-icon *ngIf="isPlaying" name="pause"></ion-icon>
         <ion-icon *ngIf="!isPlaying" name="play"></ion-icon>
@@ -49,7 +48,17 @@
           <ion-icon slot="end" name="play-forward-outline"></ion-icon>
         </ion-range>
       </div>
-    </div> -->
+    </div>
+  </div>
+
+  <div *ngIf="imageUri.length > 1" style="display: flex; justify-content: space-between;">
+    <ion-buttons slot="start" style="padding: 10px;" (click)="back()">
+      <ion-icon name="chevron-back-circle-outline"></ion-icon>
+    </ion-buttons>
+  
+    <ion-buttons slot="start" style="padding: 10px;" (click)="front()">
+      <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+    </ion-buttons>
   </div>
 
 </ion-content>

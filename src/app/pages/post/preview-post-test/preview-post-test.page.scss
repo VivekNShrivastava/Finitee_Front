@@ -1,5 +1,5 @@
 .flexible-div {
-    background-color: aquamarine;
+    background-color: black;
     position: relative;
     overflow: visible;
   }
@@ -18,7 +18,7 @@
   .movable-image {
     cursor: grab; /* Cursor changes to grab */
     // transform: translate(-50%, -50%);
-    transition: transform 0.1s ease; /* Smooth transition for zoom */
+    // transition: transform 0.1s ease; /* Smooth transition for zoom */
   }
 
 
