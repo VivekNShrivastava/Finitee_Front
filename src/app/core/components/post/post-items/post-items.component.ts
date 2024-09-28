@@ -69,7 +69,6 @@ export class PostItemsComponent extends BasePage implements OnInit {
   replyToName : string = "";
   IsReplySectionOpen: boolean = false;
   inflowsLoaded: boolean = true;
-
   toggleDescription(post: any) {
     post.showFullDescription = !post.showFullDescription;
   }
@@ -109,7 +108,6 @@ export class PostItemsComponent extends BasePage implements OnInit {
     super(authService);
   }
 
-
 // Initialize the IntersectionObserver after the view is initialized
 ngAfterViewInit() {
   // Scroll to the selected post after a delay
@@ -129,13 +127,17 @@ ngAfterViewInit() {
 
   this.observer = new IntersectionObserver(this.handleIntersect.bind(this), options);
 
-  // Observe each video element
+  // Observe each video element and listen for play events
   this.videoPlayers.forEach(video => {
     const videoElement: HTMLVideoElement = video.nativeElement;
-    this.observer.observe(videoElement);
-  });
-}
 
+    // Observe video for automatic play/pause based on scroll
+    this.observer.observe(videoElement);
+
+    // Listen for manual play event (when user taps play button)
+    videoElement.addEventListener('play', () => this.onVideoPlay(videoElement));
+  });
+}   
 
 // Intersection Observer callback
 handleIntersect(entries: IntersectionObserverEntry[]) {
@@ -155,6 +157,17 @@ handleIntersect(entries: IntersectionObserverEntry[]) {
       video.pause();
     }
   });
+}
+ // Function to handle when a video is manually played
+ onVideoPlay(newPlayingVideo: HTMLVideoElement) {
+  // Pause the current video if it's different from the one being played
+  if (this.currentPlayingVideo && this.currentPlayingVideo !== newPlayingVideo) {
+    this.currentPlayingVideo.pause();
+    this.currentPlayingVideo.currentTime = 0; // Reset the video to the start if necessary
+  }
+
+  // Set the new playing video as the current one
+  this.currentPlayingVideo = newPlayingVideo;
 }
 
   ngOnInit() {

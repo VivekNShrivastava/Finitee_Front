@@ -8,5 +8,7 @@ export class userConnection {
     UserId: string = "";
     UserName: string = "";
     UserTypeId: number = 0;
+  // connections: any;
+  // connections: any;
 }
 

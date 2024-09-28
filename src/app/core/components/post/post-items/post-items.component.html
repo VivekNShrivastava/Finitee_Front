@@ -80,16 +80,20 @@
       <div class="ion-text-center  post-screen-slide">
         <ion-slides [pager]="post.PostImages.length>1 ? true : false"
           *ngIf="post.PostImages && post.PostImages.length>0">
-          <ion-slide *ngFor="let postImage of post.PostImages">
+          <ion-slide *ngFor="let postImage of post.PostImages; let i = index">
             <ion-card>
               <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
                 {{post.BelongsToNodeName}}
               </span>
-              <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
+              <!-- <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
                [poster]="appConstants.mediaPrefix + postImage" controls muted>
                <source [src]="appConstants.mediaPrefix + postImage | videoUrlFilter" type="video/mp4">
-              </video>
-
+              </video> -->
+                <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
+              [poster]="i === 0 ? appConstants.mediaPrefix + postImage : null" 
+              controls muted>
+          <source [src]="appConstants.mediaPrefix + postImage | videoUrlFilter" type="video/mp4">
+        </video>
               <!-- <ion-buttons>
                 <ion-button (click)="togglePlayPause(videoPlayer)">
                   <ion-icon [name]="isVideoPlaying ? 'pause' : 'play'"></ion-icon>
