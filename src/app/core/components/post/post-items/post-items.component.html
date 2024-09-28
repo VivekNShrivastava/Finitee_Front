@@ -85,9 +85,9 @@
               <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
                 {{post.BelongsToNodeName}}
               </span>
-              <video class="video" *ngIf="postImage.includes('VIDEO')" [poster]="appConstants.mediaPrefix + postImage"
-                controls>
-                <source [src]="appConstants.mediaPrefix + postImage | videoUrlFilter" type="video/mp4">
+              <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
+               [poster]="appConstants.mediaPrefix + postImage" controls muted>
+               <source [src]="appConstants.mediaPrefix + postImage | videoUrlFilter" type="video/mp4">
               </video>
 
               <!-- <ion-buttons>
@@ -105,8 +105,10 @@
                 <ion-icon range-right name="pause"></ion-icon>
               </ion-range> -->
 
-              <ion-img style="width: 100%; height: 100%;" id="{{post.Id}}-img" *ngIf="!postImage.includes('VIDEO')" (ionImgDidLoad)="ionImgDidLoad($event)"
-                [src]="appConstants.mediaPrefix + postImage">
+              <ion-img style="width: 100%; height: 100%;" 
+              id="{{post.Id}}-img" 
+              *ngIf="!postImage.includes('VIDEO')"
+              [src]="appConstants.mediaPrefix + postImage">
               </ion-img>
             </ion-card>
           </ion-slide>

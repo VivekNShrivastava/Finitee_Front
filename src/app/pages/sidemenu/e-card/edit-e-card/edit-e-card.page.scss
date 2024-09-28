@@ -14,7 +14,8 @@
   ion-card {
     border-radius: 12px;
     overflow: hidden;
-    border: 1.75px solid #707070;
+    border: 1.5px solid #707070;
+    border-width: 2px;
     background: #F0F5F7;
   }
 
@@ -22,12 +23,12 @@
     padding: 0;
 
     ion-grid {
-      width: 100%;
-
+      margin: -5px;
       .table-row {
         display: flex;
         align-items: center;
-        border-bottom: 1.75px solid #28507880; /* Border between rows */
+        border-bottom: 1.5px solid #707070; /* Border between rows */
+        border-width: 2px;
         &:last-child {
           border-bottom: none; /* No border for the last row */
         }
@@ -36,9 +37,10 @@
       .table-cell {
         display: flex;
         align-items: center;
-        margin-top: 10px; /* Aligns content vertically in the center */
+        margin-top: -2px; /* Aligns content vertically in the center */
         padding: 12px;
-        border-right: 1.75px solid #285078;
+        border-right: 1.5px solid #707070;
+        border-width: 2px;
         height: 50px;
         &:last-child {
           border-right: none; /* No border for the last cell in the row */
@@ -47,6 +49,7 @@
         ion-label {
           display: block;
           color: #285078;
+          font-weight: 400;
            /* Color for Field labels */
           // font-weight: 700;
         }
@@ -65,6 +68,7 @@
         /* Specific styling for Field column in dynamic rows */
         .ion-field {
           color: #285078; /* Apply Field color */
+          font-weight: 400;
         }
 
         .delete-icon {
