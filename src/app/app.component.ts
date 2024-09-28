@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 import { UserPrivacyService } from './core/services/user-privacy/user-privacy.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Platform } from '@ionic/angular';
-import { platform } from 'os';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -58,6 +58,15 @@ export class AppComponent {
     //   autoHide: true,
     // });
 
+      // For iOS: Ensure the status bar overlay is disabled, meaning your app content doesn't go under the status bar.
+      await StatusBar.setOverlaysWebView({ overlay: false });
+
+      // Set the style to 'DARK' (or 'LIGHT') based on your preferences.
+      await StatusBar.setStyle({ style: Style.Dark });
+  
+      // You can also set the background color of the status bar if needed.
+      await StatusBar.setBackgroundColor({ color: '#ffffff' });
+      
     const res = this.getPlatformName();
     console.log(res);
     if (Capacitor.isNativePlatform()) {
