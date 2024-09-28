@@ -77,8 +77,8 @@
            -->
           <!-- row for business home own -->
         <ion-row class="header-card-details" *ngIf="userId==logInfo.UserId">
-          <ion-button class="translucent-button"  shape="round" size="small" (click)="viewConnectedMembers()">
-            <span class="fi-bold-text"> {{userCanvasProfile.ConnectedUserCount}} </span>&nbsp; Connections
+          <ion-button class="translucent-button" shape="round" size="small" (click)="navigateToConnections()">
+            <span class="fi-bold-text">{{ userCanvasProfile.ConnectedUserCount }}</span>&nbsp; Connections
           </ion-button>
         </ion-row>
           <!-- row for business home other -->
@@ -115,17 +115,14 @@
           </ion-row>
           
         </div>
-        <!-- About Section -->
-        <div class="about-section">
-          <ul>
-            <li style="margin-left: -43px;">About</li>
-          </ul>
-         <p>{{userCanvasProfile.canvasProfile.About}}</p>
-        </div>
+        
       </div>
     </div>
   </div>
-   
+   <!-- About Section -->
+   <div class="about-section" style="background: black;">
+   <p>{{userCanvasProfile.canvasProfile.About}}</p>
+  </div>
 
   <ng-container *ngIf="loadPrivateUser == false">
     <ion-segment [(ngModel)]="selectedTab" (ionChange)="segmentChange($event)">
