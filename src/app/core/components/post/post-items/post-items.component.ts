@@ -21,6 +21,8 @@ import { userConnection } from 'src/app/core/models/connection/connection';
 import { CommonService } from 'src/app/core/services/common.service';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { InflowsService } from 'src/app/core/services/inflows/inflows.service';
+import {  ViewChildren, QueryList,  AfterViewInit } from '@angular/core';
+import { IonSlides } from '@ionic/angular';
 @Component({
   standalone: true,
   imports: [IonicModule,
@@ -36,7 +38,12 @@ import { InflowsService } from 'src/app/core/services/inflows/inflows.service';
 export class PostItemsComponent extends BasePage implements OnInit {
   @ViewChild('commentOrReplyInputelm', { static: false }) commentOrReplyInputelm!: IonInput;
   @Input() paramsData: any;
+  @ViewChildren('videoPlayer') videoPlayers!: QueryList<ElementRef>;
+  // @ViewChild(IonSlides) slides!: IonSlides;
 
+  private currentPlayingVideo: HTMLVideoElement | null = null;
+  private observer!: IntersectionObserver;
+  
   beamicon: string = 'assets/icons/screen-wise-icons/Canvas screens icons/Beam icon.svg';
   slideOptions = {
     direction: 'vertical',
@@ -102,6 +109,54 @@ export class PostItemsComponent extends BasePage implements OnInit {
     super(authService);
   }
 
+
+// Initialize the IntersectionObserver after the view is initialized
+ngAfterViewInit() {
+  // Scroll to the selected post after a delay
+  setTimeout(() => {
+    document.getElementById(this.selectedPost.Id)?.scrollIntoView({
+      behavior: "auto",
+      block: "start",
+      inline: "end"
+    });
+  }, 200);
+
+  // Initialize IntersectionObserver for video play/pause control
+  const options = {
+    root: null, // Use the viewport as the root
+    threshold: 0.75 // Video plays when 75% of the video is in view
+  };
+
+  this.observer = new IntersectionObserver(this.handleIntersect.bind(this), options);
+
+  // Observe each video element
+  this.videoPlayers.forEach(video => {
+    const videoElement: HTMLVideoElement = video.nativeElement;
+    this.observer.observe(videoElement);
+  });
+}
+
+
+// Intersection Observer callback
+handleIntersect(entries: IntersectionObserverEntry[]) {
+  entries.forEach(entry => {
+    const video: HTMLVideoElement = entry.target as HTMLVideoElement;
+
+    if (entry.isIntersecting) {
+      // Pause any currently playing video
+      if (this.currentPlayingVideo && this.currentPlayingVideo !== video) {
+        this.currentPlayingVideo.pause();
+      }
+      // Play the video in view
+      video.play();
+      this.currentPlayingVideo = video;
+    } else {
+      // Pause the video if it's out of view
+      video.pause();
+    }
+  });
+}
+
   ngOnInit() {
     this.updateSlideHeight();
     this.logInfo =  this.authService.getUserInfo();
@@ -127,19 +182,19 @@ export class PostItemsComponent extends BasePage implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
+  // ngAfterViewInit() {
     // const deviceHeight = window.innerHeight;
     // const calculatedHeight = deviceHeight * 0.22;
     // this.renderer.setStyle(this.media.nativeElement, 'min-height', `${calculatedHeight}px`);
   
-    setTimeout(() => {
-      document.getElementById(this.selectedPost.Id)?.scrollIntoView({
-        behavior: "auto",
-        block: "start",
-        inline: "end"
-      });
-    }, 200);
-  }
+  //   setTimeout(() => {
+  //     document.getElementById(this.selectedPost.Id)?.scrollIntoView({
+  //       behavior: "auto",
+  //       block: "start",
+  //       inline: "end"
+  //     });
+  //   }, 200);
+  // }
 
   updateSlideHeight() {
     const deviceHeight = window.innerHeight;
