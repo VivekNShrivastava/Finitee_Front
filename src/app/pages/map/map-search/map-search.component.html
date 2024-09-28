@@ -69,10 +69,10 @@
               <Td>
               Scope
             </Td>
-            <Td style="padding-left: 7px;">
-              <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input> &nbsp; &nbsp;
-              Miles
-            </Td>
+            <td style="padding-left: 7px;">
+              <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input>
+              &nbsp; &nbsp; {{ distanceUnit }}
+            </td>
           </Tr>
           <Tr>
             <ion-button class="locationsearch" shape="round"(click)="openMap()"> Set Location</ion-button>
