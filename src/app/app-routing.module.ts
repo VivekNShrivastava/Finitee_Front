@@ -166,6 +166,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/post/add-post/add-post.module').then(m => m.AddPostModule)
   },
   {
+    path: 'post/preview-post-test',
+    loadChildren: () => import('./pages/post/preview-post-test/preview-post-test.module').then(m => m.PreviewPostTestPageModule)
+  },
+  {
     path: 'post/add-post-test',
     loadChildren: () => import('./pages/post/add-post-test/add-post-test.module').then(m => m.AddPostTestPageModule)
   },
@@ -365,7 +369,12 @@ const routes: Routes = [
   {
     path: 'edit-e-card/:UserId',
     loadChildren: () => import('./pages/sidemenu/e-card/edit-e-card/edit-e-card.module').then( m => m.EditECardPageModule)
+  },
+  {
+    path: 'preview-post-test',
+    loadChildren: () => import('./pages/post/preview-post-test/preview-post-test.module').then( m => m.PreviewPostTestPageModule)
   }
+
 
 
 
