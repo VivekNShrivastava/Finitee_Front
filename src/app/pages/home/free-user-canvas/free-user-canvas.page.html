@@ -20,145 +20,216 @@
 
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
-      refreshingSpinner="circles" refreshingText="Refreshing...">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing..."
+    >
     </ion-refresher-content>
   </ion-refresher>
-  <div class="profile-header">
-    <!-- Profile Image and Buttons Overlay -->
-    <div class="image-container">
-        
-        <img class="cover-image" src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}"
+  <div style="background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.01) 73%);">
+    <div class="profile-header">
+      <!-- Profile Image and Buttons Overlay -->
+      <div class="image-container">
+        <img
+          class="cover-image"
+          src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}"
           onError="this.src='assets/icons/business/anonymous.svg'"
-          (click)="openImage(userCanvasProfile.canvasProfile.ProfileImage)" />
-        
-      <!-- Top Buttons (Back and Three Dots) -->
-      <div class="top-buttons">
-        <ion-buttons slot="start">
-          <ion-button class="translucent-button2">
-            <app-notification-icon style="margin-left: -7px;" *ngIf="userId === logInfo.UserId"></app-notification-icon>  
-            <ion-back-button icon="back-button" class="translucent-button2" slot="start" *ngIf="userId !== logInfo.UserId"></ion-back-button>      
-          </ion-button>
-        </ion-buttons>
-       <ion-buttons slot="end">
-          <ion-button 
-            shape="round" 
-            style="margin-left: -7px;"
-            class="translucent-button2" 
-            (click)="editPersonal()" 
-            *ngIf="userId === logInfo.UserId">
-            <ion-icon slot="end" name="edit"></ion-icon>
-          </ion-button>
-          
-          <ion-button 
-            shape="round" 
-            class="translucent-button2" 
-            (click)="presentMenuModalForOther()" 
-            expand="block"
-            *ngIf="userId != logInfo.UserId">
-            <ion-icon name="dots"></ion-icon>
-             <!-- <img src="../../../../assets/icons/canvas/3 dot icon with circle.svg" alt=""> -->
-          </ion-button>
-        </ion-buttons>
+          (click)="openImage(userCanvasProfile.canvasProfile.ProfileImage)"
+        />
+
+        <!-- Top Buttons (Back and Three Dots) -->
+        <div class="top-buttons">
+          <ion-buttons slot="start">
+            <ion-button class="translucent-button2">
+              <app-notification-icon
+                style="margin-left: -7px"
+                *ngIf="userId === logInfo.UserId"
+              ></app-notification-icon>
+              <ion-back-button
+                icon="back-button"
+                class="translucent-button2"
+                slot="start"
+                *ngIf="userId !== logInfo.UserId"
+              ></ion-back-button>
+            </ion-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button
+              shape="round"
+              style="margin-left: -7px"
+              class="translucent-button2"
+              (click)="editPersonal()"
+              *ngIf="userId === logInfo.UserId"
+            >
+              <ion-icon slot="end" name="edit"></ion-icon>
+            </ion-button>
+
+            <ion-button
+              shape="round"
+              class="translucent-button2"
+              (click)="presentMenuModalForOther()"
+              expand="block"
+              *ngIf="userId != logInfo.UserId"
+            >
+              <ion-icon name="dots"></ion-icon>
+              <!-- <img src="../../../../assets/icons/canvas/3 dot icon with circle.svg" alt=""> -->
+            </ion-button>
+          </ion-buttons>
+        </div>
       </div>
-      </div>
-      
+
       <div class="all-in">
-      <!-- Bottom Content Overlay -->
-      <div class="bottom-content">
-        <h1 class="title">{{userCanvasProfile.canvasProfile.DisplayName}}</h1>
-        <h2 class="subtitle">@{{userCanvasProfile.canvasProfile.UserName}} | {{userCanvasProfile.InflowsCount}} Inflows</h2>
-  
-        <!-- Connections and Actions -->
-        <div class="actions">
-          <!-- <ion-button style="width: 40px; height: 100%; border-radius: 50%;" shape="round" size="small" (click)="sendConnectionReqPopup()" *ngIf="userId!=logInfo.UserId">
+        <!-- Bottom Content Overlay -->
+        <div class="bottom-content">
+          <h1 class="title">{{userCanvasProfile.canvasProfile.DisplayName}}</h1>
+          <h2 class="subtitle">
+            @{{userCanvasProfile.canvasProfile.UserName}} |
+            {{userCanvasProfile.InflowsCount}} Inflows
+          </h2>
+
+          <!-- Connections and Actions -->
+          <div class="actions">
+            <!-- <ion-button style="width: 40px; height: 100%; border-radius: 50%;" shape="round" size="small" (click)="sendConnectionReqPopup()" *ngIf="userId!=logInfo.UserId">
             <ion-icon size="small" [name]="getConnectionIcon()"></ion-icon>
           </ion-button>
            -->
-          <!-- row for business home own -->
-        <ion-row class="header-card-details" *ngIf="userId==logInfo.UserId">
-          <ion-button class="translucent-button" shape="round" size="small" (click)="navigateToConnections()">
-            <span class="fi-bold-text">{{ userCanvasProfile.ConnectedUserCount }}</span>&nbsp; Connections
-          </ion-button>
-        </ion-row>
-          <!-- row for business home other -->
-          <ion-row class="header-card-details" *ngIf="userId!==logInfo.UserId">
-            <!-- Connection request button -->
-            <ion-button  
-            style="width: 43px;height: 35px;"
-              class="translucent-button"
-              shape="round" 
-              size="small" 
-              (click)="sendConnectionReqPopup()">
-              <ion-icon size="large" [name]="getConnectionIcon()"></ion-icon>
-            </ion-button>
-          
-            <!-- View connected members button -->
-            <ion-button
-              class="translucent-button"
-              shape="round" 
-              size="small" 
-              (click)="viewConnectedMembers()">
-              <span><span class="fi-bold-text">{{userCanvasProfile.ConnectedUserCount}}</span>&nbsp; Connections</span>
-            </ion-button>
-          
-            <!-- Start chat button -->
-            <ion-button 
-              *ngIf="loadPrivateUser !== true" 
-              style="width: 43px;height: 35px;"
-              class="translucent-button"
-              shape="round" 
-              size="small" 
-              (click)="startChat()">
-              <img src="assets/icons/canvas/Chat icon without circle.svg" alt="">
-            </ion-button>
-          </ion-row>
-          
+            <!-- row for business home own -->
+            <ion-row class="header-card-details" *ngIf="userId==logInfo.UserId">
+              <ion-button
+                class="translucent-button"
+                shape="round"
+                size="small"
+                (click)="navigateToConnections()"
+              >
+                <span class="fi-bold-text"
+                  >{{ userCanvasProfile.ConnectedUserCount }}</span
+                >&nbsp; Connections
+              </ion-button>
+            </ion-row>
+            <!-- row for business home other -->
+            <ion-row
+              class="header-card-details"
+              *ngIf="userId!==logInfo.UserId"
+            >
+              <!-- Connection request button -->
+              <ion-button
+                style="width: 43px; height: 35px"
+                class="translucent-button"
+                shape="round"
+                size="small"
+                (click)="sendConnectionReqPopup()"
+              >
+                <ion-icon size="large" [name]="getConnectionIcon()"></ion-icon>
+              </ion-button>
+
+              <!-- View connected members button -->
+              <ion-button
+                class="translucent-button"
+                shape="round"
+                size="small"
+                (click)="viewConnectedMembers()"
+              >
+                <span
+                  ><span class="fi-bold-text"
+                    >{{userCanvasProfile.ConnectedUserCount}}</span
+                  >&nbsp; Connections</span
+                >
+              </ion-button>
+
+              <!-- Start chat button -->
+              <ion-button
+                *ngIf="loadPrivateUser !== true"
+                style="width: 43px; height: 35px"
+                class="translucent-button"
+                shape="round"
+                size="small"
+                (click)="startChat()"
+              >
+                <img
+                  src="assets/icons/canvas/Chat icon without circle.svg"
+                  alt=""
+                />
+              </ion-button>
+            </ion-row>
+          </div>
         </div>
-        
       </div>
     </div>
+    <!-- About Section -->
+    <div class="about-section" style="background: black">
+      <p>{{userCanvasProfile.canvasProfile.About}}</p>
+    </div>
+    <div style="background: black">
+      <ion-segment
+        [(ngModel)]="selectedTab"
+        (ionChange)="segmentChange($event)"
+      >
+        <ion-segment-button
+          value="all"
+          style="background: white; border-top-left-radius: 50px"
+        >
+          <ion-label>ALL</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="traits" style="background: white">
+          <ion-label>TRAITS</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          value="beams"
+          style="background: white; border-top-right-radius: 50px"
+        >
+          <ion-label>BEAMS</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
   </div>
-   <!-- About Section -->
-   <div class="about-section" style="background: black;">
-   <p>{{userCanvasProfile.canvasProfile.About}}</p>
-  </div>
-
   <ng-container *ngIf="loadPrivateUser == false">
-    <ion-segment [(ngModel)]="selectedTab" (ionChange)="segmentChange($event)">
-      <ion-segment-button value="all">
-        <ion-label>ALL</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="traits">
-        <ion-label>TRAITS</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="beams">
-        <ion-label>BEAMS</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-    <div *ngIf="selectedTab == 'all'"> 
+    <div *ngIf="selectedTab == 'all'">
       <ion-grid value="all" *ngIf="loaded && postList && postList.length>0">
         <ion-row>
-          <ion-col size="6" *ngFor="let post of postList" (click)="openPostScreen(post)">
-            <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag traitBg">
+          <ion-col
+            size="6"
+            *ngFor="let post of postList"
+            (click)="openPostScreen(post)"
+          >
+            <span
+              *ngIf="post.BelongsToNodeName"
+              class="fi-freeUser-nameTag traitBg"
+            >
               {{post.BelongsToNodeName}}
             </span>
-            <div  *ngIf="post.PostImages && post.PostImages.length>0" class="whiteBg">
+            <div
+              *ngIf="post.PostImages && post.PostImages.length>0"
+              class="whiteBg"
+            >
               <ion-buttons *ngIf="post.PostImages.length>1">
                 <ion-button shape="round">
                   <ion-icon name="posting-multiple-picture"></ion-icon>
                 </ion-button>
               </ion-buttons>
               <!-- <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]" [ngStyle]="{'width': '177px', 'height': '177px', 'top':'508px', 'left':'23px','object-fit': 'cover', 'overflow': 'hidden'}" ></ion-img> -->
-              <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]"></ion-img>
+              <ion-img
+                class="fi-img"
+                [src]="appConstants.mediaPrefix + post.PostImages[0]"
+              ></ion-img>
               <!-- [ngStyle]="{'width': '100%', 'height': '100%', 'object-fit': 'cover' ,'margin':'0px','padding':'0px'}" -->
             </div>
-            <div class="ion-text-center postBg"
-              *ngIf="post.PostImages && (post.PostImages.length==0 || post.PostImages.length>0 && post.PostImages[0]=='')">
+            <div
+              class="ion-text-center postBg"
+              *ngIf="post.PostImages && (post.PostImages.length==0 || post.PostImages.length>0 && post.PostImages[0]=='')"
+            >
               <!-- <h3> {{post.PostDescription}}</h3> -->
               <!-- <div (click)="expandPost(post)"> -->
-                <h3 [ngStyle]="{ 'font-size': updateFontSize(post.PostDescription) }">{{ truncateText(post.PostDescription, 200) }}<span *ngIf="post.PostDescription.length > 100 ">...</span></h3>
-                
+              <h3
+                [ngStyle]="{ 'font-size': updateFontSize(post.PostDescription) }"
+              >
+                {{ truncateText(post.PostDescription, 200) }}<span
+                  *ngIf="post.PostDescription.length > 100 "
+                  >...</span
+                >
+              </h3>
+
               <!-- </div> -->
             </div>
           </ion-col>
@@ -166,27 +237,38 @@
       </ion-grid>
       <ng-container *ngIf="loaded && postList && postList.length==0">
         <div class="ion-text-center fi-no-result">
-          <img src="assets/imgs/icons/noresults.png">
-          <p> No posts to show</p>
+          <img src="assets/imgs/icons/noresults.png" />
+          <p>No posts to show</p>
         </div>
       </ng-container>
     </div>
 
     <div *ngIf="selectedTab == 'traits'">
-      <ion-grid value="traits" *ngIf="loaded && userTraitPostList && userTraitPostList.length>0">
+      <ion-grid
+        value="traits"
+        *ngIf="loaded && userTraitPostList && userTraitPostList.length>0"
+      >
         <ion-row>
           <ion-col size="6" *ngFor="let userTrait of userTraitPostList">
-            <ion-buttons (click)="openTraitOption(userTrait)" *ngIf="userId==logInfo.UserId">
+            <ion-buttons
+              (click)="openTraitOption(userTrait)"
+              *ngIf="userId==logInfo.UserId"
+            >
               <ion-button shape="round">
                 <ion-icon name="dots"></ion-icon>
               </ion-button>
             </ion-buttons>
-            <div (click)="traitPostsSection(userTrait)" class="ion-text-center fi-border whiteBg" >
-           
+            <div
+              (click)="traitPostsSection(userTrait)"
+              class="ion-text-center fi-border whiteBg"
+            >
               <!-- *ngIf="userTrait.LastPostData.PostImages && userTrait.LastPostData.PostImages.length>0" -->
               <!-- [src]="appConstants.mediaPrefix + userTrait.LastPostData.PostImages[0]"> -->
-              <img class="fi-border-img" src="{{appConstants.mediaPrefix + userTrait.UserTrait.Thumbnail}}"
-              onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"/>
+              <img
+                class="fi-border-img"
+                src="{{appConstants.mediaPrefix + userTrait.UserTrait.Thumbnail}}"
+                onError="this.src='assets/custom-ion-icons/trait_thumnail.svg'"
+              />
               <!-- <ion-img  class="fi-img fi-border"
                 [src]="assets/custom-ion-icons/trait_thumnail.svg">
               </ion-img> -->
@@ -198,41 +280,59 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ng-container *ngIf="loaded && userTraitPostList && userTraitPostList.length==0">
+      <ng-container
+        *ngIf="loaded && userTraitPostList && userTraitPostList.length==0"
+      >
         <div class="ion-text-center fi-no-result">
-          <img src="assets/imgs/icons/noresults.png">
-          <p> No traits to show</p>
+          <img src="assets/imgs/icons/noresults.png" />
+          <p>No traits to show</p>
         </div>
       </ng-container>
-
     </div>
 
     <div *ngIf="selectedTab == 'beams'">
-      <ion-grid value="beams" *ngIf="loaded && beamedpostList && beamedpostList.length>0">
+      <ion-grid
+        value="beams"
+        *ngIf="loaded && beamedpostList && beamedpostList.length>0"
+      >
         <ion-row>
-          <ion-col size="6" *ngFor="let post of beamedpostList" (click)="openBeamPostScreen(post)">
+          <ion-col
+            size="6"
+            *ngFor="let post of beamedpostList"
+            (click)="openBeamPostScreen(post)"
+          >
             <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
               {{post.BelongsToNodeName}}
             </span>
-            <div *ngIf="post.PostImages && post.PostImages.length>0" class="whiteBg">
+            <div
+              *ngIf="post.PostImages && post.PostImages.length>0"
+              class="whiteBg"
+            >
               <ion-buttons *ngIf="post.PostImages.length>1">
                 <ion-button shape="round">
                   <ion-icon name="posting-multiple-picture"></ion-icon>
                 </ion-button>
               </ion-buttons>
-              <ion-img class="fi-img" [src]="appConstants.mediaPrefix + post.PostImages[0]"></ion-img>
+              <ion-img
+                class="fi-img"
+                [src]="appConstants.mediaPrefix + post.PostImages[0]"
+              ></ion-img>
             </div>
-            <div class="ion-text-center postBg"
-              *ngIf="post.PostImages && (post.PostImages.length==0 || post.PostImages.length>0 && post.PostImages[0]=='')">
-              <h3> {{post.PostDescription}}</h3>
+            <div
+              class="ion-text-center postBg"
+              *ngIf="post.PostImages && (post.PostImages.length==0 || post.PostImages.length>0 && post.PostImages[0]=='')"
+            >
+              <h3>{{post.PostDescription}}</h3>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ng-container *ngIf="loaded && beamedpostList && beamedpostList.length==0">
+      <ng-container
+        *ngIf="loaded && beamedpostList && beamedpostList.length==0"
+      >
         <div class="ion-text-center fi-no-result">
-          <img src="assets/imgs/icons/noresults.png">
-          <p> No posts to show</p>
+          <img src="assets/imgs/icons/noresults.png" />
+          <p>No posts to show</p>
         </div>
       </ng-container>
     </div>
@@ -240,8 +340,8 @@
 
   <ng-container *ngIf="loadPrivateUser == true && userId !== logInfo.UserId">
     <div class="ion-text-center fi-no-result">
-      <img src="../../../../assets/custom-ion-icons/md-lock.svg">
-      <p class="message"> This Account is set to be Private.</p>
+      <img src="../../../../assets/custom-ion-icons/md-lock.svg" />
+      <p class="message">This Account is set to be Private.</p>
     </div>
   </ng-container>
 
@@ -262,9 +362,15 @@
     </ion-grid>
   </ng-container>
 
-
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="userId === logInfo.UserId">
-    <ion-fab-button (click)="CreatePostAction(userCanvasProfile.canvasProfile.DisplayName)">
+  <ion-fab
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+    *ngIf="userId === logInfo.UserId"
+  >
+    <ion-fab-button
+      (click)="CreatePostAction(userCanvasProfile.canvasProfile.DisplayName)"
+    >
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -275,10 +381,8 @@
     <ion-card class="ion-text-center">
       <ion-card-header>
         <ion-card-title>
-          <ion-text>
-            Select Trait Section
-          </ion-text>
-          <ion-buttons style="float:right">
+          <ion-text> Select Trait Section </ion-text>
+          <ion-buttons style="float: right">
             <ion-button shape="round" (click)="isTraitModalOpen=false">
               <ion-icon name="close"></ion-icon>
             </ion-button>
@@ -287,7 +391,6 @@
       </ion-card-header>
 
       <ion-card-content>
-
         <!-- <ion-list>
           <ion-radio-group [allowEmptySelection]="true" value="Create a new trait section">
             <ion-item>
@@ -296,21 +399,32 @@
             </ion-item>
           </ion-radio-group>
         </ion-list> -->
-        
+
         <!-- <ion-button fill="outline">Create a new trait section</ion-button> -->
         <p>Create a new trait section</p>
-        <ion-textarea class="custom-textarea" fill="outline" rows="1" autocapitalize="on" maxLength="50"
-          [(ngModel)]="traitInput" placeholder="Type here" (ionChange)="traitTextChange($event)">
+        <ion-textarea
+          class="custom-textarea"
+          fill="outline"
+          rows="1"
+          autocapitalize="on"
+          maxLength="50"
+          [(ngModel)]="traitInput"
+          placeholder="Type here"
+          (ionChange)="traitTextChange($event)"
+        >
         </ion-textarea>
 
         <div *ngIf="userTraitList.length > 0" class="line-with-text">
           <span class="centered-text">or</span>
         </div>
         <p *ngIf="userTraitList.length > 0">Select trait section</p>
-        <div style="max-height: 200px; overflow-y: auto;">
+        <div style="max-height: 200px; overflow-y: auto">
           <ion-list>
-            <ion-radio-group [allowEmptySelection]="true" value="{{selectedTraitObj!.Id}}"
-              (ionChange)="selectedUserTrait($event)">
+            <ion-radio-group
+              [allowEmptySelection]="true"
+              value="{{selectedTraitObj!.Id}}"
+              (ionChange)="selectedUserTrait($event)"
+            >
               <ion-item *ngFor="let elem of userTraitList">
                 <ion-radio slot="start" value="{{elem.Id}}"></ion-radio>
                 <ion-label>{{elem.Trait}}</ion-label>
@@ -320,9 +434,13 @@
         </div>
       </ion-card-content>
       <ion-footer class="create-btn">
-        <ion-button shape="round" expand="block"
+        <ion-button
+          shape="round"
+          expand="block"
           [color]="traitInput=='' && selectedTraitObj==''  ? 'medium' : 'primary'"
-          (click)="saveUserTrait('ADD')">Next</ion-button>
+          (click)="saveUserTrait('ADD')"
+          >Next</ion-button
+        >
       </ion-footer>
     </ion-card>
   </ng-template>
@@ -333,10 +451,8 @@
     <ion-card class="ion-text-center">
       <ion-card-header>
         <ion-card-title>
-          <ion-text>
-            Edit Trait
-          </ion-text>
-          <ion-buttons style="float:right">
+          <ion-text> Edit Trait </ion-text>
+          <ion-buttons style="float: right">
             <ion-button shape="round" (click)="isEditTraitModalOpen=false">
               <ion-icon name="close"></ion-icon>
             </ion-button>
@@ -344,13 +460,24 @@
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-textarea class="custom-textarea" fill="outline" rows="1" autocapitalize="on" maxLength="50"
-          [(ngModel)]="editTraitInput" placeholder="Type here"></ion-textarea>
+        <ion-textarea
+          class="custom-textarea"
+          fill="outline"
+          rows="1"
+          autocapitalize="on"
+          maxLength="50"
+          [(ngModel)]="editTraitInput"
+          placeholder="Type here"
+        ></ion-textarea>
       </ion-card-content>
       <ion-footer class="create-btn">
-        <ion-button shape="round" expand="block"
+        <ion-button
+          shape="round"
+          expand="block"
           [color]="traitInput=='' && selectedTraitObj==''  ? 'medium' : 'primary'"
-          (click)="saveUserTrait('EDIT')">Save</ion-button>
+          (click)="saveUserTrait('EDIT')"
+          >Save</ion-button
+        >
       </ion-footer>
     </ion-card>
   </ng-template>

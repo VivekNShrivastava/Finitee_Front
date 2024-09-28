@@ -210,11 +210,11 @@ ion-content {
   }
   
   .about-section {
-    margin-top: 0px;
+    margin-top: -14px;
     text-align: start; /* Center-align the about section */
     color: white;
     // margin-left: 20px;
-
+    margin-bottom: -14px;
   } 
   
   // .about-section ul {
@@ -369,7 +369,6 @@ ion-content {
     border-bottom-left-radius: 22px;
     border-bottom-right-radius: 22px;
   }
-
   .fi-no-result {
     img {
       margin-top: 40px;

@@ -44,7 +44,7 @@
           <form class="search-box input-field" style="height: auto;" action="" *ngIf="searchMode=='N'"
             (submit)="searchMode=='N'?oneTimeSearch():setUsPing()">
             <ion-input class="medbf" placeholder="Keywords" ngDefaultControl [ngModelOptions]="{standalone: true}"
-              [(ngModel)]="keyinfo"></ion-input>
+              [(ngModel)]="keyinfo" (keyup.enter)="triggerSearch()"></ion-input>
           </form>
 
           <ion-buttons *ngIf="keyinfo.length > 0 " slot="end" style="position: absolute;right: 5px;">
@@ -69,10 +69,10 @@
               <Td>
               Scope
             </Td>
-            <Td style="padding-left: 7px;">
-              <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input> &nbsp; &nbsp;
-              Miles
-            </Td>
+            <td style="padding-left: 7px;">
+              <ion-input class="search-box input-field" [(ngModel)]="radius" type="number"></ion-input>
+              &nbsp; &nbsp; {{ distanceUnit }}
+            </td>
           </Tr>
           <Tr>
             <ion-button class="locationsearch" shape="round"(click)="openMap()"> Set Location</ion-button>
@@ -124,6 +124,8 @@
       </ion-button>
     </div> -->
     <div style="padding:20px">
+     
+
       <ion-button *ngIf="searchMode=='N'" class="search-button" expand="full" shape="round" (click)="triggerSearch()">
         Search
       </ion-button>

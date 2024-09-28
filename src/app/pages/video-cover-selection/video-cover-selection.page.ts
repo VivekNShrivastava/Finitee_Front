@@ -19,7 +19,7 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
   @ViewChild('myRange', { static: true }) myRangeEl!: ElementRef;
 
 
-  private defaultVideoFile = "assets/video/video.mp4";
+  public defaultVideoFile = "assets/video/video.mp4";
   private _CANVAS: any;
   private _CONTEXT: any;
   private _VIDEO: any;
@@ -118,6 +118,9 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
     }
   }
 
+  onCanPlay(event: Event) {
+    console.log('Video is playable.');
+  }
 
   changeRange(val: any) {
     this._VIDEO.currentTime = val;

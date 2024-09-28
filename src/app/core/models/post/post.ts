@@ -50,3 +50,10 @@ export class Trait {
     thumbnail?: File;
     removeThumbnail: boolean = false;
 }
+
+export class VideoCroppingArgs{
+    x!: number;
+    y!: number;
+    height!: number;
+    width!: number;
+}

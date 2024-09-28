@@ -5,8 +5,6 @@
   }
   
   .image-container {
-    // width: 100%;
-    // height: 100%;
     position: relative;
     overflow: visible;
   }
@@ -16,37 +14,11 @@
     z-index: 1; /* Ensure images are on top */
   }
   
-  // video.movable-image {
-  //   z-index: 2; /* Ensure videos are on top */
-  // }
-  
-  
-  // .movable-image {
-  //   cursor: move;
-  //   width:100%;
-  //   height: 100%;
-  //   object-fit: cover;
-  //   user-select: none;
-  // }
   
   .movable-image {
     cursor: grab; /* Cursor changes to grab */
     // transform: translate(-50%, -50%);
-    transition: transform 0.1s ease; /* Smooth transition for zoom */
-    // width: 100%;
-    // height: 100%;
-    // object-fit: cover; /* Or use contain based on your needs */
-    // top: 50%;
-    // left: 50%;
-  }
-
-  .resizable-handle {
-    height: 15px;
-    background-color: gray;
-    cursor: ns-resize;
-    width: 100%;
-    margin-bottom: 20px;
-    position: relative;
+    // transition: transform 0.1s ease; /* Smooth transition for zoom */
   }
 
 
