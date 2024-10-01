@@ -19,6 +19,7 @@ const routes: Routes = [
             (m) => m.FreeUserCanvasPageModule
           ),
       },
+      
       {
         path: 'business-user-canvas',
         loadChildren: () =>

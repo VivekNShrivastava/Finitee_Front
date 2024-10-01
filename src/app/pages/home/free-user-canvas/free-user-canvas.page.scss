@@ -172,7 +172,7 @@ ion-content {
   }
   
   .bottom-content {
-    padding-top: 200px;
+    // padding-top: 200px;
     }
 
     .all-in{
@@ -185,8 +185,8 @@ ion-content {
     color: white;
     text-align: center;
     z-index: 1;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.01) 73%);
-    }
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 100%);
+      }
   .title {
     font-size: 30px;
     font-weight: bold;
@@ -199,7 +199,7 @@ ion-content {
     font-size: 16px;
     margin: 5px; /* Added margin for spacing */
     // opacity: 0.8;
-    font-weight: bold;
+    font-weight: 400;
   }
   
   .actions {
@@ -225,9 +225,10 @@ ion-content {
   
   .about-section p {
     padding:10px;
+    margin: 13px;
     font-size: 14px;
     // opacity: 0.8;
-    font-weight: bold;
+    font-weight: normal;
 
   }
   // .translucent-button {
@@ -265,8 +266,8 @@ ion-content {
     --border-style: solid;
     --border-radius:50%; 
     color: white;                    
-    width: 43px;
-    height: 43px;
+    width: 50px;
+    height: 50px;
   }
 
   ion-segment {
@@ -274,6 +275,8 @@ ion-content {
       font: normal normal normal 14px/28px SF Pro Display;
       letter-spacing: 0.22px;
       --color:gray;
+      margin: -1px;
+      padding: 5px;
       --indicator-height: 2px;
       --color-checked: black;
     }
@@ -305,9 +308,10 @@ ion-content {
     ion-button {
       --box-shadow: none;
       text-transform: capitalize;
-      height: 35px;
+      height: 40px;
       margin: 0px 10px;
       width: 137px;
+      margin-bottom: 5px;
       
     }
 

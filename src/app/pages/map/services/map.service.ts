@@ -12,7 +12,6 @@ import { MapSearchTerms } from '../models/MapSearchTerm';
 import { Greeting } from '../models/UserOnMap';
 import { NotificationEvents } from '../../../core/models/notification/NotificationEvents';
 import { FiniteeUser } from '../../../core/models/user/FiniteeUser';
-
 import { getFirestore, addDoc, arrayRemove, getDoc, arrayUnion, setDoc, doc, Firestore, terminate, collection, getDocs, onSnapshot, initializeFirestore, CACHE_SIZE_UNLIMITED } from 'firebase/firestore';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { FirestoreService } from 'src/app/core/services/firestore.service';
