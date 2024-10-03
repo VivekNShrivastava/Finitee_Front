@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NavigationExtras } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
-import { Post, AddPostRequest, Media, Trait } from 'src/app/core/models/post/post';
+import { Post, AddPostRequest, Trait } from 'src/app/core/models/post/post';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BusinessCanvasService } from 'src/app/core/services/canvas-home/business-canvas.service';
 import { PostService } from 'src/app/core/services/post.service';

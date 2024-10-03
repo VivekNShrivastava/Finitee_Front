@@ -23,25 +23,13 @@ export class Post {
     updatedCreatedOn?: any;
 }
 
-export class AddPostRequest {
+export class AddPostRequest{
     post!: Post;
-    media!: Media;
+    media!: File[];
+    AspectRatio!: number;
 }
-
-export class Media {
-    images?: ImageFinitee[];
-    videos?: VideoFinitee[];
-}
-
-export class ImageFinitee {
-    imageFile!: File;
-    // serialNumber!: number;
-}
-
-export class VideoFinitee {
-    videoFile!: File;
-    thumbnail!: File;
-    serialNumber!: number;
+export class AddPostRequestForWeb extends AddPostRequest {
+    cropAreas!: VideoCroppingArgs[];
 }
 
 export class Trait { 
