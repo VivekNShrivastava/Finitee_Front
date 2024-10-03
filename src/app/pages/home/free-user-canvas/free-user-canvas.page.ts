@@ -94,6 +94,10 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     });
   }
 
+  navigateToConnections() {
+    this.navCtrl.navigateRoot('/tabs/connections');
+  }
+  
   async subscribeTraitPostSubject() {
     this._postService.postDataSbj.subscribe({
       next: (result: any) => {

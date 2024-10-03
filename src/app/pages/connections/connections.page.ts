@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, ModalController, NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
 import { userConnection } from 'src/app/core/models/connection/connection';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -26,7 +26,13 @@ export class ConnectionsPage extends BasePage implements OnInit {
   userConnections: Array<userConnection> = [];
   userConnectionsRequests: Array<userConnection> = [];
   userBlockList: Array<userConnection> = [];
-
+  isSearchEnabled = false;
+  searchQuery: string = '';
+  searchQueryBlocked: string = '';
+  filteredConnections: userConnection[] = [];
+  searchQueryRequests: string = '';
+  filteredRequests: userConnection[] = [];
+  filteredBlockList: userConnection[] = [];
   userProfile: UserProfile = new UserProfile();
   canvasProfile: CanvasProfile = new CanvasProfile();
 
@@ -43,7 +49,8 @@ export class ConnectionsPage extends BasePage implements OnInit {
     private alertController: AlertController,
     private router: Router,
     private chatService: ChatsService, 
-    private authService: AuthService) {
+    private authService: AuthService,
+    private navCtrl: NavController) {
     super(authService);
     
     // const navigation = this.router.getCurrentNavigation();
@@ -54,17 +61,90 @@ export class ConnectionsPage extends BasePage implements OnInit {
     // }
   }
 
+   // Add this method to go back
+   goBack() {
+    this.navCtrl.back(); // Navigate to the previous page
+  }
+
+  
+  // Toggle the search bar
+  toggleSearch() {
+    this.isSearchEnabled = !this.isSearchEnabled;
+
+    if (!this.isSearchEnabled) {
+      this.filteredConnections = [...this.userConnections]; // Reset connections
+      this.filteredRequests = [...this.userConnectionsRequests]; // Reset requests
+      this.filteredBlockList = [...this.userBlockList]; // Reset blocked users
+    }
+  }
+
+  // Filter connections based on the search query
+  filterConnections(event: any) {
+    const query = event.target.value.toLowerCase();
+    if (query) {
+      this.filteredConnections = this.userConnections.filter(user =>
+        user.DisplayName.toLowerCase().includes(query) ||
+        user.UserName.toLowerCase().includes(query)
+      );
+    } else {
+      // Reset to all connections if the search bar is empty
+      this.filteredConnections = [...this.userConnections];
+    }
+  }
+  // New search functions
+  filterRequests(event: any) {
+    const query = event.target.value.toLowerCase();
+    if (query) {
+      this.filteredRequests = this.userConnectionsRequests.filter(request =>
+        request.DisplayName.toLowerCase().includes(query) ||
+        request.UserName.toLowerCase().includes(query)
+      );
+    } else {
+      this.filteredRequests = [...this.userConnectionsRequests];
+    }
+  }
+  filterBlockedUsers(event: any) {
+    const query = event.target.value.toLowerCase();
+    if (query) {
+      this.filteredBlockList = this.userBlockList.filter(blockedUser =>
+        blockedUser.DisplayName.toLowerCase().includes(query) ||
+        blockedUser.UserName.toLowerCase().includes(query)
+      );
+    } else {
+      this.filteredBlockList = [...this.userBlockList];
+    }
+  }
+
+
   ngOnInit() {
     this.getUserConnections();
     // this.segmentChange(this.valueFromState);
+    this.getConnectionRequests();
+    this.getUserBlockList();
+    this.filteredConnections = [...this.userConnections]; 
+    this.filteredRequests = [...this.userConnectionsRequests];
+    this.filteredBlockList = [...this.userBlockList];
   }
 
   async ionViewWillEnter(){
     console.log("ionViewWillEnter");
   }
 
+  // segmentChange(data: any) {
+  //   console.log(data);
+  //   this.loaded = false;
+  //   switch (data.detail.value) {
+  //     case 'requests':
+  //       this.getConnectionRequests();
+  //       break;
+  //     case 'blocked':
+  //       this.getUserBlockList();
+  //       break;
+  //     case 'connections':
+  //       this.getUserConnections();
+  //   }
+  // }
   segmentChange(data: any) {
-    console.log(data);
     this.loaded = false;
     switch (data.detail.value) {
       case 'requests':
@@ -92,18 +172,30 @@ export class ConnectionsPage extends BasePage implements OnInit {
       this.router.navigateByUrl('free-user-canvas', navigationExtras1s);
   }
 
+  // async getUserConnections() {
+  //   this.userConnections = await this.connectionsService.getUserConnections();
+  //   this.loaded = true;
+  // }
   async getUserConnections() {
-    this.userConnections = await this.connectionsService.getUserConnections();
-    this.loaded = true;
+    try {
+      this.userConnections = await this.connectionsService.getUserConnections();
+      this.filteredConnections = [...this.userConnections]; // Set filteredConnections
+    } catch (error) {
+      console.error("Error fetching user connections", error);
+    } finally {
+      this.loaded = true;
+    }
   }
+  
 
   async getConnectionRequests() {
     this.userConnectionsRequests = await this.connectionsService.getConnectionRequest();
+    this.filteredRequests = [...this.userConnectionsRequests];
     this.loaded = true;
   }
-
   async getUserBlockList() {
     this.userBlockList = await this.connectionsService.getUserBlockList();
+    this.filteredBlockList = [...this.userBlockList];
     this.loaded = true;
   }
 

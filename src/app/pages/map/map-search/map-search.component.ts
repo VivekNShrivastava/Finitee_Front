@@ -242,7 +242,7 @@ export class MapSearchComponent implements OnInit {
         this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
           if (address) {
             const CountryCode = address.CountryCode;
-            if (CountryCode === 'GB' || CountryCode === 'US' || CountryCode === 'LR' || CountryCode === 'MM') {
+            if (CountryCode === 'IN' || CountryCode === 'US' || CountryCode === 'LR' || CountryCode === 'MM') {
               console.log('Display distance in miles');
               this.distanceUnit = 'miles';
             } else {
