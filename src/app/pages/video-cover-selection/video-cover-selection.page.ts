@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AttachmentHelperService } from 'src/app/core/services/attachment-helper.service';
+import { ThumbnailHelperService } from 'src/app/core/services/thumbnail-helper.service';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { Router } from '@angular/router';
 import { NavController, Platform } from '@ionic/angular';
@@ -43,11 +44,15 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
   subscription!: Subscription;
   loaded: any = false;
 
-  constructor(private platform: Platform, private attchmentService: AttachmentHelperService, private router: Router, private navCtrl: NavController) {
+  constructor(private platform: Platform, private attchmentService: AttachmentHelperService, private router: Router, 
+    private navCtrl: NavController, private thumbnailService: ThumbnailHelperService) {
+    // super(authService);
     this.pageWidth = this.win.innerWidth;
     this.pageheight = this.win.innerHeight;
     this.loaded = false;
-    this.defaultVideoFile = this.attchmentService.selectedVideoPath;//this.router.getCurrentNavigation()!.extras!.state!['data'];
+    //this.defaultVideoFile = this.attchmentService.selectedVideoPath;//this.router.getCurrentNavigation()!.extras!.state!['data'];
+    this.defaultVideoFile =  this.router!.getCurrentNavigation()!.extras!.state!['data'];
+
     console.log(this.defaultVideoFile)
   }
 
@@ -155,14 +160,17 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
       var _CONTEXTTHUMBMain = _CANVASTHUMBMain.getContext('2d');
       _CONTEXTTHUMBMain.drawImage(this._VIDEO, 0, 0, this._VIDEO.videoWidth, this._VIDEO.videoHeight);
       var coverThumb = _CANVASTHUMBMain.toDataURL();
-      console.log(" this._VIDEO.width", this._VIDEO.videoWidth);
-      console.log("this._VIDEO.height", this._VIDEO.videoHeight);
-      console.log("coverThumb", coverThumb);
-      this.attchmentService.onMediaCoverSelction.emit({
-        filepath: this.defaultVideoFile,
-        cover: coverThumb,
-        width: this._VIDEO.videoWidth,
-        height: this._VIDEO.videoHeight
+      // console.log(" this._VIDEO.width", this._VIDEO.videoWidth);
+      // console.log("this._VIDEO.height", this._VIDEO.videoHeight);
+      // console.log("coverThumb", coverThumb);
+      // this.attchmentService.onMediaCoverSelction.emit({
+      //   filepath: this.defaultVideoFile,
+      //   cover: coverThumb,
+      //   width: this._VIDEO.videoWidth,
+      //   height: this._VIDEO.videoHeight
+      // });
+      this.thumbnailService.onMediaCoverSelction.emit({
+        cover: coverThumb
       })
     
     }, 300);

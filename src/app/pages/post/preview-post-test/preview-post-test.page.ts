@@ -3,7 +3,9 @@ import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } fro
 import { IonSlides } from '@ionic/angular';
 import { Router } from '@angular/router';
 import {NgxImageCompressService} from 'ngx-image-compress';
-import { Media, AddPostRequest } from 'src/app/core/models/post/post';
+import { AddPostRequest, AddPostRequestForWeb, Post, VideoCroppingArgs } from 'src/app/core/models/post/post';
+import { VideoCropCompressService } from 'src/app/core/services/video-crop-compress/video-crop-compress.service';
+
 
 
 
@@ -37,13 +39,16 @@ export class PreviewPostTestPage implements OnInit {
   isUserInteracting: boolean= true;
   isVideo: boolean = false;
   areaAvailable: number[][] = [];
+  thumbnail: string = "";
+  videoArgs: VideoCroppingArgs[] = [];
   postRequest: AddPostRequest = new AddPostRequest;
 
 
 
   constructor(
     private router: Router,
-    private imageCompress: NgxImageCompressService
+    private imageCompress: NgxImageCompressService,
+    private videoCompressService: VideoCropCompressService
   ) { 
     this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
     this.imageUri = this.paramsData.mediaUrlDataArray;
@@ -53,6 +58,8 @@ export class PreviewPostTestPage implements OnInit {
     this.imagePositionX = this.paramsData.imagePositionX;
     this.imagePositionY = this.paramsData.imagePositionY;
     this.areaAvailable = this.paramsData.areaAvailable;
+    this.thumbnail = this.paramsData.thumbnail;
+    this.videoArgs = this.paramsData.videoArgs;
 
   }
 
@@ -155,6 +162,7 @@ export class PreviewPostTestPage implements OnInit {
     if(this.isUserInteracting){
       const video: HTMLVideoElement = this.currentMediaElements.toArray()[this.currentIndex].nativeElement;
       const seekTime = (event.detail.value / 100) * video.duration;
+      if(!isNaN(seekTime))
       video.currentTime = seekTime;
       if(event.detail.value == 100){this.isPlaying = false;} 
     }
@@ -218,13 +226,31 @@ export class PreviewPostTestPage implements OnInit {
     return new File([u8arr], filename, { type: mime });
   }
 
-  addPost(){
-    const media = new Media();
+  async addPost(){
+    let files: File[] = [];
+    let post: Post = new Post;
     for(let i=0; i<this.imageUri.length; i++){
-      if(!this.isVideoList[i]){
-
+      if(this.isVideoList[i]){
+        const file = this.base64ToFile(this.imageUri[i], "videoFile"); // Assuming base64ToFile is implemented
+        files.push(file); // Push the converted file to the array      
+        if(i==0){
+          const thumb = await this.compressImage(this.thumbnail);
+          files.push(thumb);
+        }
+      }
+      else{
+        const img = await this.compressImage(this.imageUri[i]);
+        files.push(img);
       }
     }
+    let addPostRequestForWeb: AddPostRequestForWeb = new AddPostRequestForWeb();
+    addPostRequestForWeb.cropAreas = this.videoArgs;
+    addPostRequestForWeb.AspectRatio = this.sliderHeight/window.innerWidth;
+    addPostRequestForWeb.media = files;
+    addPostRequestForWeb.post = post;
+    //route
+    this.router.navigateByUrl('tabs/free-user-canvas');
+    this.videoCompressService.cropVideoForWeb(addPostRequestForWeb);
   }
 
 }

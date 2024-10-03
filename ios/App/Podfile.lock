@@ -18,6 +18,10 @@ PODS:
     - Capacitor
   - CapacitorKeyboard (5.0.4):
     - Capacitor
+  - CapacitorNativeSettings (5.0.1):
+    - Capacitor
+  - CapacitorNetwork (5.0.7):
+    - Capacitor
   - CapacitorPushNotifications (5.0.5):
     - Capacitor
   - CapacitorSplashScreen (5.0.5):
@@ -31,6 +35,8 @@ PODS:
   - CordovaPlugins (5.0.5):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
+  - VideoCropperProcessor (0.0.1):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -43,6 +49,8 @@ DEPENDENCIES:
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
+  - CapacitorNativeSettings (from `../../node_modules/capacitor-native-settings`)
+  - "CapacitorNetwork (from `../../node_modules/@capacitor/network`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
@@ -50,6 +58,7 @@ DEPENDENCIES:
   - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - CordovaPluginsResources (from `../capacitor-cordova-ios-plugins`)
+  - VideoCropperProcessor (from `../../../video-cropper-processor`)
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -72,6 +81,10 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/haptics"
   CapacitorKeyboard:
     :path: "../../node_modules/@capacitor/keyboard"
+  CapacitorNativeSettings:
+    :path: "../../node_modules/capacitor-native-settings"
+  CapacitorNetwork:
+    :path: "../../node_modules/@capacitor/network"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
   CapacitorSplashScreen:
@@ -86,6 +99,8 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
   CordovaPluginsResources:
     :path: "../capacitor-cordova-ios-plugins"
+  VideoCropperProcessor:
+    :path: "../../../video-cropper-processor"
 
 SPEC CHECKSUMS:
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
@@ -98,6 +113,8 @@ SPEC CHECKSUMS:
   CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
   CapacitorHaptics: e36653b37326d71bb35ae42b944124037dbc3d97
   CapacitorKeyboard: d1b25fde6f19744ad09c890862aefc6e2a7ded3d
+  CapacitorNativeSettings: 6e94ed3c0465206756f320df18efc52f053ce3c7
+  CapacitorNetwork: 81ef9728aa7a65cac8c1181ce79e578162b57b57
   CapacitorPushNotifications: 6ec1a5d0dff2e8b2456bce633996d15fc9de92ac
   CapacitorSplashScreen: e563abf6d590bfe0269515ccc9d8bc03c41f32e9
   CapacitorStatusBar: 190e0321b8734f4244d0c81baa183a00d5806ddf
@@ -105,7 +122,8 @@ SPEC CHECKSUMS:
   CapawesomeCapacitorFilePicker: c80c30759ba48986ff34a2b51b23ac2babfd3774
   CordovaPlugins: 5544814d3a685e3d1bef7fc4292ad7662ddcefad
   CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
+  VideoCropperProcessor: 9f8944bf19a98226f6d69b3b6be758bee562520d
 
-PODFILE CHECKSUM: 9da06a509cc43836b911ef3c2a72dcc86ac0fbf9
+PODFILE CHECKSUM: 83911a85b4f8c500e9cfb298a60817ea4d907f14
 
 COCOAPODS: 1.15.2

@@ -15,7 +15,6 @@ import { Location } from '@angular/common';
 import { UserPrivacyService } from './core/services/user-privacy/user-privacy.service';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Platform } from '@ionic/angular';
-import { platform } from 'os';
 
 @Component({
   selector: 'app-root',
@@ -57,7 +56,6 @@ export class AppComponent {
     //   showDuration: 1500,
     //   autoHide: true,
     // });
-
     const res = this.getPlatformName();
     console.log(res,"res");
     if (Capacitor.isNativePlatform()) {

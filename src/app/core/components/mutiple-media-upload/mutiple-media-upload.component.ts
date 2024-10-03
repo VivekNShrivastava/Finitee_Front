@@ -107,10 +107,10 @@ export class MultipleMediaUploadComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.unsubscribeEvnets();
+    this.unsubscribeEvents();
   }
 
-  unsubscribeEvnets() {
+  unsubscribeEvents() {
     if (this.mediaCoverSubscription) {
       this.mediaCoverSubscription.unsubscribe();
     }

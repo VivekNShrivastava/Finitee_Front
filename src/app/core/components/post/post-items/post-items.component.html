@@ -92,7 +92,7 @@
                 <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
               [poster]="i === 0 ? appConstants.mediaPrefix + postImage : null" 
               controls muted>
-          <source [src]="appConstants.mediaPrefix + postImage | videoUrlFilter" type="video/mp4">
+          <source [src]="appConstants.mediaPrefix + postImage" type="video/mp4">
         </video>
               <!-- <ion-buttons>
                 <ion-button (click)="togglePlayPause(videoPlayer)">
@@ -188,7 +188,7 @@
                 {{post.BelongsToNodeName}}
               </span>
               <video *ngIf="postImage.includes('VIDEO')"
-                [src]="appConstants.mediaPrefix + postImage | videoUrlFilter"></video>
+                [src]="appConstants.mediaPrefix + postImage"></video>
               <ion-img *ngIf="!postImage.includes('VIDEO')" [src]="appConstants.mediaPrefix + postImage"></ion-img>
             </ion-card>
           </ion-slide>
