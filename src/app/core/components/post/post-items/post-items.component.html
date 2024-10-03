@@ -2,7 +2,7 @@
 <!-- create a common component -->
 
 <ng-container *ngIf="postViewType==appConstants.POST_VIEW_TYPE.INSTA">
-  <ng-container *ngFor="let post of postList">
+  <ng-container *ngFor="let post of postList; let j= index">
     <ion-list id="{{post.Id}}">
       <div class="chips" *ngIf="postCommentViewType==appConstants.POST_COMMENT_VIEW_TYPE.INLINE">
         <ion-chip *ngIf="post.CreatedBy.Id==logInfo.UserId" (click)="openConfirmDonationPage(post)">Confirm
@@ -78,9 +78,9 @@
 
       <!-- images or video slide -->
       <div class="ion-text-center  post-screen-slide">
-        <ion-slides [pager]="post.PostImages.length>1 ? true : false"
-          *ngIf="post.PostImages && post.PostImages.length>0">
-          <ion-slide *ngFor="let postImage of post.PostImages; let i = index">
+        <ion-slides [pager]="postImages[j].length>1 ? true : false"
+          *ngIf="postImages[j] && postImages[j].length>0">
+          <ion-slide *ngFor="let postImage of postImages[j]; let i = index">
             <ion-card>
               <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
                 {{post.BelongsToNodeName}}
@@ -173,6 +173,9 @@
     <ion-infinite-scroll-content loadingText="Loading more data..."></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ng-container>
+
+
+<!-- what is this container for -->
 <ng-container *ngIf="postViewType==appConstants.POST_VIEW_TYPE.PINTREST">
   <ion-slides [options]="slideOptions">
     <ion-slide *ngFor="let post of postList" style="display: block;">
