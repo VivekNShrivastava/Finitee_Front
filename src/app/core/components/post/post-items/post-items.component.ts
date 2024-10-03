@@ -178,10 +178,10 @@ handleIntersect(entries: IntersectionObserverEntry[]) {
       this.value = this.paramsData['value'];
       this.week = this.paramsData['week'];
       this.part = this.paramsData['part'];
-      this.postList = [...this.paramsData['postlist']];
+      let listOfPost: Array<Post> = [...this.paramsData['postlist']];
+      // this.removeThumbnailFromPostList(listOfPost);
       if(this.value){
-        this.isInflows = true;
-        
+        this.isInflows = true;       
       } 
       this.dateAndTime(0);
       
@@ -208,6 +208,15 @@ handleIntersect(entries: IntersectionObserverEntry[]) {
   //     });
   //   }, 200);
   // }
+
+  removeThumbnailFromPostList(listOfPost: Array<Post> ){
+    listOfPost.forEach(post => {
+      if(post.Thumbnail){
+        post.PostImages.splice(0, 1);
+      }
+    });
+    this.postList = listOfPost;
+  }
 
   updateSlideHeight() {
     const deviceHeight = window.innerHeight;

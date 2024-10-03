@@ -10,6 +10,7 @@ export class Post {
     Privacy: string = "";
     PostTraits: Array<string> = [];
     PostImages: Array<string> = [];
+    Thumbnail: boolean = false;
     showFullDescription = false;
     BelongsToId?: string;
     BelongsToNodeName: string = "";

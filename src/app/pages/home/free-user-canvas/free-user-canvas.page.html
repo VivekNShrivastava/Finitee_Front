@@ -211,7 +211,7 @@
               *ngIf="post.PostImages && post.PostImages.length>0"
               class="whiteBg"
             >
-              <ion-buttons *ngIf="post.PostImages.length>1">
+              <ion-buttons *ngIf="(post.PostImages.length>2) || (post.PostImages.length === 1 && !post.Thumbnail)">
                 <ion-button shape="round">
                   <ion-icon name="posting-multiple-picture"></ion-icon>
                 </ion-button>
