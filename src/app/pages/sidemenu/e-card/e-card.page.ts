@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'; 
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
 import { UserProfile, UserCanvasProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -34,7 +34,8 @@ export class ECardPage extends BasePage implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _userProfileService: ProfileService,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private navCtrl: NavController
   ) {
     super(authService);
     if (this._activatedRoute.snapshot.params["UserId"]) {
@@ -214,6 +215,7 @@ truncateTextField(text: string, maxLength: number = 10): string {
     this.loaded = true;
   }
   OnEcardBack(){
-    this.router.navigateByUrl('tabs/map');
+    // this.router.navigateByUrl('tabs/map');
+    this.navCtrl.pop();
   }
 }

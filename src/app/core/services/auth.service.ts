@@ -30,6 +30,7 @@ export class AuthService {
   authState = new BehaviorSubject(false);
   showloader: boolean = false;
   loaderLoading: boolean = false;
+  isUserLoggedIn: any;
   constructor(
     private http: HttpClient,
     private router: Router,

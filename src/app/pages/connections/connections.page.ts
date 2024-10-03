@@ -49,8 +49,7 @@ export class ConnectionsPage extends BasePage implements OnInit {
     private alertController: AlertController,
     private router: Router,
     private chatService: ChatsService, 
-    private authService: AuthService,
-    private navCtrl: NavController) {
+    private authService: AuthService) {
     super(authService);
     
     // const navigation = this.router.getCurrentNavigation();
@@ -63,8 +62,9 @@ export class ConnectionsPage extends BasePage implements OnInit {
 
    // Add this method to go back
    goBack() {
-    this.navCtrl.back(); // Navigate to the previous page
+    this.router.navigateByUrl('/tabs/free-user-canvas');
   }
+  
 
   
   // Toggle the search bar

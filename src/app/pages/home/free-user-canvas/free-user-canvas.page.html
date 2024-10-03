@@ -28,7 +28,7 @@
     >
     </ion-refresher-content>
   </ion-refresher>
-  <div style="background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.01) 73%);">
+  <div>
     <div class="profile-header">
       <!-- Profile Image and Buttons Overlay -->
       <div class="image-container">
@@ -115,7 +115,7 @@
             >
               <!-- Connection request button -->
               <ion-button
-                style="width: 43px; height: 35px"
+                style="width: 40px; height: 40px"
                 class="translucent-button"
                 shape="round"
                 size="small"
@@ -141,7 +141,7 @@
               <!-- Start chat button -->
               <ion-button
                 *ngIf="loadPrivateUser !== true"
-                style="width: 43px; height: 35px"
+                style="width: 40px; height: 40px"
                 class="translucent-button"
                 shape="round"
                 size="small"
@@ -163,26 +163,34 @@
     </div>
     <div style="background: black">
       <ion-segment
+        mode="md"
         [(ngModel)]="selectedTab"
         (ionChange)="segmentChange($event)"
+        style="--background: transparent; --indicator-color: transparent;"
       >
         <ion-segment-button
+          mode="md"
           value="all"
-          style="background: white; border-top-left-radius: 50px"
+          style="background: white; border-radius: 0px; border-top-left-radius: 50px;"
         >
           <ion-label>ALL</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="traits" style="background: white">
+        <ion-segment-button
+          mode="md"
+          value="traits"
+          style="background: white; border-radius: 0px;"
+        >
           <ion-label>TRAITS</ion-label>
         </ion-segment-button>
         <ion-segment-button
+          mode="md"
           value="beams"
-          style="background: white; border-top-right-radius: 50px"
+          style="background: white; border-radius: 0px; border-top-right-radius: 50px;"
         >
           <ion-label>BEAMS</ion-label>
         </ion-segment-button>
       </ion-segment>
-    </div>
+    </div>    
   </div>
   <ng-container *ngIf="loadPrivateUser == false">
     <div *ngIf="selectedTab == 'all'">
