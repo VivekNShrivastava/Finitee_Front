@@ -43,7 +43,7 @@
     "@capacitor/keyboard": "^5.0.0",
     "@capacitor/network": "^5.0.7",
     "@capacitor/push-notifications": "^5.0.5",
-    "@capacitor/splash-screen": "^5.0.5",
+    "@capacitor/splash-screen": "^5.0.8",
     "@capacitor/status-bar": "^5.0.0",
     "@capacitor/text-zoom": "^5.0.2",
     "@capawesome/capacitor-file-picker": "^6.0.1",
