@@ -172,8 +172,9 @@ export class AttachmentHelperService {
         if (mediafileArray.files) {
           if (mediafile.mimeType.indexOf("video") != -1) {//video
             const fileURL = 'data:' + mediafile.mimeType + ';base64,' + mediafile.data;
+            this.saveMedia(fileURL, "V", 0,0,0);
             // const fileURL = this.createURLFromBase64(mediafile.data, mediafile.mimeType);
-            this.openVideoCoverSelectionPage(fileURL);
+            // this.openVideoCoverSelectionPage(fileURL);
             // this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.data));
           }
           else {//image 
@@ -226,18 +227,6 @@ export class AttachmentHelperService {
     // console.log("filePath - attachService", filepath)
     // console.log("IoV", ImageOrVideo)
     // console.log("b64", thumbNailBase64)
-    const response = await fetch(filepath);
-    let fileBlob = await response.blob();
-    // console.log('blob tyoe', fileBlob.type)
-    if(fileBlob.type === 'application/octet-stream'){
-      let newBlob;
-      if(filepath.includes('video')){
-        newBlob = new Blob([fileBlob], { type: 'video/mp4' });
-        // console.log('newBolb', newBlob);
-        fileBlob = newBlob!;
-      } 
-      // console.log("updated fileblob", fileBlob);
-    }
 
     var filename = "";
     var thumbfilename = "";
@@ -247,8 +236,11 @@ export class AttachmentHelperService {
       filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".mp4";
       thumbfilename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
       // thumbFilepath = this.win.Ionic.WebView.convertFileSrc(thumbNailBase64);
-      thumbFilepath = thumbNailBase64;
-      thumbfileBlob = this.b64toBlob(thumbNailBase64);
+      if(thumbNailBase64){
+        thumbFilepath = thumbNailBase64;
+        thumbfileBlob = this.b64toBlob(thumbNailBase64);
+      }
+
     }
     else if (ImageOrVideo === "I") {
       filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
@@ -257,7 +249,7 @@ export class AttachmentHelperService {
     const obj: FileUploadRequestNew = {
       mediaType: ImageOrVideo,
       name: filename,
-      blob: fileBlob,
+      blob: new Blob([]),
       filePath: filepath,
       thumbName: "Thumb_" + thumbfilename,
       thumbBlob: thumbfileBlob,

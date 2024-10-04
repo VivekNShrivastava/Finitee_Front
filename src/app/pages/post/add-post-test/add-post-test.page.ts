@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Post, AddPostRequest, Media } from 'src/app/core/models/post/post';
+import { Post, AddPostRequest } from 'src/app/core/models/post/post';
 import { BasePage } from 'src/app/base.page';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { NewImageCropperComponent } from 'src/app/core/components/new-image-cropper/new-image-cropper.component';

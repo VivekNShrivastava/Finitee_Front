@@ -128,6 +128,7 @@ export class EventsService {
     });
   }
 
+  
   //send invitation by eventid
   sendInviationRequest(eventId: string) {
     return new Promise<any>((resolve) => {

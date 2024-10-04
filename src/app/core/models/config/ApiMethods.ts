@@ -87,6 +87,7 @@ export const API = {
         GET_ALL_BY_BELONGSTO: `${environment.baseUrl}Post/GetAllPostByBelongsToId`,
         GET: `${environment.baseUrl}Post/GetPostDetailsById`,
         SAVE: `${environment.baseUrl}Post/AddPost`,
+        ADD_POST_WEB: `${environment.baseUrl}Post/WebAddPost`,
         UPDATE_POST: `${environment.baseUrl}Post/UpdatePost`,
         DELETE: `${environment.baseUrl}Post/DeletePost`,
         BEAM: `${environment.baseUrl}Post/BeamAPost`,

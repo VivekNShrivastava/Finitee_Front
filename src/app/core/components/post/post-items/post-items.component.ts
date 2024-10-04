@@ -50,6 +50,7 @@ export class PostItemsComponent extends BasePage implements OnInit {
     initialSlide: 0
   };
   postList: Array<Post> = [];
+  postImages: string[][] = [];
   selectedPost: Post = new Post();
   postViewType: string = AppConstants.POST_VIEW_TYPE.INSTA;
   postCommentViewType: string = AppConstants.POST_COMMENT_VIEW_TYPE.POPUP;
@@ -179,9 +180,9 @@ handleIntersect(entries: IntersectionObserverEntry[]) {
       this.week = this.paramsData['week'];
       this.part = this.paramsData['part'];
       this.postList = [...this.paramsData['postlist']];
+      this.removeThumbnailFromPostList();
       if(this.value){
-        this.isInflows = true;
-        
+        this.isInflows = true;       
       } 
       this.dateAndTime(0);
       
@@ -208,6 +209,16 @@ handleIntersect(entries: IntersectionObserverEntry[]) {
   //     });
   //   }, 200);
   // }
+
+  removeThumbnailFromPostList(){
+    this.postList.forEach((post,i) => {
+      if(post.Thumbnail){
+        this.postImages[i] = post.PostImages.slice(1);
+      }else{
+        this.postImages[i] = post.PostImages;
+      }
+    });
+  }
 
   updateSlideHeight() {
     const deviceHeight = window.innerHeight;
