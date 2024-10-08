@@ -1,5 +1,5 @@
 PODS:
-  - Capacitor (6.1.2):
+  - Capacitor (5.7.8):
     - CapacitorCordova
   - CapacitorApp (5.0.3):
     - Capacitor
@@ -9,7 +9,7 @@ PODS:
     - Capacitor
   - CapacitorCommunityBarcodeScanner (4.0.1):
     - Capacitor
-  - CapacitorCordova (6.1.2)
+  - CapacitorCordova (5.7.8)
   - CapacitorDevice (5.0.6):
     - Capacitor
   - CapacitorGeolocation (5.0.7):
@@ -32,7 +32,7 @@ PODS:
     - Capacitor
   - CapawesomeCapacitorFilePicker (6.0.1):
     - Capacitor
-  - CordovaPlugins (5.0.5):
+  - CordovaPlugins (5.7.8):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
   - VideoCropperProcessor (0.0.1):
@@ -103,12 +103,12 @@ EXTERNAL SOURCES:
     :path: "../../../video-cropper-processor"
 
 SPEC CHECKSUMS:
-  Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
+  Capacitor: 747aadb4fa786f460d8cd9d0557cb81440a13747
   CapacitorApp: 7a5dec8b33573707164b293475d5c89ba684364a
   CapacitorCamera: 4a95204d13a05b0b726bf9086b44124349ab1952
   CapacitorClipboard: 46f3959735fa0d96b9989dafcc4aed52e624d163
   CapacitorCommunityBarcodeScanner: 7feb206489c8555a8ca0c74c57ddf49ead774eb8
-  CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
+  CapacitorCordova: 31ab98dca2ddcee051027a1afe7e8c85c82f7297
   CapacitorDevice: 2c968f98a1ec4d22357418c1521e7ddc46c675e6
   CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
   CapacitorHaptics: e36653b37326d71bb35ae42b944124037dbc3d97
@@ -120,7 +120,7 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: 190e0321b8734f4244d0c81baa183a00d5806ddf
   CapacitorTextZoom: b1fb624a67d3a487a4b5783d18aaa7b2898bab77
   CapawesomeCapacitorFilePicker: c80c30759ba48986ff34a2b51b23ac2babfd3774
-  CordovaPlugins: 5544814d3a685e3d1bef7fc4292ad7662ddcefad
+  CordovaPlugins: 074f303192333845d16beebf57d40ae598494ab3
   CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
   VideoCropperProcessor: 9f8944bf19a98226f6d69b3b6be758bee562520d
 
