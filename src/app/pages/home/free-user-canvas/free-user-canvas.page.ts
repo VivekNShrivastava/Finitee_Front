@@ -6,7 +6,7 @@ import { BasePage } from 'src/app/base.page';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { Post } from 'src/app/core/models/post/post';
 import { UserTrait, UserTraitWithPost } from 'src/app/core/models/post/userTrait';
-import { UserCanvasProfile, UserProfile } from 'src/app/core/models/user/UserProfile';
+import { CanvasProfile, UserCanvasProfile, UserProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FreeUserCanvasService } from 'src/app/core/services/canvas-home/freeuser-canvas.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
@@ -190,19 +190,34 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
 
 
   async getUserProfileData() {
-    this.userCanvasProfile = await this._userProfileService.getUserCanvas(this.userId, this.logInfo.UserId);
-    // this.userProfile = await this._userProfileService.getUserProfile(this.userId, this.logInfo.UserId);
-    
-    this.userTraitList = await this._postService.getUserTrait(this.userId);
-    // console.log("traitlist", this.userTraitList)
-    this.userPrivate = this.userTraitList;
-    if(this.userPrivate.user === "Private"){
-      this.loadPrivateUser = true;
-      this.loaded = true;
+    try {
+        this.userCanvasProfile = await this._userProfileService.getUserCanvas(this.userId, this.logInfo.UserId); 
+        const isPrivate = this.userCanvasProfile.canvasProfile.Private;
+         console.log("Is User Private:", isPrivate);
+        if (isPrivate) {
+            this.loadPrivateUser = true;
+            this.loaded = true;
+            return; 
+        }
+        this.loadPrivateUser = false;
+        this.loaded = false; 
+    } catch (error) {
+        console.error("Error fetching user profile data:", error);
+        this.loaded = true; 
     }
-
-    
   }
+
+  
+  // async getUserProfileData() {
+  //       this.userCanvasProfile = await this._userProfileService.getUserCanvas(this.userId, this.logInfo.UserId);
+  //       const Private = this.userCanvasProfile.canvasProfile.Private;
+  //       console.log(Private);
+  //       this.userPrivate = this.userCanvasProfile.canvasProfile;
+  //        if(this.userPrivate.user === "Private"){
+  //         this.loadPrivateUser = true;
+  //         this.loaded = true;
+  //        } 
+  //   }
 
   // Fetch user posts only if the profile is not private
 async getUserPost() {

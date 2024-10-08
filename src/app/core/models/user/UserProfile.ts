@@ -184,6 +184,7 @@ export class CanvasProfile {
     UserName : string = "";
     UserTypeId! : number ;
     Id: string = "";
+    Private: boolean = false;
 }
 
 
