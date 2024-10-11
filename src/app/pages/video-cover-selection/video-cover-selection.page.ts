@@ -53,7 +53,7 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
     //this.defaultVideoFile = this.attchmentService.selectedVideoPath;//this.router.getCurrentNavigation()!.extras!.state!['data'];
     this.defaultVideoFile =  this.router!.getCurrentNavigation()!.extras!.state!['data'];
 
-    console.log(this.defaultVideoFile)
+    console.log("defaultVideo",this.defaultVideoFile.substring(0,50))
   }
 
   get appConstants() {
@@ -87,7 +87,14 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
   initializeVideo(src: any) {
     this._VIDEO = this.videoEl.nativeElement;
     this._VIDEO.src = src;
+    console.log("new source", src.substring(0,40));
+    this._VIDEO.onloadstart = () => console.log("Video loading started...");
+    this._VIDEO.onloadedmetadata = () => console.log("Metadata loaded (duration, dimensions)");
+  
+    // this._VIDEO.onloadeddata = () => console.log("Video data loaded (first frame available)");
+
     this._VIDEO.onloadeddata = (event: any) => {
+      console.log("here we are 1");
       this.videduration = parseInt(this._VIDEO.duration);
       var partVideoDurationRatio: any = (this.pageWidth - 15) / this.perFramWidth;
       this.maxNoOfThumbanil = parseInt(partVideoDurationRatio);
@@ -103,6 +110,8 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
 
 
   createVidThumbnailsAndDisplay() {
+    console.log("here we are 2");
+
     if (this.currenTCountOfThumbnail <= this.maxNoOfThumbanil) {
       this._VIDEO.currentTime = this.seekTo;
       setTimeout(() => {
