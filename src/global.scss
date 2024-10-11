@@ -29,6 +29,13 @@
   font-family: "SF Pro Display", serif;
 }
 
+ion-content{
+  --padding-top: var(--ion-safe-area-top, 0);
+}
+ion-header{
+  padding-top: var(--ion-safe-area-top, 0);
+}
+
 ion-icon {
   font-size: 21px;
 }

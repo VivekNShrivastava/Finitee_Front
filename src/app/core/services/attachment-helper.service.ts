@@ -51,12 +51,14 @@ export class AttachmentHelperService {
 
   async captureMedia(mediaType: Number, sourceType: Number) {
     this.user = await this.authService.getUserInfo();
+    console.log("here we are");
     if(mediaType === AppConstants.MEDIA_PICTURE && sourceType === AppConstants.SOURCE_CAMERA)       
       return this.openCameraToTakePhoto(false, CameraSource.Camera);
     else if (mediaType === AppConstants.MEDIA_VIDEO && sourceType === AppConstants.SOURCE_CAMERA)
       this.openCameraToRecordVideo();
-    else if (sourceType === AppConstants.SOURCE_PHOTOLIBRARY)
-      this.selectMediaFromGallery("post");
+    else if (sourceType === AppConstants.SOURCE_PHOTOLIBRARY){
+        this.selectMediaFromGallery("post");
+    }
     return;
   }
 
@@ -65,7 +67,7 @@ export class AttachmentHelperService {
     
     const image = await Camera.getPhoto({
       quality: 100,
-      allowEditing: true,
+      allowEditing: false,
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera// Camera, Photos or Prompt!
     });
@@ -132,6 +134,7 @@ export class AttachmentHelperService {
     }
   }
 
+ 
   async selectMediaFromGallery(media: string) {
 
     if(media === "profilePic"){
@@ -158,20 +161,17 @@ export class AttachmentHelperService {
       //   skipTranscoding: true
       // });
 
-      const typeAllowed : string[] = ['image/*', 'video/*']
-      const mediafileArray: any = await FilePicker.pickFiles({
-        types: typeAllowed,
+      const typeAllowed : string[] = ['image/*', 'video/mp4']
+      const mediafileArray: any = await FilePicker.pickMedia({
         readData: true,
-        limit: 0
       })
       
-      // console.log('media files ...');
-      // console.log(mediafileArray, "length", mediafileArray.files.length);
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
         if (mediafileArray.files) {
           if (mediafile.mimeType.indexOf("video") != -1) {//video
             const fileURL = 'data:' + mediafile.mimeType + ';base64,' + mediafile.data;
+            console.log("fileUrl new", fileURL.substring(0, 40))
             this.saveMedia(fileURL, "V", 0,0,0);
             // const fileURL = this.createURLFromBase64(mediafile.data, mediafile.mimeType);
             // this.openVideoCoverSelectionPage(fileURL);
@@ -258,7 +258,6 @@ export class AttachmentHelperService {
       height: height,
       aspectRatio: aspectRatio
     };
-    // console.log(obj);
     this.onMediaSave.emit(obj);
   }
 
