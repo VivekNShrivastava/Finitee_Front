@@ -161,7 +161,7 @@ export class AttachmentHelperService {
       //   skipTranscoding: true
       // });
 
-      const typeAllowed : string[] = ['image/*', 'video/mp4']
+      const typeAllowed : string[] = ['image/*', 'video/*']
       const mediafileArray: any = await FilePicker.pickMedia({
         readData: true,
       })
