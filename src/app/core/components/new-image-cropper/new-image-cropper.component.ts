@@ -721,7 +721,7 @@ updateSeekValue() {
     } 
 
     // this.createThumbnail();
-    console.log(await VideoCropper.getContacts('anyways'));
+    // console.log(await VideoCropper.getContacts('anyways'));
 
   }
 

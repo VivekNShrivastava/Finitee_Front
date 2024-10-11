@@ -98,6 +98,7 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
   initializeVideo(src: any) {
     this._VIDEO = this.videoEl.nativeElement;
     let extension = this.getVideoFormatFromBase64(src);
+    console.log("extension", extension)
     if(extension!=="quicktime"){
       this._VIDEO.src = src;
     }

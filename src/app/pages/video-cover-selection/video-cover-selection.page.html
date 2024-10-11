@@ -17,6 +17,7 @@
         <source [src]="defaultVideoFile" type="video/mp4">
       </video>
     </div>
+    <h1>{{defaultVideoFile.substring(50,80)}}</h1>
     <div class="canvas-container" [ngStyle]="{'width': canvasContianerWidth}">
       <input type="range" #myRange min="0" [max]="this.videduration" value="0" class="slider"
         (change)="changeRange(myRange.value)" [ngStyle]="{'width': canvasContianerWidth}">

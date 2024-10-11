@@ -30,6 +30,7 @@
           (touchend)="onTouchImageEnd($event)"
           *ngIf="image['mediaType'] === 'V' " 
           class="movable-image"
+          playsinline
           >
             <source [src]="image.filePath" type="video/mp4">
           </video>
