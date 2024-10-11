@@ -53,7 +53,6 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
     //this.defaultVideoFile = this.attchmentService.selectedVideoPath;//this.router.getCurrentNavigation()!.extras!.state!['data'];
     this.defaultVideoFile =  this.router!.getCurrentNavigation()!.extras!.state!['data'];
 
-    console.log("defaultVideo",this.defaultVideoFile.substring(0,50))
   }
 
   get appConstants() {
@@ -84,15 +83,24 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
     this.slectedImage = "";
   }
 
+
+  getVideoFormatFromBase64(base64: string): string | null {
+    // Check if the base64 string starts with a data URL and contains a MIME type
+    const matches = base64.match(/^data:video\/([a-zA-Z0-9.-]+);base64,/);
+  
+    if (matches && matches.length > 1) {
+      return matches[1]; // Return the video format (e.g., "mp4", "webm", etc.)
+    }
+  
+    return null; // Return null if no valid MIME type is found
+  }
+
   initializeVideo(src: any) {
     this._VIDEO = this.videoEl.nativeElement;
-    this._VIDEO.src = src;
-    console.log("new source", src.substring(0,40));
-    this._VIDEO.onloadstart = () => console.log("Video loading started...");
-    this._VIDEO.onloadedmetadata = () => console.log("Metadata loaded (duration, dimensions)");
-  
-    // this._VIDEO.onloadeddata = () => console.log("Video data loaded (first frame available)");
-
+    let extension = this.getVideoFormatFromBase64(src);
+    if(extension!=="quicktime"){
+      this._VIDEO.src = src;
+    }
     this._VIDEO.onloadeddata = (event: any) => {
       console.log("here we are 1");
       this.videduration = parseInt(this._VIDEO.duration);
@@ -160,7 +168,10 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
     this.navCtrl.pop();
   }
 
+  
+
   ngOnDestroy() {
+
     setTimeout(() => {
       console.log(this._VIDEO.videoHeight);
       var _CANVASTHUMBMain = this.canvasThumbMainEl.nativeElement;
@@ -178,6 +189,8 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
       //   width: this._VIDEO.videoWidth,
       //   height: this._VIDEO.videoHeight
       // });
+
+
       this.thumbnailService.onMediaCoverSelction.emit({
         cover: coverThumb
       })
