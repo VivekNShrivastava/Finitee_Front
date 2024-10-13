@@ -13,8 +13,10 @@ import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { FiniteeUser } from 'src/app/core/models/user/FiniteeUser';
 import { AuthService } from './auth.service';
 import { ModalController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { ImageCropperComponent } from '../components/image-cropper/image-cropper.component';
 import { File } from '@awesome-cordova-plugins/file/ngx';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +44,7 @@ export class AttachmentHelperService {
     private sanitizer: DomSanitizer,
     private httpService: HttpClient,
     private authService: AuthService,
+    private platform: Platform,
     private navCtrl: NavController,
     private modalController: ModalController
   ) {
@@ -72,15 +75,7 @@ export class AttachmentHelperService {
       source: CameraSource.Camera// Camera, Photos or Prompt!
     });
 
-    
-    console.log(image, "cam");
-    const dimensions = await this.getImageDimensions(image.dataUrl);
-    console.log('Width:', dimensions.width, 'Height:', dimensions.height);
-
-    const aspectRatio = dimensions.height / dimensions.width;
-    console.log('Aspect Ratio:', aspectRatio);
-
-    this.saveMedia(image.dataUrl, "I", dimensions.width, dimensions.height, aspectRatio);
+    this.saveMedia(image.dataUrl, "I", "hey");
 
     // if (image) {
       
@@ -146,11 +141,15 @@ export class AttachmentHelperService {
         var mediafileProfile = mediafileArray.files[0];
         if(mediafileProfile){
           // console.log("profilepic", mediafileProfile);
-          const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path);
-          const dimensions = await this.getImageDimensions(filePath);
-          const aspectRatio = dimensions.width / dimensions.height;
+          // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path);
+          let filePath = "";
+          if(this.platform.is('desktop')){
+            filePath = URL.createObjectURL(mediafile.blob);
+          }else{
+            filePath = Capacitor.convertFileSrc(mediafile.path);
+          }  
           // this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
-          this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
+          this.saveMedia(filePath, "I", "name");
         }
       }
     }else{
@@ -163,16 +162,27 @@ export class AttachmentHelperService {
 
       const typeAllowed : string[] = ['image/*', 'video/*']
       const mediafileArray: any = await FilePicker.pickMedia({
-        readData: true,
+    
       })
+
+      console.log("mediaFile", mediafileArray)
+      //console.log("mediaFile obj", mediafileArray.files[0])
+
+      // return null;
       
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
         if (mediafileArray.files) {
           if (mediafile.mimeType.indexOf("video") != -1) {//video
-            const fileURL = 'data:' + mediafile.mimeType + ';base64,' + mediafile.data;
+            // const fileURL = 'data:' + mediafile.mimeType + ';base64,' + mediafile.data;
+            let fileURL = "";
+            if(this.platform.is('desktop')){
+              fileURL = URL.createObjectURL(mediafile.blob);
+            }else{
+              fileURL = Capacitor.convertFileSrc(mediafile.path);
+            }
             console.log("fileUrl new", fileURL.substring(0, 40))
-            this.saveMedia(fileURL, "V", 0,0,0);
+            this.saveMedia(fileURL, "V", mediafile.name);
             // const fileURL = this.createURLFromBase64(mediafile.data, mediafile.mimeType);
             // this.openVideoCoverSelectionPage(fileURL);
             // this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.data));
@@ -181,26 +191,35 @@ export class AttachmentHelperService {
             if(mediafileArray.files.length > 1){
               for(let i=0; i<mediafileArray.files.length; i++){
                 console.log(mediafileArray.files[i]);
-                const filePath = 'data:' + mediafileArray.files[i].mimeType + ';base64,' + mediafileArray.files[i].data;
-                // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileArray.files[i].path);
-                const dimensions = await this.getImageDimensions(filePath);
-                const aspectRatio = dimensions.width / dimensions.height;
-                console.log("filepath", filePath, dimensions); 
-                this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);
+                
+                // const filePath = 'data:' + mediafileArray.files[i].mimeType + ';base64,' + mediafileArray.files[i].data;
+                let filePath = "";
+                if(this.platform.is('desktop')){
+                  filePath = URL.createObjectURL(mediafile.blob);
+                }else{
+                  filePath = Capacitor.convertFileSrc(mediafile.path);
+                }                
+                this.saveMedia(filePath, "I", mediafile.name);
               }
             }else{
               // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafile.path);
-              const filePath = 'data:' + mediafileArray.files[0].mimeType + ';base64,' + mediafileArray.files[0].data;
-              const dimensions = await this.getImageDimensions(filePath);
-              const aspectRatio = dimensions.width / dimensions.height;
-              // console.log("filepath", filePath, dimensions); 
-              this.saveMedia(filePath, "I", dimensions.width, dimensions.height, aspectRatio);  
+              // const filePath = 'data:' + mediafileArray.files[0].mimeType + ';base64,' + mediafileArray.files[0].data;
+              
+              let filePath = "";
+              if(this.platform.is('desktop')){
+                filePath = URL.createObjectURL(mediafile.blob);
+              }else{
+                filePath = Capacitor.convertFileSrc(mediafile.path);
+              }  
+              this.saveMedia(filePath, "I", mediafile.name);  
             }
           }
         }
       }
     }
   }
+
+
 
   createURLFromBase64(base64Data: string, mimeType: string): string {
     const byteCharacters = atob(base64Data);
@@ -223,40 +242,12 @@ export class AttachmentHelperService {
   }
 
 
-  async saveMedia(filepath: any, ImageOrVideo: any, width: number, height: number, aspectRatio: number, thumbNailBase64?: any) {
-    // console.log("filePath - attachService", filepath)
-    // console.log("IoV", ImageOrVideo)
-    // console.log("b64", thumbNailBase64)
-
-    var filename = "";
-    var thumbfilename = "";
-    var thumbFilepath = "";
-    var thumbfileBlob: any = "";
-    if (ImageOrVideo === "V") {
-      filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".mp4";
-      thumbfilename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
-      // thumbFilepath = this.win.Ionic.WebView.convertFileSrc(thumbNailBase64);
-      if(thumbNailBase64){
-        thumbFilepath = thumbNailBase64;
-        thumbfileBlob = this.b64toBlob(thumbNailBase64);
-      }
-
-    }
-    else if (ImageOrVideo === "I") {
-      filename = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + ".jpeg";
-      thumbFilepath = filepath;
-    }
+  async saveMedia(filepath: any, ImageOrVideo: any, filename: any) {
+    
     const obj: FileUploadRequestNew = {
       mediaType: ImageOrVideo,
       name: filename,
-      blob: new Blob([]),
       filePath: filepath,
-      thumbName: "Thumb_" + thumbfilename,
-      thumbBlob: thumbfileBlob,
-      thumbFilePath: thumbFilepath,
-      width: width,
-      height: height,
-      aspectRatio: aspectRatio
     };
     this.onMediaSave.emit(obj);
   }
@@ -373,59 +364,6 @@ export class AttachmentHelperService {
     }
     return new Blob([ab], { type: 'image/jpeg' });
   }
-
-  // resolveAndroidContentUri(path: string, mimeType: string) {
-  //   console.log("resolveAndroidContentUri Start: path: ", path);
-  //   return new Promise((resolve, reject) => {
-  //     this.win.FilePath.resolveNativePath(path, (absolutePath: string) => {
-  //       resolve(this.makeFileIntoBlob(absolutePath, mimeType));
-  //     })
-  //   });
-  // }
-
-  // FILE STUFF
-  //  makeFileIntoBlob(_filePath: string, mimeType: string) {
-  //   // INSTALL PLUGIN - cordova plugin add cordova-plugin-file
-  //   console.log("makeFileIntoBlob Start: path: ", _filePath);
-  //   return new Promise((resolve, reject) => {
-  //    let fileName = "";
-  //    this.file.resolveLocalFilesystemUrl(_filePath)
-  //      .then(fileEntry => {
-  //        let { name, nativeURL } = fileEntry;
-
-  //        // get the path..
-  //        let path = nativeURL.substring(0, nativeURL.lastIndexOf("/"));
-  //        console.log("makeFileIntoBlob path", path);
-  //        console.log("makeFileIntoBlob fileName", name);
-
-  //        fileName = name;
-
-  //        // we are provided the name, so now read the file into
-  //        // a buffer
-  //        return this.file.readAsArrayBuffer(path, name);
-  //      })
-  //      .then(buffer => {
-  //        // get the buffer and make a blob to be saved
-  //        let imgBlob = new Blob([buffer], {
-  //          type: mimeType//"image/jpeg"
-  //        });
-  //        console.log("makeFileIntoBlob blob: ", imgBlob.type, imgBlob.size);
-  //        resolve({
-  //          name: fileName,
-  //          blob: imgBlob
-  //        });
-  //      })
-  //      .catch(e => reject(e));
-  //   });
-  //  }
-
-  //  public convertPathToWebPath(path: string) {
-  //   console.log("convertPathToWebPath: A: Src: ", path);
-  //   const fileSrc = Capacitor.convertFileSrc(path);
-  //   console.log("convertPathToWebPath: B: Src: ", fileSrc);
-  //   return fileSrc;
-  // }
-
 }
 
 
@@ -435,146 +373,3 @@ export function getFileReader(): FileReader {
   const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
   return zoneOriginalInstance || fileReader;
 }
-
-
-// https://ionicframework.com/docs/angular/your-first-app/3-saving-photos
-/*  private async readAsBase64(photo: any) {
-   if (this.plt.is('hybrid')) {
-       const file = await Filesystem.readFile({
-        path: photo.path
-      });
- 
-      return file.data; 
-     return "";
-   }
-   else {
-     // Fetch the photo, read as a blob, then convert to base64 format
-     const response = await fetch(photo.webPath);
-     const blob = await response.blob();
- 
-     return await this.convertBlobToBase64(blob) as string;
-   }
- }
- 
- // Helper function
- convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
-   const reader = new FileReader;
-   reader.onerror = reject;
-   reader.onload = () => {
-     resolve(reader.result);
-   };
-   reader.readAsDataURL(blob);
- }); */
-
-/* /*   async takePhoto(mediaType: Number, sourceType: Number) {
-     console.log("y")
-     const CameraOptions: any = {
-       quality: 75,
-       destinationType: this.camera.DestinationType.FILE_URI,
-       encodingType: this.camera.EncodingType.JPEG,
-       mediaType: mediaType,
-       targetWidth: 400,
-       targetHeight: 600,
-       sourceType: sourceType,
-       allowEdit: false,
-       saveToPhotoAlbum: false,
-       correctOrientation: true
-     };
-     console.log("takePhoto: A1: ");
-     var imageData: any = await this.camera.getPicture(CameraOptions);
-     console.log("takePhoto: A: ", imageData);
-     await this.win[`resolveLocalFileSystemURL`](imageData, (entry: any) => {
-       entry[`file`](async (file: any) => {
-         //alert(file.size);
-         console.log("takePhoto: B: ", file);
-         const reader = getFileReader();
-         reader.onloadend = (evt: any) => {
-           console.log("takePhoto: C: ", evt);
-           const fileBlob = new Blob([evt.target.result], { type: file.type });
-           file.name = moment().format('YYYYMMDD') + new Date().getTime() + '_' + this.user?.UserId + '.' + file.type.split('/')[1];
-           const obj: FileUploadRequest = {
-             data: this.win.Ionic.WebView.convertFileSrc(imageData),
-             status: 'P',
-             filepath: imageData,
-             name: file.name,
-             blob: fileBlob,
-             blobUrl: this.sanitizeLocalUrl(URL.createObjectURL(fileBlob))
-           };
-           console.log("takePhoto: D: ", obj);
-           this.onMediaSave.emit(obj);
-         };
-         await reader.readAsArrayBuffer(file);
-       });
-     });
-   }
-  */
-/*  async takeVideo(mediaType: Number, sourceType: Number) {
-   if (sourceType == AppConstants.SOURCE_PHOTOLIBRARY) {
-     const CameraOptions: any = {
-       quality: 50,
-       destinationType: this.camera.DestinationType.FILE_URI,
-       mediaType: mediaType,
-       sourceType: sourceType,
-       targetHeight: 350,
-       targetWidth: 350,
-     };
-     var videoURI: any = await this.camera.getPicture(CameraOptions);
-     const filename = videoURI.substr(videoURI.lastIndexOf('/') + 1);
-     let filPath = videoURI.substr(0, videoURI.lastIndexOf('/') + 1);
-     filPath = filPath.includes('file://') ? filPath : 'file://' + filPath;
-     let retrievedFile: any = null;
-     const dirUrl = await this.file.resolveDirectoryUrl(filPath);
-     retrievedFile = await this.file.getFile(dirUrl, filename, {});
-     retrievedFile.file(async (data: any) => {
-       // this.readVideo(retrievedFile);
-       const dirpath = 'file://' + videoURI;
-       const reader = getFileReader();
-       reader.onloadend = (evt: any) => {
-         const fileBlob = new Blob([evt.target.result], { type: data.type });
-         const extension = retrievedFile.name.split('.')[retrievedFile.name.split('.').length - 1];
-         data.name = moment().format('YYYYMMDD') +
-           new Date().getTime() + '_' + this.user!.UserId + '.' + extension + '&' +
-           this.user!.UserId + '&' + 'PV';
-         const obj: FileUploadRequest = {
-           data: this.win.Ionic.WebView.convertFileSrc(dirpath),
-           status: 'V',
-           filepath: retrievedFile.nativeURL,
-           name: data.name,
-           blob: fileBlob,
-           blobUrl: this.sanitizeLocalUrl(URL.createObjectURL(fileBlob))
-         };
- 
-         this.onMediaSave.emit(obj);
-       };
-       await reader.readAsArrayBuffer(data);
-     });
-   }
-   else {
-     let options: CaptureVideoOptions = { limit: 1, quality: 0, duration: 5 };
-     var mediafile: any = await this.mediaCapture.captureVideo(options);
-     var imageData: any = mediafile[0].fullPath;
-     await this.win[`resolveLocalFileSystemURL`](imageData, (entry: any) => {
-       entry[`file`](async (file: any) => {
-         const reader = getFileReader();;
-         reader.onloadend = async (evt: any) => {
-           const fileBlob = new Blob([evt.target.result], { type: file.type });
-           file.name = 'Video_' + moment().format('YYYYMMDD') + new Date().getTime() + '.' + file.type.split('/')[1];
-           let obj: FileUploadRequest = {
-             data: this.win.Ionic.WebView.convertFileSrc(imageData),
-             status: 'V',
-             filepath: imageData,
-             name: file.name,
-             blob: fileBlob,
-             blobUrl: this.sanitizeLocalUrl(URL.createObjectURL(fileBlob)),
-             thumbnail: []
-           };
-           this.onMediaSave.emit(obj);
-         };
-         await reader.readAsArrayBuffer(file);
-       });
-     });
-   }
- }
- 
- 
-*/ 

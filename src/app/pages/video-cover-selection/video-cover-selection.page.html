@@ -13,6 +13,9 @@
       <video #mainVideo 
       [height]="pageheight/2"
       (canplay)="onCanPlay($event)"
+      (loadedmetadata) = "initializeThumbnailVideo()"
+      playsinline
+      muted
       >
         <source [src]="defaultVideoFile" type="video/mp4">
       </video>

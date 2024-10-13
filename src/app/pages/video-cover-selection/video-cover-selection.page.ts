@@ -52,7 +52,7 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
     this.loaded = false;
     //this.defaultVideoFile = this.attchmentService.selectedVideoPath;//this.router.getCurrentNavigation()!.extras!.state!['data'];
     this.defaultVideoFile =  this.router!.getCurrentNavigation()!.extras!.state!['data'];
-
+    console.log(this.defaultVideoFile, "default Video file");
   }
 
   get appConstants() {
@@ -67,9 +67,9 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
   async ngAfterViewInit() {
     await this.platform.ready();
     this.initializeVariable();
-    setTimeout(() => {
-      this.initializeVideo(this.defaultVideoFile)
-    }, 1000);
+    // setTimeout(() => {
+    //   this.initializeVideo(this.defaultVideoFile)
+    // }, 1000);
 
   }
 
@@ -84,25 +84,29 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
   }
 
 
-  getVideoFormatFromBase64(base64: string): string | null {
-    // Check if the base64 string starts with a data URL and contains a MIME type
-    const matches = base64.match(/^data:video\/([a-zA-Z0-9.-]+);base64,/);
-  
-    if (matches && matches.length > 1) {
-      return matches[1]; // Return the video format (e.g., "mp4", "webm", etc.)
-    }
-  
-    return null; // Return null if no valid MIME type is found
-  }
 
-  initializeVideo(src: any) {
+
+  // initializeVideo(src: any) {
+  //   this._VIDEO = this.videoEl.nativeElement;
+  //   // this._VIDEO.src = src;
+  //   this._VIDEO.onloadeddata = (event: any) => {
+  //     console.log("here we are 1");
+  //     this.videduration = parseInt(this._VIDEO.duration);
+  //     var partVideoDurationRatio: any = (this.pageWidth - 15) / this.perFramWidth;
+  //     this.maxNoOfThumbanil = parseInt(partVideoDurationRatio);
+  //     this.canvasWidth = this.maxNoOfThumbanil * this.perFramWidth;
+  //     this.canvasContianerWidth = this.canvasWidth + 'px';
+  //     this.vidTimeIntrvl = this._VIDEO.duration / parseInt(partVideoDurationRatio);
+  //     this._CANVAS = this.canvasEl.nativeElement;
+  //     this._CONTEXT = this._CANVAS.getContext('2d');
+  //     this._CONTEXT.clearRect(0, 0, this._CANVAS.width, this._CANVAS.height);
+  //     this.createVidThumbnailsAndDisplay();
+  //   };
+  // }
+
+  initializeThumbnailVideo() {
     this._VIDEO = this.videoEl.nativeElement;
-    let extension = this.getVideoFormatFromBase64(src);
-    console.log("extension", extension)
-    if(extension!=="quicktime"){
-      this._VIDEO.src = src;
-    }
-    this._VIDEO.onloadeddata = (event: any) => {
+    this._VIDEO.play();
       console.log("here we are 1");
       this.videduration = parseInt(this._VIDEO.duration);
       var partVideoDurationRatio: any = (this.pageWidth - 15) / this.perFramWidth;
@@ -114,9 +118,9 @@ export class VideoCoverSelectionPage implements OnInit, AfterViewInit {
       this._CONTEXT = this._CANVAS.getContext('2d');
       this._CONTEXT.clearRect(0, 0, this._CANVAS.width, this._CANVAS.height);
       this.createVidThumbnailsAndDisplay();
-    };
-  }
+      this._VIDEO.pause();  
 
+  }
 
   createVidThumbnailsAndDisplay() {
     console.log("here we are 2");

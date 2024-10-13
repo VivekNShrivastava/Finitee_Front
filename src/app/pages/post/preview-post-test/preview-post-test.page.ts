@@ -23,6 +23,7 @@ export class PreviewPostTestPage implements OnInit {
   paramsData: any;
   currentIndex: number = 0;
   imageUri: string[] = [];
+  mediaNames: string[] = [];
   isVideoList: boolean[] = [];
   imagePositionX: number[] = [];
   imagePositionY: number[] = [];
@@ -60,7 +61,7 @@ export class PreviewPostTestPage implements OnInit {
     this.areaAvailable = this.paramsData.areaAvailable;
     this.thumbnail = this.paramsData.thumbnail;
     this.videoArgs = this.paramsData.videoArgs;
-
+    this.mediaNames = this.paramsData.mediaNames;
   }
 
   ngOnInit() {
@@ -226,12 +227,21 @@ export class PreviewPostTestPage implements OnInit {
     return new File([u8arr], filename, { type: mime });
   }
 
+  async  fileUrlToFile(fileUrl: string, filename: string): Promise<File> {
+    const response = await fetch(fileUrl);  // Fetch the file from the URL
+    const blob = await response.blob();     // Convert the response to a Blob
+    const file = new File([blob], filename, { type: blob.type });  // Create a File from the Blob
+    console.log("converted file", file)
+  
+    return file;
+  }
+  
   async addPost(){
     let files: File[] = [];
     let post: Post = new Post;
     for(let i=0; i<this.imageUri.length; i++){
       if(this.isVideoList[i]){
-        const file = this.base64ToFile(this.imageUri[i], "videoFile"); // Assuming base64ToFile is implemented
+        const file = await this.fileUrlToFile(this.imageUri[i], this.mediaNames[i]); // Assuming base64ToFile is implemented
         files.push(file); // Push the converted file to the array      
         if(i==0){
           const thumb = await this.compressImage(this.thumbnail);

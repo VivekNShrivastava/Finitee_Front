@@ -12,11 +12,10 @@
   </div>
 
 
+
   <app-multiple-media-upload 
     [postLimit]="post.PostImages.length"
     [mediaFiles]="post.PostImages"
-    (filePathEvent)="addMedia($event)"
-    (imagePath)="imagePathMedia($event)"
     (fileToUpload)="fileToUploadToServer($event)"
     class="icon-class"
     style="display: flex;

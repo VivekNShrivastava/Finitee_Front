@@ -695,7 +695,8 @@ updateSeekValue() {
       "imagePositionY": this.imagePositionY,
       "areaAvailable": this.areaAvailable,
       "videoArgs": this.videoArgs,
-      "thumbnail": this.thumbnail
+      "thumbnail": this.thumbnail,
+      "mediaNames": this.imageUri.map(item => item.name)
     }
 
     this.navEx!.state!['data'] = previewComponentData;

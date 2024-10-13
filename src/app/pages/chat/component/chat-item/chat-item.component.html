@@ -70,7 +70,7 @@
         <div style="padding: 5px 0px 15px 0px">
           <img *ngIf="message.path != '' && message.path.indexOf('mp4') == -1" style="border-radius: 6px" height="350"
             [src]="message.path" alt="{{ message.path }}" />
-          <video *ngIf="message.path != '' && message.path.indexOf('mp4') != -1" height="350" controls>
+          <video *ngIf="message.path != '' && message.path.indexOf('mp4') != -1" height="350" controls playsinline>
             <source [src]="message.path" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
@@ -177,7 +177,7 @@
           <div style="padding: 5px 0px 15px 0px">
             <img *ngIf="message.path != '' && message.path.indexOf('mp4') == -1" style="border-radius: 6px" height="350"
               [src]="message.path" alt="{{ message.path }}" />
-            <video *ngIf="message.path != '' && message.path.indexOf('mp4') != -1" height="350" controls>
+            <video *ngIf="message.path != '' && message.path.indexOf('mp4') != -1" height="350" controls playsinline>
               <source [src]="message.path" type="video/mp4" />
               Your browser does not support the video tag.
             </video>

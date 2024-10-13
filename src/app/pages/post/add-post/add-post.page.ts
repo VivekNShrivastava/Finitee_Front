@@ -22,7 +22,6 @@ export class AddPostPage extends BasePage implements OnInit {
   BelongsToId!: string;
   saveClicked: boolean = false;
   isTraitReadOnly : boolean = true;
-  photo: any[] = [];
   sendPost: AddPostRequest = new AddPostRequest;
   fileToUpload: any[] = [];
   slideOptions = {
@@ -108,9 +107,6 @@ export class AddPostPage extends BasePage implements OnInit {
     this.fileToUpload.push(mediaObj);
   }
 
-  imagePathMedia(imagePath: string){
-    this.photo.push(imagePath);
-  }
 
   addMedia(filePath: string) {
     if (filePath.indexOf("delete") != -1) {

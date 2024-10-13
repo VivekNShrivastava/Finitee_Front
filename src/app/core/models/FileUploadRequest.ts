@@ -13,12 +13,5 @@ export interface FileUploadRequest {
 export interface FileUploadRequestNew {
     mediaType: string;
     name: string;
-    blob: Blob;
     filePath: string;
-    thumbName: string;
-    thumbBlob: Blob;
-    thumbFilePath: string;
-    width: number;
-    height: number;
-    aspectRatio: number;
 }
