@@ -231,7 +231,7 @@ export class PreviewPostTestPage implements OnInit {
     const response = await fetch(fileUrl);  // Fetch the file from the URL
     const blob = await response.blob();     // Convert the response to a Blob
     const file = new File([blob], filename, { type: blob.type });  // Create a File from the Blob
-    console.log("converted file", file)
+    console.log("converted file", blob)
   
     return file;
   }
