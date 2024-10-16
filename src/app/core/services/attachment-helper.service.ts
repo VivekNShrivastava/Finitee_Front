@@ -75,35 +75,17 @@ export class AttachmentHelperService {
       source: CameraSource.Camera// Camera, Photos or Prompt!
     });
 
-    this.saveMedia(image.dataUrl, "I", "hey");
 
-    // if (image) {
-      
-    //   const modal = await this.modalController.create({
-    //     component: ImageCropperComponent,
-    //     componentProps: {
-    //       imageUri: image.dataUrl,
-    //     },
-    //   });
-  
-    //   // Present the modal
-    //   await modal.present();
+    // Extract the MIME type from dataUrl
+    const mimeType = image.dataUrl?.substring(image.dataUrl.indexOf(":") + 1, image.dataUrl.indexOf(";"));
 
-    //   const { data } = await modal.onDidDismiss();
+    // Trim the "image/" part and prepend a dot to get the file extension
+    const extension = '.' + mimeType?.split('/')[1];
 
-    //   if (data) {
+    // Generate a filename with the appropriate extension
+    const fileName = `photo_${new Date().getTime()}${extension}`;
 
-    //     console.log(data, "updated");
-    //     const dimensions = await this.getImageDimensions(data);
-    //     console.log('Width:', dimensions.width, 'Height:', dimensions.height);
-
-    //     const aspectRatio = dimensions.height / dimensions.width;
-    //     console.log('Aspect Ratio:', aspectRatio)
-
-    //     this.saveMedia(data, "I", dimensions.width, dimensions.height, aspectRatio);
-    //     console.log(data);
-    //   }
-    // }
+    this.saveMedia(image.dataUrl, "I", fileName);
   }
 
 
@@ -149,7 +131,7 @@ export class AttachmentHelperService {
             filePath = Capacitor.convertFileSrc(mediafile.path);
           }  
           // this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
-          this.saveMedia(filePath, "I", "name");
+          this.saveMedia(filePath, "I", mediafile.name);
         }
       }
     }else{
@@ -176,7 +158,7 @@ export class AttachmentHelperService {
           if (mediafile.mimeType.indexOf("video") != -1) {//video
             // const fileURL = 'data:' + mediafile.mimeType + ';base64,' + mediafile.data;
             let fileURL = "";
-            if(this.platform.is('desktop')){
+            if(this.platform.is('desktop') || this.platform.is('mobileweb')){
               fileURL = URL.createObjectURL(mediafile.blob);
             }else{
               fileURL = Capacitor.convertFileSrc(mediafile.path);

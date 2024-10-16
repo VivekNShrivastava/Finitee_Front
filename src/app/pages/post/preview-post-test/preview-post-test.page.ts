@@ -196,23 +196,13 @@ export class PreviewPostTestPage implements OnInit {
   }
 
   async compressImage(image: string) {
-    // Compress the image
-    // this.imgResultBeforeCompress = image;
 
     const compressedBase64 = await this.imageCompress.compressFile(image, -1, 80, 10000); // Adjust quality and size as needed
 
-    return this.base64ToBlob(compressedBase64, 'compressed-image.jpg');
-
-    // let imgResultAfterCompression = image;
-    // this.imageCompress
-    // .compressFile(image, orientation, 50, 50) // 50% ratio, 50% quality
-    // .then(compressedImage => {
-    //     imgResultAfterCompression = compressedImage;
-    //     console.log('Size in bytes after compression is now:', this.imageCompress.byteCount(compressedImage));
-    // });
+    return this.base64ToBlob(compressedBase64);
   }
 
-  base64ToBlob(base64: string, filename: string): Blob {
+  base64ToBlob(base64: string): Blob {
     const arr = base64.split(',');
     const matchResult = arr[0].match(/:(.*?);/);
     const mime = matchResult ? matchResult[1] : '';
@@ -234,14 +224,6 @@ export class PreviewPostTestPage implements OnInit {
     const mimeType = this.getMimeTypeFromFileName(filename);
     
     blob = new Blob([blob], { type: mimeType });  // Create a new Blob with the correct type
-     
-
-    const file2 = new File([""], filename);
-    const file = new File([blob], filename, {type: mimeType});
-    console.log("converted file", file2)
-    console.log("converted file 2", file)
-    console.log("converted files", blob)
-
   
     return blob;
   }
@@ -260,6 +242,15 @@ export class PreviewPostTestPage implements OnInit {
         files.push(file); // Push the converted file to the array      
         if(i==0){
           const thumb = await this.compressImage(this.thumbnail);
+                
+          // Extract the MIME type from dataUrl
+          const mimeType = this.thumbnail.substring(this.thumbnail.indexOf(":") + 1, this.thumbnail.indexOf(";"));
+
+          // Trim the "image/" part and prepend a dot to get the file extension
+          const extension = '.' + mimeType?.split('/')[1];
+
+          // Generate a filename with the appropriate extension
+          this.mediaNames.splice(1, 0,  `photo_${new Date().getTime()}${extension}`);
           files.push(thumb);
         }
       }
