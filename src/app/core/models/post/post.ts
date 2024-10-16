@@ -26,7 +26,7 @@ export class Post {
 
 export class AddPostRequest{
     post!: Post;
-    media!: File[];
+    media!: Blob[];
     AspectRatio!: number;
 }
 export class AddPostRequestForWeb extends AddPostRequest {

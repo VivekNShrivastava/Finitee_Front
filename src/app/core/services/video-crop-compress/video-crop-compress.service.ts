@@ -13,7 +13,7 @@ export class VideoCropCompressService {
 
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  cropVideoForWeb(postRequestForWeb: AddPostRequestForWeb){
+  cropVideoForWeb(postRequestForWeb: AddPostRequestForWeb, fileNames: string[]){
     const formData = new FormData();
     formData.append('Post', JSON.stringify(postRequestForWeb.post));
     formData.append('AspectRatio', JSON.stringify(postRequestForWeb.AspectRatio));
@@ -22,7 +22,7 @@ export class VideoCropCompressService {
 
 
     for(let i =0 ; i < postRequestForWeb.media.length; i++){
-      formData.append('file', postRequestForWeb.media[i], postRequestForWeb.media[i].name);
+      formData.append('file', postRequestForWeb.media[i], fileNames[i]);
     }
 
     return new Promise<any>((resolve,reject)=>{

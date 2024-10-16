@@ -227,17 +227,32 @@ export class PreviewPostTestPage implements OnInit {
     return new File([u8arr], filename, { type: mime });
   }
 
-  async  fileUrlToFile(fileUrl: string, filename: string): Promise<File> {
+
+  async  fileUrlToFile(fileUrl: string, filename: string): Promise<Blob> {
     const response = await fetch(fileUrl);  // Fetch the file from the URL
-    const blob = await response.blob();     // Convert the response to a Blob
-    const file = new File([blob], filename, { type: blob.type });  // Create a File from the Blob
-    console.log("converted file", blob)
+    let blob = await response.blob();     // Convert the response to a Blob
+    const mimeType = this.getMimeTypeFromFileName(filename);
+    
+    blob = new Blob([blob], { type: mimeType });  // Create a new Blob with the correct type
+     
+
+    const file2 = new File([""], filename);
+    const file = new File([blob], filename, {type: mimeType});
+    console.log("converted file", file2)
+    console.log("converted file 2", file)
+    console.log("converted files", blob)
+
   
-    return file;
+    return blob;
   }
   
+   getMimeTypeFromFileName(filename: string): string {
+    const extension = filename.split('.').pop()?.toLowerCase();
+    return `video/${extension}`
+  }
+
   async addPost(){
-    let files: File[] = [];
+    let files: Blob[] = [];
     let post: Post = new Post;
     for(let i=0; i<this.imageUri.length; i++){
       if(this.isVideoList[i]){
@@ -260,7 +275,7 @@ export class PreviewPostTestPage implements OnInit {
     addPostRequestForWeb.post = post;
     //route
     this.router.navigateByUrl('tabs/free-user-canvas');
-    this.videoCompressService.cropVideoForWeb(addPostRequestForWeb);
+    this.videoCompressService.cropVideoForWeb(addPostRequestForWeb, this.mediaNames);
   }
 
 }
