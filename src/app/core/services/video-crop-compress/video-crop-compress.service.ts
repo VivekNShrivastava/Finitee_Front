@@ -20,10 +20,14 @@ export class VideoCropCompressService {
     formData.append('cropAreas', JSON.stringify(postRequestForWeb.cropAreas));
     formData.append('Passcode', "THIS_IS_A_WEB_ONLY_API_FOR_DEVS");
 
+    console.log("Pre formData", postRequestForWeb.media);
+
 
     for(let i =0 ; i < postRequestForWeb.media.length; i++){
       formData.append('file', postRequestForWeb.media[i], fileNames[i]);
     }
+
+    console.log("formData", formData);
 
     return new Promise<any>((resolve,reject)=>{
       this.commonService.showLoader();

@@ -201,7 +201,7 @@ export class PreviewPostTestPage implements OnInit {
 
     const compressedBase64 = await this.imageCompress.compressFile(image, -1, 80, 10000); // Adjust quality and size as needed
 
-    return this.base64ToFile(compressedBase64, 'compressed-image.jpg');
+    return this.base64ToBlob(compressedBase64, 'compressed-image.jpg');
 
     // let imgResultAfterCompression = image;
     // this.imageCompress
@@ -212,7 +212,7 @@ export class PreviewPostTestPage implements OnInit {
     // });
   }
 
-  base64ToFile(base64: string, filename: string): File {
+  base64ToBlob(base64: string, filename: string): Blob {
     const arr = base64.split(',');
     const matchResult = arr[0].match(/:(.*?);/);
     const mime = matchResult ? matchResult[1] : '';
@@ -224,7 +224,7 @@ export class PreviewPostTestPage implements OnInit {
       u8arr[n] = bstr.charCodeAt(n);
     }
   
-    return new File([u8arr], filename, { type: mime });
+    return new Blob([u8arr], { type: mime });
   }
 
 
