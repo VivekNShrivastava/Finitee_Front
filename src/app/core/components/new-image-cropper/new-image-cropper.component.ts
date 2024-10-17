@@ -7,7 +7,8 @@ import { IonSlides } from '@ionic/angular';
 import { ThumbnailHelperService } from 'src/app/core/services/thumbnail-helper.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { VideoCroppingArgs } from 'src/app/core/models/post/post';
-import { VideoCropper }  from 'video-cropper-processor';
+// import { VideoCropper }  from 'video-cropper-processor';
+import { VideoCropper } from 'src/plugins/VideoCropper';
 
 @Component({
   standalone: true,

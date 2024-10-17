@@ -2,5 +2,5 @@ import type { PluginListenerHandle } from "@capacitor/core";
 
 export interface VideoCropperPlugin{
 
-    getContacts(): Promise<{ type:  any[]}>
+    getContacts(filter: string): Promise<{ results:  any[]}>
 }
