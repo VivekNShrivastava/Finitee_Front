@@ -35,6 +35,7 @@ PODS:
   - CordovaPlugins (5.7.8):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
+  - ffmpeg-kit-ios-full-gpl (6.0)
   - VideoCropperProcessor (0.0.1):
     - Capacitor
 
@@ -58,7 +59,12 @@ DEPENDENCIES:
   - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - CordovaPluginsResources (from `../capacitor-cordova-ios-plugins`)
+  - ffmpeg-kit-ios-full-gpl
   - VideoCropperProcessor (from `../../../video-cropper-processor`)
+
+SPEC REPOS:
+  trunk:
+    - ffmpeg-kit-ios-full-gpl
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -122,8 +128,9 @@ SPEC CHECKSUMS:
   CapawesomeCapacitorFilePicker: c80c30759ba48986ff34a2b51b23ac2babfd3774
   CordovaPlugins: 074f303192333845d16beebf57d40ae598494ab3
   CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
+  ffmpeg-kit-ios-full-gpl: 80adc341962e55ef709e36baa8ed9a70cf4ea62b
   VideoCropperProcessor: 9f8944bf19a98226f6d69b3b6be758bee562520d
 
-PODFILE CHECKSUM: 83911a85b4f8c500e9cfb298a60817ea4d907f14
+PODFILE CHECKSUM: 205c78e87557e3862d4ae61aff3d129e16492c54
 
 COCOAPODS: 1.15.2
