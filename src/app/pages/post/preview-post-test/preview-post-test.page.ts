@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import {NgxImageCompressService} from 'ngx-image-compress';
 import { AddPostRequest, AddPostRequestForWeb, Post, VideoCroppingArgs } from 'src/app/core/models/post/post';
 import { VideoCropCompressService } from 'src/app/core/services/video-crop-compress/video-crop-compress.service';
+import { VideoCropper } from 'video-cropper-processor';
 
 
 
@@ -238,6 +239,18 @@ export class PreviewPostTestPage implements OnInit {
     let post: Post = new Post;
     for(let i=0; i<this.imageUri.length; i++){
       if(this.isVideoList[i]){
+        
+        //cropping here  const 
+        let newFileUrl = await VideoCropper.cropVideo({
+            fileUrl: this.imageUri[i],
+            cropX: this.videoArgs[i].x,
+            cropY: this.videoArgs[i].y,
+            cropWidth: this.videoArgs[i].width,
+            cropHeight: this.videoArgs[i].height,
+          });
+
+        console.log("newFileUrl", newFileUrl);
+
         const file = await this.fileUrlToFile(this.imageUri[i], this.mediaNames[i]); // Assuming base64ToFile is implemented
         files.push(file); // Push the converted file to the array      
         if(i==0){

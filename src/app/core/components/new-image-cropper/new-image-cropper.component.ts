@@ -7,8 +7,8 @@ import { IonSlides } from '@ionic/angular';
 import { ThumbnailHelperService } from 'src/app/core/services/thumbnail-helper.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { VideoCroppingArgs } from 'src/app/core/models/post/post';
-// import { VideoCropper }  from 'video-cropper-processor';
-import { VideoCropper } from 'src/plugins/VideoCropper';
+import { VideoCropper }  from 'video-cropper-processor';
+// import { VideoCropper } from 'src/plugins/VideoCropper';
 
 @Component({
   standalone: true,
@@ -649,6 +649,11 @@ updateSeekValue() {
       }
       i++;
     }
+    console.log("the contacts are called")
+    const resultNew = await VideoCropper.echo({ value: "Hello, World!" })
+    console.log(resultNew);
+    const result = await VideoCropper.getContacts({filter: ""});
+    console.log("getContacts",result.contacts);
     this.callCroppingFunction(this.dataUrlArray, this.isVideoList, this.sliderHeight);
 
   }
@@ -721,9 +726,6 @@ updateSeekValue() {
       height: height,
       width: width
     } 
-
-    // this.createThumbnail();
-    console.log(await VideoCropper.getContacts('anyways'));
 
   }
 

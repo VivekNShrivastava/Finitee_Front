@@ -161,6 +161,7 @@ export class AttachmentHelperService {
             if(this.platform.is('desktop') || this.platform.is('mobileweb')){
               fileURL = URL.createObjectURL(mediafile.blob);
             }else{
+              console.log("mediafile path", mediafile.path)
               fileURL = Capacitor.convertFileSrc(mediafile.path);
             }
             console.log("fileUrl new", fileURL.substring(0, 40))
