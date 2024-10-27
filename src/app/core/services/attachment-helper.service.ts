@@ -125,7 +125,7 @@ export class AttachmentHelperService {
           // console.log("profilepic", mediafileProfile);
           // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path);
           let filePath = "";
-          if(this.platform.is('desktop')){
+          if(this.platform.is('desktop') || this.platform.is('mobileweb')){
             filePath = URL.createObjectURL(mediafile.blob);
           }else{
             filePath = Capacitor.convertFileSrc(mediafile.path);

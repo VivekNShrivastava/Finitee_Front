@@ -6,6 +6,7 @@ import {NgxImageCompressService} from 'ngx-image-compress';
 import { AddPostRequest, AddPostRequestForWeb, Post, VideoCroppingArgs } from 'src/app/core/models/post/post';
 import { VideoCropCompressService } from 'src/app/core/services/video-crop-compress/video-crop-compress.service';
 import { VideoCropper } from 'video-cropper-processor';
+import { Platform } from '@ionic/angular';
 
 
 
@@ -50,7 +51,8 @@ export class PreviewPostTestPage implements OnInit {
   constructor(
     private router: Router,
     private imageCompress: NgxImageCompressService,
-    private videoCompressService: VideoCropCompressService
+    private videoCompressService: VideoCropCompressService,
+    private platform: Platform
   ) { 
     this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
     this.imageUri = this.paramsData.mediaUrlDataArray;
@@ -234,6 +236,14 @@ export class PreviewPostTestPage implements OnInit {
     return `video/${extension}`
   }
 
+  async addPostSelector(){
+    if(this.platform.is('desktop') || this.platform.is('mobileweb')){
+      this.addPostForWeb();
+    }else{
+      this.addPost();
+    }
+  }
+
   async addPost(){
     let files: Blob[] = [];
     let post: Post = new Post;
@@ -250,6 +260,42 @@ export class PreviewPostTestPage implements OnInit {
           });
 
         console.log("newFileUrl", newFileUrl);
+
+        const file = await this.fileUrlToFile(newFileUrl.croppedVideoBlob, this.mediaNames[i]); // Assuming base64ToFile is implemented
+        files.push(file); // Push the converted file to the array      
+        if(i==0){
+          const thumb = await this.compressImage(this.thumbnail);
+                
+          // Extract the MIME type from dataUrl
+          const mimeType = this.thumbnail.substring(this.thumbnail.indexOf(":") + 1, this.thumbnail.indexOf(";"));
+
+          // Trim the "image/" part and prepend a dot to get the file extension
+          const extension = '.' + mimeType?.split('/')[1];
+
+          // Generate a filename with the appropriate extension
+          this.mediaNames.splice(1, 0,  `photo_${new Date().getTime()}${extension}`);
+          files.push(thumb);
+        }
+      }
+      else{
+        const img = await this.compressImage(this.imageUri[i]);
+        files.push(img);
+      }
+    }
+    let addPostRequest: AddPostRequest = new AddPostRequest();
+    addPostRequest.AspectRatio = this.sliderHeight/window.innerWidth;
+    addPostRequest.media = files;
+    addPostRequest.post = post;
+    //route
+    this.router.navigateByUrl('tabs/free-user-canvas');
+    this.videoCompressService.addPost(addPostRequest, this.mediaNames);
+  }
+
+  async addPostForWeb(){
+    let files: Blob[] = [];
+    let post: Post = new Post;
+    for(let i=0; i<this.imageUri.length; i++){
+      if(this.isVideoList[i]){
 
         const file = await this.fileUrlToFile(this.imageUri[i], this.mediaNames[i]); // Assuming base64ToFile is implemented
         files.push(file); // Push the converted file to the array      

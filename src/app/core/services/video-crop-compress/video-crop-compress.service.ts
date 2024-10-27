@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AddPostRequestForWeb } from '../../models/post/post';
+import { AddPostRequestForWeb, AddPostRequest } from '../../models/post/post';
 import * as config from 'src/app/core/models/config/ApiMethods';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
 import { CommonService } from '../common.service';
@@ -32,6 +32,38 @@ export class VideoCropCompressService {
     return new Promise<any>((resolve,reject)=>{
       this.commonService.showLoader();
       return this.http.post<any>(config.API.POST.ADD_POST_WEB, formData).subscribe((response: any) => {
+        this.commonService.hideLoader();
+        this.commonService.presentToast(AppConstants.TOAST_MESSAGES.POST_UPDATED);
+        resolve(response.ResponseData.PostId);
+      },
+        (error) => {
+          this.commonService.hideLoader();
+          console.log("abc error", error.error.text);
+          this.commonService.presentToast(AppConstants.TOAST_MESSAGES.SOMETHING_WENT_WRONG);
+          reject(false);
+        }
+      );
+    })
+  }
+
+
+  
+  addPost(postRequest: AddPostRequest, fileNames: string[]){
+    const formData = new FormData();
+    formData.append('Post', JSON.stringify(postRequest.post));
+    formData.append('AspectRatio', JSON.stringify(postRequest.AspectRatio));
+    console.log("Pre formData", postRequest.media);
+
+
+    for(let i =0 ; i < postRequest.media.length; i++){
+      formData.append('file', postRequest.media[i], fileNames[i]);
+    }
+
+    console.log("formData", formData);
+
+    return new Promise<any>((resolve,reject)=>{
+      this.commonService.showLoader();
+      return this.http.post<any>(config.API.POST.SAVE, formData).subscribe((response: any) => {
         this.commonService.hideLoader();
         this.commonService.presentToast(AppConstants.TOAST_MESSAGES.POST_UPDATED);
         resolve(response.ResponseData.PostId);
