@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
   baseUrl: 'https://api.finitee.com/',
+  //baseUrl: 'http://192.168.1.47:7003',
   GOOGLE_MAP_KEY: 'AIzaSyAVjVXr5Nw8Unpooct_kxvBLLzbwa-s4Jk',
   captchaSiteKey: '6LejMXAgAAAAAN5a8g5U4yGdaO6IGPvwjemdVjPC',
   attachementUrl: 'https://finitee.sgp1.digitaloceanspaces.com/dev/',

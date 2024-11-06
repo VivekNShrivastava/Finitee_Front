@@ -1,11 +1,46 @@
   
+ .flexible-div {
+  background-color: black;
+  position: relative;
+  overflow: visible;
+}
+
+.image-container {
+  position: relative;
+  overflow: visible;
+}
+
+.movable-image {
+  position: relative;
+  z-index: 1; /* Ensure images are on top */
+}
+ 
 /*   .mainVideo {
     max-width: 400px;
   } */
   
-  .video-container{
-    text-align: center;
-  }
+ //uncomment
+  // .video-container {
+  //   position: relative;
+  //   overflow: hidden; /* Ensures the video does not overflow */
+  // }
+  
+  // .movable-image {
+  //   object-fit: contain; /* Scales video to fit within the container */
+  // }
+
+
+
+  // .video-container{
+  //   text-align: center;
+  //   background-color: black;
+  //   position: relative;
+  //   overflow: visible;
+  // }
+  // .movable-image {
+  //   position: relative;
+  //   z-index: 1; /* Ensure images are on top */
+  // }
   .canvas-container {
     text-align: center;
     margin: 50px auto;

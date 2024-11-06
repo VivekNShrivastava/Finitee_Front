@@ -55,6 +55,9 @@
 	<string>We need permission to save photos and videos to your photo library.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>This app requires access to your contacts to provide better services.</string>
-
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>

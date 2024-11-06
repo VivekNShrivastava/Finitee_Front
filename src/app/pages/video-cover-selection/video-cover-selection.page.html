@@ -6,21 +6,42 @@
     <ion-title>Video Cover</ion-title>
   </ion-toolbar>
 </ion-header>
-
+<!-- 
 <ion-content>
-  <ng-container >
-    <div class="video-container">
-      <video #mainVideo 
-      [height]="pageheight/2"
-      (canplay)="onCanPlay($event)"
-      (loadedmetadata) = "initializeThumbnailVideo()"
-      playsinline
-      muted
-      >
-        <source [src]="defaultVideoFile" type="video/mp4">
-      </video>
+  <ng-container > -->
+    <div class="flexible-div" [style.height.px]="sliderHeight">
+      <!-- <ion-slides *ngIf="imageUri && imageUri.length > 0" [pager]="true" [options]="sliderOpts" (ionSlideDidChange)="slideChanged()"> -->
+      <ion-slides [pager] ="true" [style.height.px]="sliderHeight">
+        <ion-slide>
+          <div class="image-container" #imageContainer>
+              <video 
+              #mainVideo
+              class="movable-image"
+              (canplay)="onCanPlay($event)"
+              (loadedmetadata) = "initializeThumbnailVideo()"
+              playsinline
+              >
+                <source [src]="defaultVideoFile" type="video/mp4">
+              </video>
+          </div>
+        </ion-slide>
+      </ion-slides>
     </div>
-    <h1>{{defaultVideoFile.substring(50,80)}}</h1>
+    <!-- <div class="video-container" [style.height.px]="sliderHeight">
+      <ion-slides>
+        <ion-slide>
+          <video #mainVideo 
+          class="movable-image"
+          (canplay)="onCanPlay($event)"
+          (loadedmetadata) = "initializeThumbnailVideo()"
+          playsinline
+          muted
+          >
+            <source [src]="defaultVideoFile" type="video/mp4">
+          </video>
+        </ion-slide>
+      </ion-slides>
+    </div> -->
     <div class="canvas-container" [ngStyle]="{'width': canvasContianerWidth}">
       <input type="range" #myRange min="0" [max]="this.videduration" value="0" class="slider"
         (change)="changeRange(myRange.value)" [ngStyle]="{'width': canvasContianerWidth}">
@@ -31,7 +52,7 @@
     </canvas>
     <canvas  style="display: none" #canvasThumbMain>
     </canvas>
-  </ng-container>
+  <!-- </ng-container> -->
   <ng-container *ngIf="!loaded">
     <div class="video-container">
       <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
@@ -40,8 +61,8 @@
       <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
     </div>
   </ng-container>
-</ion-content>
+<!-- </ion-content> -->
 
 <ion-footer *ngIf="loaded">
-  <ion-button expand="block" shape="round" color="primary" (click)="saveCover()">Save</ion-button>
+  <ion-button expand="block" shape="round" color="primary" (click)="saveThumbnail()">Save</ion-button>
 </ion-footer>

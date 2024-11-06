@@ -67,6 +67,6 @@ export class AddPostTestPage extends BasePage implements OnInit {
   }
 
   openPreviewForCropper(){
-    this.imageCropperComponent.MainCroppingFunction();
+    this.imageCropperComponent.ChooseCroppingFunction();
   }
 }

@@ -7,6 +7,9 @@ import { AddPostRequest, AddPostRequestForWeb, Post, VideoCroppingArgs } from 's
 import { VideoCropCompressService } from 'src/app/core/services/video-crop-compress/video-crop-compress.service';
 import { VideoCropper } from 'video-cropper-processor';
 import { Platform } from '@ionic/angular';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
 
 
 
@@ -222,12 +225,15 @@ export class PreviewPostTestPage implements OnInit {
 
 
   async  fileUrlToFile(fileUrl: string, filename: string): Promise<Blob> {
+    console.log("filetoUrl")
     const response = await fetch(fileUrl);  // Fetch the file from the URL
+    console.log("check this response",response);
     let blob = await response.blob();     // Convert the response to a Blob
     const mimeType = this.getMimeTypeFromFileName(filename);
     
     blob = new Blob([blob], { type: mimeType });  // Create a new Blob with the correct type
   
+    console.log("blob", blob)
     return blob;
   }
   
@@ -251,18 +257,42 @@ export class PreviewPostTestPage implements OnInit {
       if(this.isVideoList[i]){
         
         //cropping here  const 
+        const localFilePath = this.imageUri[i].toString().replace(
+          "capacitor://localhost/_capacitor_file_", 
+          "file://"
+      );
         let newFileUrl = await VideoCropper.cropVideo({
-            fileUrl: this.imageUri[i],
+            fileUrl: localFilePath,
             cropX: this.videoArgs[i].x,
             cropY: this.videoArgs[i].y,
             cropWidth: this.videoArgs[i].width,
             cropHeight: this.videoArgs[i].height,
           });
 
-        console.log("newFileUrl", newFileUrl);
 
-        const file = await this.fileUrlToFile(newFileUrl.croppedVideoBlob, this.mediaNames[i]); // Assuming base64ToFile is implemented
+
+        //this.removeFolderFromCache(this.imageUri[i]);
+        this.listFilesInDocumentsDirectory();
+
+
+      
+         let newUrl = Capacitor.convertFileSrc(newFileUrl.outputfileUrl);
+
+        console.log("newFileUrl", newFileUrl);
+        console.log("newFileUrl", newUrl);
+
+        // this.imageUri[1] = newUrl;
+        // this.isVideoList[1] = true;
+        this.mediaNames[i] = Math.random().toString(36).substring(2, 15) + '.mp4';
+        // this.videoArgs[1] = this.videoArgs[0]
+        // this.videoArgs[1].x = 0;
+        // this.videoArgs[1].y = 0
+        // this.areaAvailable[1] = [0,0,0,0];
+        
+
+        const file = await this.fileUrlToFile(newUrl, this.mediaNames[i]); // Assuming base64ToFile is implemented
         files.push(file); // Push the converted file to the array      
+        this.removeFolderFromCache(this.imageUri[i]);
         if(i==0){
           const thumb = await this.compressImage(this.thumbnail);
                 
@@ -287,9 +317,47 @@ export class PreviewPostTestPage implements OnInit {
     addPostRequest.media = files;
     addPostRequest.post = post;
     //route
+    console.log("files", files)
     this.router.navigateByUrl('tabs/free-user-canvas');
     this.videoCompressService.addPost(addPostRequest, this.mediaNames);
   }
+
+
+  async listFilesInDocumentsDirectory() {
+    try {
+      // List all files in the Documents directory
+      const result = await Filesystem.readdir({
+        path: '', // Root of the directory
+        directory: Directory.Cache, // Options: Documents, Caches, Data
+      });
+      
+      console.log("Files and folders:", result.files);
+      // Each item in result.files is a file or folder name within the specified directory
+    } catch (error) {
+      console.error("Unable to list files in directory:", error);
+    }
+  }
+
+
+async removeFolderFromCache(folderName: string) {
+  try {
+    let newfolder = this.getFolderPathAfterCaches(folderName);
+    await Filesystem.rmdir({
+      path: `Caches/${newfolder}`,
+      directory: Directory.Library, // Points to `Library` where `Caches` is located
+      recursive: true, // Ensures all contents within the folder are deleted
+    });
+    console.log('Folder removed successfully');
+  } catch (error) {
+    console.error('Error removing folder:', error);
+  }
+}
+
+getFolderPathAfterCaches(filePath: string): string {
+  const match = filePath.match(/Caches\/([^/]+)/);
+  return match ? match[1] : ""; // Return the folder path or an empty string if no match
+}
+
 
   async addPostForWeb(){
     let files: Blob[] = [];
