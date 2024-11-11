@@ -37,8 +37,10 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   userTraitPostList: Array<UserTraitWithPost> = [];
 
   userCanvasProfile : UserCanvasProfile = new UserCanvasProfile();
-  userPrivate: any = '';
+  // userPrivate: any = '';
   loadPrivateUser: boolean = false;
+  privateUser: boolean = false;
+  // userPrivate:boolean = false;
   selectedTraitObj: any = "";
   selectedTab: any = 'all'
   isTraitModalOpen: boolean = false;
@@ -199,8 +201,8 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
             this.loaded = true;
             return; 
         }
-        this.loadPrivateUser = false;
-        this.loaded = false; 
+        // this.loadPrivateUser = false;
+        // this.loaded = false; 
     } catch (error) {
         console.error("Error fetching user profile data:", error);
         this.loaded = true; 
@@ -405,7 +407,7 @@ async getUserBeams() {
       this.getConnectionIcon();
     }
   }
-
+ 
   getConnectionIcon() {
     var iconName = 'free-user-request-white-icon';
     if (this.userCanvasProfile.IsConnected)
@@ -425,19 +427,46 @@ async getUserBeams() {
 
     /*     this.router.navigate(['connected-members'], this.navEx); */
   }
-
-
+  
   startChat() {
-    //var existingChatGroupId = this.chatService.getGroupIdIfChatThreadAlreadyStarted(this.userId);
-    var selctedUser: any = {
+    console.log('Attempting to start chat...');
+    this.checkUserPrivate();  // Call checkUserPrivate() to verify privacy before opening chat
+  }
+  
+  
+  // Example method to update privacy state
+updatePrivacyStatus(isPrivate: boolean) {
+  this.loadPrivateUser = !isPrivate;  // Set privacy state based on logic
+  console.log('User privacy updated:', this.loadPrivateUser);
+}
+
+
+
+  checkUserPrivate() {
+    console.log('Checking if user is private:', this.loadPrivateUser);
+  
+    // Check if user is private
+    if (this.loadPrivateUser) {
+      console.log('Chat is disabled for private users');
+      return;  // Exit early if user is private, no chat functionality
+    }
+  
+    // If user is not private, open chat
+    console.log('Starting chat...');
+    const selectedUser: any = {
       UserId: this.userId,
       DisplayName: this.navParams.UserName,
-      ProfilePhoto: this.navParams.ProfileImage == undefined ? null : this.navParams.ProfileImage,
+      ProfilePhoto: this.navParams.ProfileImage ?? null,
       groupId: ""
-    }
-    console.log('start-chatting...', selctedUser);
-    this.chatService.openChat(selctedUser);
+    };
+    
+    this.chatService.openChat(selectedUser);  // Proceed with chat service
   }
+  
+  
+  
+  
+  
 
 
   async CreatePostAction(DisplayName: string) {
