@@ -421,12 +421,16 @@ async getUserBeams() {
   }
 
   viewConnectedMembers() {
+    if (this.loadPrivateUser) {
+      console.log("User is private. Cannot view connected members.");
+      return; 
+    }
+    
     this.navEx!.state!['data'] = this.userId;
     this.router.navigateByUrl(`tabs/free-user-canvas/connected-members/${this.userId}`, this.navEx);
-    // this.navCtrl.navigateForward('connected-members');
-
-    /*     this.router.navigate(['connected-members'], this.navEx); */
+    
   }
+  
   
   startChat() {
     console.log('Attempting to start chat...');
