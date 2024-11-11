@@ -126,14 +126,13 @@
             >
               <!-- Connection request button -->
               <ion-button
-                style="width: 40px; height: 40px"
+                style="width: 40px; height: 40px;"
                 class="translucent-button"
                 shape="round"
                 size="small"
                 (click)="sendConnectionReqPopup()"
               >
-                <img src="" alt="" />
-                <ion-icon size="large" [name]="getConnectionIcon()"></ion-icon>
+                <ion-icon [name]="getConnectionIcon()"  style="width: 35px;height: 30px;"></ion-icon>
               </ion-button>
 
               <!-- View connected members button -->
@@ -159,7 +158,7 @@
                 size="small"
                 (click)="startChat()"
               >
-                <img
+                <img style=" max-width: 23px;"
                   src="../../../../assets/icons/icons/icons/message icon.png"
                   alt=""
                 />
