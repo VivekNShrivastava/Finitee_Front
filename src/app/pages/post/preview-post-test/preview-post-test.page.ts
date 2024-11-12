@@ -234,6 +234,7 @@ export class PreviewPostTestPage implements OnInit {
     blob = new Blob([blob], { type: mimeType });  // Create a new Blob with the correct type
   
     console.log("blob", blob)
+    console.log("mimetype", mimeType);
     return blob;
   }
   
@@ -320,6 +321,8 @@ export class PreviewPostTestPage implements OnInit {
 
           // Generate a filename with the appropriate extension
           this.mediaNames.splice(1, 0,  `photo_${new Date().getTime()}${extension}`);
+          this.imageUri.splice(1,0, this.thumbnail);
+          this.isVideoList.splice(1,0, false);
           files.push(thumb);
         }
       }
@@ -409,6 +412,9 @@ getFolderPathAfterCaches(filePath: string): string {
 
           // Generate a filename with the appropriate extension
           this.mediaNames.splice(1, 0,  `photo_${new Date().getTime()}${extension}`);
+          this.imageUri.splice(1,0, this.thumbnail);
+          this.isVideoList.splice(1,0, false);
+          i++;
           files.push(thumb);
         }
       }
