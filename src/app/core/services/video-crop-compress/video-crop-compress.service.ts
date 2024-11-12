@@ -33,6 +33,7 @@ export class VideoCropCompressService {
       this.commonService.showLoader();
       return this.http.post<any>(config.API.POST.ADD_POST_WEB, formData).subscribe((response: any) => {
         this.commonService.hideLoader();
+        console.log(response);
         this.commonService.presentToast(AppConstants.TOAST_MESSAGES.POST_UPDATED);
         resolve(response.ResponseData.PostId);
       },
@@ -65,6 +66,7 @@ export class VideoCropCompressService {
       this.commonService.showLoader();
       return this.http.post<any>(config.API.POST.SAVE, formData).subscribe((response: any) => {
         this.commonService.hideLoader();
+        console.log(response);
         this.commonService.presentToast(AppConstants.TOAST_MESSAGES.POST_UPDATED);
         resolve(response.ResponseData.PostId);
       },

@@ -257,26 +257,40 @@ export class PreviewPostTestPage implements OnInit {
       if(this.isVideoList[i]){
         
         //cropping here  const 
-        const localFilePath = this.imageUri[i].toString().replace(
-          "capacitor://localhost/_capacitor_file_", 
-          "file://"
-      );
+        //conditionally remove for android
+        let localFilePath = "";
+        if(this.platform.is('ios')){
+           localFilePath = this.imageUri[i].toString().replace(
+            "capacitor://localhost/_capacitor_file_", 
+            "file://" );
+        }else{
+          localFilePath = this.imageUri[i].toString().replace('http://localhost/_capacitor_file_', 'file://');
+          //localFilePath = this.mediaNames[i];
+        }
+
+
+      //.replace('http://localhost/_capacitor_content_', 'content://');
+
+      const roundedCropX = parseFloat(this.videoArgs[i].x.toFixed(5));
+      const roundedCropY = parseFloat(this.videoArgs[i].y.toFixed(5));
+      const roundedCropWidth = parseFloat(this.videoArgs[i].width.toFixed(5));
+      const roundedCropHeight = parseFloat(this.videoArgs[i].height.toFixed(5));
+
         let newFileUrl = await VideoCropper.cropVideo({
-            fileUrl: localFilePath,
-            cropX: this.videoArgs[i].x,
-            cropY: this.videoArgs[i].y,
-            cropWidth: this.videoArgs[i].width,
-            cropHeight: this.videoArgs[i].height,
+            fileUrl: localFilePath,    
+            cropX: roundedCropX,
+            cropY: roundedCropY,
+            cropWidth: roundedCropWidth,
+            cropHeight: roundedCropHeight,
           });
 
 
 
         //this.removeFolderFromCache(this.imageUri[i]);
-        this.listFilesInDocumentsDirectory();
+        //this.listFilesInDocumentsDirectory();
 
+        let newUrl = Capacitor.convertFileSrc(newFileUrl.outputfileUrl);
 
-      
-         let newUrl = Capacitor.convertFileSrc(newFileUrl.outputfileUrl);
 
         console.log("newFileUrl", newFileUrl);
         console.log("newFileUrl", newUrl);
@@ -284,15 +298,17 @@ export class PreviewPostTestPage implements OnInit {
         // this.imageUri[1] = newUrl;
         // this.isVideoList[1] = true;
         this.mediaNames[i] = Math.random().toString(36).substring(2, 15) + '.mp4';
-        // this.videoArgs[1] = this.videoArgs[0]
-        // this.videoArgs[1].x = 0;
-        // this.videoArgs[1].y = 0
-        // this.areaAvailable[1] = [0,0,0,0];
         
 
         const file = await this.fileUrlToFile(newUrl, this.mediaNames[i]); // Assuming base64ToFile is implemented
-        files.push(file); // Push the converted file to the array      
-        this.removeFolderFromCache(this.imageUri[i]);
+        files.push(file); // Push the converted file to the array 
+        
+        if(this.platform.is('ios')){
+          this.removeFolderFromCacheForIos(this.imageUri[i]);
+        }else{
+          //this.deleteCroppedVideoFromCacheForAndroid(newFileUrl.outputfileUrl);
+        }
+
         if(i==0){
           const thumb = await this.compressImage(this.thumbnail);
                 
@@ -338,8 +354,23 @@ export class PreviewPostTestPage implements OnInit {
     }
   }
 
+  async deleteCroppedVideoFromCacheForAndroid(filePath: string) {
+    try {
+      // Remove 'file://' prefix if present
+      const path = filePath.replace('file://', '');
+  
+      await Filesystem.deleteFile({
+        path: path,
+        directory: Directory.Cache,
+      });
+  
+      console.log('File deleted successfully:', path);
+    } catch (error) {
+      console.error('Error deleting file:', error);
+    }
+  }
 
-async removeFolderFromCache(folderName: string) {
+async removeFolderFromCacheForIos(folderName: string) {
   try {
     let newfolder = this.getFolderPathAfterCaches(folderName);
     await Filesystem.rmdir({

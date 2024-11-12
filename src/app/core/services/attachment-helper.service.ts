@@ -160,11 +160,14 @@ export class AttachmentHelperService {
             let fileURL = "";
             if(this.platform.is('desktop') || this.platform.is('mobileweb')){
               fileURL = URL.createObjectURL(mediafile.blob);
-            }else{
-              console.log("mediafile path", mediafile.path)
+            }else if(this.platform.is('ios')){
+              console.log("mediafile path", mediafile.path);
               fileURL = Capacitor.convertFileSrc(mediafile.path);
+            }else if(this.platform.is('android')){
+              console.log("mediafile path", mediafile.filepath)
+              fileURL = Capacitor.convertFileSrc(mediafile.filepath);
             }
-            console.log("fileUrl new", fileURL.substring(0, 40))
+            console.log("fileUrl new", fileURL.substring(0, 70))
             this.saveMedia(fileURL, "V", mediafile.name);
             // const fileURL = this.createURLFromBase64(mediafile.data, mediafile.mimeType);
             // this.openVideoCoverSelectionPage(fileURL);
@@ -177,7 +180,7 @@ export class AttachmentHelperService {
                 
                 // const filePath = 'data:' + mediafileArray.files[i].mimeType + ';base64,' + mediafileArray.files[i].data;
                 let filePath = "";
-                if(this.platform.is('desktop')){
+                if(this.platform.is('desktop') ||  this.platform.is('mobileweb')){
                   filePath = URL.createObjectURL(mediafile.blob);
                 }else{
                   filePath = Capacitor.convertFileSrc(mediafile.path);
@@ -189,7 +192,7 @@ export class AttachmentHelperService {
               // const filePath = 'data:' + mediafileArray.files[0].mimeType + ';base64,' + mediafileArray.files[0].data;
               
               let filePath = "";
-              if(this.platform.is('desktop')){
+              if(this.platform.is('desktop') ||  this.platform.is('mobileweb')){
                 filePath = URL.createObjectURL(mediafile.blob);
               }else{
                 filePath = Capacitor.convertFileSrc(mediafile.path);
