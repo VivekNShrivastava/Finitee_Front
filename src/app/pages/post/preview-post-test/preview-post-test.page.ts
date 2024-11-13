@@ -8,6 +8,7 @@ import { VideoCropCompressService } from 'src/app/core/services/video-crop-compr
 import { VideoCropper } from 'video-cropper-processor';
 import { Platform } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
+import { CommonService } from 'src/app/core/services/common.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 
@@ -46,6 +47,7 @@ export class PreviewPostTestPage implements OnInit {
   isVideo: boolean = false;
   areaAvailable: number[][] = [];
   thumbnail: string = "";
+  thumbnailName : string = "";
   videoArgs: VideoCroppingArgs[] = [];
   postRequest: AddPostRequest = new AddPostRequest;
 
@@ -55,7 +57,8 @@ export class PreviewPostTestPage implements OnInit {
     private router: Router,
     private imageCompress: NgxImageCompressService,
     private videoCompressService: VideoCropCompressService,
-    private platform: Platform
+    private platform: Platform,
+    private commonService: CommonService
   ) { 
     this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
     this.imageUri = this.paramsData.mediaUrlDataArray;
@@ -254,9 +257,10 @@ export class PreviewPostTestPage implements OnInit {
   async addPost(){
     let files: Blob[] = [];
     let post: Post = new Post;
+    this.commonService.showLoader();
     for(let i=0; i<this.imageUri.length; i++){
       if(this.isVideoList[i]){
-        
+
         //cropping here  const 
         //conditionally remove for android
         let localFilePath = "";
@@ -307,7 +311,7 @@ export class PreviewPostTestPage implements OnInit {
         if(this.platform.is('ios')){
           this.removeFolderFromCacheForIos(this.imageUri[i]);
         }else{
-          //this.deleteCroppedVideoFromCacheForAndroid(newFileUrl.outputfileUrl);
+          this.deleteCroppedVideoFromCacheForAndroid(newFileUrl.outputfileUrl);
         }
 
         if(i==0){
@@ -320,9 +324,7 @@ export class PreviewPostTestPage implements OnInit {
           const extension = '.' + mimeType?.split('/')[1];
 
           // Generate a filename with the appropriate extension
-          this.mediaNames.splice(1, 0,  `photo_${new Date().getTime()}${extension}`);
-          this.imageUri.splice(1,0, this.thumbnail);
-          this.isVideoList.splice(1,0, false);
+          this.thumbnailName =  `photo_${new Date().getTime()}${extension}`;
           files.push(thumb);
         }
       }
@@ -337,6 +339,9 @@ export class PreviewPostTestPage implements OnInit {
     addPostRequest.post = post;
     //route
     console.log("files", files)
+    if(this.thumbnailName.length>0){
+      this.mediaNames.splice(1, 0,  this.thumbnailName);
+    }
     this.router.navigateByUrl('tabs/free-user-canvas');
     this.videoCompressService.addPost(addPostRequest, this.mediaNames);
   }
@@ -360,14 +365,19 @@ export class PreviewPostTestPage implements OnInit {
   async deleteCroppedVideoFromCacheForAndroid(filePath: string) {
     try {
       // Remove 'file://' prefix if present
-      const path = filePath.replace('file://', '');
+      const fileName = filePath.split('/').pop();
+
+      if (fileName) {
+        await Filesystem.deleteFile({
+          path: fileName,
+          directory: Directory.Cache,
+        });
+      } else {
+        console.error('Invalid file path');
+      }
+      
   
-      await Filesystem.deleteFile({
-        path: path,
-        directory: Directory.Cache,
-      });
-  
-      console.log('File deleted successfully:', path);
+      console.log('File deleted successfully:');
     } catch (error) {
       console.error('Error deleting file:', error);
     }
@@ -411,10 +421,7 @@ getFolderPathAfterCaches(filePath: string): string {
           const extension = '.' + mimeType?.split('/')[1];
 
           // Generate a filename with the appropriate extension
-          this.mediaNames.splice(1, 0,  `photo_${new Date().getTime()}${extension}`);
-          this.imageUri.splice(1,0, this.thumbnail);
-          this.isVideoList.splice(1,0, false);
-          i++;
+          this.thumbnailName =  `photo_${new Date().getTime()}${extension}`;
           files.push(thumb);
         }
       }
@@ -429,6 +436,10 @@ getFolderPathAfterCaches(filePath: string): string {
     addPostRequestForWeb.media = files;
     addPostRequestForWeb.post = post;
     //route
+    if(this.thumbnailName.length>0){
+      this.mediaNames.splice(1, 0,  this.thumbnailName);
+    }
+
     this.router.navigateByUrl('tabs/free-user-canvas');
     this.videoCompressService.cropVideoForWeb(addPostRequestForWeb, this.mediaNames);
   }

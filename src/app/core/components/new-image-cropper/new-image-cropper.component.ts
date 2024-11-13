@@ -40,7 +40,6 @@ export class NewImageCropperComponent{
   sliderScale: number[] = [];
   manualScale: number[] = [];
   initialBoundingClient: number[][] = [];
-  cropArray: any[] = [];
   isResizing: boolean = false;
   isDragging: boolean[] = [false];
   startingY: number[] = [];
@@ -498,6 +497,51 @@ export class NewImageCropperComponent{
     // imgElement.style.transform = `translate(0px, ${this.imagePositionY}px)`;  
 
   }
+
+//remove media
+removeMedia(){
+  let index = this.currentIndex;
+  let front = false;
+  console.log("before deleting", this.currentIndex);
+
+  if(this.currentIndex+1 == this.imageUri.length && this.imageUri.length > 1){
+    this.currentIndex-=1;
+  }
+//   setTimeout(() => {
+
+//   if(this.currentIndex+1<this.imageUri.length && this.imageUri.length > 1){
+//     this.front()
+//     front = true;
+//     console.log("after deleting", this.currentIndex);
+
+//     //this.currentIndex-=1;
+//   }else if(this.currentIndex+1 == this.imageUri.length && this.imageUri.length > 1){
+//    this.back()
+//   }
+// }, 500);
+
+  this.naturalHeight.splice(index,1);
+  this.naturalWidth.splice(index,1);
+  this.areaAvailable.splice(index,1);
+  this.initialScale.splice(index,1);
+  this.sliderScale.splice(index,1);
+  this.manualScale.splice(index,1);
+  this.initialBoundingClient.splice(index,1);
+  this.isVideoList.splice(index,1);
+  this.imagePositionX.splice(index,1);
+  this.imagePositionY.splice(index,1);
+  this.seekValueList.splice(index,1);
+  this.startX.splice(index,1);
+  this.startY.splice(index,1);
+  this.currentX.splice(index,1);
+  this.currentY.splice(index,1);
+  this.isDragging.splice(index,1);
+  this.imageUri.splice(index,1);
+
+  this.isVideo = this.isVideoList[this.currentIndex];
+
+
+}
 
 
 //video controls

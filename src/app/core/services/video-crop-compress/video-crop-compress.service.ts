@@ -63,7 +63,7 @@ export class VideoCropCompressService {
     console.log("formData", formData);
 
     return new Promise<any>((resolve,reject)=>{
-      this.commonService.showLoader();
+      // this.commonService.showLoader();
       return this.http.post<any>(config.API.POST.SAVE, formData).subscribe((response: any) => {
         this.commonService.hideLoader();
         console.log(response);
