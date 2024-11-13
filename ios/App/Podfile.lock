@@ -1,5 +1,5 @@
 PODS:
-  - Capacitor (6.1.2):
+  - Capacitor (5.7.8):
     - CapacitorCordova
   - CapacitorApp (5.0.3):
     - Capacitor
@@ -9,8 +9,10 @@ PODS:
     - Capacitor
   - CapacitorCommunityBarcodeScanner (4.0.1):
     - Capacitor
-  - CapacitorCordova (6.1.2)
+  - CapacitorCordova (5.7.8)
   - CapacitorDevice (5.0.6):
+    - Capacitor
+  - CapacitorFilesystem (6.0.1):
     - Capacitor
   - CapacitorGeolocation (5.0.7):
     - Capacitor
@@ -32,9 +34,10 @@ PODS:
     - Capacitor
   - CapawesomeCapacitorFilePicker (6.0.1):
     - Capacitor
-  - CordovaPlugins (5.0.5):
+  - CordovaPlugins (5.7.8):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
+  - ffmpeg-kit-ios-full-gpl (6.0)
   - VideoCropperProcessor (0.0.1):
     - Capacitor
 
@@ -46,6 +49,7 @@ DEPENDENCIES:
   - "CapacitorCommunityBarcodeScanner (from `../../node_modules/@capacitor-community/barcode-scanner`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
+  - "CapacitorFilesystem (from `../../node_modules/@capacitor/filesystem`)"
   - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
@@ -58,7 +62,12 @@ DEPENDENCIES:
   - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - CordovaPluginsResources (from `../capacitor-cordova-ios-plugins`)
+  - ffmpeg-kit-ios-full-gpl
   - VideoCropperProcessor (from `../../../video-cropper-processor`)
+
+SPEC REPOS:
+  trunk:
+    - ffmpeg-kit-ios-full-gpl
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -75,6 +84,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorDevice:
     :path: "../../node_modules/@capacitor/device"
+  CapacitorFilesystem:
+    :path: "../../node_modules/@capacitor/filesystem"
   CapacitorGeolocation:
     :path: "../../node_modules/@capacitor/geolocation"
   CapacitorHaptics:
@@ -103,13 +114,14 @@ EXTERNAL SOURCES:
     :path: "../../../video-cropper-processor"
 
 SPEC CHECKSUMS:
-  Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
+  Capacitor: 747aadb4fa786f460d8cd9d0557cb81440a13747
   CapacitorApp: 7a5dec8b33573707164b293475d5c89ba684364a
   CapacitorCamera: 4a95204d13a05b0b726bf9086b44124349ab1952
   CapacitorClipboard: 46f3959735fa0d96b9989dafcc4aed52e624d163
   CapacitorCommunityBarcodeScanner: 7feb206489c8555a8ca0c74c57ddf49ead774eb8
-  CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
+  CapacitorCordova: 31ab98dca2ddcee051027a1afe7e8c85c82f7297
   CapacitorDevice: 2c968f98a1ec4d22357418c1521e7ddc46c675e6
+  CapacitorFilesystem: 37fb3aa5c945b4539ab11c74a5c57925a302bf24
   CapacitorGeolocation: 918a292459542bcce98433f9e7c7909f8c72838a
   CapacitorHaptics: e36653b37326d71bb35ae42b944124037dbc3d97
   CapacitorKeyboard: d1b25fde6f19744ad09c890862aefc6e2a7ded3d
@@ -120,10 +132,11 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: 190e0321b8734f4244d0c81baa183a00d5806ddf
   CapacitorTextZoom: b1fb624a67d3a487a4b5783d18aaa7b2898bab77
   CapawesomeCapacitorFilePicker: c80c30759ba48986ff34a2b51b23ac2babfd3774
-  CordovaPlugins: 5544814d3a685e3d1bef7fc4292ad7662ddcefad
+  CordovaPlugins: 074f303192333845d16beebf57d40ae598494ab3
   CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
+  ffmpeg-kit-ios-full-gpl: 80adc341962e55ef709e36baa8ed9a70cf4ea62b
   VideoCropperProcessor: 9f8944bf19a98226f6d69b3b6be758bee562520d
 
-PODFILE CHECKSUM: 83911a85b4f8c500e9cfb298a60817ea4d907f14
+PODFILE CHECKSUM: f6400776ac449b181f4f77f724f9659f5e61058f
 
 COCOAPODS: 1.15.2

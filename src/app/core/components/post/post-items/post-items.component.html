@@ -91,7 +91,7 @@
               </video> -->
                 <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
               [poster]="i === 0 ? appConstants.mediaPrefix + postImage : null" 
-              controls muted>
+              controls muted playsinline>
           <source [src]="appConstants.mediaPrefix + postImage" type="video/mp4">
         </video>
               <!-- <ion-buttons>
@@ -191,7 +191,7 @@
                 {{post.BelongsToNodeName}}
               </span>
               <video *ngIf="postImage.includes('VIDEO')"
-                [src]="appConstants.mediaPrefix + postImage"></video>
+                [src]="appConstants.mediaPrefix + postImage" playsinline></video>
               <ion-img *ngIf="!postImage.includes('VIDEO')" [src]="appConstants.mediaPrefix + postImage"></ion-img>
             </ion-card>
           </ion-slide>

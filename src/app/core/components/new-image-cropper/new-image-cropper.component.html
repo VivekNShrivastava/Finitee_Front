@@ -30,12 +30,17 @@
           (touchend)="onTouchImageEnd($event)"
           *ngIf="image['mediaType'] === 'V' " 
           class="movable-image"
+          playsinline
           >
             <source [src]="image.filePath" type="video/mp4">
           </video>
       </div>
     </ion-slide>
   </ion-slides>
+  <ion-icon class="mediaCancel" name="close-circle" style="font-size: 43px; background-color: white;
+    border-radius: 50%;"
+  (click)="removeMedia()"></ion-icon>
+  
   <div class="video-controls" *ngIf="isVideo">
     <div class="playpause" (click)="togglePlayPause()">
       <ion-icon *ngIf="isPlaying" name="pause"></ion-icon>
@@ -90,8 +95,4 @@
   <button (click)="OnZoom(false)">zoom out</button>
 </div>
 
-<div>
-  <button (click)="MainCroppingFunction()">crop</button>
-  <canvas #canvasElement></canvas>
-</div>
 

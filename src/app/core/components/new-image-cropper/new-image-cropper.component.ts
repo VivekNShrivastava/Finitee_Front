@@ -7,7 +7,6 @@ import { IonSlides } from '@ionic/angular';
 import { ThumbnailHelperService } from 'src/app/core/services/thumbnail-helper.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { VideoCroppingArgs } from 'src/app/core/models/post/post';
-import { VideoCropper }  from 'video-cropper-processor';
 
 @Component({
   standalone: true,
@@ -33,7 +32,6 @@ export class NewImageCropperComponent{
   @ViewChild('imageContainer', { static: false }) imageContainer!: ElementRef;
   @ViewChildren('mediaElement') currentMediaElements!: QueryList<ElementRef>;
 
-  public onMediaCoverSelction: EventEmitter<any> = new EventEmitter<any>();
   dataUrlArray: string[] = [];
   naturalHeight:number[] = [];
   naturalWidth:number[] = [];
@@ -42,7 +40,6 @@ export class NewImageCropperComponent{
   sliderScale: number[] = [];
   manualScale: number[] = [];
   initialBoundingClient: number[][] = [];
-  cropArray: any[] = [];
   isResizing: boolean = false;
   isDragging: boolean[] = [false];
   startingY: number[] = [];
@@ -57,6 +54,7 @@ export class NewImageCropperComponent{
   isVideo: boolean = false;
   thumbnail: string = "";
   videoArgs: VideoCroppingArgs[] = [];
+  thumbnailCroppingDimensions: number[] = []
   navEx: NavigationExtras = {
     state: {
       data: null,
@@ -78,14 +76,6 @@ export class NewImageCropperComponent{
     this.sliderHeightMax = window.innerWidth * 1.29;
     this.sliderHeightMin = window.innerWidth * 0.509;
     this.sliderHeight = window.innerWidth * 1;
-
-    this.thumbnailService.onMediaCoverSelction.subscribe((mediaObj: any) => {
-      if (mediaObj != null) {
-        this.thumbnail = mediaObj.cover;
-        console.log("thumbnail", this.thumbnail)
-        // this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.width, mediaObj.height, aspectRatio, mediaObj.cover);
-      }
-    });
   }
 
  
@@ -120,9 +110,9 @@ export class NewImageCropperComponent{
       this.isVideoList[this.currentIndex] = true;
       this.seekValueList[this.currentIndex] = 0;
 
-      if(this.currentIndex == 0){
-        this.createThumbnail();
-      }
+      // if(this.currentIndex == 0){
+      //   this.createThumbnail();
+      // }
     }
 
     if(this.currentIndex!==0){
@@ -508,6 +498,51 @@ export class NewImageCropperComponent{
 
   }
 
+//remove media
+removeMedia(){
+  let index = this.currentIndex;
+  let front = false;
+  console.log("before deleting", this.currentIndex);
+
+  if(this.currentIndex+1 == this.imageUri.length && this.imageUri.length > 1){
+    this.currentIndex-=1;
+  }
+//   setTimeout(() => {
+
+//   if(this.currentIndex+1<this.imageUri.length && this.imageUri.length > 1){
+//     this.front()
+//     front = true;
+//     console.log("after deleting", this.currentIndex);
+
+//     //this.currentIndex-=1;
+//   }else if(this.currentIndex+1 == this.imageUri.length && this.imageUri.length > 1){
+//    this.back()
+//   }
+// }, 500);
+
+  this.naturalHeight.splice(index,1);
+  this.naturalWidth.splice(index,1);
+  this.areaAvailable.splice(index,1);
+  this.initialScale.splice(index,1);
+  this.sliderScale.splice(index,1);
+  this.manualScale.splice(index,1);
+  this.initialBoundingClient.splice(index,1);
+  this.isVideoList.splice(index,1);
+  this.imagePositionX.splice(index,1);
+  this.imagePositionY.splice(index,1);
+  this.seekValueList.splice(index,1);
+  this.startX.splice(index,1);
+  this.startY.splice(index,1);
+  this.currentX.splice(index,1);
+  this.currentY.splice(index,1);
+  this.isDragging.splice(index,1);
+  this.imageUri.splice(index,1);
+
+  this.isVideo = this.isVideoList[this.currentIndex];
+
+
+}
+
 
 //video controls
 
@@ -637,7 +672,14 @@ updateSeekValue() {
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
 
 
-  async MainCroppingFunction(){
+  async ChooseCroppingFunction(){
+    if(this.isVideoList[0]){
+      await this.MainCroppingFunction(true);
+    }else{
+      await this.MainCroppingFunction(false);
+    }
+  }
+  async MainCroppingFunction(chooseThumbnail : boolean){
     let i = 0;
     for (const flag of this.isVideoList) {
       if (flag) {
@@ -648,8 +690,24 @@ updateSeekValue() {
       }
       i++;
     }
-    this.callCroppingFunction(this.dataUrlArray, this.isVideoList, this.sliderHeight);
 
+    this.callCroppingFunction(this.dataUrlArray, this.isVideoList, this.sliderHeight, chooseThumbnail);
+
+  }
+
+  calculateThumbnailCropping(){
+
+    const TheBoundingScale = this.naturalHeight[0]/this.initialBoundingClient[0][0]
+
+    let imageStartWidth = (-this.imagePositionX[0]+this.areaAvailable[0][1])*TheBoundingScale;
+    let imageStartHeight = (-this.imagePositionY[0]+this.areaAvailable[0][0])*TheBoundingScale;
+
+    let widthOfCroppedArea = (this.initialBoundingClient[0][1]- (2 * this.areaAvailable[0][1]))*TheBoundingScale;
+    let heightOfCroppedArea = (this.initialBoundingClient[0][0]- (2 * this.areaAvailable[0][0]))*TheBoundingScale;
+
+    this.thumbnailCroppingDimensions=[imageStartWidth, imageStartHeight, widthOfCroppedArea,
+       heightOfCroppedArea, window.innerWidth, this.sliderHeight]
+    return this.thumbnailCroppingDimensions;
   }
 
   async cropAndUploadImage(index: number){
@@ -685,7 +743,8 @@ updateSeekValue() {
 
   }
 
-  callCroppingFunction(mediaUrlDataArray: string[], isVideoList: boolean[], sliderHeight: number){
+  callCroppingFunction(mediaUrlDataArray: string[], isVideoList: boolean[], sliderHeight: number, chooseThumbnail: boolean){
+
     let previewComponentData = {
       "mediaUrlDataArray": mediaUrlDataArray,
       "isVideoList": isVideoList,
@@ -695,12 +754,24 @@ updateSeekValue() {
       "imagePositionY": this.imagePositionY,
       "areaAvailable": this.areaAvailable,
       "videoArgs": this.videoArgs,
-      "thumbnail": this.thumbnail
+      "thumbnail": this.thumbnail,
+      "mediaNames": this.imageUri.map(item => item.name),
+      "thumbnailCroppingDimensions": this.thumbnailCroppingDimensions
     }
 
-    this.navEx!.state!['data'] = previewComponentData;
-    // console.log("refer-->", this.navEx!.state!['data'])
-    this.router.navigateByUrl('post/preview-post-test', this.navEx);
+    
+
+    if(chooseThumbnail){
+      this.thumbnailCroppingDimensions = this.calculateThumbnailCropping()
+      previewComponentData.thumbnailCroppingDimensions = this.thumbnailCroppingDimensions;
+      this.navEx!.state!['data'] = previewComponentData;
+      this.router.navigateByUrl('video-cover-selection', this.navEx);
+
+    }else{
+      // console.log("refer-->", this.navEx!.state!['data'])
+      this.navEx!.state!['data'] = previewComponentData;
+      this.router.navigateByUrl('post/preview-post-test', this.navEx);
+    }
   }
 
   async cropVideo(index: number) {    
@@ -719,9 +790,6 @@ updateSeekValue() {
       height: height,
       width: width
     } 
-
-    // this.createThumbnail();
-    console.log(await VideoCropper.getContacts('anyways'));
 
   }
 

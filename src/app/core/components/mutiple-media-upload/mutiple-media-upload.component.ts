@@ -22,7 +22,6 @@ import { Photo } from '@capacitor/camera';
 export class MultipleMediaUploadComponent implements OnInit {
   @Input() mediaFiles: Array<string> = [];
   @Output() filePathEvent = new EventEmitter<string>();
-  @Output() imagePath = new EventEmitter<string>() ;
   @Output() fileToUpload = new EventEmitter<any>();
   mediaSaveSubscription!: Subscription;
   mediaCoverSubscription!: Subscription;
@@ -55,17 +54,13 @@ export class MultipleMediaUploadComponent implements OnInit {
     }
     this.mediaSaveSubscription = this.attachmentService.onMediaSave.subscribe(mediaObj => {
       if (mediaObj != null) {
-        // this.filePathEvent.emit(mediaObj.thumbFilePath);
-        this.imagePath.emit(mediaObj);
         this.fileToUpload.emit(mediaObj);
         console.log("mediaObj", mediaObj)
-        // this.uploadFileToserver(mediaObj);
       }
     })
     this.mediaCoverSubscription = this.attachmentService.onMediaCoverSelction.subscribe((mediaObj: any) => {
       if (mediaObj != null) {
-        const aspectRatio = mediaObj.height/mediaObj.width;
-        this.attachmentService.saveMedia(mediaObj.filepath, "V", mediaObj.width, mediaObj.height, aspectRatio, mediaObj.cover);
+        this.attachmentService.saveMedia(mediaObj.filepath, "V", "hey");
       }
     })
   }

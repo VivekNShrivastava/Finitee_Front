@@ -14,7 +14,6 @@ import { Router} from '@angular/router';
 })
 export class AddPostTestPage extends BasePage implements OnInit {
   post: Post = new Post;
-  photo: any[] = [];
   fileToUpload: any[] = [];
   sliderHeight: number = 0;
   isVideoList: boolean[] = [];
@@ -35,20 +34,18 @@ export class AddPostTestPage extends BasePage implements OnInit {
     // Update the array reference
     this.fileToUpload = [...this.fileToUpload, mediaObj];
   }
-  imagePathMedia(imagePath: any){
-    this.photo.push(imagePath);
-  }
 
-  addMedia(filePath: any) {
-    if (filePath.indexOf("delete") != -1) {
-      var filePathSplit = filePath.split("-");
-      this.post.PostImages.splice(parseInt(filePathSplit[1]), 1)
-    }
-    else if (filePath.indexOf("localhost") != -1 || filePath.indexOf(";base64") != -1)
-      this.post.PostImages.unshift(filePath);
-    else
-      this.post.PostImages[0] = filePath;
-  }
+
+  // addMedia(filePath: any) {
+  //   if (filePath.indexOf("delete") != -1) {
+  //     var filePathSplit = filePath.split("-");
+  //     this.post.PostImages.splice(parseInt(filePathSplit[1]), 1)
+  //   }
+  //   else if (filePath.indexOf("localhost") != -1 || filePath.indexOf(";base64") != -1)
+  //     this.post.PostImages.unshift(filePath);
+  //   else
+  //     this.post.PostImages[0] = filePath;
+  // }
 
   callCroppingFunction(mediaUrlDataArray: string[], isVideoList: boolean[], sliderHeight: number){
     // const mediaUrlDataArray = this.imageCropperComponent.dataUrlArray; // Access the data
@@ -70,6 +67,6 @@ export class AddPostTestPage extends BasePage implements OnInit {
   }
 
   openPreviewForCropper(){
-    this.imageCropperComponent.MainCroppingFunction();
+    this.imageCropperComponent.ChooseCroppingFunction();
   }
 }
