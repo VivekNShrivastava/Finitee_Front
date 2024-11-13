@@ -434,13 +434,12 @@ async getUserBeams() {
   
   startChat() {
     console.log('Attempting to start chat...');
-    this.checkUserPrivate();  // Call checkUserPrivate() to verify privacy before opening chat
+    this.checkUserPrivate();  
   }
   
   
-  // Example method to update privacy state
 updatePrivacyStatus(isPrivate: boolean) {
-  this.loadPrivateUser = !isPrivate;  // Set privacy state based on logic
+  this.loadPrivateUser = !isPrivate; 
   console.log('User privacy updated:', this.loadPrivateUser);
 }
 
@@ -449,13 +448,11 @@ updatePrivacyStatus(isPrivate: boolean) {
   checkUserPrivate() {
     console.log('Checking if user is private:', this.loadPrivateUser);
   
-    // Check if user is private
     if (this.loadPrivateUser) {
       console.log('Chat is disabled for private users');
-      return;  // Exit early if user is private, no chat functionality
+      return;  
     }
   
-    // If user is not private, open chat
     console.log('Starting chat...');
     const selectedUser: any = {
       UserId: this.userId,
@@ -464,7 +461,7 @@ updatePrivacyStatus(isPrivate: boolean) {
       groupId: ""
     };
     
-    this.chatService.openChat(selectedUser);  // Proceed with chat service
+    this.chatService.openChat(selectedUser); 
   }
   
   

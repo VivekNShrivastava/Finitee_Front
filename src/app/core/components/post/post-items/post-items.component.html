@@ -256,7 +256,7 @@
           <img (click)="openUser(comment.CreatedBy)" [src]="appConstants.mediaPrefix + comment.CreatedBy!.ProfileImage"
             onError="this.src='assets/icons/business/anonymous.svg'" />
         </ion-avatar>
-        <ion-list>
+        <ion-list> 
           <ion-item lines="none">
             <ion-label>
               <h3 (click)="openUser(comment.CreatedBy)">{{comment.CreatedBy!.DisplayName}}</h3>

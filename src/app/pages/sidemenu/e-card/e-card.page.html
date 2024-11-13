@@ -1,9 +1,15 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button class="backbutton" (click)="OnEcardBack()" slot="start">
+      <!-- <ion-button class="backbutton" (click)="OnEcardBack()" slot="start">
         <ion-icon name="arrow-back-outline"></ion-icon>
-      </ion-button>
+      </ion-button> -->
+      <ion-back-button
+      icon="back-button"
+      class="translucent-button2"
+      slot="start"
+      (click)="OnEcardBack()" 
+    ></ion-back-button>
     </ion-buttons>
     <ion-title>e-Card</ion-title>
     <ion-buttons slot="end">
