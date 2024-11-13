@@ -564,7 +564,7 @@ export class MapSearchComponent implements OnInit {
     });
     modal.onDidDismiss().then(res => {
       const result = res.data;
-      // console.log('closed', res);
+      // console.log('closed', res); 
       if (result) {
         if (type == 'existingPing') {
           if (result.flag == 'y') {

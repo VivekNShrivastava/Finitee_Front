@@ -43,10 +43,12 @@
         <div class="top-buttons">
           <ion-buttons slot="start">
             <ion-button class="translucent-button2">
-              <app-notification-icon
+              <ion-button
                 style="margin-left: -7px"
                 *ngIf="userId === logInfo.UserId"
-              ></app-notification-icon>
+              >
+                <img src="assets/icons/icons/icons/notification.png" alt="" />
+              </ion-button>
               <ion-back-button
                 icon="back-button"
                 class="translucent-button2"
@@ -63,7 +65,12 @@
               (click)="editPersonal()"
               *ngIf="userId === logInfo.UserId"
             >
-              <ion-icon slot="end" name="edit"></ion-icon>
+              <img
+                style="height: 22px"
+                src="assets/icons/icons/icons/edit icon.png"
+                alt=""
+              />
+              <!-- <ion-icon slot="end" name="edit"></ion-icon> -->
             </ion-button>
 
             <ion-button
@@ -73,8 +80,12 @@
               expand="block"
               *ngIf="userId != logInfo.UserId"
             >
-              <ion-icon name="dots"></ion-icon>
-              <!-- <img src="../../../../assets/icons/canvas/3 dot icon with circle.svg" alt=""> -->
+              <!-- <ion-icon name="dots"></ion-icon> -->
+              <img
+                src="assets/icons/icons/icons/menu.png"
+                alt=""
+                style="width: 7px"
+              />
             </ion-button>
           </ion-buttons>
         </div>
@@ -115,13 +126,17 @@
             >
               <!-- Connection request button -->
               <ion-button
-                style="width: 40px; height: 40px"
+                style="width: 43px; height: 40px;border-top-width: 0px;
+                border-right-width: 0px;
+                border-right-width: 0px;
+                border-left-width: 0px;
+                border-bottom-width: 00px;"
                 class="translucent-button"
                 shape="round"
                 size="small"
                 (click)="sendConnectionReqPopup()"
               >
-                <ion-icon size="large" [name]="getConnectionIcon()"></ion-icon>
+                <ion-icon [name]="getConnectionIcon()"  style="width: 35px;height: 30px;"></ion-icon>
               </ion-button>
 
               <!-- View connected members button -->
@@ -129,6 +144,7 @@
                 class="translucent-button"
                 shape="round"
                 size="small"
+                [disabled]="privateUser"
                 (click)="viewConnectedMembers()"
               >
                 <span
@@ -140,18 +156,18 @@
 
               <!-- Start chat button -->
               <ion-button
-                *ngIf="loadPrivateUser !== true"
                 style="width: 40px; height: 40px"
                 class="translucent-button"
                 shape="round"
                 size="small"
                 (click)="startChat()"
               >
-                <img
-                  src="assets/icons/canvas/Chat icon without circle.svg"
+                <img style=" max-width: 23px;"
+                  src="../../../../assets/icons/icons/icons/message icon.png"
                   alt=""
                 />
-              </ion-button>
+            </ion-button>
+            
             </ion-row>
           </div>
         </div>
@@ -166,31 +182,39 @@
         mode="md"
         [(ngModel)]="selectedTab"
         (ionChange)="segmentChange($event)"
-        style="--background: transparent; --indicator-color: transparent;"
+        style="--background: transparent; --indicator-color: transparent"
       >
         <ion-segment-button
           mode="md"
           value="all"
-          style="background: white; border-radius: 0px; border-top-left-radius: 50px;"
+          style="
+            background: white;
+            border-radius: 0px;
+            border-top-left-radius: 50px;
+          "
         >
           <ion-label>ALL</ion-label>
         </ion-segment-button>
         <ion-segment-button
           mode="md"
           value="traits"
-          style="background: white; border-radius: 0px;"
+          style="background: white; border-radius: 0px"
         >
           <ion-label>TRAITS</ion-label>
         </ion-segment-button>
         <ion-segment-button
           mode="md"
           value="beams"
-          style="background: white; border-radius: 0px; border-top-right-radius: 50px;"
+          style="
+            background: white;
+            border-radius: 0px;
+            border-top-right-radius: 50px;
+          "
         >
           <ion-label>BEAMS</ion-label>
         </ion-segment-button>
       </ion-segment>
-    </div>    
+    </div>
   </div>
   <ng-container *ngIf="loadPrivateUser == false">
     <div *ngIf="selectedTab == 'all'">
@@ -211,7 +235,9 @@
               *ngIf="post.PostImages && post.PostImages.length>0"
               class="whiteBg"
             >
-              <ion-buttons *ngIf="(post.PostImages.length>2) || (post.PostImages.length === 1 && !post.Thumbnail)">
+              <ion-buttons
+                *ngIf="(post.PostImages.length>2) || (post.PostImages.length === 1 && !post.Thumbnail)"
+              >
                 <ion-button shape="round">
                   <ion-icon name="posting-multiple-picture"></ion-icon>
                 </ion-button>

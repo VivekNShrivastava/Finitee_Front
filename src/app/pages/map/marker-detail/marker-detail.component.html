@@ -46,8 +46,8 @@
           Device height: {{ countedheight }} px
         </div> -->
 
-        @{{currentItem.UserName.length > 15 ? (currentItem.UserName | slice:0:15) + '...' : currentItem.UserName}} |
-        {{currentItem2.InflowsCount || 0}} Inflows
+        {{ currentItem.UserName.length > 15 ? (currentItem.UserName | slice:0:15) + '...' : currentItem.UserName }}
+        | {{ currentItem.InflowsCount || 0 }} Inflows
       </ion-card-subtitle>
 
     </ion-card-header>

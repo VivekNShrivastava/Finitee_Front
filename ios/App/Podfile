@@ -30,6 +30,7 @@ def capacitor_pods
   pod 'VideoCropperProcessor', :path => '../../../video-cropper-processor'
   pod 'CordovaPlugins', :path => '../capacitor-cordova-ios-plugins'
   pod 'CordovaPluginsResources', :path => '../capacitor-cordova-ios-plugins'
+
 end
 
 target 'App' do
@@ -42,3 +43,4 @@ end
 post_install do |installer|
   assertDeploymentTarget(installer)
 end
+
