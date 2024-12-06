@@ -226,7 +226,24 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       // console.log('Network status changed', status);
     });
   }
+  navigateToResult2(checkSonarResult?: boolean) {
+    console.log("result", this.mainResultFromSearch);
+    
+    const dataToSend = {
+      viewTemplate: 'someViewTemplateData',
+      results: this.mainResultFromSearch
+    };
 
+    if (checkSonarResult) {
+      this.onMapResultsClick(this.mainResultFromSearch, checkSonarResult);
+    }
+  
+    this.navEx!.state!['data'] = dataToSend;
+  
+    this.router.navigateByUrl('app-map-result2', this.navEx);
+}
+
+  
   ionViewDidEnter () {
     console.log("ionViewDidEnter");
     const navigation = this.router.getCurrentNavigation();
@@ -2155,9 +2172,9 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  showSonarSearchResultInListView(checkSonarResult?: boolean) {
-    this.onMapResultsClick(this.mainResultFromSearch, checkSonarResult);
-  }
+  // showSonarSearchResultInListView(checkSonarResult?: boolean) {
+  //   this.onMapResultsClick(this.mainResultFromSearch, checkSonarResult);
+  // }
 
   public async onMapResultsClick(data: any, checkSonarResult?: boolean): Promise<void> {
 
@@ -2188,6 +2205,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     // }
 
     const sonarResult = data?.data || data;
+
     let modal: any = [];
     console.log('checkSonarResult', checkSonarResult)
     if (checkSonarResult) {

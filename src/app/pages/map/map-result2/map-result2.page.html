@@ -1,3 +1,4 @@
+
 <ion-header class="headth">
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -6,18 +7,8 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title *ngIf="viewTemplate == 'ShowByType'">
-      Results ({{results.length}})
-    </ion-title>
-    <ion-title *ngIf="viewTemplate == 'ShowByDistance'">
-      Results ({{results.length}})
-    </ion-title>
-
-    <ion-buttons slot="end" style="visibility: hidden;">
-      <ion-button (click)="goBack()">
-        <img style="height:20px" src="assets/icon/fin/back.png">
-      </ion-button>
-    </ion-buttons>
+    <ion-title>Results ({{results.length}})</ion-title>
+  
   </ion-toolbar>
 
   <!-- <div class="maptab" *ngIf="viewTemplate == 'ShowByType'">
@@ -52,10 +43,37 @@
                   src="{{appConstants.mediaPrefix + user['ProfileImage']}}"
                   onError="this.src='assets/icons/business/anonymous2.svg'" />
               </ion-avatar>
-              <div style="display: flex; flex-direction: column; align-items: flex-start; padding-right: 10px;">
-                <p class="font-sz-14">{{ user['FirstName'] }} {{ user['LastName'] }}</p>
-                <p class="font-sz-14">{{ user['UserName'] }}</p>
+              <div
+                style="display: flex; justify-content: space-between; align-items: center; width: 100%;"
+                class="font-primary-text" (click)="viewConnection(user)">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; padding-right: 10px;margin-bottom: 20px">
+                  <p style="font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-600) 18px/21px var(--unnamed-font-family-sf-pro-display);
+                            color: var(--unnamed-color-285078);
+                            text-align: left;
+                            font: normal normal 600 18px/21px SF Pro Display;
+                            letter-spacing: 0.29px;
+                            color: #285078;
+                            margin-top: 5px;
+                            margin-bottom:0px;
+                            opacity: 1;"
+                     class="font-sz-14">
+                     {{ user['FirstName'] }} {{ user['LastName'] }}
+                  </p>
+                  <p style="font: normal normal 500 16px/19px SF Pro Display;
+                            color: #5A5A5A; 
+                            text-align: left;
+                            opacity: 1;
+                            margin: 0px;"
+                     class="font-sz-14">
+                     {{ user['UserName'] }}
+                  </p>
+                </div>
+                
+                <div style="display: flex; align-items: center;">
+                  <ion-icon name="chat-3dots"></ion-icon>
+                </div>
               </div>
+
             </div>
             <div style="justify-content: space-between;" class="display-flex--row flex-align-center">
               <!-- <div class="font-secoundry-text font-sz-12" style="width: 100%;text-align: center;">{{user['RangeInKm']| number
@@ -92,13 +110,14 @@
           </div>
         </div>
         <div *ngIf="users.length > userDisplayLimit[userDisplayLimit.length - 1]">
-          <ion-button style="width: 85px; margin-inline-start: auto;display: flex;" (click)="toggleSeeMore()">
-            {{ showMore ? 'See More' : 'See Less' }}
+          <ion-button 
+            style="width: 85px; margin-inline-start: auto; display: flex;" 
+            (click)="handleButtonClick()">
+            {{ showMore ? 'See More' : 'See All' }}
           </ion-button>
         </div>
-        <div *ngIf="!showMore && !showAll && users.length > 5">
-          <ion-button expand="full" (click)="showAllUsers()">See All</ion-button>
-        </div>    
+        
+         
       </div>
     </ion-accordion>
 

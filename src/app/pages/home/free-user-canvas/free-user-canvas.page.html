@@ -10,11 +10,7 @@
         <ion-icon slot="end" name="edit"></ion-icon>
       </ion-button>
       <ion-button shape="round" class="three-dots-menu" (click)="presentMenuModalForOther()" expand="block"
-        *ngIf="userId!=logInfo.UserId">
-        <ion-icon name="dots">
-        </ion-icon>
-      </ion-button>
-    </ion-buttons>
+        *ngIf="userId!=logInfo.   
   </ion-toolbar>
 </ion-header> -->
 
@@ -35,7 +31,7 @@
         <img
           class="cover-image"
           src="{{appConstants.mediaPrefix + userCanvasProfile.canvasProfile.ProfileImage}}"
-          onError="this.src='assets/icons/business/anonymous.svg'"
+          onError="this.src='assets/icons/business/anonymous2.svg'"
           (click)="openImage(userCanvasProfile.canvasProfile.ProfileImage)"
         />
 

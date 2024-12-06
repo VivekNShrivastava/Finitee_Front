@@ -104,7 +104,7 @@
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
               <img style="width: 59px; height: 59px; border-radius: 50%;" animation="gradient"
                 src="{{appConstants.mediaPrefix + ((user.CreatedBy.ProfileImage) || (user.UserProfilePhoto)) }}"
-                onError="this.src='assets/icons/business/anonymous.svg'" alt="User Profile">
+                onError="this.src='assets/icons/business/anonymous2.svg'" alt="User Profile">
             </ion-avatar>
             <div style="display: flex; justify-content: space-between; width: 100%;">
               <div style="display: flex; justify-content: center; align-items: center;" class="font-primary-text"
@@ -164,7 +164,7 @@
           <div *ngIf="viewTemplate == 'Viewing'" (click)="openUser(user)" class="display-flex--row flex-align-center">
             <ion-avatar (click)="viewConnection(user)" class="ion-margin-end">
               <img animation="gradient" src="{{appConstants.mediaPrefix + user.UserProfilePhoto }}"
-                onError="this.src='assets/icons/business/anonymous.svg'" alt="User Profile">
+                onError="this.src='assets/icons/business/anonymous2.svg'" alt="User Profile">
             </ion-avatar>
             <div class="font-primary-text" (click)="viewConnection(user)">
               <span class="font-sz-14">{{user.UserName}}</span>

@@ -373,7 +373,15 @@ const routes: Routes = [
   {
     path: 'preview-post-test',
     loadChildren: () => import('./pages/post/preview-post-test/preview-post-test.module').then( m => m.PreviewPostTestPageModule)
-  }
+  },
+  {
+    path:'all-users',
+    loadChildren:()=>import('./pages/map/map-result/all-users/all-users.module').then(m=>m.AllUsersPageModule)
+  },
+{  path: 'app-map-result2',
+  loadChildren:()=>import('./pages/map/map-result2/map-result2.module').then(m=>m.MapResult2PageModule)
+}  
+  
 
 
 

@@ -12,7 +12,7 @@
   <!--logo-->
   <div class="logo-edit">
     <img src="{{userProfile.user.ProfileImage}}"
-      onError="this.src='assets/icons/business/anonymous.svg'" (click)="openImage(userProfile.user.ProfileImage)" />
+      onError="this.src='assets/icons/business/anonymous2.svg'" (click)="openImage(userProfile.user.ProfileImage)" />
     <ion-spinner color="primary"
       *ngIf="userProfile.user.ProfileImage && userProfile.user.ProfileImage.indexOf('localhost')!=-1"
       style="position: absolute; margin-top: 26px;width: 80px !important; height: 80px !important;"></ion-spinner>

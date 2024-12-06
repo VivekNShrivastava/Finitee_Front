@@ -111,7 +111,7 @@
           <ion-item lines="none" *ngIf="user.UserTypeId==2" (click)="openUser(user)">
             <ion-thumbnail slot="start">
               <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              onError="this.src='assets/icons/business/anonymous2.svg'"/>
             </ion-thumbnail>
             <ion-label>
               <h3>{{user.DisplayName}}</h3>
@@ -134,7 +134,7 @@
           <ion-item lines="none" *ngIf="user.UserTypeId==3" (click)="openUser(user)">
             <ion-thumbnail slot="start">
               <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              onError="this.src='assets/icons/business/anonymous2.svg'"/>
             </ion-thumbnail>
             <ion-label>
               <h3>{{user.DisplayName}}</h3>
@@ -165,7 +165,7 @@
       </div>
     </ion-accordion>
     <img class="business-logo" src="{{appConstants.mediaPrefix + userProfile.user.ProfileImage}}"
-        onError="this.src='assets/icons/business/anonymous.svg'" />-->
+        onError="this.src='assets/icons/business/anonymous2.svg'" />-->
 
 
     <!-- REGULAR SEARCH USERS -->
@@ -183,7 +183,7 @@
             
             <ion-thumbnail slot="start">
               <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfileImage}}"
-                onError="this.src='assets/icons/business/anonymous.svg'" />
+                onError="this.src='assets/icons/business/anonymous2.svg'" />
             </ion-thumbnail>
             <ion-label>
               <h3>{{user.UserName}}</h3>
@@ -205,7 +205,7 @@
           <ion-item lines="none" *ngIf="user.UserTypeId==1" (click)="openUser(user)">
             <ion-thumbnail slot="start">
               <img class="user-logo-main" src="{{appConstants.mediaPrefix + user.ProfilePhoto}}"
-              onError="this.src='assets/icons/business/anonymous.svg'"/>
+              onError="this.src='assets/icons/business/anonymous2.svg'"/>
             </ion-thumbnail>
             <ion-label>
               <h3>{{user.DisplayName}}</h3>
@@ -236,7 +236,7 @@
                 <ion-avatar>
 
                   <img class="user-logo-main" src="{{appConstants.mediaPrefix + event.User?.ProfilePhoto}}"
-                    onError="this.src='assets/icons/business/anonymous.svg'" />
+                    onError="this.src='assets/icons/business/anonymous2.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{event.User?.DisplayName}}</h3>
@@ -280,7 +280,7 @@
                 <ion-avatar>
 
                   <img class="user-logo-main" src="{{appConstants.mediaPrefix + salesItem.User?.ProfilePhoto}}"
-                    onError="this.src='assets/icons/business/anonymous.svg'" />
+                    onError="this.src='assets/icons/business/anonymous2.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{salesItem.User?.DisplayName}}</h3>
@@ -321,7 +321,7 @@
                 <ion-avatar>
 
                   <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
-                    onError="this.src='assets/icons/business/anonymous.svg'" />
+                    onError="this.src='assets/icons/business/anonymous2.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{service.User?.DisplayName}}</h3>
@@ -362,7 +362,7 @@
                 <ion-avatar>
 
                   <img class="user-logo-main" src="{{appConstants.mediaPrefix + service.User?.ProfilePhoto}}"
-                    onError="this.src='assets/icons/business/anonymous.svg'" />
+                    onError="this.src='assets/icons/business/anonymous2.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{service.User?.DisplayName}}</h3>
@@ -401,7 +401,7 @@
               <ion-row>
                 <ion-avatar>
                   <img class="user-logo-main" src="{{appConstants.mediaPrefix + post.CreatedBy?.ProfileImage}}"
-                    onError="this.src='assets/icons/business/anonymous.svg'" />
+                    onError="this.src='assets/icons/business/anonymous2.svg'" />
                 </ion-avatar>
                 <ion-label>
                   <h3>{{post.CreatedBy?.DisplayName}}</h3>

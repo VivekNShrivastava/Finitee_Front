@@ -23,7 +23,7 @@
             <ion-avatar
               [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px':'45px' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '45px' : '45px'}">
               <img class="business-logo" [src]="appConstants.mediaPrefix + post.CreatedBy!.ProfileImage"
-                onError="this.src='assets/icons/business/anonymous.svg'"
+                onError="this.src='assets/icons/business/anonymous2.svg'"
                 [ngStyle]="{'width':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%':'100%' , 'height':(post.BeamedFromUser && post.BeamedFromUser.Id) ? '100%' : '100%' }" />
             </ion-avatar>
             <ion-label class="fi-name-label"
@@ -40,7 +40,7 @@
             <ng-contianer *ngIf="post.BeamedFromUser && post.BeamedFromUser.Id" style="display: contents;">
               <ion-avatar style="position: absolute; left: 21px; top: 23px; width: 40px; height: 40px;">
                 <img class="business-logo" [src]="appConstants.mediaPrefix + post.BeamedFromUser!.ProfileImage"
-                  onError="this.src='assets/icons/business/anonymous.svg'" style="width: 35px; height: 35px;" />
+                  onError="this.src='assets/icons/business/anonymous2.svg'" style="width: 35px; height: 35px;" />
               </ion-avatar>
               <ion-label class="fi-name-label"
                 style="position: absolute; left: 72px; width: 88px; height: auto; top: 1px;">
@@ -78,45 +78,44 @@
 
       <!-- images or video slide -->
       <div class="ion-text-center  post-screen-slide">
-        <ion-slides [pager]="postImages[j].length>1 ? true : false"
-          *ngIf="postImages[j] && postImages[j].length>0">
-          <ion-slide *ngFor="let postImage of postImages[j]; let i = index">
-            <ion-card>
-              <span *ngIf="post.BelongsToNodeName" class="fi-freeUser-nameTag">
-                {{post.BelongsToNodeName}}
-              </span>
-              <!-- <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
-               [poster]="appConstants.mediaPrefix + postImage" controls muted>
-               <source [src]="appConstants.mediaPrefix + postImage | videoUrlFilter" type="video/mp4">
-              </video> -->
-                <video #videoPlayer class="video" *ngIf="postImage.includes('VIDEO')"
-              [poster]="i === 0 ? appConstants.mediaPrefix + postImage : null" 
-              controls muted playsinline>
-          <source [src]="appConstants.mediaPrefix + postImage" type="video/mp4">
-        </video>
-              <!-- <ion-buttons>
-                <ion-button (click)="togglePlayPause(videoPlayer)">
-                  <ion-icon [name]="isVideoPlaying ? 'pause' : 'play'"></ion-icon>
-                </ion-button>
-            
-                <ion-button (click)="toggleAudio(videoPlayer)">
-                  <ion-icon [name]="isAudioOn ? 'volume-high' : 'volume-off'"></ion-icon>
-                </ion-button>
-              </ion-buttons>
-            
-              <ion-range [(ngModel)]="videoProgress" min="0" max="100" (ionChange)="seekVideo(videoPlayer)">
-                <ion-icon range-left small name="play"></ion-icon>
-                <ion-icon range-right name="pause"></ion-icon>
-              </ion-range> -->
+        <ion-slides 
+  [pager]="postImages[j].length > 1" 
+  *ngIf="postImages[j] && postImages[j].length > 0"
+>
+  <ion-slide *ngFor="let postImage of postImages[j]; let i = index">
+    <ion-card>
+      <span 
+        *ngIf="post.BelongsToNodeName" 
+        class="fi-freeUser-nameTag"
+      >
+        {{ post.BelongsToNodeName }}
+      </span>
 
-              <ion-img style="width: 100%; height: 100%;" 
-              id="{{post.Id}}-img" 
-              *ngIf="!postImage.includes('VIDEO')"
-              [src]="appConstants.mediaPrefix + postImage">
-              </ion-img>
-            </ion-card>
-          </ion-slide>
-        </ion-slides>
+      <!-- Video -->
+      <video 
+        #videoPlayer 
+        class="video" 
+        *ngIf="postImage.toLowerCase().endsWith('.mp4') || postImage.toLowerCase().includes('video')" 
+        [poster]="i === 0 ? appConstants.mediaPrefix + postImage.replace('.mp4', '.jpg') : null" 
+        controls 
+        muted 
+        playsinline
+      >
+        <source [src]="appConstants.mediaPrefix + postImage" type="video/mp4">
+      </video>
+
+      <!-- Image -->
+      <ion-img 
+        style="width: 100%; height: 100%;" 
+        id="{{post.Id}}-img" 
+        *ngIf="!postImage.toLowerCase().endsWith('.mp4') && !postImage.toLowerCase().includes('video')" 
+        [src]="appConstants.mediaPrefix + postImage"
+      >
+      </ion-img>
+    </ion-card>
+  </ion-slide>
+</ion-slides>
+
         <!-- <ion-card *ngIf="post.PostImages && post.PostImages.length==0" class="descriptionPost bg5">
           <h3 [ngStyle]="{ 'font-size': updateFontSize(post.PostDescription) }"> {{post.PostDescription}}</h3>
         </ion-card> -->
@@ -202,7 +201,7 @@
         <ion-item lines="none">
           <ion-avatar slot="start">
             <img class="business-logo" [src]="appConstants.mediaPrefix + post.CreatedBy!.ProfileImage"
-              onError="this.src='assets/icons/business/anonymous.svg'" />
+              onError="this.src='assets/icons/business/anonymous2.svg'" />
           </ion-avatar>
           <ion-label class="fi-name-label">
             <h3>{{post.CreatedBy!.DisplayName}}</h3>
@@ -254,7 +253,7 @@
       <ion-item lines="none" *ngFor="let comment of commentList">
         <ion-avatar slot="start">
           <img (click)="openUser(comment.CreatedBy)" [src]="appConstants.mediaPrefix + comment.CreatedBy!.ProfileImage"
-            onError="this.src='assets/icons/business/anonymous.svg'" />
+            onError="this.src='assets/icons/business/anonymous2.svg'" />
         </ion-avatar>
         <ion-list> 
           <ion-item lines="none">
@@ -297,7 +296,7 @@
               <ion-avatar slot="start">
                 <img (click)="openUser(comment.CreatedBy)"
                   [src]="appConstants.mediaPrefix + reply.CreatedBy!.ProfileImage"
-                  onError="this.src='assets/icons/business/anonymous.svg'" />
+                  onError="this.src='assets/icons/business/anonymous2.svg'" />
               </ion-avatar>
               <ion-list lines="none">
                 <ion-item lines="none" style="height: 40px">
@@ -341,7 +340,7 @@
     <ion-toolbar>
       <ion-avatar slot="start">
         <img [src]="appConstants.mediaPrefix + selectedPost.CreatedBy!.ProfileImage"
-          onError="this.src='assets/icons/business/anonymous.svg'" />
+          onError="this.src='assets/icons/business/anonymous2.svg'" />
       </ion-avatar>
       <ion-input #commentOrReplyInputelm placeholder="Write a comment" autocapitalize="on"
         [(ngModel)]="commentOrReplyInput"></ion-input>
@@ -374,7 +373,7 @@
           <ion-item lines="none">
             <ion-avatar slot="start">
               <img [src]="appConstants.mediaPrefix + selectedPost.CreatedBy!.ProfileImage"
-                onError="this.src='assets/icons/business/anonymous.svg'" />
+                onError="this.src='assets/icons/business/anonymous2.svg'" />
             </ion-avatar>
             <ion-list>
               <ion-item lines="none">
@@ -399,7 +398,7 @@
               <ion-avatar slot="start">
                 <img (click)="openUser(comment.CreatedBy)"
                   [src]="appConstants.mediaPrefix + comment.CreatedBy!.ProfileImage"
-                  onError="this.src='assets/icons/business/anonymous.svg'" />
+                  onError="this.src='assets/icons/business/anonymous2.svg'" />
               </ion-avatar>
               <ion-list>
                 <ion-item lines="none">
@@ -443,7 +442,7 @@
                     <ion-avatar slot="start">
                       <img (click)="openUser(comment.CreatedBy)"
                         [src]="appConstants.mediaPrefix + reply.CreatedBy!.ProfileImage"
-                        onError="this.src='assets/icons/business/anonymous.svg'" />
+                        onError="this.src='assets/icons/business/anonymous2.svg'" />
                     </ion-avatar>
                     <ion-list lines="none">
                       <ion-item lines="none" style="height: 40px">
@@ -510,9 +509,9 @@
         <ion-toolbar>
           <ion-avatar slot="start">
             <!-- <img *ngIf="logInfo.UserId === selectedPost.CreatedBy.Id" [src]="appConstants.mediaPrefix + selectedPost.CreatedBy!.ProfileImage"
-              onError="this.src='assets/icons/business/anonymous.svg'" /> -->
+              onError="this.src='assets/icons/business/anonymous2.svg'" /> -->
             <img [src]="appConstants.mediaPrefix + logInfo.UserProfilePhoto"
-              onError="this.src='assets/icons/business/anonymous.svg'" />
+              onError="this.src='assets/icons/business/anonymous2.svg'" />
           </ion-avatar>
           <ion-input #commentOrReplyInputelm placeholder="Write a comment" autocapitalize="on"
             [(ngModel)]="commentOrReplyInput"></ion-input>
@@ -553,7 +552,7 @@
                 <ion-avatar slot="start">
                   <img (click)="openUser(commentForReplySection[0].CreatedBy)"
                     [src]="appConstants.mediaPrefix + commentForReplySection[0].CreatedBy!.ProfileImage"
-                    onError="this.src='assets/icons/business/anonymous.svg'" />
+                    onError="this.src='assets/icons/business/anonymous2.svg'" />
                 </ion-avatar>
               </div>
               <ion-list>
@@ -600,7 +599,7 @@
                     <ion-avatar slot="start">
                       <img (click)="openUser(reply.CreatedBy)"
                         [src]="appConstants.mediaPrefix + reply.CreatedBy!.ProfileImage"
-                        onError="this.src='assets/icons/business/anonymous.svg'" />
+                        onError="this.src='assets/icons/business/anonymous2.svg'" />
                     </ion-avatar>
                     <ion-list lines="none">
                       <ion-item lines="none" style="height: 40px">
@@ -646,9 +645,9 @@
         <ion-toolbar>
           <ion-avatar slot="start">
             <img [src]="appConstants.mediaPrefix + selectedPost.CreatedBy!.ProfileImage"
-              onError="this.src='assets/icons/business/anonymous.svg'" />
+              onError="this.src='assets/icons/business/anonymous2.svg'" />
             <!-- <img [src]="appConstants.mediaPrefix + logInfo.UserProfilePhoto"
-              onError="this.src='assets/icons/business/anonymous.svg'" /> -->
+              onError="this.src='assets/icons/business/anonymous2.svg'" /> -->
           </ion-avatar>
           <ion-input #commentOrReplyInputelm placeholder="Write a comment" autocapitalize="on"
             [(ngModel)]="commentOrReplyInput" (ionChange)="onCommentOrReplyInputChange($event)"></ion-input>
