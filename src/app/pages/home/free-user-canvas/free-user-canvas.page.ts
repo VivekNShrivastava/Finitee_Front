@@ -195,19 +195,21 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     try {
         this.userCanvasProfile = await this._userProfileService.getUserCanvas(this.userId, this.logInfo.UserId); 
         const isPrivate = this.userCanvasProfile.canvasProfile.Private;
-         console.log("Is User Private:", isPrivate);
-        if (isPrivate) {
+        console.log("Is User Private:", isPrivate);
+        
+        if (isPrivate && this.userId !== this.logInfo.UserId) {
             this.loadPrivateUser = true;
             this.loaded = true;
             return; 
         }
-        // this.loadPrivateUser = false;
-        // this.loaded = false; 
+        this.loadPrivateUser = false;
+        this.loaded = true; 
     } catch (error) {
         console.error("Error fetching user profile data:", error);
         this.loaded = true; 
     }
-  }
+}
+
 
   
   // async getUserProfileData() {
@@ -223,37 +225,39 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
 
   // Fetch user posts only if the profile is not private
 async getUserPost() {
-  if (!this.loadPrivateUser) {
-      this.postList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.ALL);
-  } else {
+  if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
       console.log("User profile is private. Cannot fetch posts.");
+  } else {
+      this.postList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.ALL);
   }
-  this.loaded = true; // Mark loading as complete
+  this.loaded = true; 
 }
 
 
- // Fetch user traits with posts only if the profile is not private
+
+ // Fetch user traits with posts only if the profile is not private or the user is the owner
 async getUserTraitsWithPost(traitSection?: boolean) {
-  if (!this.loadPrivateUser) {
+  if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
+      console.log("User profile is private. Cannot fetch traits with posts.");
+  } else {
       this.userTraitPostList = await this._postService.getUserTraitWithPost(this.userId);
       console.log("userTrait", this.userTraitPostList);
-      if (!traitSection) this.openTraitList();
-  } else {
-      console.log("User profile is private. Cannot fetch traits with posts.");
+      if (!traitSection) this.openTraitList(); 
   }
-  this.loaded = true; // Mark loading as complete
+  this.loaded = true;
 }
 
 
- // Fetch user beams only if the profile is not private
+
 async getUserBeams() {
-  if (!this.loadPrivateUser) {
-      this.beamedpostList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.BEAM_POST);
-  } else {
+  if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
       console.log("User profile is private. Cannot fetch beams.");
+  } else {
+      this.beamedpostList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.BEAM_POST);
   }
-  this.loaded = true; // Mark loading as complete
+  this.loaded = true;
 }
+
 
   /* connection releated function */
   async sendConnectionReqPopup() {
