@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MapPage } from './map.page';
 import { TotemDetailsComponent } from './totem/create-totem/totem-details.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -13,6 +12,9 @@ const routes: Routes = [
     path: 'create-totem',
     component:TotemDetailsComponent
   }
+
+
+
 ];
 
 @NgModule({

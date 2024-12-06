@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController} from '@ionic/angular';
 import { ChatsService } from 'src/app/core/services/chat/chats.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { FiniteeUserOnMap } from 'src/app/pages/map/models/MapSearchResult';
@@ -16,17 +16,18 @@ export enum GreetingCode {
 }
 
 @Component({
-  selector: 'map-result',
-  templateUrl: './map-result.component.html',
-  styleUrls: ['./map-result.component.scss'],
+  selector: 'app-map-result2',
+  templateUrl: './map-result2.page.html',
+  styleUrls: ['./map-result2.page.scss'],
 })
-export class MapResultComponent implements OnInit {
+export class MapResult2Page implements OnInit {
   readonly appConstants: any = AppConstants;
   public viewType: number = 1;
   public viewTemplate: string = "ShowByType";
   public attachmentURL = environment.attachementUrl;
   results = [];
   users = [];
+  paramsData: any;
   business = [];
   nonProfits = [];
   donations = [];
@@ -39,16 +40,22 @@ export class MapResultComponent implements OnInit {
   userDisplayLimit = [5]; // Array to track the blocks of users displayed
   showMore = true;
   showAll = false;
+  changeDetector: any;
 
   constructor(
     public _commonService: CommonService,
-    public navParams: NavParams,
     public _modalController: ModalController,
     public router: Router,
   ) {
-    this.viewTemplate = navParams?.data['viewTemplate'] ?? this.viewTemplate;
-    this.results = navParams?.data['results'];
-    console.log("Passed Results:", this.results);
+
+    this.paramsData = this.router!.getCurrentNavigation()!.extras!.state!['data'];
+    this.viewTemplate = this.paramsData.viewTemplate;
+    this.results = this.paramsData.results;
+
+    
+    // this.viewTemplate = navParams?.data['viewTemplate'] ?? this.viewTemplate;
+    // this.results = navParams?.data['results'];
+    // console.log("Passed Results:", this.results);
   }
 
   ngOnInit() {
@@ -71,20 +78,21 @@ export class MapResultComponent implements OnInit {
   }
 
   goBack() {
-    this._modalController.dismiss();
+    this.router.navigateByUrl('/tabs/map');
   }
 
-  toggleSeeMore() {
+  handleButtonClick() {
     if (this.showMore) {
       // Show 5 more users
       let nextLimit = this.userDisplayLimit[this.userDisplayLimit.length - 1] + 5;
       this.userDisplayLimit.push(nextLimit);
     } else {
-      // Reset to 5 users
-      this.userDisplayLimit = [5];
+      // Navigate to "All Users" page
+      this.showAllUsers();
     }
-    this.showMore = !this.showMore;
+    this.showMore = !this.showMore; // Toggle between 'See More' and 'See All'
   }
+
   // Show all users
   showAllUsers() {
     console.log('Navigating to All Users page...');
@@ -159,4 +167,6 @@ export class MapResultComponent implements OnInit {
     }
     this._modalController.dismiss(result);
   }
+
+
 }
