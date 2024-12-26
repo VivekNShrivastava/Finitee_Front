@@ -50,6 +50,9 @@ export class PostItemsComponent extends BasePage implements OnInit {
     initialSlide: 0
   };
   postList: Array<Post> = [];
+  postsLoaded: number = 0;   // Tracks how many posts have been loaded
+  shouldShowSpinner: boolean = false; 
+  loadingPostsFlag: boolean = false;
   postImages: string[][] = [];
   selectedPost: Post = new Post();
   postViewType: string = AppConstants.POST_VIEW_TYPE.INSTA;
@@ -109,67 +112,131 @@ export class PostItemsComponent extends BasePage implements OnInit {
     super(authService);
   }
 
-// Initialize the IntersectionObserver after the view is initialized
-ngAfterViewInit() {
-  // Scroll to the selected post after a delay
-  setTimeout(() => {
-    document.getElementById(this.selectedPost.Id)?.scrollIntoView({
-      behavior: "auto",
-      block: "start",
-      inline: "end"
-    });
-  }, 200);
-
-  // Initialize IntersectionObserver for video play/pause control
-  const options = {
-    root: null, // Use the viewport as the root
-    threshold: 0.75 // Video plays when 75% of the video is in view
-  };
-
-  this.observer = new IntersectionObserver(this.handleIntersect.bind(this), options);
-
-  // Observe each video element and listen for play events
-  this.videoPlayers.forEach(video => {
-    const videoElement: HTMLVideoElement = video.nativeElement;
-
-    // Observe video for automatic play/pause based on scroll
-    this.observer.observe(videoElement);
-
-    // Listen for manual play event (when user taps play button)
-    videoElement.addEventListener('play', () => this.onVideoPlay(videoElement));
-  });
-}   
-
-// Intersection Observer callback
-handleIntersect(entries: IntersectionObserverEntry[]) {
-  entries.forEach(entry => {
-    const video: HTMLVideoElement = entry.target as HTMLVideoElement;
-
-    if (entry.isIntersecting) {
-      // Pause any currently playing video
-      if (this.currentPlayingVideo && this.currentPlayingVideo !== video) {
-        this.currentPlayingVideo.pause();
-      }
-      // Play the video in view
-      video.play();
-      this.currentPlayingVideo = video;
-    } else {
-      // Pause the video if it's out of view
-      video.pause();
+  async loadMore(event: any) {
+    console.log('loadMore called');
+  
+    // Check if all posts are already loaded
+    if (this.postsLoaded >= this.paramsData['postlist'].length) {
+      console.log('All posts loaded, no more posts to load.');
+      // Complete the event so the spinner hides, but do not attempt to load more posts
+      (event as InfiniteScrollCustomEvent).target.complete();
+      return;
     }
-  });
-}
- // Function to handle when a video is manually played
- onVideoPlay(newPlayingVideo: HTMLVideoElement) {
-  // Pause the current video if it's different from the one being played
-  if (this.currentPlayingVideo && this.currentPlayingVideo !== newPlayingVideo) {
-    this.currentPlayingVideo.pause();
-    this.currentPlayingVideo.currentTime = 0; // Reset the video to the start if necessary
+  
+    // Check if there are still more posts to load and prevent the infinite scroll if there are no more posts
+    if (this.postsLoaded < this.paramsData['postlist'].length) {
+      console.log('Fetching more posts...');
+    } else {
+      console.log('No more posts to load');
+      (event as InfiniteScrollCustomEvent).target.complete();
+      return;
+    }
+  
+    // Show spinner after 5 posts are loaded
+    if (this.postsLoaded <= 5) {
+      console.log('Showing spinner after 5 posts');
+      this.shouldShowSpinner = true;  // Show spinner after 5 posts are loaded
+    }
+  
+    // Prevent multiple simultaneous requests
+    if (this.loadingPostsFlag) {
+      console.log('Already loading posts, please wait...');
+      (event as InfiniteScrollCustomEvent).target.complete();
+      return;
+    }
+  
+    // Set loading flag to true to prevent multiple simultaneous requests
+    console.log('Setting loadingPostsFlag to true');
+    this.loadingPostsFlag = true;
+  
+    try {
+      // Slice the next batch of posts to load
+      console.log('Loading next batch of posts...');
+      const nextBatch = this.paramsData['postlist'].slice(this.postsLoaded, this.postsLoaded + 5);
+      console.log('Next batch:', nextBatch);
+  
+      // Add the new batch of posts to the list
+      this.postList.push(...nextBatch);
+      console.log('Updated postList:', this.postList);
+  
+      // Update the number of loaded posts
+      this.postsLoaded += nextBatch.length;
+      console.log('Posts loaded so far:', this.postsLoaded);
+  
+      // Simulate a delay before hiding the spinner and completing the event
+      setTimeout(() => {
+        console.log('Hiding spinner and completing event');
+        this.shouldShowSpinner = false;
+        (event as InfiniteScrollCustomEvent).target.complete();
+                console.log('Calling observeVideos function');
+        this.observeVideos(); 
+      }, 5000); // Simulated 5 seconds delay
+    } catch (error) {
+      console.error('Error loading more posts:', error);
+    } finally {
+      // Reset the loading flag
+      console.log('Resetting loadingPostsFlag to false');
+      this.loadingPostsFlag = false;
+    }
   }
+  
+  
+  
+  // Initialize IntersectionObserver for videos
+  ngAfterViewInit() {
+    const options = {
+      root: null,
+      threshold: 0.75 
+    };
+  
+    this.observer = new IntersectionObserver(this.handleIntersect.bind(this), options);
+  
+    this.observeVideos();  
+  }
+  
+  // Function to handle video observations (for new videos as well)
+  observeVideos() {
+    this.videoPlayers.forEach(video => {
+      const videoElement: HTMLVideoElement = video.nativeElement;
+        this.observer.observe(videoElement);
+        videoElement.addEventListener('play', () => this.onVideoPlay(videoElement));
+    });
+  }
+  
+  // Intersection Observer callback
+  handleIntersect(entries: IntersectionObserverEntry[]) {
+    entries.forEach(entry => {
+      const video: HTMLVideoElement = entry.target as HTMLVideoElement;
+  
+      if (entry.isIntersecting) {
+        if (this.currentPlayingVideo && this.currentPlayingVideo !== video) {
+          this.currentPlayingVideo.pause();
+        }
+        video.play();
+        this.currentPlayingVideo = video;
+      } else {
+        video.pause();
+      }
+    });
+  }
+  
+  onVideoPlay(newPlayingVideo: HTMLVideoElement) {
+    if (this.currentPlayingVideo && this.currentPlayingVideo !== newPlayingVideo) {
+      this.currentPlayingVideo.pause();
+      this.currentPlayingVideo.currentTime = 0; // Reset the video to the start if necessary
+    }
+      this.currentPlayingVideo = newPlayingVideo;
+  }
+  
 
-  // Set the new playing video as the current one
-  this.currentPlayingVideo = newPlayingVideo;
+
+loadPosts() {
+  this.shouldShowSpinner = false; 
+  const initialPosts = this.paramsData['postlist'].slice(0, 5);
+  this.postList = initialPosts;
+  this.postsLoaded = initialPosts.length;  
 }
+
 
   ngOnInit() {
     this.updateSlideHeight();
@@ -181,6 +248,7 @@ handleIntersect(entries: IntersectionObserverEntry[]) {
       this.part = this.paramsData['part'];
       this.postList = [...this.paramsData['postlist']];
       this.removeThumbnailFromPostList();
+      this.loadPosts(); 
       if(this.value){
         this.isInflows = true;       
       } 

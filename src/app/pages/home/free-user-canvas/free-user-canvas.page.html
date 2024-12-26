@@ -264,7 +264,14 @@
             </div>
           </ion-col>
         </ion-row>
+         <!-- Infinite Scroll -->
+         <ion-infinite-scroll (ionInfinite)="getUserPost($event, true)"  threshold="100px">
+          <ion-infinite-scroll-content loadingSpinner="bubbles"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ion-grid>
+      
+    
+
       <ng-container *ngIf="loaded && postList && postList.length==0">
         <div class="ion-text-center fi-no-result">
           <img src="assets/imgs/icons/noresults.png" />

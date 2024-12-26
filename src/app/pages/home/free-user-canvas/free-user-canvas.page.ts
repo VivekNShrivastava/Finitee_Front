@@ -32,10 +32,14 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
 
   userProfile: UserProfile = new UserProfile();
   postList: Array<Post> = [];
+  allPosts: Array<Post>=[];
   beamedpostList: Array<Post> = [];
   userTraitList: Array<UserTrait> = [];
   userTraitPostList: Array<UserTraitWithPost> = [];
-
+   // Define properties for pagination
+   loadedPostCount: number = 0; 
+   hasMorePosts: boolean = true; 
+   loadingPosts: boolean = false;
   userCanvasProfile : UserCanvasProfile = new UserCanvasProfile();
   // userPrivate: any = '';
   loadPrivateUser: boolean = false;
@@ -224,15 +228,66 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   //   }
 
   // Fetch user posts only if the profile is not private
-async getUserPost() {
-  if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
-      console.log("User profile is private. Cannot fetch posts.");
-  } else {
-      this.postList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.ALL);
+  async getUserPost(event?: any, loadMore: boolean = false) {
+    console.log("Loading posts, loadMore:", loadMore);
+  
+    // Prevent loading posts for private users
+    if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
+      console.log("Private user detected. No posts will be loaded.");
+      if (event) event.target.complete();
+      return;
+    }
+  
+    if (this.loadingPosts) {
+      console.log("Posts are already loading. Please wait.");
+      if (event) event.target.complete();
+      return;
+    }
+  
+    this.loadingPosts = true; // Prevent multiple simultaneous requests
+  
+    try {
+      // Fetch posts from the service
+      this.allPosts= await this._postService.getPostByUserId(
+        this.userId, 
+        AppConstants.POST_TYPE.ALL
+      );
+      console.log("Fetched posts:", this.allPosts);
+  
+      // Handle empty posts response
+      if (!this.allPosts || this.allPosts.length === 0) {
+        console.log("No posts available for this user.");
+        this.hasMorePosts = false;
+        this.postList = []; // Reset postList if no posts are available
+        return;
+      }
+  
+      if (loadMore) {
+        // Load more posts
+        this.loadedPostCount += 6;
+        const newPosts = this.allPosts.slice(this.postList.length, this.loadedPostCount);
+        this.postList = [...this.postList, ...newPosts];
+      } else {
+        // Load initial posts
+        this.loadedPostCount = 4;
+        this.postList = this.allPosts.slice(0, this.loadedPostCount);
+      }
+  
+      // Determine if more posts are available
+      this.hasMorePosts = this.postList.length < this.allPosts.length;
+      console.log("Updated postList:", this.postList);
+      console.log("Has more posts:", this.hasMorePosts);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    } finally {
+      this.loadingPosts = false;
+      this.loaded = true;
+  
+      if (event) event.target.complete();
+    }
+  
   }
-  this.loaded = true; 
-}
-
+  
 
 
  // Fetch user traits with posts only if the profile is not private or the user is the owner
@@ -520,7 +575,7 @@ updatePrivacyStatus(isPrivate: boolean) {
   }
 
   openPostScreen(post: any) {
-    this.navEx!.state!['postlist'] = this.postList;
+    this.navEx!.state!['postlist'] = this.allPosts;
     this.navEx!.state!['selectedPost'] = post;
     this.navEx!.state!['postViewType'] = this.appConstants.POST_VIEW_TYPE.INSTA;
     this.navEx!.state!['postCommentViewType'] = this.appConstants.POST_COMMENT_VIEW_TYPE.POPUP;
