@@ -60,7 +60,7 @@ export class MultipleMediaUploadComponent implements OnInit {
     })
     this.mediaCoverSubscription = this.attachmentService.onMediaCoverSelction.subscribe((mediaObj: any) => {
       if (mediaObj != null) {
-        this.attachmentService.saveMedia(mediaObj.filepath, "V", "hey");
+        this.attachmentService.saveMedia("V", "hey", mediaObj.filepath);
       }
     })
   }

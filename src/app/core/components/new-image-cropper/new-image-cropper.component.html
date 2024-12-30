@@ -6,7 +6,7 @@
       <div class="image-container" #imageContainer>
         <img 
           *ngIf="image['mediaType'] !== 'V'"
-          [src]="image.filePath"
+          [src]="image.fileUrl"
           class="movable-image"
           #mediaElement
           (load)="calculatePixelToScreen(mediaElement)"
@@ -32,7 +32,7 @@
           class="movable-image"
           playsinline
           >
-            <source [src]="image.filePath" type="video/mp4">
+            <source [src]="image.fileUrl" type="video/mp4">
           </video>
       </div>
     </ion-slide>

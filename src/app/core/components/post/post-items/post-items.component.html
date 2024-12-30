@@ -195,29 +195,19 @@
                 {{ post.BelongsToNodeName }}
               </span>
 
-              <!-- Video -->
-              <video
-                #videoPlayer
-                class="video"
-                *ngIf="
-                  postImage.toLowerCase().endsWith('.mp4') ||
-                  postImage.toLowerCase().includes('video')
-                "
-                [poster]="
-                  i === 0
-                    ? appConstants.mediaPrefix +
-                      postImage.replace('.mp4', '.jpg')
-                    : null
-                "
-                controls
-                muted
-                playsinline
-              >
-                <source
-                  [src]="appConstants.mediaPrefix + postImage"
-                  type="video/mp4"
-                />
-              </video>
+      <!-- Video -->
+      <!-- [poster]="i === 0 ? appConstants.mediaPrefix + postImage.replace('.mp4', '.jpg') : null"  -->
+
+      <video 
+        #videoPlayer 
+        class="video" 
+        *ngIf="postImage.toLowerCase().endsWith('.mp4') || postImage.toLowerCase().includes('video')" 
+        controls 
+        muted 
+        playsinline
+      >
+        <source [src]="appConstants.mediaPrefix + postImage" type="video/mp4">
+      </video>
 
               <!-- Image -->
               <ion-img

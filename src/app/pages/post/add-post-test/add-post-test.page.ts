@@ -15,6 +15,7 @@ import { Router} from '@angular/router';
 export class AddPostTestPage extends BasePage implements OnInit {
   post: Post = new Post;
   fileToUpload: any[] = [];
+  dataToUpload: any[] = [];
   sliderHeight: number = 0;
   isVideoList: boolean[] = [];
   @ViewChild(NewImageCropperComponent) imageCropperComponent!: NewImageCropperComponent;
@@ -51,7 +52,8 @@ export class AddPostTestPage extends BasePage implements OnInit {
     // const mediaUrlDataArray = this.imageCropperComponent.dataUrlArray; // Access the data
     // this.isVideoList = this.imageCropperComponent.isVideoList;
     // this.sliderHeight = this.imageCropperComponent.sliderHeight;
-    let previewComponentData = {"mediaUrlDataArray": mediaUrlDataArray,
+    let previewComponentData = {
+      "mediaUrlDataArray": mediaUrlDataArray,
       "isVideoList": isVideoList,
       "sliderHeight": sliderHeight
     }

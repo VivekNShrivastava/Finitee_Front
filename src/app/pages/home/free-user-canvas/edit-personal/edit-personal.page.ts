@@ -136,7 +136,7 @@ export class EditPersonalPage extends BasePage implements OnInit, OnDestroy {
           role: 'Photos',
           handler: async () => {
             // await this.attachmentService.openCameraToTakePhoto(true, CameraSource.Photos);
-            await this.attachmentService.selectMediaFromGallery("profilePic");
+            await this.attachmentService.selectProfileFromGallery();
           },
         },
       ],

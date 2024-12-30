@@ -13,5 +13,5 @@ export interface FileUploadRequest {
 export interface FileUploadRequestNew {
     mediaType: string;
     name: string;
-    filePath: string;
+    fileUrl: string; 
 }

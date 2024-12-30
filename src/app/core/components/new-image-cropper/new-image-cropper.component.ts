@@ -6,7 +6,11 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { IonSlides } from '@ionic/angular';
 import { ThumbnailHelperService } from 'src/app/core/services/thumbnail-helper.service';
 import { NavigationExtras, Router } from '@angular/router';
+import { VideoCropper } from 'video-cropper-processor';
+import { Platform } from '@ionic/angular';
 import { VideoCroppingArgs } from 'src/app/core/models/post/post';
+import { Capacitor } from '@capacitor/core';
+import { forEach } from 'lodash';
 
 @Component({
   standalone: true,
@@ -54,6 +58,7 @@ export class NewImageCropperComponent{
   isVideo: boolean = false;
   thumbnail: string = "";
   videoArgs: VideoCroppingArgs[] = [];
+  imageArgs: VideoCroppingArgs[] = [];
   thumbnailCroppingDimensions: number[] = []
   navEx: NavigationExtras = {
     state: {
@@ -64,7 +69,7 @@ export class NewImageCropperComponent{
 
 
 
-  constructor(private router: Router,  private thumbnailService: ThumbnailHelperService) {
+  constructor(private router: Router,  private thumbnailService: ThumbnailHelperService, private platform: Platform ) {
     
    }
 
@@ -88,8 +93,109 @@ export class NewImageCropperComponent{
         imgElement.style.scale = `${this.initialScale[this.currentIndex]}`;
   }
 
+  private calculationQueue: (() => Promise<void>)[] = [];
+  private isProcessingQueue = false;
 
-  calculatePixelToScreen(media: HTMLImageElement | HTMLVideoElement){
+  private addToQueue(task: () => Promise<void>): void {
+    this.calculationQueue.push(task);
+    this.processQueue();
+  }
+
+  private async processQueue(): Promise<void> {
+    if (this.isProcessingQueue || this.calculationQueue.length === 0) {
+      return;
+    }
+
+    this.isProcessingQueue = true;
+    const nextTask = this.calculationQueue.shift();
+    if (nextTask) {
+      await nextTask();
+    }
+    this.isProcessingQueue = false;
+
+    // Process the next task in the queue
+    this.processQueue();
+  }
+
+async calculatePixelToScreen2(media: HTMLImageElement | HTMLVideoElement): Promise<void> {
+  this.addToQueue(async () => {
+    if (this.isVideo) {
+      this.isUserInteracting = true;
+      this.seekValueList[this.currentIndex] =
+        this.currentMediaElements.toArray()[this.currentIndex].nativeElement.currentTime;
+    }
+
+    this.currentIndex = this.imageUri.length - 1;
+
+    if (media instanceof HTMLImageElement) {
+      this.naturalHeight[this.currentIndex] = media.naturalHeight;
+      this.naturalWidth[this.currentIndex] = media.naturalWidth;
+      this.isVideoList[this.currentIndex] = false;
+    } else if (media instanceof HTMLVideoElement) {
+      this.naturalHeight[this.currentIndex] = media.videoHeight;
+      this.naturalWidth[this.currentIndex] = media.videoWidth;
+      this.isVideoList[this.currentIndex] = true;
+      this.seekValueList[this.currentIndex] = 0;
+    }
+
+    if (this.currentIndex !== 0) {
+      this.currentMediaElements
+        .toArray()
+        [this.currentIndex - 1].nativeElement.style.transform = `translate(${-this.areaAvailable[this.currentIndex - 1][1]}px, ${this.imagePositionY[this.currentIndex - 1]}px)`;
+    }
+
+    this.slideToIndex(this.currentIndex);
+
+    this.initialBoundingClient[this.currentIndex] = [0, 0];
+    this.areaAvailable[this.currentIndex] = [0, 0, 0, 0];
+    this.imagePositionX[this.currentIndex] = 0;
+    this.imagePositionY[this.currentIndex] = 0;
+
+    if (this.currentIndex !== 0) {
+      this.currentMediaElements
+        .toArray()
+        [this.currentIndex - 1].nativeElement.style.zIndex = '1';
+    }
+    this.currentMediaElements.toArray()[this.currentIndex].nativeElement.style.zIndex = '2';
+
+    this.initialBoundingClient[this.currentIndex][0] =
+      this.currentMediaElements.toArray()[this.currentIndex].nativeElement.getBoundingClientRect().height;
+    this.initialBoundingClient[this.currentIndex][1] =
+      this.currentMediaElements.toArray()[this.currentIndex].nativeElement.getBoundingClientRect().width;
+
+    if (this.naturalHeight[this.currentIndex] / this.naturalWidth[this.currentIndex] >= 1) {
+      this.initialScale[this.currentIndex] =
+        window.innerWidth /
+        this.currentMediaElements.toArray()[this.currentIndex].nativeElement.offsetWidth;
+      const ToChange = this.sliderHeight / this.initialScale[this.currentIndex];
+      let upBottom =
+        (this.initialBoundingClient[this.currentIndex][0] - ToChange) / 2;
+      this.areaAvailable[this.currentIndex][0] = upBottom;
+      this.areaAvailable[this.currentIndex][2] = upBottom;
+    } else if (this.naturalHeight[this.currentIndex] / this.naturalWidth[this.currentIndex] < 1) {
+      this.initialScale[this.currentIndex] =
+        window.innerWidth /
+        this.currentMediaElements.toArray()[this.currentIndex].nativeElement.offsetHeight;
+      let rightLeft =
+        (this.initialBoundingClient[this.currentIndex][1] -
+          window.innerWidth / this.initialScale[this.currentIndex]) /
+        2;
+      this.areaAvailable[this.currentIndex][1] = rightLeft;
+      this.areaAvailable[this.currentIndex][3] = rightLeft;
+    }
+
+    this.resizeMediaToFit(media);
+
+    if (this.sliderHeight !== window.innerWidth) {
+      this.sliderChangeHandle(this.sliderHeight - window.innerWidth, this.sliderHeight);
+    }
+    console.log('Available area:', this.areaAvailable);
+  });
+}
+
+
+
+  async calculatePixelToScreen(media: HTMLImageElement | HTMLVideoElement){
 
     if(this.isVideo){
       this.isUserInteracting = true;
@@ -116,6 +222,7 @@ export class NewImageCropperComponent{
     }
 
     if(this.currentIndex!==0){
+      console.log("available area", this.areaAvailable)
       this.currentMediaElements.toArray()[this.currentIndex-1].nativeElement.style.transform = `translate(${-this.areaAvailable[this.currentIndex-1][1]}px, ${this.imagePositionY[this.currentIndex-1]}px)`;
     }
     this.slideToIndex(this.currentIndex);
@@ -265,9 +372,6 @@ export class NewImageCropperComponent{
     if(this.naturalHeight[index]/this.naturalWidth[index]>=1){
       const ToChange = this.sliderHeight/(this.manualScale[index]);
       let upBottom = (this.initialBoundingClient[index][0]-ToChange)/2;
-      console.log("availablespace", this.areaAvailable[index][0]);
-      // console.log(this.initialBoundingClient[0], this.initialBoundingClient[1],this.sliderHeight,window.innerWidth,this.manualScale);
-      //if(naturalWidth<window.innerWidth){upBottom+=(window.innerWidth-this.initialBoundingClient[1])/2}
       console.log("zoom change space", upBottom);
       this.areaAvailable[index][0] = Math.max(0, upBottom);
       this.areaAvailable[index][2] = Math.max(0, upBottom);
@@ -281,9 +385,6 @@ export class NewImageCropperComponent{
       let rightLeft = (this.initialBoundingClient[index][1] - (window.innerWidth/this.manualScale[index]))/2
       // let rightLeft3 = (this.initialBoundingClient[this.currentIndex][1] - (this.initialBoundingClient[this.currentIndex][0]/this.manualScale[this.currentIndex]))/2
 
-      // if(this.isVideo){
-      //   rightLeft = (this.initialBoundingClient[1]-(window.innerWidth/this.manualScale))/2
-      // }
       console.log("zoom change space", rightLeft);
       this.areaAvailable[index][1] = Math.max(0 , rightLeft);
       this.areaAvailable[index][3] = Math.max(0 , rightLeft);
@@ -684,9 +785,11 @@ updateSeekValue() {
     for (const flag of this.isVideoList) {
       if (flag) {
         await this.cropVideo(i);
-        this.dataUrlArray[i] = this.imageUri[i].filePath;
+        this.dataUrlArray[i] = this.imageUri[i].fileUrl;
       } else {
-        await this.cropAndUploadImage(i);
+        // await this.cropAndUploadImage(i);
+        await this.cropImage(i);
+
       }
       i++;
     }
@@ -710,12 +813,14 @@ updateSeekValue() {
     return this.thumbnailCroppingDimensions;
   }
 
+
   async cropAndUploadImage(index: number){
     const image = this.currentMediaElements.toArray()[index].nativeElement;
 
     // Create a canvas without adding it to the DOM
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
+
     canvas.width = window.innerWidth;
     canvas.height = this.sliderHeight;
  
@@ -728,6 +833,7 @@ updateSeekValue() {
     let widthOfCroppedArea = (this.initialBoundingClient[index][1]- (2 * this.areaAvailable[index][1]))*TheBoundingScale;
     let heightOfCroppedArea = (this.initialBoundingClient[index][0]- (2 * this.areaAvailable[index][0]))*TheBoundingScale;
 
+
     // Draw cropped frame on canvas
     ctx!.drawImage(
       image,
@@ -737,7 +843,7 @@ updateSeekValue() {
       window.innerWidth, this.sliderHeight,  // 8. The width of the image on the canvas
     );
 
-    let croppedImage = canvas.toDataURL('image/png');
+    let croppedImage = canvas.toDataURL('image/jpeg', 1.0);
     this.dataUrlArray[index] = croppedImage;
 
 
@@ -793,6 +899,74 @@ updateSeekValue() {
 
   }
 
+  async cropImage(index: number) {    
+
+    const TheBoundingScale = this.naturalHeight[index]/this.initialBoundingClient[index][0]
+
+    let x = (-this.imagePositionX[index]+this.areaAvailable[index][1])*TheBoundingScale;
+    let y = (-this.imagePositionY[index]+this.areaAvailable[index][0])*TheBoundingScale;
+
+    let width = (this.initialBoundingClient[index][1]- (2 * this.areaAvailable[index][1]))*TheBoundingScale;
+    let height = (this.initialBoundingClient[index][0]- (2 * this.areaAvailable[index][0]))*TheBoundingScale;
+
+    this.imageArgs[index] = {
+      x: x,
+      y: y,
+      height: height,
+      width: width
+    } 
+
+        //cropping here  const 
+        //conditionally remove for android
+        let localFilePath = "";
+        if(this.platform.is('ios')){
+           localFilePath = this.imageUri[index].fileUrl.toString().replace(
+            "capacitor://localhost/_capacitor_file_", 
+            "file://" );
+        }else{
+          localFilePath = this.imageUri[index].fileUrl.toString().replace('http://localhost/_capacitor_file_', 'file://');
+          //localFilePath = this.mediaNames[i];
+        }
+
+        if (localFilePath.endsWith('.heic') || localFilePath.endsWith('.HEIC')) {
+          try {
+            const result = await VideoCropper.convertAndReplaceHEICWithJPG({
+              filePath: localFilePath,
+            });
+            localFilePath = "file://" + result.outputfileUrl; // Update the file path to the new JPG file
+            console.log("Converted HEIC to JPG:", localFilePath);
+          } catch (error) {
+            console.error("Error converting HEIC to JPG:", error);
+          }
+        }
+        
+
+      //.replace('http://localhost/_capacitor_content_', 'content://');
+
+      const roundedCropX = parseFloat(x.toFixed(5));
+      const roundedCropY = parseFloat(y.toFixed(5));
+      const roundedCropWidth = parseFloat(width.toFixed(5));
+      const roundedCropHeight = parseFloat(height.toFixed(5));
+
+        let newFileUrl = await VideoCropper.cropImage({
+            fileUrl: localFilePath,    
+            cropX: roundedCropX,
+            cropY: roundedCropY,
+            cropWidth: roundedCropWidth,
+            cropHeight: roundedCropHeight,
+          });
+
+
+
+        //this.removeFolderFromCache(this.imageUri[i]);
+        //this.listFilesInDocumentsDirectory();
+
+        let newUrl = Capacitor.convertFileSrc(newFileUrl.outputfileUrl);
+        console.log(newUrl);
+        this.dataUrlArray[index] = newUrl;
+
+
+  }
 
   createThumbnail(){
     this.navEx!.state!['data'] = this.imageUri[0].filePath;

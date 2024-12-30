@@ -17,6 +17,9 @@ import { Platform } from '@ionic/angular';
 import { ImageCropperComponent } from '../components/image-cropper/image-cropper.component';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { Capacitor } from '@capacitor/core';
+import { Filesystem } from '@capacitor/filesystem';
+import { VideoCropper } from 'video-cropper-processor';
+
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +63,8 @@ export class AttachmentHelperService {
     else if (mediaType === AppConstants.MEDIA_VIDEO && sourceType === AppConstants.SOURCE_CAMERA)
       this.openCameraToRecordVideo();
     else if (sourceType === AppConstants.SOURCE_PHOTOLIBRARY){
-        this.selectMediaFromGallery("post");
+        //this.selectMediaFromGallery("post");
+        this.selectMediaFromGallery2();
     }
     return;
   }
@@ -85,7 +89,7 @@ export class AttachmentHelperService {
     // Generate a filename with the appropriate extension
     const fileName = `photo_${new Date().getTime()}${extension}`;
 
-    this.saveMedia(image.dataUrl, "I", fileName);
+    this.saveMedia( "I", fileName, image.dataUrl);
   }
 
 
@@ -111,46 +115,96 @@ export class AttachmentHelperService {
     }
   }
 
- 
-  async selectMediaFromGallery(media: string) {
-
-    if(media === "profilePic"){
-      const mediafileArray = await FilePicker.pickImages({
-        readData: true
-      });
-      // console.log(mediafileArray, mediafileArray.files[0]);
-      if (mediafileArray && mediafileArray.files[0]) {
-        var mediafileProfile = mediafileArray.files[0];
-        if(mediafileProfile){
-          // console.log("profilepic", mediafileProfile);
-          // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path);
-          let filePath = "";
+  async selectProfileFromGallery(){
+      const mediafileArray: any = await FilePicker.pickImages({})
+      if(mediafileArray.files[0]){
+        console.log(mediafileArray)
+        let mediafileProfile = mediafileArray.files[0];
+          let fileURLimage = "";
           if(this.platform.is('desktop') || this.platform.is('mobileweb')){
-            filePath = URL.createObjectURL(mediafile.blob);
-          }else{
-            filePath = Capacitor.convertFileSrc(mediafile.path);
-          }  
-          // this.saveMedia(this.win.Ionic.WebView.convertFileSrc(mediafileProfile.path), "I");
-          this.saveMedia(filePath, "I", mediafile.name);
+            fileURLimage = URL.createObjectURL(mediafileProfile.blob);
+          }else if(this.platform.is('ios')){
+            fileURLimage = Capacitor.convertFileSrc(mediafileProfile.path);
+          }else if(this.platform.is('android')){
+            fileURLimage = Capacitor.convertFileSrc(mediafileProfile.filepath);
+            if (fileURLimage.endsWith('.heic') || fileURLimage.endsWith('.HEIC')) {
+              try {
+                const result = await VideoCropper.convertAndReplaceHEICWithJPG({
+                  filePath: mediafileProfile.filepath,
+                });
+                fileURLimage = Capacitor.convertFileSrc(result.outputfileUrl); // Update the file path to the new JPG file
+                console.log("Converted HEIC to JPG:", fileURLimage);
+              } catch (error) {
+                console.error("Error converting HEIC to JPG:", error);
+              }
+            }
+          }
+        this.saveMedia("I", mediafileProfile.name, fileURLimage);
+      }
+    }
+
+  async fileUrlToBase64(fileUrl: string): Promise<any> {
+    try {
+      // Read the file as base64
+      const file = await Filesystem.readFile({
+        path: fileUrl,
+      });
+  
+      // The 'data' property contains the Base64 string
+      return file.data;
+    } catch (error) {
+      console.error('Error reading file as Base64:', error);
+      throw error;
+    }
+  }
+  
+  async selectMediaFromGallery2() {
+    const mediafileArray: any = await FilePicker.pickMedia({
+      limit:1
+    });
+    
+    if (mediafileArray) {
+      for (const mediafileProfile of mediafileArray.files) {
+        console.log("files of media", mediafileProfile)
+        let fileURLimage = "";
+        
+        if (this.platform.is('desktop') || this.platform.is('mobileweb')) {
+          fileURLimage = URL.createObjectURL(mediafileProfile.blob);
+        } else if (this.platform.is('ios')) {
+          fileURLimage = Capacitor.convertFileSrc(mediafileProfile.path);
+        } else if (this.platform.is('android')) {
+          fileURLimage = Capacitor.convertFileSrc(mediafileProfile.filepath);
+          
+          if (fileURLimage.endsWith('.heic') || fileURLimage.endsWith('.HEIC')) {
+            try {
+              const result = await VideoCropper.convertAndReplaceHEICWithJPG({
+                filePath: mediafileProfile.filepath,
+              });
+              fileURLimage = Capacitor.convertFileSrc(result.outputfileUrl); // Update the file path to the new JPG file
+              console.log("Converted HEIC to JPG:", fileURLimage);
+            } catch (error) {
+              console.error("Error converting HEIC to JPG:", error);
+            }
+          }
+        }
+        if (mediafileProfile.mimeType.indexOf("video") != -1){
+          await this.saveMedia("V", mediafileProfile.name, fileURLimage);
+        }else{
+          await this.saveMedia("I", mediafileProfile.name, fileURLimage);
+
         }
       }
-    }else{
-      // const mediafileArray: any = await FilePicker.pickMedia({
-      //   readData: true,
-      //   limit: 0,
-      //   ordered: true,
-      //   skipTranscoding: true
-      // });
+    }
+  }
+  
 
-      const typeAllowed : string[] = ['image/*', 'video/*']
+  async selectMediaFromGallery() {
+
       const mediafileArray: any = await FilePicker.pickMedia({
     
       })
 
       console.log("mediaFile", mediafileArray)
-      //console.log("mediaFile obj", mediafileArray.files[0])
-
-      // return null;
       
       if (mediafileArray && mediafileArray.files[0]) {
         var mediafile = mediafileArray.files[0];
@@ -168,13 +222,13 @@ export class AttachmentHelperService {
               fileURL = Capacitor.convertFileSrc(mediafile.filepath);
             }
             console.log("fileUrl new", fileURL.substring(0, 70))
-            this.saveMedia(fileURL, "V", mediafile.name);
+            this.saveMedia("V", mediafile.name, fileURL);
             // const fileURL = this.createURLFromBase64(mediafile.data, mediafile.mimeType);
             // this.openVideoCoverSelectionPage(fileURL);
             // this.openVideoCoverSelectionPage(this.win.Ionic.WebView.convertFileSrc(mediafile.data));
           }
           else {//image 
-            if(mediafileArray.files.length > 1){
+            // if(mediafileArray.files.length > 1){
               for(let i=0; i<mediafileArray.files.length; i++){
                 console.log(mediafileArray.files[i]);
                 
@@ -182,27 +236,18 @@ export class AttachmentHelperService {
                 let filePath = "";
                 if(this.platform.is('desktop') ||  this.platform.is('mobileweb')){
                   filePath = URL.createObjectURL(mediafile.blob);
-                }else{
+                }else if(this.platform.is('ios')){
+                  console.log("mediafile path", mediafile.path);
                   filePath = Capacitor.convertFileSrc(mediafile.path);
-                }                
-                this.saveMedia(filePath, "I", mediafile.name);
+                }else if(this.platform.is('android')){
+                  console.log("mediafile path", mediafile.filepath)
+                  filePath = Capacitor.convertFileSrc(mediafile.filepath);
+                }              
+                this.saveMedia("I", mediafile.name, filePath);
               }
-            }else{
-              // const filePath = this.win.Ionic.WebView.convertFileSrc(mediafile.path);
-              // const filePath = 'data:' + mediafileArray.files[0].mimeType + ';base64,' + mediafileArray.files[0].data;
-              
-              let filePath = "";
-              if(this.platform.is('desktop') ||  this.platform.is('mobileweb')){
-                filePath = URL.createObjectURL(mediafile.blob);
-              }else{
-                filePath = Capacitor.convertFileSrc(mediafile.path);
-              }  
-              this.saveMedia(filePath, "I", mediafile.name);  
-            }
           }
         }
       }
-    }
   }
 
 
@@ -228,12 +273,12 @@ export class AttachmentHelperService {
   }
 
 
-  async saveMedia(filepath: any, ImageOrVideo: any, filename: any) {
+  async saveMedia(ImageOrVideo: any, filename: any, fileUrl: any) {
     
     const obj: FileUploadRequestNew = {
       mediaType: ImageOrVideo,
       name: filename,
-      filePath: filepath,
+      fileUrl: fileUrl
     };
     this.onMediaSave.emit(obj);
   }
