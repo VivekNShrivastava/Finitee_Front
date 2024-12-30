@@ -35,6 +35,10 @@ export class MapResultComponent implements OnInit {
   serviceAvailable = [];
   serviceRequired = [];
   events: any[] = [];
+  displayLimit = 5; // Number of users to show initially
+  userDisplayLimit = [5]; // Array to track the blocks of users displayed
+  showMore = true;
+  showAll = false;
 
   constructor(
     public _commonService: CommonService,
@@ -69,6 +73,33 @@ export class MapResultComponent implements OnInit {
   goBack() {
     this._modalController.dismiss();
   }
+
+  toggleSeeMore() {
+    if (this.showMore) {
+      // Show 5 more users
+      let nextLimit = this.userDisplayLimit[this.userDisplayLimit.length - 1] + 5;
+      this.userDisplayLimit.push(nextLimit);
+    } else {
+      // Reset to 5 users
+      this.userDisplayLimit = [5];
+    }
+    this.showMore = !this.showMore;
+  }
+  // Show all users
+  showAllUsers() {
+    console.log('Navigating to All Users page...');
+  
+    // Navigate directly to the All Users page without dismissing the modal
+    this.router.navigate(['/all-users'], {
+      state: {
+        users: this.users, // Pass the users to the All Users page
+      }
+    });
+  }
+  
+  
+  
+  
 
   public onViewTypeChange(viewType: number): void {
     this.viewType = viewType;

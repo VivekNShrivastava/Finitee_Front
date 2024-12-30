@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
-import { Post, AddPostRequest, Media } from 'src/app/core/models/post/post';
+import { Post, AddPostRequest } from 'src/app/core/models/post/post';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BusinessCanvasService } from 'src/app/core/services/canvas-home/business-canvas.service';
 import { PostService } from 'src/app/core/services/post.service';
@@ -22,7 +22,6 @@ export class AddPostPage extends BasePage implements OnInit {
   BelongsToId!: string;
   saveClicked: boolean = false;
   isTraitReadOnly : boolean = true;
-  photo: any[] = [];
   sendPost: AddPostRequest = new AddPostRequest;
   fileToUpload: any[] = [];
   slideOptions = {
@@ -108,9 +107,6 @@ export class AddPostPage extends BasePage implements OnInit {
     this.fileToUpload.push(mediaObj);
   }
 
-  imagePathMedia(imagePath: string){
-    this.photo.push(imagePath);
-  }
 
   addMedia(filePath: string) {
     if (filePath.indexOf("delete") != -1) {
@@ -166,79 +162,79 @@ export class AddPostPage extends BasePage implements OnInit {
     this.post.Privacy = data.detail.value;
   }
 
-  async addPost() {
-  //   if(!this.post.PostImages) {
-  //     this.post.PostImages = [];
-  // }
+  // async addPost() {
+  // //   if(!this.post.PostImages) {
+  // //     this.post.PostImages = [];
+  // // }
 
-    if(this.paramsData.Type === 'USER'){
-      const media = new Media();
-      media.images = [];
+  //   if(this.paramsData.Type === 'USER'){
+  //     const media = new Media();
+  //     media.images = [];
 
-      // for(let i=0; i<this.fileToUpload.length; i++){
-      //   media.images.push({
-      //     imageFile: this.fileToUpload[i],
-      //   })
-      // }
+  //     // for(let i=0; i<this.fileToUpload.length; i++){
+  //     //   media.images.push({
+  //     //     imageFile: this.fileToUpload[i],
+  //     //   })
+  //     // }
 
-      this.croppedImageMap.forEach((value: any, key: any) => {
-        media?.images?.push({
-            imageFile: value,
-        });
-      });
+  //     this.croppedImageMap.forEach((value: any, key: any) => {
+  //       media?.images?.push({
+  //           imageFile: value,
+  //       });
+  //     });
 
       
-      media.images.forEach((image) => {
-        const temp = image.imageFile.name;; // Extract the name or URL depending on your structure
-        this.post.PostImages.push(temp);
-        console.log("temp",temp)
-    });
-      this.sendPost = {
-        post : this.post,
-        media: media
-      }
+  //     media.images.forEach((image) => {
+  //       const temp = image.imageFile.name;; // Extract the name or URL depending on your structure
+  //       this.post.PostImages.push(temp);
+  //       console.log("temp",temp)
+  //   });
+  //     this.sendPost = {
+  //       post : this.post,
+  //       media: media
+  //     }
   
-      // const formData = new FormData();
-      // formData.append('Post', JSON.stringify(this.sendPost.post));
-      // formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
+  //     // const formData = new FormData();
+  //     // formData.append('Post', JSON.stringify(this.sendPost.post));
+  //     // formData.append('AspectRatio', this.fileToUpload[0].aspectRatio);
 
-      const formData = new FormData();
-      formData.append('Post', JSON.stringify(this.sendPost.post));
-      formData.append('AspectRatio', Array.from(this.croppedImageMap.values())[0].aspectRatio.toString());
+  //     const formData = new FormData();
+  //     formData.append('Post', JSON.stringify(this.sendPost.post));
+  //     formData.append('AspectRatio', Array.from(this.croppedImageMap.values())[0].aspectRatio.toString());
 
   
-      this.sendPost.media.images?.forEach((image: any) => {
+  //     this.sendPost.media.images?.forEach((image: any) => {
         
-        if(image.imageFile.name.includes('mp4')){
-          formData.append('file', image.imageFile.blob, image.imageFile.name);
-          formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
-        }else{
-          formData.append('file', image.imageFile.blob, image.imageFile.name);
-        }
-      });
+  //       if(image.imageFile.name.includes('mp4')){
+  //         formData.append('file', image.imageFile.blob, image.imageFile.name);
+  //         formData.append('file', image.imageFile.thumbBlob, image.imageFile.thumbName);
+  //       }else{
+  //         formData.append('file', image.imageFile.blob, image.imageFile.name);
+  //       }
+  //     });
   
-      for (const [key, value] of (formData as any).entries()) {
-          console.log(key, value);
-      }
+  //     for (const [key, value] of (formData as any).entries()) {
+  //         console.log(key, value);
+  //     }
   
-      try {
-        console.log('done')
-        const res = await this.postService.createPost(formData);
-        console.log(res);
+  //     try {
+  //       console.log('done')
+  //       const res = await this.postService.createPost(formData);
+  //       console.log(res);
 
-        this.router.navigateByUrl('free-user-canvas')
-        this.postService.postDataSbj.next({ event: "ADD", data: this.sendPost, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
+  //       this.router.navigateByUrl('free-user-canvas')
+  //       this.postService.postDataSbj.next({ event: "ADD", data: this.sendPost, isTraitPost: this.paramsData.Type == this.appConstants.POST_TYPE.TRAIT ? true : false });
 
 
-        this.navCtrl.pop();
-      } catch (error) {
-        console.error('Error creating post:', error);
-      }
-    }else if(this.paramsData.Type === 'TRAIT'){
+  //       this.navCtrl.pop();
+  //     } catch (error) {
+  //       console.error('Error creating post:', error);
+  //     }
+  //   }else if(this.paramsData.Type === 'TRAIT'){
 
-    }
+  //   }
     
-  }
+  // }
 
   async openPreviewModal() {
     console.log("this", this.fileToUpload.length < 2,this.isArLocked);

@@ -4,9 +4,9 @@ import { ActionSheetController, AlertController, NavController } from '@ionic/an
 import * as _ from 'lodash';
 import { BasePage } from 'src/app/base.page';
 import { AppConstants } from 'src/app/core/models/config/AppConstants';
-import { Media, Post } from 'src/app/core/models/post/post';
+import { Post } from 'src/app/core/models/post/post';
 import { UserTrait, UserTraitWithPost } from 'src/app/core/models/post/userTrait';
-import { UserCanvasProfile, UserProfile } from 'src/app/core/models/user/UserProfile';
+import { CanvasProfile, UserCanvasProfile, UserProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FreeUserCanvasService } from 'src/app/core/services/canvas-home/freeuser-canvas.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
@@ -32,13 +32,19 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
 
   userProfile: UserProfile = new UserProfile();
   postList: Array<Post> = [];
+  allPosts: Array<Post>=[];
   beamedpostList: Array<Post> = [];
   userTraitList: Array<UserTrait> = [];
   userTraitPostList: Array<UserTraitWithPost> = [];
-
+   // Define properties for pagination
+   loadedPostCount: number = 0; 
+   hasMorePosts: boolean = true; 
+   loadingPosts: boolean = false;
   userCanvasProfile : UserCanvasProfile = new UserCanvasProfile();
-  userPrivate: any = '';
+  // userPrivate: any = '';
   loadPrivateUser: boolean = false;
+  privateUser: boolean = false;
+  // userPrivate:boolean = false;
   selectedTraitObj: any = "";
   selectedTab: any = 'all'
   isTraitModalOpen: boolean = false;
@@ -94,6 +100,10 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
     });
   }
 
+  navigateToConnections() {
+    this.navCtrl.navigateRoot('/tabs/connections');
+  }
+  
   async subscribeTraitPostSubject() {
     this._postService.postDataSbj.subscribe({
       next: (result: any) => {
@@ -186,36 +196,123 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
 
 
   async getUserProfileData() {
-    this.userCanvasProfile = await this._userProfileService.getUserCanvas(this.userId, this.logInfo.UserId);
-    // this.userProfile = await this._userProfileService.getUserProfile(this.userId, this.logInfo.UserId);
-    
-    this.userTraitList = await this._postService.getUserTrait(this.userId);
-    // console.log("traitlist", this.userTraitList)
-    this.userPrivate = this.userTraitList;
-    if(this.userPrivate.user === "Private"){
-      this.loadPrivateUser = true;
-      this.loaded = true;
+    try {
+        this.userCanvasProfile = await this._userProfileService.getUserCanvas(this.userId, this.logInfo.UserId); 
+        const isPrivate = this.userCanvasProfile.canvasProfile.Private;
+        console.log("Is User Private:", isPrivate);
+        
+        if (isPrivate && this.userId !== this.logInfo.UserId) {
+            this.loadPrivateUser = true;
+            this.loaded = true;
+            return; 
+        }
+        this.loadPrivateUser = false;
+        this.loaded = true; 
+    } catch (error) {
+        console.error("Error fetching user profile data:", error);
+        this.loaded = true; 
     }
+}
 
-    
-  }
 
-  async getUserPost() {
-    this.postList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.ALL);
-    this.loaded = true;
-  }
+  
+  // async getUserProfileData() {
+  //       this.userCanvasProfile = await this._userProfileService.getUserCanvas(this.userId, this.logInfo.UserId);
+  //       const Private = this.userCanvasProfile.canvasProfile.Private;
+  //       console.log(Private);
+  //       this.userPrivate = this.userCanvasProfile.canvasProfile;
+  //        if(this.userPrivate.user === "Private"){
+  //         this.loadPrivateUser = true;
+  //         this.loaded = true;
+  //        } 
+  //   }
 
-  async getUserTraitsWithPost(traitSection?: boolean) {
-    this.userTraitPostList = await this._postService.getUserTraitWithPost(this.userId);
-    console.log("userTrait", this.userTraitPostList);
-    this.loaded = true;
-    if(!traitSection) this.openTraitList();
+  // Fetch user posts only if the profile is not private
+  async getUserPost(event?: any, loadMore: boolean = false) {
+    console.log("Loading posts, loadMore:", loadMore);
+  
+    // Prevent loading posts for private users
+    if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
+      console.log("Private user detected. No posts will be loaded.");
+      if (event) event.target.complete();
+      return;
+    }
+  
+    if (this.loadingPosts) {
+      console.log("Posts are already loading. Please wait.");
+      if (event) event.target.complete();
+      return;
+    }
+  
+    this.loadingPosts = true; // Prevent multiple simultaneous requests
+  
+    try {
+      // Fetch posts from the service
+      this.allPosts= await this._postService.getPostByUserId(
+        this.userId, 
+        AppConstants.POST_TYPE.ALL
+      );
+      console.log("Fetched posts:", this.allPosts);
+  
+      // Handle empty posts response
+      if (!this.allPosts || this.allPosts.length === 0) {
+        console.log("No posts available for this user.");
+        this.hasMorePosts = false;
+        this.postList = []; // Reset postList if no posts are available
+        return;
+      }
+  
+      if (loadMore) {
+        // Load more posts
+        this.loadedPostCount += 6;
+        const newPosts = this.allPosts.slice(this.postList.length, this.loadedPostCount);
+        this.postList = [...this.postList, ...newPosts];
+      } else {
+        // Load initial posts
+        this.loadedPostCount = 4;
+        this.postList = this.allPosts.slice(0, this.loadedPostCount);
+      }
+  
+      // Determine if more posts are available
+      this.hasMorePosts = this.postList.length < this.allPosts.length;
+      console.log("Updated postList:", this.postList);
+      console.log("Has more posts:", this.hasMorePosts);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    } finally {
+      this.loadingPosts = false;
+      this.loaded = true;
+  
+      if (event) event.target.complete();
+    }
+  
   }
+  
 
-  async getUserBeams() {
-    this.beamedpostList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.BEAM_POST);
-    this.loaded = true;
+
+ // Fetch user traits with posts only if the profile is not private or the user is the owner
+async getUserTraitsWithPost(traitSection?: boolean) {
+  if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
+      console.log("User profile is private. Cannot fetch traits with posts.");
+  } else {
+      this.userTraitPostList = await this._postService.getUserTraitWithPost(this.userId);
+      console.log("userTrait", this.userTraitPostList);
+      if (!traitSection) this.openTraitList(); 
   }
+  this.loaded = true;
+}
+
+
+
+async getUserBeams() {
+  if (this.loadPrivateUser && this.userId !== this.logInfo.UserId) {
+      console.log("User profile is private. Cannot fetch beams.");
+  } else {
+      this.beamedpostList = await this._postService.getPostByUserId(this.userId, AppConstants.POST_TYPE.BEAM_POST);
+  }
+  this.loaded = true;
+}
+
 
   /* connection releated function */
   async sendConnectionReqPopup() {
@@ -369,7 +466,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
       this.getConnectionIcon();
     }
   }
-
+ 
   getConnectionIcon() {
     var iconName = 'free-user-request-white-icon';
     if (this.userCanvasProfile.IsConnected)
@@ -383,25 +480,53 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   }
 
   viewConnectedMembers() {
+    if (this.loadPrivateUser) {
+      console.log("User is private. Cannot view connected members.");
+      return; 
+    }
+    
     this.navEx!.state!['data'] = this.userId;
     this.router.navigateByUrl(`tabs/free-user-canvas/connected-members/${this.userId}`, this.navEx);
-    // this.navCtrl.navigateForward('connected-members');
-
-    /*     this.router.navigate(['connected-members'], this.navEx); */
+    
   }
-
-
+  
+  
   startChat() {
-    //var existingChatGroupId = this.chatService.getGroupIdIfChatThreadAlreadyStarted(this.userId);
-    var selctedUser: any = {
+    console.log('Attempting to start chat...');
+    this.checkUserPrivate();  
+  }
+  
+  
+updatePrivacyStatus(isPrivate: boolean) {
+  this.loadPrivateUser = !isPrivate; 
+  console.log('User privacy updated:', this.loadPrivateUser);
+}
+
+
+
+  checkUserPrivate() {
+    console.log('Checking if user is private:', this.loadPrivateUser);
+  
+    if (this.loadPrivateUser) {
+      console.log('Chat is disabled for private users');
+      return;  
+    }
+  
+    console.log('Starting chat...');
+    const selectedUser: any = {
       UserId: this.userId,
       DisplayName: this.navParams.UserName,
-      ProfilePhoto: this.navParams.ProfileImage == undefined ? null : this.navParams.ProfileImage,
+      ProfilePhoto: this.navParams.ProfileImage ?? null,
       groupId: ""
-    }
-    console.log('start-chatting...', selctedUser);
-    this.chatService.openChat(selctedUser);
+    };
+    
+    this.chatService.openChat(selectedUser); 
   }
+  
+  
+  
+  
+  
 
 
   async CreatePostAction(DisplayName: string) {
@@ -450,7 +575,7 @@ export class FreeUserCanvasPage extends BasePage implements OnInit {
   }
 
   openPostScreen(post: any) {
-    this.navEx!.state!['postlist'] = this.postList;
+    this.navEx!.state!['postlist'] = this.allPosts;
     this.navEx!.state!['selectedPost'] = post;
     this.navEx!.state!['postViewType'] = this.appConstants.POST_VIEW_TYPE.INSTA;
     this.navEx!.state!['postCommentViewType'] = this.appConstants.POST_COMMENT_VIEW_TYPE.POPUP;

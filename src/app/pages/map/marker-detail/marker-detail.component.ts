@@ -44,8 +44,10 @@ export class MarkerDetailComponent implements OnInit {
   connectionIcon: string = 'send-connection-sonar-icon';
   prevIconName: string = "";
   nextIconName: string = "";
+ 
   @ViewChild(IonModal) greetingAcceptRejectModal?: IonModal;
   deviceHeight: number | undefined;
+  formattedInflows: string;
 
 
 
@@ -63,7 +65,7 @@ export class MarkerDetailComponent implements OnInit {
   ) {
     this.user = this.authService.getUserInfo();
     console.log("marker-user", this.user);
-
+    this.formattedInflows = '';
     //removed viewing functionality
 
     this.firestoreService.greetingList$.subscribe(updatedData => {
@@ -437,16 +439,13 @@ export class MarkerDetailComponent implements OnInit {
   }
 
   loadCurrentItem() {
-
     if (this.markerList && this.markerList.length > 0) {
       if (this.markerCurrentIndex > -1 && this.markerCurrentIndex < this.markerList.length) {
         this.currentItem = this.markerList[this.markerCurrentIndex];
         console.log("current", this.currentItem);
-        const inflow=this.currentItem.InflowsCount
-        // this.getRandomInflowsCount(inflow)
-        
-        console.log("Greeting Icon:", this.greetingIcon);
-        console.log("Connection Icon", this.connectionIcon);
+        const inflows = this.currentItem.InflowsCount; // Get inflows from currentItem
+        this.formattedInflows = this.formatNumber(inflows); // Format the inflows for display
+        console.log("Formatted Inflows: ", this.formattedInflows);
       } else {
         this.currentItem = this.markerList[0];
       }
@@ -454,6 +453,22 @@ export class MarkerDetailComponent implements OnInit {
     this.setNextPreviousVisibility();
     this.updateGreetingIcon();
   }
+  
+  formatNumber(num: number): string {
+    if (num >= 1000 && num < 1000000) {
+      return Math.floor(num / 1000) + 'k';
+    } else if (num >= 1000000) {
+      const millionValue = num / 1000000;
+      if (Math.floor(millionValue) === millionValue) {
+        return millionValue.toFixed(0) + 'M';
+      } else {
+        return millionValue.toFixed(1).replace(/\.0$/, '') + 'M';
+      }
+    } else {
+      return num.toString();
+    }
+  }
+  
 
   setNextPreviousVisibility() {
     if (this.markerList && this.markerList.length > 1) {
@@ -571,20 +586,20 @@ export class MarkerDetailComponent implements OnInit {
     return formattedInflows;
   }
 
-  formatNumber(num: number): string {
-    if (num >= 1000 && num < 1000000) {
-      return Math.floor(num / 1000) + 'k';
-    } else if (num >= 1000000) {
-      const millionValue = num / 1000000;
-      if (Math.floor(millionValue) === millionValue) {
-        return millionValue.toFixed(0) + 'M';
-      } else {
-        return millionValue.toFixed(1).replace(/\.0$/, '') + 'M';
-      }
-    } else {
-      return num.toString();
-    }
-  }
+  // formatNumber(num: number): string {
+  //   if (num >= 1000 && num < 1000000) {
+  //     return Math.floor(num / 1000) + 'k';
+  //   } else if (num >= 1000000) {
+  //     const millionValue = num / 1000000;
+  //     if (Math.floor(millionValue) === millionValue) {
+  //       return millionValue.toFixed(0) + 'M';
+  //     } else {
+  //       return millionValue.toFixed(1).replace(/\.0$/, '') + 'M';
+  //     }
+  //   } else {
+  //     return num.toString();
+  //   }
+  // }
   
   
   

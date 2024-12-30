@@ -1,16 +1,14 @@
-<ion-content>
-
-  <ion-list class="profileBgClass">
-    <!-- user data -->
+<!-- <ion-content> -->
+  <!-- <ion-list class="profileBgClass">
     <ion-item lines="none" class="profileBg" style="--overflow:visible;">
       <ng-container slot="start" style="position: relative;">
         <ion-avatar>
           <img class="business-logo" [src]="appConstants.mediaPrefix"
-            onError="this.src='assets/icons/business/anonymous.svg'"/>
+            onError="this.src='assets/icons/business/anonymous2.svg'"/>
         </ion-avatar>
         <ion-label class="fi-name-label">
-          <!-- <h3>{{post.CreatedBy!.UserName}}</h3> -->
-           <h3>Nisarg Barot</h3>
+           <h3>{{post.CreatedBy!.UserName}}</h3>
+            <h3>Nisarg Barot</h3>
         </ion-label>
       </ng-container>
 
@@ -20,14 +18,14 @@
         </ion-button>
       </ion-buttons>
     </ion-item>
-  </ion-list>
+  </ion-list>  -->
 
   <!-- image and video-->
-  <div class="ion-text-center  post-screen-slide">
+  <!-- <div class="ion-text-center  post-screen-slide">
     <ion-slides>
       <ion-slide>
         <ion-card class="media">
-          <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon>
+          <ion-icon src="assets/icons/screen-wise-icons/Canvas screens icons as svg/Creat post + icon.svg"></ion-icon> -->
 
           <!-- <video class="video" [poster]="appConstants.mediaPrefix "
             controls>
@@ -38,12 +36,12 @@
             [src]="appConstants.mediaPrefix ">
           </ion-img> -->
 
-        </ion-card>
+        <!-- </ion-card>
       </ion-slide>
     </ion-slides>
-  </div>
+  </div> -->
 
-  <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
+  <!-- <ion-item lines="none" class="bottom-menu display-flex ion-justify-content-between">
     <div class="favour-n-beam">
       <ion-buttons>
         <ion-button shape="round" >
@@ -65,14 +63,13 @@
       <span></span>
       <h4>7 Comments</h4>
     </div>
-  </ion-item>
+  </ion-item> -->
 
-</ion-content>
+<!-- </ion-content> -->
 
 
-<ion-row>
-  <ion-col size="7">
-    <ion-buttons>
+
+    <!-- <ion-buttons>
       <ion-button [disabled]="isUploadDisabled || isDisabled || (postLimit == 5)"  shape="round" (click)="captuerMedia($event,appConstants.MEDIA_PICTURE,appConstants.SOURCE_CAMERA)">
         <ion-icon src="assets/icons/screen-wise-icons/Sonar icons/Chat screen camera icon.svg"></ion-icon>
       </ion-button>
@@ -83,9 +80,40 @@
         (click)="captuerMedia($event,appConstants.MEDIA_PICTURE,appConstants.SOURCE_PHOTOLIBRARY)">
         <ion-icon src="assets/icons/screen-wise-icons/Sonar icons/Chat screen gallery icon.svg"></ion-icon>
       </ion-button>
-    </ion-buttons>
-  </ion-col>
-</ion-row>
+    </ion-buttons> -->
+    <!-- <div style="display: flex; width: 200px;height: 40px;">
+      <ion-item style="width: 100px;height: 100px;" [disabled]="isUploadDisabled || isDisabled || (postLimit == 5)"  shape="round" (click)="captuerMedia($event,appConstants.MEDIA_PICTURE,appConstants.SOURCE_CAMERA)">
+        <ion-icon src="assets/icons/screen-wise-icons/Sonar icons/Chat screen camera icon.svg"  style="width: 100%;height: 100%;"></ion-icon>
+      </ion-item>
+      <ion-item  style="width: 100px;height: 100px;" *ngIf="videoRecDisable != 11" [disabled]="isUploadDisabled || (postLimit == 5)" shape="round" (click)="captuerMedia($event,appConstants.MEDIA_VIDEO,appConstants.SOURCE_CAMERA)">
+        <ion-icon src="assets/icons/screen-wise-icons/Sonar icons/Chat screen video icon.svg" style="width: 100%;height: 100%;"></ion-icon>
+      </ion-item>
+      <ion-item style="width: 100px;height: 100px;" [disabled]="isUploadDisabled || isDisabled || (postLimit == 5)" shape="round"
+        (click)="captuerMedia($event,appConstants.MEDIA_PICTURE,appConstants.SOURCE_PHOTOLIBRARY)">
+      <ion-icon src="assets/icons/screen-wise-icons/Sonar icons/Chat screen gallery icon.svg" style="width: 100%;height: 100%;"></ion-icon>
+    </ion-item>
+    </div> -->
+    <div style="display: flex; height: 25px; gap: 10px; /* Adjust gap between circles as needed */">
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; cursor: pointer;"
+        [ngClass]="{'disabled': isUploadDisabled || isDisabled || (postLimit == 5)}"
+        (click)="captuerMedia($event, appConstants.MEDIA_PICTURE, appConstants.SOURCE_CAMERA)">
+        <img src="assets/icons/screen-wise-icons/Sonar icons/Chat screen camera icon.svg" style="width: 60%; height: 60%;"/>
+      </div>
+      <div class="circular-button"
+        *ngIf="videoRecDisable != 11"
+        [ngClass]="{'disabled': isUploadDisabled || (postLimit == 5)}"
+        (click)="captuerMedia($event, appConstants.MEDIA_VIDEO, appConstants.SOURCE_CAMERA)">
+       <img src="assets/icons/screen-wise-icons/Sonar icons/Chat screen video icon.svg" class="icon"/>
+      </div>
+ 
+      <div style="width: 70px; height: 70px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; cursor: pointer;"
+        [ngClass]="{'disabled': isUploadDisabled || isDisabled || (postLimit == 5)}"
+        (click)="captuerMedia($event, appConstants.MEDIA_PICTURE, appConstants.SOURCE_PHOTOLIBRARY)">
+        <img src="assets/icons/screen-wise-icons/Sonar icons/Chat screen gallery icon.svg" style="width: 60%; height: 60%;"/>
+      </div>
+    </div>
+    
+ 
 <ion-row>
   <ion-col size="4" *ngFor="let mediaFile of mediaFiles; let i = index">
     <ion-card>

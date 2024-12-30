@@ -1,27 +1,23 @@
 <ion-header class="ion-no-border">
-  <!-- heading bar -->
-  <ion-toolbar >
-    <ion-buttons slot="start">
-      <app-notification-icon></app-notification-icon>
-    </ion-buttons>
+  <ion-toolbar>
     <ion-title>
       <ng-container class="tool" *ngIf="logInfo && logInfo.UserTypeId!=appConstants.USER_TYPE.FR_USER" >Connected Members</ng-container>
       <ng-container *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.FR_USER">Connections</ng-container>
-
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button class="activated">
-        <ion-icon name="searchi"></ion-icon>
+    <ion-buttons slot="start">
+      <ion-button class="activated" (click)="goBack()" >
+        <ion-icon name="back-button"></ion-icon>
       </ion-button>
-      <ion-button class="activated fi-btn-width">
-        <ion-icon name="chat-3dots"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button class="activated" (click)="toggleSearch()">
+        <ion-icon name="searchi"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-segment [(ngModel)]="selectedTab" (ionChange)="segmentChange($event)">
     <ion-segment-button class="segment-btn" value="connections">
       <ion-label class="my-label"
@@ -38,42 +34,48 @@
   </ion-segment>
 
 
-
-  <div class="prarthan" *ngIf="selectedTab == 'connections' && loaded">
-    <ion-card value="connections" *ngFor="let data of userConnections; let i=index" >
-      <ion-card-header >
-          <div class="connection-card fi-border">
-            <div class="first-section" (click)="openUser(data)">
-              <ion-avatar class="avatar">
-                <img src='{{appConstants.mediaPrefix + data.ProfilePhoto}}' onError="this.src='assets/imgs/male.png'" />
-              </ion-avatar>
-            </div>
-            <div class="second-section" (click)="openUser(data)">
-              <ion-card-title>{{data?.DisplayName}}</ion-card-title>
-              <ion-card-subtitle>{{data?.UserName}}</ion-card-subtitle>
-            </div>
-            <div class="third-section">
-              <div class="icons" (click)="startChat(data)">
-                <ion-icon class="chatandmenu" name="-chat"></ion-icon>
-              </div>
-              <div class="icons-menu">
-                <ion-icon class="chatandmenu" expand="full" (click)="presentConnectionMenu(data.UserId,i)"
-                  name="ellipsis-vertical-outline"></ion-icon>
-              </div>
-            </div>
+<!-- Search Input -->
+<ion-searchbar *ngIf="isSearchEnabled && selectedTab === 'connections'" [(ngModel)]="searchQuery" (ionInput)="filterConnections($event)"></ion-searchbar>
+<div class="prarthan" *ngIf="selectedTab == 'connections' && loaded">
+  <ion-card value="connections" *ngFor="let data of filteredConnections; let i=index">
+    <ion-card-header>
+      <div class="connection-card fi-border">
+        <div class="first-section" (click)="openUser(data)">
+          <ion-avatar class="avatar">
+            <img src="{{appConstants.mediaPrefix + data.ProfilePhoto}}" onError="this.src='assets/imgs/male.png'" />
+          </ion-avatar>
+        </div>
+        <div class="second-section" (click)="openUser(data)">
+          <ion-card-title>{{data?.DisplayName}}</ion-card-title>
+          <ion-card-subtitle>{{data?.UserName}}</ion-card-subtitle>
+        </div>
+        <div class="third-section">
+          <div class="icons" (click)="startChat(data)">
+            <ion-icon name="connected-members-chat"></ion-icon>
           </div>
-      </ion-card-header>
-    </ion-card>
-    <ng-container *ngIf="userConnections.length==0">
-      <div class="ion-text-center nodata">
-        <img src="assets/imgs/icons/noresults.png">
-        <p> No Connections Found</p>
+          <div class="icons-menu">
+            <ion-icon class="chatandmenu" expand="full" (click)="presentConnectionMenu(data.UserId, i)" name="ellipsis-vertical-outline"></ion-icon>
+          </div>
+        </div>
       </div>
-    </ng-container>
-  </div>
+    </ion-card-header>
+  </ion-card>
+  <ng-container *ngIf="filteredConnections.length <= 0">
+    <div class="ion-text-center nodata">
+      <img src="assets/imgs/icons/noresults.png">
+      <p>No Connections Found</p>
+    </div>
+  </ng-container>
+  <!-- <div *ngIf="!loaded" class="loading-spinner">
+    <ion-spinner></ion-spinner>
+    <p>Loading...</p>
+  </div> -->
+</div>
 
+  <!-- Search Input for Requests -->
+  <ion-searchbar *ngIf="isSearchEnabled && selectedTab === 'requests'" [(ngModel)]="searchQueryRequests" (ionInput)="filterRequests($event)"></ion-searchbar>
   <div *ngIf="selectedTab == 'requests' && loaded">
-    <ion-card value="requests" *ngFor="let data of userConnectionsRequests; let i=index;">
+    <ion-card value="requests" *ngFor="let data of filteredRequests; let i=index;">
       <ion-card-header>
         <div class="connection-card fi-border">
           <div class="first-section" (click)="openUser(data)">
@@ -117,8 +119,11 @@
     </ng-container>
   </div>
 
+
+  <!-- Search Input for Blocked Users -->
+  <ion-searchbar *ngIf="isSearchEnabled && selectedTab === 'blocked'" [(ngModel)]="searchQueryBlocked" (ionInput)="filterBlockedUsers($event)"></ion-searchbar>
   <div *ngIf="selectedTab == 'blocked' && loaded">
-    <ion-card value="blocked" *ngFor="let data of userBlockList; let j=index">
+    <ion-card value="blocked" *ngFor="let data of filteredBlockList; let j=index">
       <ion-card-header>
         <div class="connection-card fi-border">
           <div class="first-section">

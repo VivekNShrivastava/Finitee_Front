@@ -21,7 +21,7 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
       <img class="business-logo" style="width: 45px; height: 45px; border-radius: 50%;
   
       border: 2px solid white;" [src]="appConstants.mediaPrefix"
-            onError="this.src='assets/icons/business/anonymous.svg'"/>
+            onError="this.src='assets/icons/business/anonymous2.svg'"/>
     </div>
     <div style=" display: flex; flex-direction: column; text-align: center; margin-top: 5px;">
       <ion-label class="fi-name-label postowner-name">
@@ -50,7 +50,7 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
       <ng-container slot="start" style="position: relative;">
         <ion-avatar>
           <img class="business-logo" [src]="appConstants.mediaPrefix"
-            onError="this.src='assets/icons/business/anonymous.svg'"/>
+            onError="this.src='assets/icons/business/anonymous2.svg'"/>
         </ion-avatar>
         <ion-label class="fi-name-label">
          
@@ -220,14 +220,14 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
       [postLimit]="post.PostImages.length"
       [mediaFiles]="post.PostImages"
       (filePathEvent)="addMedia($event)"
-      (imagePath)="imagePathMedia($event)"
       (fileToUpload)="fileToUploadToServer($event)"
       class="icon-class"
       style="display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;"
+      gap: 10px;
+      height:110px"
       >
     </app-multiple-media-upload>
 
@@ -250,7 +250,6 @@ background: #EAF1F4 0% 0% no-repeat padding-box;">
 
   <ion-button shape="round" expand="block"
     color="primary" 
-    [disabled]="(photo.length === 0) && (!isArLocked)"
     (click)="openPreviewModal()"
     style="height: 53px;
     font: normal normal bold 16px/24px SF Pro Display; letter-spacing: 0.25px; color: #FFFFFF;"

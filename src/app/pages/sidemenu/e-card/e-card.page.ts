@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router'; 
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { BasePage } from 'src/app/base.page';
-import { UserProfile, UserCanvasProfile, ECard } from 'src/app/core/models/user/UserProfile';
+import { UserProfile, UserCanvasProfile } from 'src/app/core/models/user/UserProfile';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProfileService } from 'src/app/core/services/canvas-home/profile.service';
 import * as config from 'src/app/core/models/config/ApiMethods';
@@ -26,7 +26,7 @@ export class ECardPage extends BasePage implements OnInit {
   noteContent: string = ''; // Stores the content of the note
   showDeleteIcon: boolean = false; // Controls delete icon visibility
   showPlaceholder: boolean = true; // Controls placeholder visibility
-  dynamicRows: Array<{ field: string; value: string }> = [{ field: '', value: '' }];
+  dynamicRows: Array<{ field: string; value: string }> = [];
   loaded: boolean = false;
   constructor(
     private _EcardService: ECardService,
@@ -34,7 +34,9 @@ export class ECardPage extends BasePage implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _userProfileService: ProfileService,
     private router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private navCtrl: NavController,
+    public _modalController: ModalController,
   ) {
     super(authService);
     if (this._activatedRoute.snapshot.params["UserId"]) {
@@ -55,13 +57,12 @@ export class ECardPage extends BasePage implements OnInit {
   }
 
   async ngOnInit() {
-
-    this.getEcard();
-    // this.userProfile = await this._userProfileService.getUserProfile(this.UserId, this.logInfo.UserId)
     var res = await this._userProfileService.getUserCanvas(this.UserId, this.logInfo.UserId)
     // this.userProfile = res;
     this.userCanvasProfile = res;
     this.scanString = config.SACN_QRCODE + this.userCanvasProfile.canvasProfile.Id!;
+    this.getEcard();
+
   }
   // In your TypeScript component file (e.g., `your-page.ts`)
 truncateText(text: string, maxLength: number = 25): string {
@@ -150,7 +151,8 @@ truncateTextField(text: string, maxLength: number = 10): string {
     this.showDeleteIcon = this.noteContent.length > 0; // Show delete icon if there is content
   }
   editecard(){
-    this.router.navigateByUrl(`/edit-e-card/${this.UserId}`)
+    this.navEx!.state!['data'] = this.eCard;
+    this.router.navigateByUrl(`/edit-e-card/${this.UserId}`, this.navEx);
   }
 
   openGmail() {
@@ -198,16 +200,22 @@ truncateTextField(text: string, maxLength: number = 10): string {
 
   async getEcard() {
     var res = await this._EcardService.getEcard(this.UserId, this.logInfo.UserId)
-    this.eCard=res.Ecard;
-    console.log(this.eCard.Name)
-    if (this.eCard.CustomFields) {
-      this.dynamicRows = Object.keys(this.eCard.CustomFields).map((key) => {
-        return { field: key, value: this.eCard.CustomFields[key] };
-      });
+    if(res.Ecard !== null){
+      this.eCard=res.Ecard;
+
+      if (this.eCard.CustomFields) {
+        this.dynamicRows = Object.keys(this.eCard.CustomFields).map((key) => {
+          return { field: key, value: this.eCard.CustomFields[key] };
+        });
+      }
+    }
+    else{
+      console.log(this.userCanvasProfile);
+      this.eCard.Name = this.userCanvasProfile.canvasProfile.DisplayName;
     }
     this.loaded = true;
   }
-  OnEcardBack(){
-    this.router.navigateByUrl('tabs/map');
+  goBack() {
+    this.router.navigateByUrl('/tabs/map');
   }
 }

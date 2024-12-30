@@ -13,7 +13,7 @@
   <div class="logo-edit">.
 
     <img src="{{appConstants.mediaPrefix + ( userProfileImgAbt.ProfileImage || userCanvasProfile.canvasProfile.ProfileImage)}}"
-    onError="this.src='assets/icons/business/anonymous.svg'" (click)="openImage(userProfileImgAbt.ProfileImage || userCanvasProfile.canvasProfile.ProfileImage)" />
+    onError="this.src='assets/icons/business/anonymous2.svg'" (click)="openImage(userProfileImgAbt.ProfileImage || userCanvasProfile.canvasProfile.ProfileImage)" />
 
     <ion-spinner color="primary"
       *ngIf="(userProfileImgAbt.ProfileImage && userProfileImgAbt.ProfileImage.indexOf('localhost')!=-1) || (userCanvasProfile.canvasProfile.ProfileImage && userCanvasProfile.canvasProfile.ProfileImage.indexOf('localhost') != -1)"

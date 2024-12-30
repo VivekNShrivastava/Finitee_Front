@@ -1,7 +1,7 @@
 ion-content {
-
   & ion-grid {
     background: rgba(234, 241, 244, 0.7);
+    // background: black;
     padding: 12px;
     & ion-row {
       margin: 20px 0;
@@ -138,7 +138,7 @@ ion-content {
   .profile-header {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 100vw;
     overflow: hidden;
   }
 
@@ -172,12 +172,12 @@ ion-content {
   }
   
   .bottom-content {
-    padding-top: 200px;
+    // padding-top: 200px;
     }
 
     .all-in{
       position: absolute;
-      height: 100%;
+      // height: 100%;
     bottom: 0;
     left: 0;
     right: 0;
@@ -185,8 +185,8 @@ ion-content {
     color: white;
     text-align: center;
     z-index: 1;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.01) 73%);
-    }
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 100%);
+      }
   .title {
     font-size: 30px;
     font-weight: bold;
@@ -199,7 +199,7 @@ ion-content {
     font-size: 16px;
     margin: 5px; /* Added margin for spacing */
     // opacity: 0.8;
-    font-weight: bold;
+    font-weight: 400;
   }
   
   .actions {
@@ -210,24 +210,25 @@ ion-content {
   }
   
   .about-section {
-    margin-top: 10px;
+    margin-top: -14px;
     text-align: start; /* Center-align the about section */
     color: white;
-    margin-left: 20px;
-
+    // margin-left: 20px;
+    margin-bottom: -14px;
   } 
   
-  .about-section ul {
-    margin: 0 0 5px 0;
-    font-size: 16px;
-    font-weight: bold;
-  }
+  // .about-section ul {
+  //   margin: 0 0 5px 0;
+  //   font-size: 16px;
+  //   font-weight: bold;
+  // }
   
   .about-section p {
-    margin: 0;
+    padding:10px;
+    margin: 13px;
     font-size: 14px;
     // opacity: 0.8;
-    font-weight: bold;
+    font-weight: normal;
 
   }
   // .translucent-button {
@@ -243,33 +244,41 @@ ion-content {
   }
   .translucent-button {
     display: flex;
-    --background: rgba(255, 255, 255, 0.6); /* Translucent black background */
+    // --background: rgba(255, 255, 255, 0.2); /* Light black background with 30% opacity */
+    --background: white;
     --border-color: white;             /* White border */
-    --border-width: 2px;               /* 2px border */
+    --border-width: 1.5px;               /* 2px border */
     --border-style: solid; 
-    color: white;                      /* White text/icon */
+    color: black;                      /* White text/icon */
+    font-weight: bold;
     margin: 0 5px;                     /* Add margin between buttons */
     border-radius: 20px;               /* Make the button rounded */
-  }
+    background: var(--background);     /* Apply the background */
+    border: var(--border-width) var(--border-style) var(--border-color); /* Apply border */
+}
+
   .translucent-button2  {
     display: flex;
-    --background: rgba(255, 255, 255, 0.7); /* Translucent black background */
+    // --background: rgba(240, 240, 240, 0.5); /* Light black background with 30% opacity */
+    --background: white;
     --border-color: white;             /* White border */
-    // --border-width: 2px;
+    --border-width: 2.2px; 
     --border-style: solid;
     --border-radius:50%; 
     color: white;                    
-    width: 43px;
-    height: 43px;
+    width: 50px;
+    height: 50px;
   }
 
   ion-segment {
     & ion-segment-button {
       font: normal normal normal 14px/28px SF Pro Display;
       letter-spacing: 0.22px;
-      --color: #285078;
+      --color:gray;
+      margin: -1px;
+      padding: 5px;
       --indicator-height: 2px;
-      --indicator-color: black;
+      --color-checked: black;
     }
   }
 
@@ -292,16 +301,17 @@ ion-content {
 
     .connected-members,
     .connected-members-chat {
-      width: 43px;
-      height: 35px;
+      width: 45px;
+      height: 45px;
     }
 
     ion-button {
       --box-shadow: none;
       text-transform: capitalize;
-      height: 35px;
+      height: 40px;
       margin: 0px 10px;
       width: 137px;
+      margin-bottom: 5px;
       
     }
 
@@ -363,7 +373,6 @@ ion-content {
     border-bottom-left-radius: 22px;
     border-bottom-right-radius: 22px;
   }
-
   .fi-no-result {
     img {
       margin-top: 40px;
@@ -516,5 +525,9 @@ ion-modal {
 }
 
 .traitBg {
-z-index: 1;
+  z-index: 1;
+  top: 13px;
+  left: 15px;
+  width: 75px;
+  height: auto;
 }

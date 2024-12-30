@@ -33,45 +33,32 @@
                   <ion-input value="Value" readonly></ion-input>
                 </ion-col>
               </ion-row>
-  
+
+
+              <ion-row class="table-row" *ngFor="let row of dynamicRows | slice:0:4; let i = index">
+                <ion-col size="3.5" class="table-cell">
+                  <ion-label *ngIf="row.field === 'PhoneNumber'"> Phone </ion-label>
+                  <ion-label *ngIf="row.field !== 'PhoneNumber'">{{ row.field }}</ion-label>
+                </ion-col>
+                <ion-col size="8.5" class="table-cell">
+                  <ion-input [(ngModel)]="row.value" maxlength="40" (ngModelChange)="onPrimaryFieldChange()"></ion-input>
+                </ion-col>
+              </ion-row>
+
+
+<!--   
               <ion-row class="table-row">
                 <ion-col size="3.5" class="table-cell">
                   <ion-label>Name</ion-label>
                 </ion-col>
                 <ion-col size="8.5" class="table-cell">
-                  <ion-input [(ngModel)]="eCard.Name" id="nameInput" maxlength="15" (ngModelChange)="onPrimaryFieldChange()"></ion-input>
+                  <ion-input [(ngModel)]="dynamicRows['Name']" id="nameInput" maxlength="15" (ngModelChange)="onPrimaryFieldChange()"></ion-input>
                 </ion-col>
-              </ion-row>
-              
-              <ion-row class="table-row">
-                <ion-col size="3.5" class="table-cell">
-                  <ion-label>Email</ion-label>
-                </ion-col>
-                <ion-col size="8.5" class="table-cell">
-                  <ion-input [(ngModel)]="eCard.Email" id="emailInput" maxlength="50" (ngModelChange)="onPrimaryFieldChange()"></ion-input>
-                </ion-col>
-              </ion-row>
-              
-              <ion-row class="table-row">
-                <ion-col size="3.5" class="table-cell">
-                  <ion-label>Phone No.</ion-label>
-                </ion-col>
-                <ion-col size="8.5" class="table-cell">
-                  <ion-input [(ngModel)]="eCard.PhoneNumber" id="phoneInput" maxlength="50" (ngModelChange)="onPrimaryFieldChange()"></ion-input>
-                </ion-col>
-              </ion-row>
-              
-              <ion-row class="table-row">
-                <ion-col size="3.5" class="table-cell">
-                  <ion-label>Website</ion-label>
-                </ion-col>
-                <ion-col size="8.5" class="table-cell">
-                  <ion-input [(ngModel)]="eCard.Website" id="websiteInput" maxlength="50" (ngModelChange)="onPrimaryFieldChange()"></ion-input>
-                </ion-col>
-              </ion-row>
-              
+              </ion-row> -->
+
+
               <!-- Dynamic Rows -->
-              <ion-row class="table-row" *ngFor="let row of dynamicRows; let i = index">
+              <ion-row class="table-row" *ngFor="let row of dynamicRows | slice:4; let i = index">
                 <ion-col size="3.5" class="table-cell">
                   <ion-input class="ion-field placeholder-input" [(ngModel)]="row.field" id="fieldTextarea" maxlength="15" placeholder="Field" (ngModelChange)="onInputChange(i)"></ion-input>
                 </ion-col>
@@ -79,7 +66,9 @@
                 <ion-col size="8.5" class="table-cell">
                   <ion-input [(ngModel)]="row.value" maxlength="50" placeholder="Value" (ngModelChange)="onInputChange(i)"></ion-input>
                   
-                  <ion-button fill="clear" color="danger" class="delete-icon" *ngIf="i !== dynamicRows.length - 1" (click)="deleteDynamicRow(i)">
+
+                  <ion-button fill="clear" color="danger" class="delete-icon" *ngIf="i+4 !== dynamicRows.length - 1" (click)="deleteDynamicRow(i)">
+
                     <ion-icon style="margin-right: -17px;" slot="icon-only" name="trash-outline"></ion-icon>
                   </ion-button>
                 </ion-col>

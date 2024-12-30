@@ -4,6 +4,11 @@
       <ion-back-button icon="back-button" slot="start">
       </ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button  (click)="toggleSearch()">
+        <ion-icon name="searchi"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>
       <ng-container *ngIf="logInfo && logInfo.UserTypeId!=appConstants.USER_TYPE.FR_USER">Connected Members</ng-container>
       <ng-container *ngIf="logInfo && logInfo.UserTypeId===appConstants.USER_TYPE.FR_USER">Connections</ng-container>
@@ -16,10 +21,15 @@
 </ion-header>
 
 <ion-content>
+  <!-- Search Input -->
+  <div *ngIf="isSearchEnabled">
+    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterUsers($event)" placeholder="Search Users"></ion-searchbar>
+  </div>
+
   <ion-list *ngIf="loaded">
-    <ion-item lines="none" *ngFor="let user of userConnections" (click)="viewProfile(user)">
+    <ion-item lines="none" *ngFor="let user of filteredUserConnections" (click)="viewProfile(user)">
       <ion-avatar slot="start">
-        <img src='{{appConstants.mediaPrefix + user.ProfilePhoto}}' onError="this.src='assets/imgs/male.png'" />
+        <img src="{{appConstants.mediaPrefix + user.ProfilePhoto}}" onError="this.src='assets/imgs/male.png'" />
       </ion-avatar>
       <ion-label>
         <h3>{{user.DisplayName}}</h3>
@@ -28,7 +38,13 @@
     </ion-item>
   </ion-list>
 
-  <!-- skeleton view -->
+  <!-- No Results Message -->
+  <div *ngIf="filteredUserConnections.length === 0 && loaded" class="ion-text-center">
+    <img src="assets/imgs/icons/noresults.png">
+    <p>No Users Found</p>
+  </div>
+
+  <!-- Skeleton View -->
   <div *ngIf="!loaded">
     <ion-card>
       <ion-card-content>

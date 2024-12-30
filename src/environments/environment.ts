@@ -4,7 +4,8 @@
 
 let baseUrl = 'https://api.finitee.com/';
 if (window.location.origin.includes("localhost")) {
-  //baseUrl = "http://localhost:7003/"
+
+ // baseUrl = "http://localhost:7003/"
 }
 export const environment = {
   production: false,

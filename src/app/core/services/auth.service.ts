@@ -24,12 +24,16 @@ const REFRESH_TOKEN_KEY = 'my-refresh-token';
   providedIn: 'root'
 })
 export class AuthService {
+  getLoggedInUserId() {
+    throw new Error('Method not implemented.');
+  }
 
   // authenticatedIs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   currentAccessToken = " ";
   authState = new BehaviorSubject(false);
   showloader: boolean = false;
   loaderLoading: boolean = false;
+  isUserLoggedIn: any;
   constructor(
     private http: HttpClient,
     private router: Router,

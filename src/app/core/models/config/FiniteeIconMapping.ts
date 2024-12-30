@@ -275,7 +275,7 @@ export const finiteeIconMapper = {
   'business-website': 'assets/icons/business/website.svg',
   'see-more': 'assets/icons/business/see-more.svg',
   'see-less': 'assets/icons/business/see-less.svg',
-  'anonymous': 'assets/icons/business/anonymous.svg',
+  'anonymous2': 'assets/icons/business/anonymous2.svg',
   'announcement': 'assets/icons/business/announcement.svg',
   'announcement-blue': 'assets/icons/business/Business Annoucnement icon blue.svg',
   'dots': 'assets/icons/business/3dot.svg',

@@ -12,11 +12,10 @@
   </div>
 
 
+
   <app-multiple-media-upload 
     [postLimit]="post.PostImages.length"
     [mediaFiles]="post.PostImages"
-    (filePathEvent)="addMedia($event)"
-    (imagePath)="imagePathMedia($event)"
     (fileToUpload)="fileToUploadToServer($event)"
     class="icon-class"
     style="display: flex;
@@ -27,4 +26,14 @@
     gap: 10px;"
     >
   </app-multiple-media-upload>
+
+  <ion-button shape="round" expand="block"
+  color="primary" 
+  [disabled]="!(fileToUpload && fileToUpload.length > 0)"
+  (click)="openPreviewForCropper()"
+  style="height: 53px;
+  font: normal normal bold 16px/24px SF Pro Display; letter-spacing: 0.25px; color: #FFFFFF;"
+  >
+  Preview
+</ion-button>
 </ion-content>

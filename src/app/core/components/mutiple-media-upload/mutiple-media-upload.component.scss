@@ -1,75 +1,119 @@
-ion-row {
+// ion-row {
 
-  &>ion-col {
+//   &>ion-col {
 
-    &>ion-buttons {
-      height: 100%;
+//     &>ion-buttons {
+//       height: 100%;
 
-      &> {
-        --padding-start: 0;
-        --padding-end: 0;
-        --padding-top: 0;
-        --padding-bottom: 0;
-        height: 48px;
-        width: 48px;
+//       &> {
+//         --padding-start: 0;
+//         --padding-end: 0;
+//         --padding-top: 0;
+//         --padding-bottom: 0;
+//         height: 48px;
+//         width: 48px;
 
-        &>ion-icon {
-          font-size: 48px;
-        }
+//         &>ion-icon {
+//           font-size: 48px;
+//         }
 
-      }
-    }
+//       }
+//     }
 
-    &>ion-card {
-      margin: 0;
-      width: 100%;
-      height: 96px;
-      background-color: #EAF1F4;
-      box-shadow: none;
-      border-radius: 11px !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+//     &>ion-card {
+//       margin: 0;
+//       width: 100%;
+//       height: 96px;
+//       background-color: #EAF1F4;
+//       box-shadow: none;
+//       border-radius: 11px !important;
+//       display: flex;
+//       align-items: center;
+//       justify-content: center;
 
-      &>ion-img {
-        transform: scale(1.5);
-      }
+//       &>ion-img {
+//         transform: scale(1.5);
+//       }
 
-      &>ion-buttons {
+//       &>ion-buttons {
 
-        &.remove {
+//         &.remove {
 
 
-          position: absolute;
-          top: 10px;
-          right: 10px;
+//           position: absolute;
+//           top: 10px;
+//           right: 10px;
 
-          &>ion-button {
-            --padding-start: 5px;
-            --padding-end: 5px;
-            --padding-top: 5px;
-            --padding-bottom: 5px;
-            background-color: #FFFFFF;
-            height: 22px;
-            width: 22px;
-          }
+//           &>ion-button {
+//             --padding-start: 5px;
+//             --padding-end: 5px;
+//             --padding-top: 5px;
+//             --padding-bottom: 5px;
+//             background-color: #FFFFFF;
+//             height: 22px;
+//             width: 22px;
+//           }
 
-        }
-      }
+//         }
+//       }
 
-    }
+//     }
 
-  }
+//   }
+// }
+// @media screen and (max-width: 1024px) {
+  /* Insert your mobile-specific styles here */
+//   ion-card{
+//     height: 192px !important;
+//   }
+// }
+// @media screen and (max-width: 652px) {
+  /* Insert your mobile-specific styles here */
+//   ion-card{
+//     height: 96px !important;
+//   }
+// }
+/* Base CSS for the container and circular buttons */
+.button-container {
+  display: flex;
+  height: 70px; /* Adjust based on button size */
+  gap: 10px; /* Adjust gap between circles */
 }
+
+.circular-button {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Add additional styles if needed */
+}
+
+.circular-button img {
+  width: 60%;
+  height: 60%;
+}
+
+.disabled {
+  /* Define styles for disabled state, e.g., opacity or pointer events */
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Responsive styles */
 @media screen and (max-width: 1024px) {
-  /* Insert your mobile-specific styles here */
-  ion-card{
-    height: 192px !important;
+  /* Adjust button size or container height if needed */
+  .button-container {
+    height: 60px; /* Example adjustment */
   }
 }
+
 @media screen and (max-width: 652px) {
-  /* Insert your mobile-specific styles here */
-  ion-card{
-    height: 96px !important;
+  /* Further adjustments for smaller screens */
+  .button-container {
+    height: 50px; /* Example adjustment */
   }
 }

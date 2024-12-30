@@ -1,29 +1,92 @@
 <p>starts here</p>
 <div class="flexible-div" [style.height.px]="sliderHeight">
-  <ion-slides [options]="sliderOpts" [style.height.px]="sliderHeight">
+  <!-- <ion-slides *ngIf="imageUri && imageUri.length > 0" [pager]="true" [options]="sliderOpts" (ionSlideDidChange)="slideChanged()"> -->
+  <ion-slides [options]="sliderOpts" [pager] ="true" [style.height.px]="sliderHeight">
     <ion-slide *ngFor="let image of imageUri; let i = index">
       <div class="image-container" #imageContainer>
         <img 
+          *ngIf="image['mediaType'] !== 'V'"
           [src]="image.filePath"
           class="movable-image"
-          #imageElement
-          (load)="calculatePixelToScreen(imageElement)"
+          #mediaElement
+          (load)="calculatePixelToScreen(mediaElement)"
           (mousedown)="onTouchImageStart($event)"
           (mousemove)="onTouchImageMove($event)"
           (mouseup)="onTouchImageEnd($event)"
           (touchstart)="onTouchImageStart($event)"
           (touchmove)="onTouchImageMove($event)"
           (touchend)="onTouchImageEnd($event)"
-          (wheel)="onMouseWheel($event)"
         />
+
+       
+          <video 
+          #mediaElement
+          (loadedmetadata)="calculatePixelToScreen(mediaElement)"
+          (mousedown)="onTouchImageStart($event)"
+          (mousemove)="onTouchImageMove($event)"
+          (mouseup)="onTouchImageEnd($event)"
+          (touchstart)="onTouchImageStart($event)"
+          (touchmove)="onTouchImageMove($event)"
+          (touchend)="onTouchImageEnd($event)"
+          *ngIf="image['mediaType'] === 'V' " 
+          class="movable-image"
+          playsinline
+          >
+            <source [src]="image.filePath" type="video/mp4">
+          </video>
       </div>
     </ion-slide>
   </ion-slides>
+  <ion-icon class="mediaCancel" name="close-circle" style="font-size: 43px; background-color: white;
+    border-radius: 50%;"
+  (click)="removeMedia()"></ion-icon>
+  
+  <div class="video-controls" *ngIf="isVideo">
+    <div class="playpause" (click)="togglePlayPause()">
+      <ion-icon *ngIf="isPlaying" name="pause"></ion-icon>
+      <ion-icon *ngIf="!isPlaying" name="play"></ion-icon>
+    </div>
+  
+    <div class="control-area" >
+      <ion-icon *ngIf="isMuted" name="volume-mute" (click)="toggleMute()"></ion-icon>
+      <ion-icon *ngIf="!isMuted" name="volume-high" (click)="toggleMute()"></ion-icon>
+  
+      <ion-range min="0" max="100" [(ngModel)]="seekValue" (ionChange)="seekVideo($event)">
+        <ion-icon slot="start" name="play-back-outline"></ion-icon>
+        <ion-icon slot="end" name="play-forward-outline"></ion-icon>
+      </ion-range>
+    </div>
+  </div>
 </div>
 
 <div class="resizable-handle" 
-     (mousedown)="onMouseDown($event, imageElement.nativeElement, imageContainer.nativeElement)"
-     (touchstart)="onMouseDown($event, imageElement.nativeElement, imageContainer.nativeElement)">
+     (mousedown)="onMouseDown($event)"
+     (touchstart)="onMouseDown($event)">
+</div>
+
+
+
+<!-- <div class="controls">
+  <ion-button (click)="togglePlayPause()">{{ isPlaying ? 'Pause' : 'Play' }}</ion-button>
+  <ion-range min="0" max="100" [(ngModel)]="seekValue" (ionChange)="seekVideo($event)">
+    <ion-icon slot="start" name="play-back-outline"></ion-icon>
+    <ion-icon slot="end" name="play-forward-outline"></ion-icon>
+  </ion-range>
+  <ion-button (click)="toggleMute()">{{ isMuted ? 'Unmute' : 'Mute' }}</ion-button>
+  <ion-range min="0" max="1" step="0.1" [(ngModel)]="volumeValue" (ionChange)="changeVolume($event)">
+    <ion-icon slot="start" name="volume-mute-outline"></ion-icon>
+    <ion-icon slot="end" name="volume-high-outline"></ion-icon>
+  </ion-range>
+</div> -->
+
+<div *ngIf="imageUri.length > 1" style="display: flex; justify-content: space-between;">
+  <ion-buttons slot="start" style="padding: 10px;" (click)="back()">
+    <ion-icon name="chevron-back-circle-outline"></ion-icon>
+  </ion-buttons>
+
+  <ion-buttons slot="start" style="padding: 10px;" (click)="front()">
+    <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+  </ion-buttons>
 </div>
 
 <div>
@@ -31,4 +94,5 @@
   <br><br>
   <button (click)="OnZoom(false)">zoom out</button>
 </div>
+
 

@@ -12,7 +12,7 @@ export class ImageViewerComponent {
   configUrl = config.VIEW_URL;
   timeOutCompleted = false;
   imageAttributes: any[] = [
-    { element: 'crossorigin', value: 'anonymous' },
+    { element: 'crossorigin', value: 'anonymous2' },
     { element: 'crossOrigin', value: '' },
     { element: 'onerror', value: (event: Error) => { console.log('imgerror'); } },
     { element: 'loading', value: 'lazy' },
