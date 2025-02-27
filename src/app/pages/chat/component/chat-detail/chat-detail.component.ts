@@ -105,8 +105,10 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.logInfo = await this.authService.getUserInfo();
+    console.log(this.logInfo, "Current User login in device@@");
     this.dataInit();
     this.updateProfileDataInFireBase();
+    console.log(this.otherPartyUser, "otherPartyUserId is@@");
   }
 
   get appConstants() {
@@ -131,6 +133,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
       this.chatGroup = await lodash.filter(this.chatsService.messages, {
         groupId: this.chatsService.selectedGroupId,
       });
+      console.log(this.chatGroup, "data from cahtservice@@");
       this.otherPartyUser.DisplayName = this.chatGroup[0].otherPartyUserName;
       this.otherPartyUser.ProfilePhoto = this.chatGroup[0].ProfilePhoto;
       if (this.chatGroup.length > 0) {
@@ -204,6 +207,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
     if (this.chatsService.selectedGroupId == 'new') {
       //create group of two people
       var newGroupId = await this.createChatGroup(this.otherPartyUser);
+      console.log(newGroupId, "groupid is new case new user chat@@");
 
       //create chat message or photo
       if (this.photoInfo != null) {
@@ -214,16 +218,22 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
     } else {
       //create chat message
       //create chat message or photo
+      console.log("this is running @@");
       if (this.photoInfo != null) {
         await this.createChatPhoto(this.chatsService.selectedGroupId);
-      } else this.createChatMessage(this.chatsService.selectedGroupId);
+
+      } else {
+        console.log(this.chatsService.selectedGroupId, "This is for chatservice selected@@");
+        this.createChatMessage(this.chatsService.selectedGroupId);
+      }
     }
   }
 
   async createChatGroup(otherPartyUser: any) {
+    console.log(otherPartyUser, "check for createChatGroup is @@");
     var users = [this.logInfo.UserId, otherPartyUser.UserId];
     var currentUser = { UserId: this.logInfo.UserId, dn: this.logInfo.DisplayName, dp: this.logInfo.UserProfilePhoto, mute: false, deleted: false };
-    var otherUser = { UserId: otherPartyUser.UserId, dn: otherPartyUser.DisplayName, dp: otherPartyUser.ProfilePhoto, mute: false, deleted: false };
+    var otherUser = { UserId: otherPartyUser.UserId, dn: otherPartyUser.DisplayName ? otherPartyUser.DisplayName : otherPartyUser.name, dp: otherPartyUser.ProfilePhoto ? otherPartyUser.ProfilePhoto : otherPartyUser.avatar, mute: false, deleted: false };
     var userProfiles = [currentUser, otherUser];
     //console.log("userProfiles", userProfiles);
     var newGroupId = "Group#" + this.logInfo.UserId + "_" + otherPartyUser.UserId;
@@ -238,8 +248,10 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
     var selectedChatGroup = await lodash.filter(this.chatsService.messages, {
       groupId: selectedGroupId,
     });
+    console.log(selectedChatGroup, "chat-group multiple cahts@2@");
     if (selectedChatGroup && selectedChatGroup.length > 0) {
       var myprofile = lodash.filter(selectedChatGroup[0].userProfiles, { UserId: this.logInfo.UserId });
+      console.log(myprofile, "my profile is@@");
       if (myprofile[0].endchat)
         this.chatsService.endChat(false);
       if (selectedChatGroup[0].userProfiles[0].deleted || selectedChatGroup[0].userProfiles[1].deleted)
@@ -261,6 +273,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
     //console.log("new message data", this.chatsService.selectedGroupId + " " + newMsg);
     this.message = '';
     this.replyMsg = null;
+    console.log(newMsg, "new Msg is@@");
     var saveMsgRes = await this.chatsService.createChatMessage(
       selectedGroupId,
       newMsg
@@ -369,6 +382,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
       },
     });
     modal.onDidDismiss().then(async (user: any) => {
+      console.log(user, "chat forward@@");
       if (user.data) await this.sendForwardedMessageToNewUser(user.data);
     });
     return await modal.present();
@@ -377,6 +391,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
   async sendForwardedMessageToNewUser(selctedUser: any) {
     this.chatsService.selectedChats.forEach(
       async (chat: any, index: number) => {
+        console.log(chat, "chat text is@@");
         var groupId: any = '';
         var group1 = 'Group#' + this.logInfo.UserId + '-' + selctedUser.UserId;
         groupId = await this.chatsService.getGroupDocByDocId(group1);
@@ -394,9 +409,10 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
         } else {
           var otherPartyUser = {
             UserId: selctedUser.UserId,
-            name: selctedUser.FullName,
+            name: selctedUser.FullName ? selctedUser.FullName : selctedUser.name,
             avatar: selctedUser.ProfilePhoto,
           };
+          console.log(otherPartyUser, "create for chat group@@");
           var newGroupId = await this.createChatGroup(otherPartyUser);
           //create chat message or photo
           if (chat.mediatype == 2) {
@@ -416,6 +432,7 @@ export class ChatDetailComponent implements OnInit, OnDestroy {
   }
 
   replyChatMessages(chatmsg: any) {
+    console.log(chatmsg, "reply chat for@@");
     this.replyMsg = chatmsg;
     //console.log("ab chatmsg", this.chatsService.selectedChats[0].txt);
     this.clearSelectedChats();

@@ -7,6 +7,7 @@ import { IonSlides } from '@ionic/angular';
 import { ThumbnailHelperService } from 'src/app/core/services/thumbnail-helper.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { VideoCropper } from 'video-cropper-processor';
+
 import { Platform } from '@ionic/angular';
 import { VideoCroppingArgs } from 'src/app/core/models/post/post';
 import { Capacitor } from '@capacitor/core';

@@ -163,7 +163,7 @@ export class RegisterPage implements OnInit {
   stepFlow: any = {
     basic: [this.REG_STEP.CHOOSE_ACC, this.REG_STEP.NAME, this.REG_STEP.BIRTHDAY, this.REG_STEP.PHONE_NO, this.REG_STEP.PHONE_OTP, this.REG_STEP.EMAIL]
   }
-  passwordMismatch= false ;
+  passwordMismatch = false;
 
   constructor(
     private router: Router,
@@ -187,7 +187,7 @@ export class RegisterPage implements OnInit {
         console.log("REG: ngOnInit: queryParams tempUser: ", this.tempUser);
       }
     });
-    
+
     this.initForms();
     this.setUserDefaultCountryId();
     if (this.tempUser) {
@@ -340,7 +340,7 @@ export class RegisterPage implements OnInit {
 
   saveNameDetails() {
     this.currentUser.FirstName = this.nameForm.value.fname.trim();
-    console.log("saveNameDetails", this.nameForm.value.fname.trim())
+    console.log("saveNameDetails", this.nameForm.value.fname.trim());
     this.currentUser.LastName = this.nameForm.value.lname.trim();
     this.currentUser.Gender = this.nameForm.value.gender;
     console.log("Reg: Save Name: ", this.currentUser);
@@ -371,7 +371,7 @@ export class RegisterPage implements OnInit {
     console.log("reg", defaultCountryId);
     this.phoneForm.setValue({ countryId: defaultCountryId, phoneNo: "" });
     this.selectedCountry = await this.placesService.findCountry({ id: defaultCountryId });
-  
+
     // if (!this.currentUser.CountryId || this.currentUser.CountryId.length == 0) {
     //   this.currentUser.CountryId = this.placesService.getCountryIdFromPhoneCode(AppConstants.DEFAULT_PHONE_CODE);
     //   this.phoneForm.value.countryId = this.currentUser.CountryId ;
@@ -466,12 +466,13 @@ export class RegisterPage implements OnInit {
   }
 
   submitPhone() {
+    console.log(this.countrySearchableInput.preSelected, "country code@@");
     this.getCurrentUser();
     this.currentUser.Address.CountryId = this.phoneForm.value.countryId;
     this.currentUser.PhoneNumber = this.phoneForm.value.phoneNo;
-    let phoneCode = this.placesService.getPhoneCode(this.currentUser.Address.CountryId);
+    let phoneCode = this.placesService.getPhoneCode(this.countrySearchableInput.preSelected.PhoneCode);
     this.currentUser.PhoneCode = phoneCode;
-
+    console.log(phoneCode, "phone code is setting in current user phonecode@@");
     this.checkUserDetailsExist("PhoneNumber");
   }
 
@@ -580,7 +581,7 @@ export class RegisterPage implements OnInit {
         },
         error => {
           this.regService.commonService.presentToast(error);
-          console.log("Wrong OTP"); 
+          console.log("Wrong OTP");
         }
       );
   }
@@ -626,11 +627,11 @@ export class RegisterPage implements OnInit {
     console.log('Password 2:', this.passwordForm.value.password2);
 
     if (this.passwordForm.value.password1 !== this.passwordForm.value.password2) {
-      
+
       console.log('Passwords do not match');
       this.regService.commonService.presentToast("Passwords do not match!");
     } else {
-  
+
       console.log('Passwords match');
       this.getCurrentUser();
       this.currentUser.Password = this.passwordForm.value.password1;
@@ -805,7 +806,7 @@ export class RegisterPage implements OnInit {
       }
       this.regService.apiService.verifyRegisterPhoneOTP(body)
         .subscribe(
-            response => {
+          response => {
             this.regService.commonService.hideLoader('phoneOTPInput');
             if (response.Success) {
               this.nextStep(this.REG_STEP.EMAIL);

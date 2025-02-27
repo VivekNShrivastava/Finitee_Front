@@ -7,7 +7,7 @@ import { AddPostRequest, AddPostRequestForWeb, Post, VideoCroppingArgs } from 's
 import { VideoCropCompressService } from 'src/app/core/services/video-crop-compress/video-crop-compress.service';
 import { VideoCropper } from 'video-cropper-processor';
 import { Platform } from '@ionic/angular';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor } from '@capacitor/core';    
 import { CommonService } from 'src/app/core/services/common.service';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 

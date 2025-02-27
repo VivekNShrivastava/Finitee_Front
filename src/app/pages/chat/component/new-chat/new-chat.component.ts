@@ -37,6 +37,7 @@ export class NewChatComponent implements OnInit {
     this.pageevent = this.navParams.data['event'];
     if (this.pageevent != "New Chat") {
       this.chatsList = this.chatService.messages;
+      console.log(this.chatsList, "chatList is@@");
     }
   }
 
@@ -84,16 +85,22 @@ export class NewChatComponent implements OnInit {
     this.modalController.dismiss();
   }
 
+  forwardMsg(selectedChatGroup: {
+    otherPartyUserName: any; otherPartyUserId: any;
+  }) {
+    console.log(selectedChatGroup, "list of user od chatlist");
+    var user = { UserId: selectedChatGroup.otherPartyUserId, name: selectedChatGroup.otherPartyUserName }
+    this.modalController.dismiss(user);
+  }
+
   openNewChatWindow(user: any) {
+    console.log(user, "list of user od chatlist");
     if (user.ProfilePhoto == undefined)
       user.ProfilePhoto = null;
     this.modalController.dismiss(user);
   }
 
-  forwardMsg(selectedChatGroup: { otherPartyUserId: any; }) {
-    var user = { UserId: selectedChatGroup.otherPartyUserId }
-    this.modalController.dismiss(user);
-  }
+
 
   /* closeSearch() {
     this.searchshow = false;

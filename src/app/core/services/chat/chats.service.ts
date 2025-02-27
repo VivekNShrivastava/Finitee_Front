@@ -95,13 +95,14 @@ export class ChatsService {
           var signInRes = await this.authenticateUserFromFCM(this.FCM_TOKEN);
           if (signInRes) {
             this.userVerifyLister();
-            
+
             this.firechatdb = getFirestore();
             // this.firechatdb = this.firestoreService.getFirestoreInstance();
             // await this.enableOfflieModeInfirebase(this.firechatdb);
             // this.firechatdb = await initializeFirestore(app, {
             //   cacheSizeBytes: CACHE_SIZE_UNLIMITED
             // });
+
             await this.getChats(logData);
             resolve(true);
           }
@@ -440,6 +441,9 @@ export class ChatsService {
   }
 
   async createChatGroup(newGroupId: string, users: string[], userProfiles: { UserId: string; dn: any; dp: any; mute: boolean; deleted: boolean; }[]) {
+    console.log(newGroupId, "thi is using in setDoc@@");
+    console.log(users, "users data for doc creating in firebase@@");
+    console.log(userProfiles, "userProfile data for doc creating in firebase@@");
     try {
       const groupRef = await setDoc(doc(this.firechatdb, "messages", newGroupId), {
         users: users,
@@ -453,6 +457,7 @@ export class ChatsService {
   }
 
   async createChatMessage(groupId: any, msgObj: Chat) {
+    console.log(this.firechatdb, "firebase chat @@");
     try {
       const messageRef: any = await addDoc(collection(this.firechatdb, `messages/${groupId}/chats`),
         {
@@ -731,7 +736,7 @@ export class ChatsService {
     }
   }
 
-  async openChat(selctedUser: { UserId: any; DisplayName: any; ProfilePhoto: any; groupId: any; }, isModal?: boolean ) {
+  async openChat(selctedUser: { UserId: any; DisplayName: any; ProfilePhoto: any; groupId: any; }, isModal?: boolean) {
     console.log("chatOrUser", selctedUser);
     var groupId: any = "";
     if (selctedUser.groupId)
@@ -747,21 +752,21 @@ export class ChatsService {
           DisplayName: selctedUser.DisplayName,
           ProfilePhoto: selctedUser.ProfilePhoto
         },
-        groupId : groupId
+        groupId: groupId
       }
     };
     if (groupId != "")
       this.nav.navigateForward([`/chat-detail/${groupId}`], navigationExtras);
     else
-      this.nav.navigateForward([`/chat-detail/new`], navigationExtras);  
-      return Promise.resolve(navigationExtras);
+      this.nav.navigateForward([`/chat-detail/new`], navigationExtras);
+    return Promise.resolve(navigationExtras);
     // if(isModal){
     //   return Promise.resolve(navigationExtras)
     //   // return navigationExtras;
     // }else{
-      
+
     // }
-    
+
   }
 
   async getGroupIdIfChatThreadAlreadyStarted(otherPartyUserId: any) {

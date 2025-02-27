@@ -86,7 +86,7 @@ export class MapSearchComponent implements OnInit {
     public authService: AuthService,
     public mapService: MapService,
     private locationService: LocationService,
-    
+
   ) {
     this.mapParams = this.navParams?.data?.['values'];
     this.googleAutocomplete = new google.maps.places.AutocompleteService();
@@ -95,12 +95,12 @@ export class MapSearchComponent implements OnInit {
   }
 
   OnEnd() {
-    this.showIcons=false
+    this.showIcons = false
     this.modalController.dismiss().then(() => {
       console.log('Modal dismissed');
-      
+
     })
-}
+  }
   toggleLevel1(idx: null) {
     if (this.isLevel1Shown(idx)) {
       this.showLevel1 = null;
@@ -140,63 +140,63 @@ export class MapSearchComponent implements OnInit {
     );
     this.searchMode = 'N';
     this.setPingObj = {};
-    
+
   }
- async openMap() {
-  const modal = await this.modalController.create({
-    component: MapLocation,
-  });
-  console.log("Maplocation", MapLocation);
-  await modal.present();
-
-  const { data } = await modal.onDidDismiss();
-
-  if (data && data.location) {
-    const { latitude, longitude } = data.location;
-
-    const latLng = {
-      lat: latitude,
-      lng: longitude
-    };
-
-    console.log("latlng", latLng);
-
-    this.eventItem.Latitude = latLng.lat;
-    this.eventItem.Longitude = latLng.lng;
-
-    
-    const res = await this.locationService.getAddressFromLatLng(latLng);
-
-    let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
-      if (address) {
-
-        this.getLatlng(address);
-        this.eventLocation = address.FormattedAddress;
-        const location: string = this.eventLocation;
-        const add1 = location.slice(0, 69);
-        const add2 = location.slice(70, location.length);
-        this.form.controls['AddressLine1'].setValue(add1);
-        this.form.controls['AddressLine1'].markAsTouched();
-        this.form.controls['AddressLine1'].setErrors(null);
-
-        this.form.controls['AddressLine2'].setValue(add2);
-        this.form.controls['AddressLine2'].markAsTouched();
-        this.form.controls['AddressLine2'].setErrors(null);
-
-        
-       
-      }
+  async openMap() {
+    const modal = await this.modalController.create({
+      component: MapLocation,
     });
-  }
-}
+    console.log("Maplocation", MapLocation);
+    await modal.present();
 
-   triggerSearch() {
+    const { data } = await modal.onDidDismiss();
+
+    if (data && data.location) {
+      const { latitude, longitude } = data.location;
+
+      const latLng = {
+        lat: latitude,
+        lng: longitude
+      };
+
+      console.log("latlng", latLng);
+
+      this.eventItem.Latitude = latLng.lat;
+      this.eventItem.Longitude = latLng.lng;
+
+
+      const res = await this.locationService.getAddressFromLatLng(latLng);
+
+      let reverseGeocodingResult = this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+        if (address) {
+
+          this.getLatlng(address);
+          this.eventLocation = address.FormattedAddress;
+          const location: string = this.eventLocation;
+          const add1 = location.slice(0, 69);
+          const add2 = location.slice(70, location.length);
+          this.form.controls['AddressLine1'].setValue(add1);
+          this.form.controls['AddressLine1'].markAsTouched();
+          this.form.controls['AddressLine1'].setErrors(null);
+
+          this.form.controls['AddressLine2'].setValue(add2);
+          this.form.controls['AddressLine2'].markAsTouched();
+          this.form.controls['AddressLine2'].setErrors(null);
+
+
+
+        }
+      });
+    }
+  }
+
+  triggerSearch() {
     if (this.eventItem.Latitude && this.eventItem.Longitude) {
       const latLng = {
         lat: this.eventItem.Latitude,
         lng: this.eventItem.Longitude
       };
-  
+
       this.mapService.oneTimeSearch({
         geolocation: { latitude: latLng.lat, longitude: latLng.lng },
         searchKey: this.keyinfo || "",
@@ -227,40 +227,41 @@ export class MapSearchComponent implements OnInit {
   }
 
   getLatlng(add?: any) {
-    if (add){
+    if (add) {
       this.eventItem.Latitude = add.Latitude;
       this.eventItem.Longitude = add.Longitude;
-     
+
     } else {
+      console.log(this.eventItem, "it calls after open popup@@");
       const addrress = this.eventItem.AddressLine1 + this.eventItem.AddressLine2 + this.eventItem.AddressLine3;
       this.locationService.getLatLngFromAddressType('home', addrress)
         .then((latLng) => {
           this.eventItem.Latitude = latLng.lat;
           this.eventItem.Longitude = latLng.lng;
 
-        this.locationService.getAddressFromLatLng(latLng);
-        this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
-          if (address) {
-            const CountryCode = address.CountryCode;
-            if (CountryCode === 'IN' || CountryCode === 'US' || CountryCode === 'LR' || CountryCode === 'MM') {
-              console.log('Display distance in miles');
-              this.distanceUnit = 'miles';
-            } else {
-              console.log('Display distance in kilometers');
-              this.distanceUnit = 'kilometers';
-            }
-             
+          this.locationService.getAddressFromLatLng(latLng);
+          this.locationService.observeReverseGeocodingResult().subscribe(async (address: AddressMap) => {
+            if (address) {
+              const CountryCode = address.CountryCode;
+              if (CountryCode === 'IN' || CountryCode === 'US' || CountryCode === 'LR' || CountryCode === 'MM') {
+                console.log('Display distance in miles');
+                this.distanceUnit = 'miles';
+              } else {
+                console.log('Display distance in kilometers');
+                this.distanceUnit = 'kilometers';
+              }
+
             }
           });
-   
-  })
+
+        })
     }
-   }
+  }
 
 
 
 
-  
+
   async ionViewDidEnter() {
     if (this.navParams.data['values'].searchCriteria) {
       const searchCriteria = this.navParams.data['values'].searchCriteria;
@@ -479,23 +480,23 @@ export class MapSearchComponent implements OnInit {
   // }
 
   async oneTimeSearch() {
-   
-  
+
+
     this.setSearchOptions();
-    
-  
+
+
     this.progressBar = true;
     var sonarSearch_location = {
-      lat : 0,
-      lng : 0
+      lat: 0,
+      lng: 0
     }
     const curr_loc = await this.locationService.getCurrentLocationLatLng();
-    if(curr_loc){
+    if (curr_loc) {
       sonarSearch_location.lat = curr_loc.lat,
-      sonarSearch_location.lng = curr_loc.lng
+        sonarSearch_location.lng = curr_loc.lng
       console.log(curr_loc);
     }
-   
+
   }
   searchTypeChanged(typeCode: string) {
     if (this.tempOtherSearchTerm) {
@@ -525,13 +526,13 @@ export class MapSearchComponent implements OnInit {
   setSearchOptions() {
     this.searchTypeString = '';
     for (let i = 0; i < this.searchType.length; i++) {
-     
+
       const element = this.searchType[i];
-    
+
       if (element.isChecked) {
         this.searchTypeString += this.searchTypeString != '' ? ', ' + element.value : element.value
         // console.log( this.searchTypeString)
-      
+
       }
     }
     if (this.searchType.filter(val => val.value == 'All')[0].isChecked) {

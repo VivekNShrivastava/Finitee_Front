@@ -30,19 +30,19 @@ export class MapService {
   private baseUrl = environment.baseUrl;
   private viewListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   public viewList$ = this.viewListSubject.asObservable();
-  public listener : EventEmitter<any> = new EventEmitter<any>();
+  public listener: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private http: HttpClient,
     private _signalRService: SignalRService,
     private firestoreService: FirestoreService,
     private commonService: CommonService
-  ) { 
+  ) {
     this.firestoreInstance = firestoreService.getFirestoreInstance();
     // this.initializeViewList();.
     this.firestore = getFirestore();
     // console.log("firestore from map.service", this.firestore);
-   
+
   }
 
   public showLoader(): void {
@@ -52,7 +52,7 @@ export class MapService {
 
   }
 
-  async initializeViewList(){
+  async initializeViewList() {
     await this.terminateFireStore()
     const app = initializeApp(environment.firebaseConfig)
     this.firestore = initializeFirestore(app, {
@@ -94,9 +94,9 @@ export class MapService {
   // public async addToViewList(customDocumentId: string, name: any) {
   //   try {
   //     const docRef = doc(this.firestore, 'viewingList', customDocumentId);
-      
+
   //     const docSnapshot = await getDoc(docRef);
-    
+
   //     if (docSnapshot.exists()) {
   //       // Document exists, update the array by adding the new name
   //       await setDoc(docRef, {
@@ -108,7 +108,7 @@ export class MapService {
   //         names: [name] // Create an array with the new name
   //       });
   //     }
-  
+
   //     console.log('Document written with ID: ', customDocumentId);
   //   } catch (e) {
   //     console.error('Error adding document: ', e);
@@ -120,16 +120,16 @@ export class MapService {
       // console.log("to remove from", customDocumentId);
       // console.log("to reomve", name);
       const docRef = doc(this.firestore, 'viewingList', customDocumentId);
-  
+
       // Retrieve the existing document
       const docSnapshot = await getDoc(docRef);
-  
+
       if (docSnapshot.exists()) {
         // Document exists, remove the name from the array
         await setDoc(docRef, {
           names: arrayRemove(name) // Assuming 'names' is the array field in your document
         }, { merge: true });
-  
+
         console.log('Name removed from document with ID: ', customDocumentId);
       } else {
         console.error('Document does not exist with ID: ', customDocumentId);
@@ -180,8 +180,8 @@ export class MapService {
     });
   }
 
-  public oneTimeSearch( sonarSearch: any): Observable<any> {
-  
+  public oneTimeSearch(sonarSearch: any): Observable<any> {
+
     // const params = {
     //   UserId: logInfo.UserId,
     //   Latitude: location.lat,
@@ -211,9 +211,9 @@ export class MapService {
     //   serviceAvailable: false,
     // };
     console.log("clicked");
-    return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(
+    return this.http.post<any>(config.API.SEARCH.ALL_SONAR_SEARCH, sonarSearch).pipe(   // api call is hitted here by ALL_SONAR_SEARCH
       map((response: any) => {
-       
+
         const responseData = response || {};
         this.mainList = [];
         if (responseData.SonarFreeUserSearchRespond?.length) {
@@ -243,14 +243,15 @@ export class MapService {
         if (responseData.SonarSalesListingSearchRespond) {
           this.addSalesListing(responseData.SonarSalesListingSearchRespond, false);
         }
-console.log("kkkk",response)
-        return {response, sonarSearch};
-        
+        console.log("kkkk", response)
+        return { response, sonarSearch };
+
       })
     );
   }
 
   addUsers(listOfUsers: SonarFreeUserSearchRespond[], isSearch?: boolean) {
+
     if (isSearch) {
       this.mainList = [];
     }
@@ -429,16 +430,16 @@ console.log("kkkk",response)
   //   });
   // }
 
-  sendConnectionTOuser(userId: string){
+  sendConnectionTOuser(userId: string) {
     return new Promise<any>((resolve, reject) => {
       var reqParams = {
         ToUserId: userId,
-      
+
       }
       var url = config.SEND_CONN_REQ;
-      console.log("my url",url);
+      console.log("my url", url);
       this.commonService.showLoader();
-      return this.http.post<any>(url,reqParams).subscribe((response: any) => {
+      return this.http.post<any>(url, reqParams).subscribe((response: any) => {
         this.commonService.hideLoader();
         resolve(response);
       },
@@ -460,7 +461,7 @@ console.log("kkkk",response)
       console.log(reqParams);
       var url = config.CANCEL_CONN_REQ + "/" + userId;
       this.commonService.showLoader();
-      return this.http.post<any>(url,"etc").subscribe((response: any) => {
+      return this.http.post<any>(url, "etc").subscribe((response: any) => {
         this.commonService.hideLoader();
         resolve(response);
       },
@@ -473,7 +474,7 @@ console.log("kkkk",response)
       );
     });
   }
-  
+
 
   sendGreetingToUser(id: any) {
     return new Promise<any>((resolve, reject) => {

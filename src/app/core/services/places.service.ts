@@ -51,6 +51,7 @@ export class PlacesService {
   /** Get All Countries List */
   public async getCountryList() {
     this.countries = [...CountryJson];
+
     return await this.countries;
     //console.log("country test: Start: 2")
     /*  this.apiService.getCountryList()
@@ -66,7 +67,7 @@ export class PlacesService {
   }
 
   /** Get All State List for selected country */
-  public async getStateList(countryId: number){
+  public async getStateList(countryId: number) {
     // console.log("state test: Start: 2")
     this.states = [...StateJson];
     this.states = await lodash.filter(this.states, { 'CountryId': countryId });
@@ -99,7 +100,10 @@ export class PlacesService {
   }
 
   public getPhoneCode(ctryId: number) {
+    console.log(ctryId, "check for country code@@");
     let country = lodash.find(this.countries, { CountryId: ctryId });
+    // let country = lodash.find(this.countries, { PhoneCode: ctryId }); this should be code here then country code will be fixed@@
+    console.log(this.countries, "country code is@@");
     if (country) {
       return country.PhoneCode;
     }
@@ -145,39 +149,39 @@ export class PlacesService {
         resolve(country);
       }
 
-    /*   if (!this.countries || this.countries.length == 0) {
-        this.apiService.getCountryList()
-          .subscribe(response => {
-            this.countries = response?.ResponseData || [];
-            if (this.countries.length > 0) {
-              this.storageService.storeCountries(this.countries);
-              console.log("findCountry: ", this.countries?.length);
-              if (queryObj.all) {
-                resolve(this.countries);
+      /*   if (!this.countries || this.countries.length == 0) {
+          this.apiService.getCountryList()
+            .subscribe(response => {
+              this.countries = response?.ResponseData || [];
+              if (this.countries.length > 0) {
+                this.storageService.storeCountries(this.countries);
+                console.log("findCountry: ", this.countries?.length);
+                if (queryObj.all) {
+                  resolve(this.countries);
+                }
+                else {
+                  country = lodash.find(this.countries, queryObj);
+                  resolve(country);
+                }
               }
               else {
-                country = lodash.find(this.countries, queryObj);
-                resolve(country);
+                console.log("findCountry: Countries NULL");
+                resolve([]);
               }
-            }
-            else {
-              console.log("findCountry: Countries NULL");
-              resolve([]);
-            }
-
-          });
-      }
-      else {
-        console.log("findCountry: ", this.countries?.length);
-        if (queryObj.all) {
-          resolve(this.countries);
+  
+            });
         }
         else {
-          country = lodash.find(this.countries, queryObj);
-          resolve(country);
-        }
-
-      } */
+          console.log("findCountry: ", this.countries?.length);
+          if (queryObj.all) {
+            resolve(this.countries);
+          }
+          else {
+            country = lodash.find(this.countries, queryObj);
+            resolve(country);
+          }
+  
+        } */
     });
   }
 
@@ -241,7 +245,7 @@ export class PlacesService {
   public async findCity(stateId: number, queryObj: any) {
     return new Promise<any>(async (resolve, reject) => {
       let city: any;
-      let cities =await this.getCityList(stateId);//this.storageService.getCities(stateId)?.data;
+      let cities = await this.getCityList(stateId);//this.storageService.getCities(stateId)?.data;
       if (queryObj.all) {
         resolve(cities);
       }

@@ -30,7 +30,7 @@
           <ion-img style="align-items: center;" class="icon-small" src="{{placesService.getFlagIconPath(listEntry)}}" (ionError)="onImgNotFound(listEntry)"></ion-img>
 
           <p class="fi-p-name" *ngIf="inputData.dataKeyMap.srno.length > 0">&nbsp;+ {{listEntry[inputData.dataKeyMap.srno]}}</p>
-        </ion-col>
+        </ion-col>  
         <ion-col size="8" class="fi-name-col" *ngIf="inputData.dataKeyMap.title.length > 0 || inputData.dataKeyMap.detail.length > 0">
           <p class="fi-p-name" *ngIf="inputData.dataKeyMap.title.length > 0">{{listEntry[inputData.dataKeyMap.title]}}</p>
           <p *ngIf="inputData.dataKeyMap.detail.length > 0" class="tc fi-p-name">{{listEntry[inputData.dataKeyMap.detail]}}</p>

@@ -5,20 +5,22 @@
     <ng-container *ngIf="step==LOGIN_STEP.LOGIN">
       <ion-icon class="logo-img" src="assets/images/login1.svg"></ion-icon>
       <ion-icon class="img2" src="assets/images/login2.svg"></ion-icon>
-      <h3 >Welcome to Finitee</h3>
+      <h3>Welcome to Finitee</h3>
       <!-- <p class="wle-p">UNLIMITED POSSIBILITES</p> -->
       <span class="errorlogin" slot="error">{{errorMsgGrp.login}}</span>
 
       <form [formGroup]="loginForm" (ngSubmit)="login()">
-        <ion-item lines="none"  style="margin-left: 14px;margin-right: 14px; margin-bottom: -40px;">
-          <p style="color: red;font-size: medium;" *ngIf="errorMsgGrp.loginResponse.length>0">{{errorMsgGrp.loginResponse}}</p>
+        <ion-item lines="none" style="margin-left: 14px;margin-right: 14px; margin-bottom: -40px;">
+          <p style="color: red;font-size: medium;" *ngIf="errorMsgGrp.loginResponse.length>0">
+            {{errorMsgGrp.loginResponse}}</p>
         </ion-item>
-        <ion-item lines="none" class="fi-padding" >
+        <ion-item lines="none" class="fi-padding">
 
           <!-- <ion-label *ngIf="errorMsgGrp.loginResponse.length>0">{{errorMsgGrp.loginResponse}}</ion-label> -->
           <ion-button fill="outline" *ngIf="inputTypePhone" type="button" (click)="openCountryDialog()"
             class="fi-countryCode-btn">
-            <ion-img slot="start" class="icon-small" src="{{placesService.getFlagIconPath(selectedCountry)}}"></ion-img>&nbsp;&nbsp;
+            <ion-img slot="start" class="icon-small"
+              src="{{placesService.getFlagIconPath(selectedCountry)}}"></ion-img>&nbsp;&nbsp;
             <span>+{{selectedCountry?.PhoneCode}} </span>
             <ion-icon slot="end" name="caret-down-outline"></ion-icon>
           </ion-button>
@@ -29,13 +31,13 @@
         </ion-item>
 
         <!-- <ion-input class="input1" (ionChange) = "onEmailInputChange($event)" formControlName="email" placeholder="Email/Phone number" type="inputTypePhone ? number:email" name="email"></ion-input> -->
-        <ion-item lines="none" class="fi-padding" >
-        <ion-input class="input fi-margin" formControlName="password" placeholder="Password" type="Password"
-          (ionChange)="onInputChange($event, 'password')" name="password"></ion-input>
+        <ion-item lines="none" class="fi-padding">
+          <ion-input class="input fi-margin" formControlName="password" placeholder="Password" type="Password"
+            (ionChange)="onInputChange($event, 'password')" name="password"></ion-input>
         </ion-item>
-          <!-- <span slot="error">{{errorMsgGrp.password}}</span> -->
-          <!-- <re-captcha [(ngModel)]="captcha" name="captcha" required #captchaControl="ngModel"></re-captcha> -->
-          <!-- <re-captcha formControlName="recaptchaReactive"></re-captcha> -->
+        <!-- <span slot="error">{{errorMsgGrp.password}}</span> -->
+        <!-- <re-captcha [(ngModel)]="captcha" name="captcha" required #captchaControl="ngModel"></re-captcha> -->
+        <!-- <re-captcha formControlName="recaptchaReactive"></re-captcha> -->
         <ion-button [disabled]="loginForm.invalid" color="primary" class="lgn-button" type="submit">Sign in</ion-button>
         <!-- <ion-button *ngIf="inputTypePhone" color="primary" class="lgn-button" type="button" (click)="sendSignInOTP()">Sign in using OTP</ion-button> -->
       </form>
@@ -51,67 +53,77 @@
             class="height">Forgot Password?</ion-button>
         </ion-col>
       </ion-row>
-      <ion-button color="primary"  class="lgn-button"  (click)="createAccount()">Create account</ion-button>
+      <ion-button color="primary" class="lgn-button" (click)="createAccount()">Create account</ion-button>
       <div *ngIf="tempUser && tempUser?.step > 2">
         <ion-label style="margin-top: 8px;">Or complete pending account?</ion-label>
-        <ion-button color="primary" class="lgn-button" (click)="createAccount(true)">Continue registration as {{tempUser.data.FirstName}}?</ion-button>
+        <ion-button color="primary" class="lgn-button" (click)="createAccount(true)">Continue registration as
+          {{tempUser.data.FirstName}}?</ion-button>
       </div>
 
 
 
     </ng-container>
     <!-- <p>{{error}}</p> -->
-    <ion-modal #selectCountryModal [backdropDismiss]="true" [isOpen]="isCountryModalOpen" class="search-modal" (didDismiss)="onModalDismissed($event, -1)">
+    <ion-modal #selectCountryModal [backdropDismiss]="true" [isOpen]="isCountryModalOpen" class="search-modal"
+      (didDismiss)="onModalDismissed($event, -1)">
       <ng-template>
         <app-select-searchable [inputData]="countrySearchableInput"
           (onSelectSearchableCancel)="onSelectCountryModalDismiss($event)"
           (onSelectSearchableSubmit)="onCountrySelected($event)"></app-select-searchable>
       </ng-template>
     </ion-modal>
-    <ion-modal #otpModal [backdropDismiss]="true" [isOpen]="step==LOGIN_STEP.EMAIL_OTP || step==LOGIN_STEP.PHONE_OTP" (didDismiss)="onModalDismissed($event, step)"
-    [enterAnimation]="regService.commonService.enterAnimationRToL" [leaveAnimation]="regService.commonService.leaveAnimationLToR">
+    <ion-modal #otpModal [backdropDismiss]="true" [isOpen]="step==LOGIN_STEP.EMAIL_OTP || step==LOGIN_STEP.PHONE_OTP"
+      (didDismiss)="onModalDismissed($event, step)" [enterAnimation]="regService.commonService.enterAnimationRToL"
+      [leaveAnimation]="regService.commonService.leaveAnimationLToR">
       <!-- <ion-modal #otpModal [backdropDismiss]="true" [isOpen]="isOtpModalOpen" [initialBreakpoint]="0.5" [breakpoints]="[0.5]"> -->
       <ng-template>
         <div class="parent-body">
           <ion-item lines="none">
             <ion-icon class="backicon" name="chevron-back-outline" (click)="back()"></ion-icon>
           </ion-item>
-            <ion-icon class="logo-img" src="assets/images/login1.svg"></ion-icon>
-            <p *ngIf="step==LOGIN_STEP.PHONE_OTP" class="subheading">Please enter the code we sent on your phone. (Valid for 5 mins)</p>
-            <p *ngIf="step==LOGIN_STEP.EMAIL_OTP" class="subheading">Please enter the code we sent on your email. (Valid for 10 mins)</p>
+          <ion-icon class="logo-img" src="assets/images/login1.svg"></ion-icon>
+          <p *ngIf="step==LOGIN_STEP.PHONE_OTP" class="subheading">Please enter the code we sent on your phone. (Valid
+            for 5 mins)</p>
+          <p *ngIf="step==LOGIN_STEP.EMAIL_OTP" class="subheading">Please enter the code we sent on your email. (Valid
+            for 10 mins)</p>
           <ion-item lines="none">
             <ng-otp-input #phoneOTPInputComp class="otp-input" [config]="{length:6}"
               (onInputChange)="otpInputChange($event)"></ng-otp-input>
           </ion-item>
           <!-- <ion-label class="underline-text">Change phone number</ion-label> -->
           <ion-button expand="block" fill="clear" (click)="back()">{{getChangeNumberEmailButtonLabel()}}</ion-button>
-          <ion-button expand="block" class="lgn-class" shape="round" (click)="resendOTP()" [disabled]="otpTimer.secs > 0">Resend
+          <ion-button expand="block" class="lgn-class" shape="round" (click)="resendOTP()"
+            [disabled]="otpTimer.secs > 0">Resend
             OTP{{otpTimer.msg}}</ion-button>
         </div>
       </ng-template>
     </ion-modal>
-    <ion-modal #emailModal [backdropDismiss]="true" [isOpen]="step==LOGIN_STEP.EMAIL" (didDismiss)="onModalDismissed($event, LOGIN_STEP.EMAIL)"
-    [enterAnimation]="regService.commonService.enterAnimationRToL" [leaveAnimation]="regService.commonService.leaveAnimationLToR">
-    <!-- <ng-container *ngIf="step==LOGIN_STEP.EMAIL"> -->
+    <ion-modal #emailModal [backdropDismiss]="true" [isOpen]="step==LOGIN_STEP.EMAIL"
+      (didDismiss)="onModalDismissed($event, LOGIN_STEP.EMAIL)"
+      [enterAnimation]="regService.commonService.enterAnimationRToL"
+      [leaveAnimation]="regService.commonService.leaveAnimationLToR">
+      <!-- <ng-container *ngIf="step==LOGIN_STEP.EMAIL"> -->
       <ng-template>
-      <div class="parent-body">
-        <ion-item lines="none">
-          <ion-icon class="backicon" name="chevron-back-outline" (click)="back()"></ion-icon>
-        </ion-item>
-      <ion-img class="emailsvg" src="assets/images/email.svg"></ion-img>
-      <h2 class="heading">Forgot Password</h2>
-      <p class="subheading2">Enter your email and if it exists in our system an OTP will be sent to reset your password</p>
-      <form [formGroup]="emailForm" (ngSubmit)="sendOTPOnEmail($event)">
-        <ion-item lines="none">
-          <ion-input class="input" placeholder="Email" formControlName="email" type="email" name="email" (ionChange)="onInputChange($event, 'emailForgotPwd')"></ion-input>
-          <span slot="error">{{errorMsgGrp.emailForgotPwd}}</span>
-        </ion-item>
-        <ion-button expand="block" [disabled]="emailForm.invalid" shape="round" type="submit">Submit</ion-button>
-      </form>
-      </div>
-    </ng-template>
-    <!-- </ng-container> -->
-  </ion-modal>
+        <div class="parent-body">
+          <ion-item lines="none">
+            <ion-icon class="backicon" name="chevron-back-outline" (click)="back()"></ion-icon>
+          </ion-item>
+          <ion-img class="emailsvg" src="assets/images/email.svg"></ion-img>
+          <h2 class="heading">Forgot Password</h2>
+          <p class="subheading2">Enter your email and if it exists in our system an OTP will be sent to reset your
+            password</p>
+          <form [formGroup]="emailForm" (ngSubmit)="sendOTPOnEmail($event)">
+            <ion-item lines="none">
+              <ion-input class="input" placeholder="Email" formControlName="email" type="email" name="email"
+                (ionChange)="onInputChange($event, 'emailForgotPwd')"></ion-input>
+              <span slot="error">{{errorMsgGrp.emailForgotPwd}}</span>
+            </ion-item>
+            <ion-button expand="block" [disabled]="emailForm.invalid" shape="round" type="submit">Submit</ion-button>
+          </form>
+        </div>
+      </ng-template>
+      <!-- </ng-container> -->
+    </ion-modal>
     <!-- <ng-container *ngIf="step==LOGIN_STEP.EMAIL_OTP">
       <div class="bsname">
         <p class="subheading">Please enter the code we sent on your email</p>
@@ -123,33 +135,35 @@
           OTP{{otpTimer.msg}}</ion-button>
       </div>
     </ng-container> -->
-    <ion-modal #emailModal [backdropDismiss]="true" [isOpen]="step==LOGIN_STEP.PASSWORD" (didDismiss)="onModalDismissed($event, LOGIN_STEP.PASSWORD)"
-    [enterAnimation]="regService.commonService.enterAnimationRToL" [leaveAnimation]="regService.commonService.leaveAnimationLToR">
-    <!-- <ng-container *ngIf="step==LOGIN_STEP.PASSWORD"> -->
+    <ion-modal #emailModal [backdropDismiss]="true" [isOpen]="step==LOGIN_STEP.PASSWORD"
+      (didDismiss)="onModalDismissed($event, LOGIN_STEP.PASSWORD)"
+      [enterAnimation]="regService.commonService.enterAnimationRToL"
+      [leaveAnimation]="regService.commonService.leaveAnimationLToR">
+      <!-- <ng-container *ngIf="step==LOGIN_STEP.PASSWORD"> -->
       <ng-template>
-      <div class="parent-body">
-        <ion-item lines="none">
-          <ion-icon class="backicon" name="chevron-back-outline" (click)="back()"></ion-icon>
-        </ion-item>
-      <ion-img class="emailsvg" src="assets/images/email.svg"></ion-img>
-      <h2 class="heading">Forgot Password</h2>
-      <p class="subheading2">Please enter your new password</p>
-      <form [formGroup]="passwordForm" (ngSubmit)="changePassword($event)">
-        <!-- <p class="subheading">Please enter a secure password</p> -->
-        <ion-item lines="none">
-          <ion-input class="input" type="password" placeholder="Password" formControlName="password1"></ion-input>
-          <span slot="error">{{errorMsgGrp.password}}</span>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-input class="input" type="password" placeholder="Confirm Password" (ionChange)="onInputChange($event, 'changePassword1')"
-            formControlName="password2"></ion-input>
-          <span slot="error">Passwords do not match</span>
-        </ion-item>
-        <ion-button expand="block" shape="round" [disabled]="passwordForm.invalid" type="submit">Submit</ion-button>
-      </form>
-      </div>
-    </ng-template>
-    <!-- </ng-container> -->
+        <div class="parent-body">
+          <ion-item lines="none">
+            <ion-icon class="backicon" name="chevron-back-outline" (click)="back()"></ion-icon>
+          </ion-item>
+          <ion-img class="emailsvg" src="assets/images/email.svg"></ion-img>
+          <h2 class="heading">Forgot Password</h2>
+          <p class="subheading2">Please enter your new password</p>
+          <form [formGroup]="passwordForm" (ngSubmit)="changePassword($event)">
+            <!-- <p class="subheading">Please enter a secure password</p> -->
+            <ion-item lines="none">
+              <ion-input class="input" type="password" placeholder="Password" formControlName="password1"></ion-input>
+              <span slot="error">{{errorMsgGrp.password}}</span>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-input class="input" type="password" placeholder="Confirm Password"
+                (ionChange)="onInputChange($event, 'changePassword1')" formControlName="password2"></ion-input>
+              <span slot="error">Passwords do not match</span>
+            </ion-item>
+            <ion-button expand="block" shape="round" [disabled]="passwordForm.invalid" type="submit">Submit</ion-button>
+          </form>
+        </div>
+      </ng-template>
+      <!-- </ng-container> -->
     </ion-modal>
     <!-- <ion-modal #forgotPasswordModal trigger="forgotPasswordId" [backdropDismiss]="true">
     <ng-template>

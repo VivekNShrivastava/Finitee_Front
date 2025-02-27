@@ -64,14 +64,14 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   public location: UserLocation = new UserLocation();
   public homeLocation: UserLocation = new UserLocation();
 
-  searchTriggered:boolean=true;
-  showIcons: boolean = false; 
+  searchTriggered: boolean = true;
+  showIcons: boolean = false;
   currentPageHref!: any;
   currentLocationMarker: any;
   businessLocationMarker: any;
   resultCount = 0;
   user: any;
-  public intervalTimer = interval(LOCATION_UPDATE_TIME);
+  public intervalTimer = interval(LOCATION_UPDATE_TIME);   // 20 value is gone into this
   state: any;
   enabled?: boolean;
   cmmflag?: MapFlag;
@@ -90,7 +90,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   serviceRequired_markers: any = [];
   searchMarkers: any = [];
   ser_usr_mark: any = [];
-  markerCluster?: MarkerClusterer;
+  markerCluster?: MarkerClusterer;   // MarkerClusterer creates and manages per-zoom-level clusters for large amounts of markers. See MarkerClustererOptions for more details.
   radius = 5;
   // UI State
   isZoomOut = false;
@@ -139,7 +139,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   mixedArray: any = [];
   changedArray: any = [];
 
-  receivedData: any; 
+  receivedData: any;
   mapSearchObj: any = [];
   isPrompt: boolean = true;
 
@@ -168,7 +168,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   newLng: any;
   locationUpdateInterval$: any;
   prevLiveLocation: UserLocation = new UserLocation();
-  isNativeLocationOn : boolean = true;
+  isNativeLocationOn: boolean = true;
   screenService: any;
   deviceHeight: number | undefined;
   countedHeight: number | undefined;
@@ -205,6 +205,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     const checkUserConnection = this.logCurrentNetworkStatus();
     this.user = this.authService.getUserInfo();
     this.firestoreSubscription = this.firestoreService.greetingList$.subscribe(updatedData => {
+      console.log(updatedData, "firestore data stored is@@");
       this.greetList = updatedData;
       console.log(this.greetList);
       this.greetListNumber = this.greetList?.length;
@@ -228,7 +229,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
   navigateToResult2(checkSonarResult?: boolean) {
     console.log("result", this.mainResultFromSearch);
-    
+
     const dataToSend = {
       viewTemplate: 'someViewTemplateData',
       results: this.mainResultFromSearch
@@ -237,14 +238,14 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     if (checkSonarResult) {
       this.onMapResultsClick(this.mainResultFromSearch, checkSonarResult);
     }
-  
-    this.navEx!.state!['data'] = dataToSend;
-  
-    this.router.navigateByUrl('app-map-result2', this.navEx);
-}
 
-  
-  ionViewDidEnter () {
+    this.navEx!.state!['data'] = dataToSend;
+
+    this.router.navigateByUrl('app-map-result2', this.navEx);
+  }
+
+
+  ionViewDidEnter() {
     console.log("ionViewDidEnter");
     const navigation = this.router.getCurrentNavigation();
     console.log(navigation);
@@ -268,9 +269,9 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
   }
 
-  async checkLocationPerm () {
+  async checkLocationPerm() {
     const perm = await Geolocation.checkPermissions();
-    if(perm?.location === 'granted') this.printCurrentPosition(); 
+    if (perm?.location === 'granted') this.printCurrentPosition();
   }
 
   printCurrentPosition = async () => {
@@ -283,10 +284,10 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         this.isLocationTurnedOn = false;
         const permReq = await Geolocation.requestPermissions();
         console.log('req perm', permReq?.location);
-        if(permReq?.location !== 'granted'){
+        if (permReq?.location !== 'granted') {
           this.isPrompt = false;
           this.locationPermission();
-        }else{
+        } else {
           this.isPrompt = false;
           this.isLocationTurnedOn = true;
           this.loadMap();
@@ -294,13 +295,14 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       } else if (perm.location === "granted") {
         this.isPrompt = false;
         this.isLocationTurnedOn = true;
+        console.log("here it hists for mapload@@");
         this.loadMap();
       }
     } catch (error: any) {
       this.isPrompt = false;
       console.log("catched error", error);
       // this.openNativeLocation();
-      if(error?.message === "Location services are not enabled"){
+      if (error?.message === "Location services are not enabled") {
         console.log("upar wala");
         this.isNativeLocationOn = false;
         // this.openNativeLocation();
@@ -308,12 +310,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     }
   };
 
-  async openNativeLocation(){
+  async openNativeLocation() {
     const nativeLocation = await NativeSettings.openAndroid({
       option: AndroidSettings.Location,
     });
     console.log('nativeLocation', nativeLocation);
-    if(nativeLocation?.status === true){
+    if (nativeLocation?.status === true) {
       this.printCurrentPosition();
     }
   }
@@ -375,6 +377,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
   async logCurrentNetworkStatus() {
     const status = await this.network.getStatus();
+    console.log(status, "network status@@");
     if (status.connected === false) {
       console.log("User is Offline");
       this.userConnectionActive = true;
@@ -466,22 +469,22 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.intervalTimer = interval(60000);
   }
 
-    async ngAfterViewInit() {
-      setTimeout(() => {
-        const buttons = document.querySelectorAll('.gm-style .gm-style-iw-c button');
-        buttons.forEach(button => {
-          (button as HTMLElement).style.display = 'none';
-        });
-      }, 1000)
-      console.log('ngAfterViewInit');
-      await this.platform.ready();
-      console.log('conn', this.userConnectionActive);
-      // if (this.userConnectionActive) await this.printCurrentPosition();
-      // await this.printCurrentPosition();
-      // this.loadMap();
-      // this.fetchCurrentArea();
-      // this.locationService.getCurrencyByCountry();
-    }
+  async ngAfterViewInit() {
+    setTimeout(() => {
+      const buttons = document.querySelectorAll('.gm-style .gm-style-iw-c button');
+      buttons.forEach(button => {
+        (button as HTMLElement).style.display = 'none';
+      });
+    }, 1000)
+    console.log('ngAfterViewInit');
+    await this.platform.ready();
+    console.log('conn', this.userConnectionActive);
+    // if (this.userConnectionActive) await this.printCurrentPosition();
+    // await this.printCurrentPosition();
+    // this.loadMap();
+    // this.fetchCurrentArea();
+    // this.locationService.getCurrencyByCountry();
+  }
 
   ngOnDestroy() {
     if (this.subscription) {
@@ -529,9 +532,9 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
           handler: async () => {
             console.log('map req location');
             const dialogueReq = await Geolocation.requestPermissions();
-            if(dialogueReq?.location !== 'granted'){
-              console.log('not granted after snackbar', dialogueReq?.location); 
-            }else{
+            if (dialogueReq?.location !== 'granted') {
+              console.log('not granted after snackbar', dialogueReq?.location);
+            } else {
               console.log('granted after snackbar', dialogueReq?.location);
               this.isLocationTurnedOn = true;
               this.loadMap();
@@ -659,6 +662,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   async loadMap() {
     if (!this.map) {
       if (this.mapRef && this.location?.lat && this.location?.lng) {
+        console.log(this.location, "this.location is known lat & lng@@");
         this.map = new google.maps.Map(this.mapRef.nativeElement,
           {
             center: {
@@ -677,14 +681,15 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
               "featureType": "poi",
               "stylers": [{
                 "visibility": "on",
-                
+
               },
-            ],
-              
+              ],
+
             }]
           }
         );
       } else {
+        console.log(this.location, "this.location not known lat & lng@@");
         const options: PositionOptions = <PositionOptions>{
           maximumAge: 0,
           timeout: 5000,
@@ -731,6 +736,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   async setCurrentLocationMarker() {
     if (this.user?.UserTypeId != '2') {
       if (this.location && this.location.lat) {
+        console.log("currentlocation marker@@@");
         if (this.currentLocationMarker) this.currentLocationMarker.setMap(null);
         this.currentLocationMarker = new google.maps.Marker({
           position: this.location,
@@ -752,6 +758,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     } else {
       if (this.location && this.location.lat) {
         if (this.businessLocationMarker) this.businessLocationMarker.setMap(null);
+        console.log("Business-=location marker@@@");
         this.businessLocationMarker = new google.maps.Marker({
           position: this.location,
           map: this.map,
@@ -948,21 +955,21 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     forLoop(0);
   }
 
-  async refreshMarkerOne(){
-    try{
+  async refreshMarkerOne() {
+    try {
       this._commonService.showLoader();
       this.mapService.oneTimeSearch(this.mapSearchObj)
-      .subscribe((response: any) => {
-        this.clearResults();
-        this.searchCriteria = response;
-        this.searchResultUpdate();
-        this._commonService.hideLoader();
-      })
-    }catch(e: any){
+        .subscribe((response: any) => {
+          this.clearResults();
+          this.searchCriteria = response;
+          this.searchResultUpdate();
+          this._commonService.hideLoader();
+        })
+    } catch (e: any) {
       this._commonService.hideLoader();
       console.log(e);
     }
-   
+
   }
 
   async refreshMarker() {
@@ -1015,20 +1022,23 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.clusterMap.clear();
 
     // this.clearResults(true);
-    console.log("mainList",this.mapService.mainList)
+    console.log("mainList", this.mapService.mainList)
     let sonarResults = this.mapService.mainList;
     const userId = this.logInfo.UserId
     let results = sonarResults.filter((x: any) => x.Id !== userId)
+    console.log(results, "results is after search done@@@@?<");
     this.resultCount = results.length;
     if (results.length > 0) {
       this.mainResultFromSearch = results;
       this.mainResultFromSearch.sort((a: any, b: any) => {
-        if(a?.LatLong){
+        console.log(a, b, "check for equal lat or lng@@");
+        if (a?.LatLong) {
           if (a.LatLong.Latitude === b.LatLong.Latitude) {
             return a.LatLong.Longitude - b.LatLong.Longitude;
           }
+          console.log(a.LatLong.Latitude - b.LatLong.Latitude, "equal lat or Lng");
           return a.LatLong.Latitude - b.LatLong.Latitude;
-        }else{
+        } else {
           if (a.Latitude === b.Latitude) {
             return a.Longitude - b.Longitude;
           }
@@ -1036,7 +1046,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         }
       });
       //remove tl
-      console.log( "tl" ,results);
+      console.log("tl", results);
       this._commonService.savedSonarLocations.forEach((val: any) => {
         results = results.filter((x: any) => val.FlagId != x.UserId)
       })
@@ -2120,8 +2130,8 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     const markerData = data;
     let id = '';
     this.markerCurrentIndex = markerData.itemIndex;
-    if(markerData?.Id) id = markerData?.Id;
-    else id = markerData?.data[0] ? markerData?.data[0].Id : markerData.data.Id ;
+    if (markerData?.Id) id = markerData?.Id;
+    else id = markerData?.data[0] ? markerData?.data[0].Id : markerData.data.Id;
     const res = this.markerListMainResult?.findIndex((v: any) => {
       return (v as any)?.Id === id;
     })
@@ -2242,12 +2252,12 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         else if (result.data.action == "VIEW_CONNECTION") {
           // this.openUser(result.data.data);
           const params = {
-            position : {
-              lat : result?.data?.data?.LatLong ? result?.data?.data?.LatLong.Latitude : result?.data?.data?.Latitude,
-              lng : result?.data?.data?.LatLong ? result?.data?.data?.LatLong.Longitude : result?.data?.data?.Longitude,
+            position: {
+              lat: result?.data?.data?.LatLong ? result?.data?.data?.LatLong.Latitude : result?.data?.data?.Latitude,
+              lng: result?.data?.data?.LatLong ? result?.data?.data?.LatLong.Longitude : result?.data?.data?.Longitude,
             }
           }
-          this.onAdvanceMarkerClick( params, result.data.data);
+          this.onAdvanceMarkerClick(params, result.data.data);
         }
       }
     });
@@ -2311,7 +2321,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
   }
 
   async searchMap() {
-    
+
 
     const obj: AllSonarSearchRequest = {
       geolocation: { latitude: this.location.lat, longitude: this.location.lng },
@@ -2326,7 +2336,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       serviceReq: true,
       serviceAvailable: false,
     };
-    this.showIcons=true
+    this.showIcons = true
     const screenWidth = window.innerWidth;
 
     let breakpoints: number[];
@@ -2341,40 +2351,40 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     //     breakpoints = [0, 1];
     //     initialBreakpoint = 0.9;
     //   }
-    
+
 
     // }
     // else if (screenWidth >= 768 && screenWidth < 1024) {
-   
+
     //   breakpoints = [0, 0.6];
     //   initialBreakpoint = 0.6;
     // } else {
-      
+
     //   breakpoints = [0, 0.4];
     //   initialBreakpoint = 0.4;
     // }
-  
+
     const getheightforsonar = () => {
-      const windowheight= window.innerHeight;
+      const windowheight = window.innerHeight;
       this.countedHeight2 = parseFloat((564 / windowheight).toFixed(2));
       // console.log("Yesssssssssssssssssss",this.countedHeight2)
       return this.countedHeight2;
 
     }
-    
+
 
     const modal = await this.modalController.create({
       component: MapSearchComponent,
-      breakpoints:[0, getheightforsonar()],
-      
-      initialBreakpoint:getheightforsonar() ,
+      breakpoints: [0, getheightforsonar()],
+
+      initialBreakpoint: getheightforsonar(),
       handle: false,
       componentProps: { values: obj }
-      
+
     });
 
     modal.onDidDismiss().then(result => {
-      this.showIcons=false
+      this.showIcons = false
       console.log('res', result);
       console.log(result.data.status)
       this.mapSearchObj = result?.data?.sonarSearch;
@@ -2385,7 +2395,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       // this.removeAdvanceMarkerFromMap();
       if (result.data) {
         if (result.data?.status == 'L') {
-
+          console.log(result.data, "result data is@@");
           let Latitude = result.data?.lat;
           let Longitude = result.data?.lng;
           let RangeInKm = 2;
@@ -2393,16 +2403,18 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
           this.getTotemByUserId(Latitude, Longitude, RangeInKm);
         } else {
           this.searchCriteria = result.data;
+          console.log(result.data, "result data is under else@@");
           if (result.data?.status == 'P') {
             // this.setCircle(result.data)
           }
           if (result.data) {
             // result.data[`location`] = this.location;
-
-            this.searchResultUpdate();
+            console.log(result.data, "search----result data is under else@@");
+            this.searchResultUpdate();   // this function is calls when you do empty search from search icons0-===-=-=-@@
           } else {
             // this.clearMap();
             if (result.data != undefined && result.data != null) {
+              console.log(result.data, "search----result updatedata is under else@@");
               this.cmmflag = result.data.status;
               this.updatelocation();
             }
@@ -2410,6 +2422,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
         }
       } else {
         this.cmmflag = this.getFlag();
+        console.log(result.data, "search----result updatedata in bottom is under else@@");
         this.updatelocation();
         // this.removeCircle();
       }
@@ -2593,7 +2606,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     this.removeCluster();
     // this.refreshMap()
   }
-  
+
   calcBoundsForCenter(bounds: any[], center: any): any[] {
     let result: any = [];
     return result;
@@ -2703,7 +2716,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
       component: ViewingUsersComponent,
       componentProps: {
         template: "Greeting",
-      },      
+      },
     });
     modal.onDidDismiss()
       .then(result => {
@@ -2726,15 +2739,15 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     // console.log('runn prev', curr)
     let lat = 0;
     let lng = 0;
-    if(curr?.LatLong){
+    if (curr?.LatLong) {
       lat = curr.LatLong.Latitude;
       lng = curr.LatLong.Longitude;
-    }else{
+    } else {
       lat = curr.Latitude;
       lng = curr.Longitude;
     }
-    
-    this.map?.panTo({lat, lng})
+
+    this.map?.panTo({ lat, lng })
     //move to selected marker
   }
 
@@ -2743,21 +2756,21 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
 
     let lat = 0;
     let lng = 0;
-    if(curr?.LatLong){
+    if (curr?.LatLong) {
       lat = curr.LatLong.Latitude;
       lng = curr.LatLong.Longitude;
-    }else{
+    } else {
       lat = curr.Latitude;
       lng = curr.Longitude;
     }
 
     // const lat = latLng.Latitude;
     // const lng = latLng.Longitude;
-    this.map?.panTo({lat, lng})
+    this.map?.panTo({ lat, lng })
     //move to selected marker
   }
 
-  public panMapToCurrLoc(curr: any){
+  public panMapToCurrLoc(curr: any) {
     // console.log('cuurent->', curr);
 
     // let lat = 0;
@@ -2769,7 +2782,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     //   lat = curr.Latitude;
     //   lng = curr.Longitude;
     // }
-   
+
     // this.map?.panTo({lat, lng})
   }
 
@@ -2779,7 +2792,7 @@ export class MapPage extends BasePage implements OnInit, OnDestroy {
     });
   }
 
-  
+
 
   //Handle swipe event on send msg to subscribers
   swipe(e: TouchEvent, when: string): void {

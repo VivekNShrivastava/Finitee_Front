@@ -32,7 +32,7 @@ export class ChatItemComponent implements OnInit {
     public chatsService: ChatsService,
     private commonService: CommonService
   ) {
-    console.log('otherPartyUserId', this.otherPartyUser);
+    console.log('otherPartyUserId', this.otherPartyUser?.UserId);
   }
 
   messageDraged(
@@ -52,7 +52,7 @@ export class ChatItemComponent implements OnInit {
 
   ngOnInit() {
 
-  }  
+  }
 
   longPressActions(chatMsg: { deleted: boolean; chatId: any }, str: any) {
     if (chatMsg.deleted == true || chatMsg.deleted == this.logInfo.UserId) {
@@ -103,12 +103,12 @@ export class ChatItemComponent implements OnInit {
     console.log('msg.showNoOfChar', msg.showNoOfChar);
   }
 
-/*   openChatEndToast() {
-    this.commonService.presentToast(AppConstants.TOAST_MESSAGES.CHAT_END);
-  }
-  openWrongFormatImage() {
-    this.commonService.presentToast(
-      AppConstants.TOAST_MESSAGES.WRONG_FORMAT_IMG
-    );
-  } */
+  /*   openChatEndToast() {
+      this.commonService.presentToast(AppConstants.TOAST_MESSAGES.CHAT_END);
+    }
+    openWrongFormatImage() {
+      this.commonService.presentToast(
+        AppConstants.TOAST_MESSAGES.WRONG_FORMAT_IMG
+      );
+    } */
 }

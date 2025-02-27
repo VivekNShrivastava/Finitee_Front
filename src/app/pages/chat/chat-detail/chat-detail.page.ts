@@ -26,24 +26,25 @@ export class ChatDetailPage implements OnInit, OnDestroy {
     // this.otherPartyUser = this.router!.getCurrentNavigation()!.extras!.state!['data'];
     // console.log(this.otherPartyUser);
 
-    
+
   }
-  ngOnInit(){
+  ngOnInit() {
     console.log("b", this.otherValue)
     this.route.params.subscribe((params: any) => {
       console.log("params", params?.id)
-      if(this.otherValue?.state){
-        if(this.otherValue?.state?.groupId === "") this.chatsService.selectedGroupId = 'new';
-        else if(this.otherValue?.state?.groupId != "") this.chatsService.selectedGroupId = this.otherValue?.state?.groupId;
-      }else this.chatsService.selectedGroupId = params.id;
-      if(params?.id) this.otherPartyUser = this.router!.getCurrentNavigation()!.extras!.state!['data'];
-      if(this.otherValue?.state){
-        if(this.otherValue?.state?.data) this.otherPartyUser = this.otherValue?.state?.data;
+      if (this.otherValue?.state) {
+        if (this.otherValue?.state?.groupId === "") this.chatsService.selectedGroupId = 'new';
+        else if (this.otherValue?.state?.groupId != "") this.chatsService.selectedGroupId = this.otherValue?.state?.groupId;
+      } else this.chatsService.selectedGroupId = params.id;
+      if (params?.id) this.otherPartyUser = this.router!.getCurrentNavigation()!.extras!.state!['data'];
+      if (this.otherValue?.state) {
+        if (this.otherValue?.state?.data) this.otherPartyUser = this.otherValue?.state?.data;
       }
-    }); 
+      console.log(this.otherPartyUser, "otherparty users@@");
+    });
   }
   ngOnDestroy() {
-    
+
   }
-  
+
 }
